@@ -8,6 +8,7 @@ import android.os.Looper
 import android.view.WindowMetrics
 import androidx.annotation.RequiresApi
 import com.example.mygame.`object`.Ball
+import com.example.mygame.`object`.Platform
 import com.example.mygame.view.GameView
 
 class MainActivity : Activity(), SensorHandler.SensorCallback {
@@ -16,6 +17,8 @@ class MainActivity : Activity(), SensorHandler.SensorCallback {
     private lateinit var gameView: GameView
     private val handler = Handler(Looper.getMainLooper())
     private val ball = Ball()
+    private val platform1 = Platform(100f, 150f)
+    private val platform2 = Platform(450f, 700f)
 
     @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,7 +57,7 @@ class MainActivity : Activity(), SensorHandler.SensorCallback {
                 ball.updateBallPosition(deltaX, deltaY)
 
                 // Передаем список объектов для отрисовки в GameView
-                gameView.drawGame(listOf(ball))
+                gameView.drawGame(listOf(ball, platform1, platform2))
 
                 // Повторяем цикл с задержкой
                 handler.postDelayed(this, 16) // 60 fps (1000ms/60 ≈ 16ms)
