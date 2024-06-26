@@ -63,7 +63,7 @@ class MainActivity : Activity(), SensorHandler.SensorCallback {
         handler.post(object : Runnable {
             override fun run() {
 
-                // Проверяем коллизий
+                // Проверяем коллизии
                 collisionHandler.checkCollisions(ball, platforms)
 
                 // Обновляем позицию шара
