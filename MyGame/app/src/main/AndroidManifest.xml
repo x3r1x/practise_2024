@@ -17,7 +17,7 @@
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.MyGame"
-            android:screenOrientation="portrait">
+            android:screenOrientation="nosensor">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
