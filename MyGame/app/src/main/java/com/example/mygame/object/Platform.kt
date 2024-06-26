@@ -22,11 +22,11 @@ class Platform : Drawable {
     }
 
     override fun draw(canvas: Canvas) {
-        val radius = height / 2
         val topLeftX = x
         val topLeftY = y
         val bottomRightX = x + width
         val bottomRightY = y + height
+        val radius = height / 2
 
         canvas.drawRoundRect(topLeftX, topLeftY, bottomRightX, bottomRightY, radius, radius, borderColor)
         canvas.drawRoundRect(topLeftX, topLeftY, bottomRightX, bottomRightY, radius, radius, platformColor)

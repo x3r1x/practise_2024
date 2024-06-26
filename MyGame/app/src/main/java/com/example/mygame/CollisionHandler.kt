@@ -5,7 +5,7 @@ import com.example.mygame.`object`.Platform
 
 class CollisionHandler(private val screenWidth: Float, private val screenHeight: Float) {
 
-    fun checkBallCollision(ball: Ball) {
+    private fun checkBallCollision(ball: Ball) {
         val ballBottom = ball.y + ball.radius
         val ballLeft = ball.x - ball.radius
         val ballRight = ball.x + ball.radius
@@ -28,9 +28,9 @@ class CollisionHandler(private val screenWidth: Float, private val screenHeight:
         }
     }
 
-    fun checkBallAndPlatformCollision(ball: Ball, platforms: List<Platform>) {
+    private fun checkBallAndPlatformCollision(ball: Ball, platforms: List<Platform>) {
         platforms.forEach() {
-            val ballXOnPlatformX = ball.x + ball.radius >= it.x && ball.x - ball.radius <= (it.x + it.width)
+            val ballXOnPlatformX = ball.x + ball.radius >= it.x && ball.x - ball.radius <= it.x + it.width
             val ballYInPlatformY = ball.y + ball.radius == it.y
 
             if (ballXOnPlatformX && ballYInPlatformY) {

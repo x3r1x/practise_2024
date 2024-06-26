@@ -16,7 +16,6 @@ class MainActivity : Activity(), SensorHandler.SensorCallback {
     private lateinit var positionHandler: PositionHandler
     private lateinit var sensorHandler: SensorHandler
     private lateinit var gameView: GameView
-
     private val handler = Handler(Looper.getMainLooper())
 
     private val platform1 = Platform()
