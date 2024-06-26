@@ -38,6 +38,5 @@ class Platform(private val startX: Float, private val startY: Float) : Drawable 
     }
 
     override fun updatePosition(newX: Float, newY: Float) {
-
     }
 }

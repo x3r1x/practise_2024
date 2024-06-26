@@ -29,8 +29,8 @@ class Ball : Drawable {
         canvas.drawCircle(x, y, radius, borderPaint)
     }
 
-    fun updateBallPosition(deltaX: Float, deltaY: Float) {
-        x += deltaX * speed
+    override fun updatePosition(newX: Float, newY: Float) {
+        x += newX * speed
         if (!isOnPlatform) {
             y += gravity
         }
