@@ -1,27 +1,29 @@
 package com.example.mygame
 
-import android.util.Log
 import com.example.mygame.`object`.Ball
 import com.example.mygame.`object`.Platform
 
 class CollisionHandler(private val screenWidth: Float, private val screenHeight: Float) {
 
     fun checkBallCollision(ball: Ball) {
-        val beyondLeftBoundExit = ball.x - ball.radius < 0
-        val beyondRightBoundExit = ball.x + ball.radius > screenWidth
-        val beyondTopBoundExit = ball.y - ball.radius < 0
-        val beyondBottomBoundExit = ball.y + ball.radius > screenHeight
+        val ballBottom = ball.y + ball.radius
+        val ballLeft = ball.x - ball.radius
+        val ballRight = ball.x + ball.radius
+        val ballTop = ball.y - ball.radius
 
-        if (beyondLeftBoundExit) {
+        if (ballLeft < 0f) {
             ball.x = screenWidth - ball.radius
         }
-        if (beyondRightBoundExit) {
+
+        if (ballRight > screenWidth) {
             ball.x = 0f + ball.radius
         }
-        if (beyondTopBoundExit) {
+
+        if (ballTop < 0f) {
             ball.y = ball.radius
         }
-        if (beyondBottomBoundExit) {
+
+        if (ballBottom > screenHeight) {
             ball.y = 0f + ball.radius
         }
     }
@@ -30,18 +32,18 @@ class CollisionHandler(private val screenWidth: Float, private val screenHeight:
         var ballOnPlatform = false
 
         platforms.forEach() {
-            var ballXOnPlatformX = ball.x + ball.radius / 2 >= it.x && ball.x - ball.radius / 2 <= (it.x + it.width)
-            var ballYInPlatformY = ball.y + ball.radius == it.y
+            val ballXOnPlatformX = ball.x + ball.radius / 2 >= it.x && ball.x - ball.radius / 2 <= (it.x + it.width)
+            val ballYInPlatformY = ball.y + ball.radius == it.y
 
             if (ballXOnPlatformX && ballYInPlatformY) {
-                ball.isOnPlatform = true
+                ball.state = Ball.States.ON_PLATFORM_STATE
                 ballOnPlatform = true
             }
         }
 
-        if (!ballOnPlatform && ball.isOnPlatform)
+        if (!ballOnPlatform && ball.state == Ball.States.ON_PLATFORM_STATE)
         {
-            ball.isOnPlatform = false
+            ball.state = Ball.States.FALLING_STATE
         }
     }
 }

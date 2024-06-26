@@ -11,12 +11,12 @@ import com.example.mygame.`object`.Ball
 import com.example.mygame.`object`.Platform
 import com.example.mygame.view.GameView
 
-
 class MainActivity : Activity(), SensorHandler.SensorCallback {
-    private lateinit var positionHandler: PositionHandler
     private lateinit var collisionHandler: CollisionHandler
+    private lateinit var positionHandler: PositionHandler
     private lateinit var sensorHandler: SensorHandler
     private lateinit var gameView: GameView
+
     private val handler = Handler(Looper.getMainLooper())
 
     private val platform1 = Platform(100f, 150f)
@@ -49,6 +49,7 @@ class MainActivity : Activity(), SensorHandler.SensorCallback {
         // Инициализация CollisionHandler
         collisionHandler = CollisionHandler(screenWidth, screenHeight)
 
+        //Инициализация PositionHandler
         positionHandler = PositionHandler(deltaX, deltaY)
 
         // Запускаем игровой цикл
@@ -60,10 +61,12 @@ class MainActivity : Activity(), SensorHandler.SensorCallback {
             override fun run() {
                 // Проверяем столкновения с границами экрана
                 collisionHandler.checkBallCollision(ball)
+
                 collisionHandler.checkBallAndPlatformCollision(ball, platforms)
 
                 // Обновляем позицию шара
                 positionHandler.updateCords(deltaX, deltaY)
+
                 positionHandler.updatePositions(listOf(ball, platform1, platform2))
 
                 // Передаем список объектов для отрисовки в GameView
@@ -85,5 +88,3 @@ class MainActivity : Activity(), SensorHandler.SensorCallback {
         this.deltaY = deltaY
     }
 }
-
-
