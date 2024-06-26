@@ -5,11 +5,10 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.DisplayMetrics
-import android.view.WindowManager
 import android.view.WindowMetrics
 import androidx.annotation.RequiresApi
 import com.example.mygame.`object`.Ball
+import com.example.mygame.`object`.Platform
 import com.example.mygame.view.GameView
 
 
@@ -18,6 +17,12 @@ class MainActivity : Activity(), SensorHandler.SensorCallback {
     private lateinit var sensorHandler: SensorHandler
     private lateinit var gameView: GameView
     private val handler = Handler(Looper.getMainLooper())
+
+    private val platform1 = Platform(100f, 150f)
+    private val platform2 = Platform(450f, 700f)
+    private val platform3 = Platform(100f, 1300f)
+    var platforms = listOf(platform1, platform2, platform3)
+
     private val ball = Ball()
 
     @RequiresApi(Build.VERSION_CODES.R)
@@ -52,12 +57,13 @@ class MainActivity : Activity(), SensorHandler.SensorCallback {
             override fun run() {
                 // Проверяем столкновения с границами экрана
                 collisionHandler.checkBallCollision(ball)
+                collisionHandler.checkBallAndPlatformCollision(ball, platforms)
 
                 // Обновляем позицию шара
                 ball.updateBallPosition(deltaX, deltaY)
 
                 // Передаем список объектов для отрисовки в GameView
-                gameView.drawGame(listOf(ball))
+                gameView.drawGame(listOf(ball, platform1, platform2, platform3))
 
                 // Повторяем цикл с задержкой
                 handler.postDelayed(this, 16) // 60 fps (1000ms/60 ≈ 16ms)

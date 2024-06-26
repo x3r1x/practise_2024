@@ -17,7 +17,7 @@ class Ball : Drawable {
     private val borderPaint = Paint().apply {
         color = Color.BLACK
         style = Paint.Style.STROKE
-        strokeWidth = 10f
+        strokeWidth = 2f
     }
 
     var x = 0f;
