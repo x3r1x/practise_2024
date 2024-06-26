@@ -23,18 +23,13 @@ class Platform : Drawable {
 
     override fun draw(canvas: Canvas) {
         val radius = height / 2
-        val topLeftX = x + radius
+        val topLeftX = x
         val topLeftY = y
-        val bottomRightX = x + width - radius
+        val bottomRightX = x + width
         val bottomRightY = y + height
 
-        canvas.drawCircle(x + radius, y + radius, radius, borderColor)
-        canvas.drawRect(topLeftX, topLeftY, bottomRightX, bottomRightY, borderColor)
-        canvas.drawCircle(x + width - radius, y + radius, radius, borderColor)
-
-        canvas.drawCircle(x + radius, y + radius, radius, platformColor)
-        canvas.drawRect(topLeftX, topLeftY, bottomRightX, bottomRightY, platformColor)
-        canvas.drawCircle(x + width - radius, y + radius, radius, platformColor)
+        canvas.drawRoundRect(topLeftX, topLeftY, bottomRightX, bottomRightY, radius, radius, borderColor)
+        canvas.drawRoundRect(topLeftX, topLeftY, bottomRightX, bottomRightY, radius, radius, platformColor)
     }
 
     override fun setPosition(startX: Float, startY: Float) {
