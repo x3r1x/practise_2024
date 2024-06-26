@@ -7,8 +7,9 @@ import com.example.mygame.`interface`.Drawable
 
 class Ball : Drawable {
     val radius = 50f
-    private val gravity = 10f
-    private val speed = 5f
+    val gravity = 10f
+    private val speedX = 5f
+    var speedY = gravity
 
     private val ballPaint = Paint().apply {
         color = Color.RED
@@ -35,9 +36,17 @@ class Ball : Drawable {
     }
 
     override fun updatePosition(newX: Float, newY: Float) {
-        x += newX * speed
+        x += newX * speedX
         if (!isOnPlatform) {
-            y += gravity
+            y += speedY
+        }
+    }
+
+    fun updateSpeedY(additionalSpeed: Float) {
+        if (speedY + additionalSpeed >= gravity) {
+            speedY = gravity
+        } else {
+            speedY += gravity
         }
     }
 }

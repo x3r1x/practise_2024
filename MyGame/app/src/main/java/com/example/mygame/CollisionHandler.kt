@@ -30,12 +30,13 @@ class CollisionHandler(private val screenWidth: Float, private val screenHeight:
         var ballOnPlatform = false
 
         platforms.forEach() {
-            var ballXOnPlatformX = ball.x + ball.radius / 2 >= it.x && ball.x - ball.radius / 2 <= (it.x + it.width)
-            var ballYInPlatformY = ball.y + ball.radius == it.y
+            val ballXOnPlatformX = ball.x + ball.radius / 2 >= it.x && ball.x - ball.radius / 2 <= (it.x + it.width)
+            val ballYInPlatformY = ball.y + ball.radius == it.y
 
             if (ballXOnPlatformX && ballYInPlatformY) {
                 ball.isOnPlatform = true
                 ballOnPlatform = true
+                ball.speedY = -120f
             }
         }
 
