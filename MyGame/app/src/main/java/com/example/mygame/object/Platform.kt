@@ -36,4 +36,8 @@ class Platform(private val startX: Float, private val startY: Float) : Drawable 
         canvas.drawRect(topLeftX, topLeftY, bottomRightX, bottomRightY, platformColor)
         canvas.drawCircle(x + width - radius, y + radius, radius, platformColor)
     }
+
+    override fun updatePosition(newX: Float, newY: Float) {
+
+    }
 }
