@@ -72,9 +72,6 @@ class MainActivity : Activity(), SensorHandler.SensorCallback {
                 positionHandler.updateCords(deltaX, deltaY)
 
                 positionHandler.updatePositions(listOf(ball, platform1, platform2))
-                if (ball.speedY != ball.gravity) {
-                    ball.updateSpeedY(ball.gravity)
-                }
 
                 // Передаем список объектов для отрисовки в GameView
                 gameView.drawGame(listOf(ball, platform1, platform2, platform3))

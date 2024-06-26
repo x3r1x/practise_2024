@@ -29,22 +29,14 @@ class CollisionHandler(private val screenWidth: Float, private val screenHeight:
     }
 
     fun checkBallAndPlatformCollision(ball: Ball, platforms: List<Platform>) {
-        var ballOnPlatform = false
-
         platforms.forEach() {
             val ballXOnPlatformX = ball.x + ball.radius / 2 >= it.x && ball.x - ball.radius / 2 <= (it.x + it.width)
             val ballYInPlatformY = ball.y + ball.radius == it.y
 
             if (ballXOnPlatformX && ballYInPlatformY) {
-                ball.state = Ball.States.ON_PLATFORM_STATE
-                ballOnPlatform = true
+                ball.state = Ball.States.JUMP_STATE
                 ball.speedY = -120f
             }
-        }
-
-        if (!ballOnPlatform && ball.state == Ball.States.ON_PLATFORM_STATE)
-        {
-            ball.state = Ball.States.FALLING_STATE
         }
     }
 }

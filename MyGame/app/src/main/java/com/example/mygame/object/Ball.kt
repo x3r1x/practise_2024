@@ -12,9 +12,10 @@ class Ball : Drawable {
         FALLING_STATE(2)
     }
 
-    private val gravity = 10f
+    val gravity = 10f
 
-    private val speed = 5f
+    private val speedX = 3f
+    var speedY = gravity
 
     private val ballPaint = Paint().apply {
         color = Color.RED
@@ -45,13 +46,18 @@ class Ball : Drawable {
 
     override fun updatePosition(newX: Float, newY: Float) {
         x += newX * speedX
-        if (!isOnPlatform) {
-            y += speedY
+        y += speedY
+
+        if (state == States.JUMP_STATE) {
+            updateSpeedY()
+            if (speedY > 0) {
+                state = States.FALLING_STATE
+            }
         }
     }
 
-    fun updateSpeedY(additionalSpeed: Float) {
-        if (speedY + additionalSpeed >= gravity) {
+    private fun updateSpeedY() {
+        if (speedY > 0) {
             speedY = gravity
         } else {
             speedY += gravity
