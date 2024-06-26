@@ -22,8 +22,7 @@ class MainActivity : Activity(), SensorHandler.SensorCallback {
     private val platform1 = Platform()
     private val platform2 = Platform()
     private val platform3 = Platform()
-    val platforms = listOf(platform1, platform2, platform3)
-
+    private val platforms = listOf(platform1, platform2, platform3)
 
     private val ball = Ball()
 
@@ -63,15 +62,14 @@ class MainActivity : Activity(), SensorHandler.SensorCallback {
     private fun startGameLoop() {
         handler.post(object : Runnable {
             override fun run() {
-                // Проверяем столкновения с границами экрана
-                collisionHandler.checkBallCollision(ball)
 
-                collisionHandler.checkBallAndPlatformCollision(ball, platforms)
+                // Проверяем коллизий
+                collisionHandler.checkCollisions(ball, platforms)
 
                 // Обновляем позицию шара
-                positionHandler.updateCords(deltaX, deltaY)
+                positionHandler.updateCoords(deltaX, deltaY)
 
-                positionHandler.updatePositions(listOf(ball, platform1, platform2))
+                positionHandler.updatePositions(listOf(ball) + platforms)
 
                 // Передаем список объектов для отрисовки в GameView
                 gameView.drawGame(listOf(ball, platform1, platform2, platform3))

@@ -7,7 +7,7 @@ class PositionHandler(newX: Float, newY: Float) {
     var x = newX
     var y = newY
 
-    fun updateCords(newX: Float, newY: Float) {
+    fun updateCoords(newX: Float, newY: Float) {
         x = newX
         y = newY
     }

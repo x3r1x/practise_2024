@@ -39,4 +39,9 @@ class CollisionHandler(private val screenWidth: Float, private val screenHeight:
             }
         }
     }
+
+    fun checkCollisions(ball: Ball, platforms: List<Platform>) {
+        checkBallCollision((ball))
+        checkBallAndPlatformCollision(ball, platforms)
+    }
 }
