@@ -8,7 +8,6 @@ import com.example.mygame.`interface`.Drawable
 class Ball : Drawable {
     enum class States(val value: Int) {
         JUMP_STATE(1),
-        ON_PLATFORM_STATE(0),
         FALLING_STATE(2)
     }
 
@@ -50,8 +49,9 @@ class Ball : Drawable {
 
         if (state == States.JUMP_STATE) {
             updateSpeedY()
-            if (speedY > 0) {
+            if (speedY >= 0) {
                 state = States.FALLING_STATE
+                speedY = gravity
             }
         }
     }
