@@ -20,44 +20,19 @@ class Ball : Drawable {
         strokeWidth = 10f
     }
 
-    var ballX = 0f;
-    var ballY = 0f;
+    var x = 0f;
+    var y = 0f;
+    var isOnPlatform = false
 
     override fun draw(canvas: Canvas) {
-        canvas.drawCircle(ballX, ballY, radius, ballPaint)
-        canvas.drawCircle(ballX, ballY, radius, borderPaint)
+        canvas.drawCircle(x, y, radius, ballPaint)
+        canvas.drawCircle(x, y, radius, borderPaint)
     }
 
     fun updateBallPosition(deltaX: Float, deltaY: Float) {
-        ballX += deltaX * speed
-        ballY += gravity
-
-//        if (ballX < 0f) {
-//            //левая границы
-//            ballX = width.toFloat() - ballRadius
-//        }
-//
-//        if (ballX + ballRadius > width.toFloat()) {
-//            //правая граница
-//            ballX = 0f
-//        }
-//
-//        if (ballY + ballRadius < 0f) {
-//            //верхняя граница
-//            ballY = height.toFloat() - ballRadius
-//        }
-//
-//        if (ballY + ballRadius > height.toFloat()) {
-//            //нижняя граница
-//            ballY = 0f
-//        }
-//
-//        invalidate()
+        x += deltaX * speed
+        if (!isOnPlatform) {
+            y += gravity
+        }
     }
-//    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
-//        super.onSizeChanged(w, h, oldw, oldh)
-//        // Устанавливаем начальную позицию шара
-//        ballX = w / 2f
-//        ballY = ballRadius
-//    }
 }

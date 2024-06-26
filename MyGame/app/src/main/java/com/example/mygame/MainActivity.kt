@@ -5,10 +5,13 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.DisplayMetrics
+import android.view.WindowManager
 import android.view.WindowMetrics
 import androidx.annotation.RequiresApi
 import com.example.mygame.`object`.Ball
 import com.example.mygame.view.GameView
+
 
 class MainActivity : Activity(), SensorHandler.SensorCallback {
     private lateinit var collisionHandler: CollisionHandler
@@ -37,9 +40,6 @@ class MainActivity : Activity(), SensorHandler.SensorCallback {
         // Инициализация CollisionHandler
         collisionHandler = CollisionHandler(screenWidth, screenHeight)
 
-        // Устанавливаем начальные параметры для Ball
-        ball.updateBallPosition(0f, 0f)
-
         // Запускаем игровой цикл
         startGameLoop()
     }
@@ -51,7 +51,7 @@ class MainActivity : Activity(), SensorHandler.SensorCallback {
         handler.post(object : Runnable {
             override fun run() {
                 // Проверяем столкновения с границами экрана
-                collisionHandler.checkCollision(ball)
+                collisionHandler.checkBallCollision(ball)
 
                 // Обновляем позицию шара
                 ball.updateBallPosition(deltaX, deltaY)
