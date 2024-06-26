@@ -37,9 +37,6 @@ class MainActivity : Activity(), SensorHandler.SensorCallback {
         // Инициализация CollisionHandler
         collisionHandler = CollisionHandler(screenWidth, screenHeight)
 
-        // Устанавливаем начальные параметры для Ball
-        ball.updateBallPosition(0f, 0f)
-
         // Запускаем игровой цикл
         startGameLoop()
     }

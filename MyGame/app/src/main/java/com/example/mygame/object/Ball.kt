@@ -20,17 +20,17 @@ class Ball : Drawable {
         strokeWidth = 10f
     }
 
-    var ballX = 0f;
-    var ballY = 0f;
+    var x = 0f;
+    var y = 0f;
 
     override fun draw(canvas: Canvas) {
-        canvas.drawCircle(ballX, ballY, radius, ballPaint)
-        canvas.drawCircle(ballX, ballY, radius, borderPaint)
+        canvas.drawCircle(x, y, radius, ballPaint)
+        canvas.drawCircle(x, y, radius, borderPaint)
     }
 
     fun updateBallPosition(deltaX: Float, deltaY: Float) {
-        ballX += deltaX * speed
-        ballY += gravity
+        x += deltaX * speed
+        y += gravity
 
 //        if (ballX < 0f) {
 //            //левая границы
