@@ -5,9 +5,9 @@ import android.graphics.Color
 import android.graphics.Paint
 import com.example.mygame.`interface`.Drawable
 
-class Platform(private val x: Float, private val y: Float) : Drawable {
-    val startX = x
-    val startY = y
+class Platform(private val startX: Float, private val startY: Float) : Drawable {
+    val x = startX
+    val y = startY
     val width = 220f
     val height = 45f
 
@@ -23,18 +23,18 @@ class Platform(private val x: Float, private val y: Float) : Drawable {
 
     override fun draw(canvas: Canvas) {
         val radius = height / 2
-        val topLeftX = startX + radius
-        val topLeftY = startY
-        val bottomRightX = startX + width - radius
-        val bottomRightY = startY + height
+        val topLeftX = x + radius
+        val topLeftY = y
+        val bottomRightX = x + width - radius
+        val bottomRightY = y + height
 
-        canvas.drawCircle(startX + radius, startY + radius, radius, borderColor)
+        canvas.drawCircle(x + radius, y + radius, radius, borderColor)
         canvas.drawRect(topLeftX, topLeftY, bottomRightX, bottomRightY, borderColor)
-        canvas.drawCircle(startX + width - radius, startY + radius, radius, borderColor)
+        canvas.drawCircle(x + width - radius, y + radius, radius, borderColor)
 
-        canvas.drawCircle(startX + radius, startY + radius, radius, platformColor)
+        canvas.drawCircle(x + radius, y + radius, radius, platformColor)
         canvas.drawRect(topLeftX, topLeftY, bottomRightX, bottomRightY, platformColor)
-        canvas.drawCircle(startX + width - radius, startY + radius, radius, platformColor)
+        canvas.drawCircle(x + width - radius, y + radius, radius, platformColor)
     }
 
     override fun updatePosition(newX: Float, newY: Float) {
