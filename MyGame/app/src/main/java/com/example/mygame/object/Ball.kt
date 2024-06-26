@@ -29,6 +29,11 @@ class Ball : Drawable {
         canvas.drawCircle(x, y, radius, borderPaint)
     }
 
+    override fun setPosition(startX: Float, startY: Float) {
+        x = startX
+        y = startY
+    }
+
     override fun updatePosition(newX: Float, newY: Float) {
         x += newX * speed
         if (!isOnPlatform) {

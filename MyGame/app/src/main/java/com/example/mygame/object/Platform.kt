@@ -5,9 +5,9 @@ import android.graphics.Color
 import android.graphics.Paint
 import com.example.mygame.`interface`.Drawable
 
-class Platform(private val startX: Float, private val startY: Float) : Drawable {
-    val x = startX
-    val y = startY
+class Platform : Drawable {
+    var x = 0f
+    var y = 0f
     val width = 220f
     val height = 45f
 
@@ -35,6 +35,11 @@ class Platform(private val startX: Float, private val startY: Float) : Drawable 
         canvas.drawCircle(x + radius, y + radius, radius, platformColor)
         canvas.drawRect(topLeftX, topLeftY, bottomRightX, bottomRightY, platformColor)
         canvas.drawCircle(x + width - radius, y + radius, radius, platformColor)
+    }
+
+    override fun setPosition(startX: Float, startY: Float) {
+        x = startX
+        y = startY
     }
 
     override fun updatePosition(newX: Float, newY: Float) {

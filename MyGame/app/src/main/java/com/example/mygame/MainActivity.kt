@@ -19,10 +19,11 @@ class MainActivity : Activity(), SensorHandler.SensorCallback {
     private lateinit var gameView: GameView
     private val handler = Handler(Looper.getMainLooper())
 
-    private val platform1 = Platform(100f, 150f)
-    private val platform2 = Platform(450f, 700f)
-    private val platform3 = Platform(100f, 1300f)
-    var platforms = listOf(platform1, platform2, platform3)
+    private val platform1 = Platform()
+    private val platform2 = Platform()
+    private val platform3 = Platform()
+    val platforms = listOf(platform1, platform2, platform3)
+
 
     private val ball = Ball()
 
@@ -38,6 +39,9 @@ class MainActivity : Activity(), SensorHandler.SensorCallback {
         val bounds = windowMetrics.bounds
         val screenWidth = bounds.width().toFloat()
         val screenHeight = bounds.height().toFloat()
+        platform1.setPosition(100f, 250f)
+        platform2.setPosition(600f, 750f)
+        platform3.setPosition(200f, 1250f)
 
         // Инициализация gameView и установка контента
         gameView = GameView(this, null)
