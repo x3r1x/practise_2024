@@ -12,10 +12,14 @@ import com.example.mygame.view.GameView
 
 class MainActivity : Activity(), SensorHandler.SensorCallback {
     private lateinit var collisionHandler: CollisionHandler
+    private lateinit var positionHandler: PositionHandler
     private lateinit var sensorHandler: SensorHandler
     private lateinit var gameView: GameView
     private val handler = Handler(Looper.getMainLooper())
     private val ball = Ball()
+
+    private var deltaX = 0f
+    private var deltaY = 0f
 
     @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,18 +35,21 @@ class MainActivity : Activity(), SensorHandler.SensorCallback {
         gameView = GameView(this, null)
         setContentView(gameView)
 
+        //начальные позиции объектов
+        ball.setPosition(screenWidth/2, ball.radius)
+
         // Инициализация SensorHandler
         sensorHandler = SensorHandler(this, this)
 
         // Инициализация CollisionHandler
         collisionHandler = CollisionHandler(screenWidth, screenHeight)
 
+        //Инициализация PositionHandler
+        positionHandler = PositionHandler(this.deltaX, this.deltaY)
+
         // Запускаем игровой цикл
         startGameLoop()
     }
-
-    private var deltaX = 0f
-    private var deltaY = 0f
 
     private fun startGameLoop() {
         handler.post(object : Runnable {
@@ -50,8 +57,9 @@ class MainActivity : Activity(), SensorHandler.SensorCallback {
                 // Проверяем столкновения с границами экрана
                 collisionHandler.checkCollision(ball)
 
-                // Обновляем позицию шара
-                ball.updateBallPosition(deltaX, deltaY)
+                // Передаём список объектов для обновления позиции в PositionHandler
+                positionHandler.updateCords(deltaX, deltaY)
+                positionHandler.updatePositions(listOf(ball))
 
                 // Передаем список объектов для отрисовки в GameView
                 gameView.drawGame(listOf(ball))
