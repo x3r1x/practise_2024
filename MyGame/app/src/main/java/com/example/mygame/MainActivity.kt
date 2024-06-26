@@ -12,6 +12,7 @@ import com.example.mygame.`object`.Platform
 import com.example.mygame.view.GameView
 
 class MainActivity : Activity(), SensorHandler.SensorCallback {
+    private lateinit var positionHandler: PositionHandler
     private lateinit var collisionHandler: CollisionHandler
     private lateinit var sensorHandler: SensorHandler
     private lateinit var gameView: GameView
@@ -19,6 +20,9 @@ class MainActivity : Activity(), SensorHandler.SensorCallback {
     private val ball = Ball()
     private val platform1 = Platform(100f, 150f)
     private val platform2 = Platform(450f, 700f)
+
+    private var deltaX = 0f
+    private var deltaY = 0f
 
     @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,12 +44,11 @@ class MainActivity : Activity(), SensorHandler.SensorCallback {
         // Инициализация CollisionHandler
         collisionHandler = CollisionHandler(screenWidth, screenHeight)
 
+        positionHandler = PositionHandler(deltaX, deltaY)
+
         // Запускаем игровой цикл
         startGameLoop()
     }
-
-    private var deltaX = 0f
-    private var deltaY = 0f
 
     private fun startGameLoop() {
         handler.post(object : Runnable {
@@ -54,7 +57,8 @@ class MainActivity : Activity(), SensorHandler.SensorCallback {
                 collisionHandler.checkCollision(ball)
 
                 // Обновляем позицию шара
-                ball.updateBallPosition(deltaX, deltaY)
+                positionHandler.updateCords(deltaX, deltaY)
+                positionHandler.updatePositions(listOf(ball, platform1, platform2))
 
                 // Передаем список объектов для отрисовки в GameView
                 gameView.drawGame(listOf(ball, platform1, platform2))
