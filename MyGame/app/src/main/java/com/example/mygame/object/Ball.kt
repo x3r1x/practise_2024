@@ -28,36 +28,8 @@ class Ball : Drawable {
         canvas.drawCircle(x, y, radius, borderPaint)
     }
 
-    fun updateBallPosition(deltaX: Float, deltaY: Float) {
-        x += deltaX * speed
+    override fun updatePosition(newX: Float, newY: Float) {
+        x += newX * speed
         y += gravity
-
-//        if (ballX < 0f) {
-//            //левая границы
-//            ballX = width.toFloat() - ballRadius
-//        }
-//
-//        if (ballX + ballRadius > width.toFloat()) {
-//            //правая граница
-//            ballX = 0f
-//        }
-//
-//        if (ballY + ballRadius < 0f) {
-//            //верхняя граница
-//            ballY = height.toFloat() - ballRadius
-//        }
-//
-//        if (ballY + ballRadius > height.toFloat()) {
-//            //нижняя граница
-//            ballY = 0f
-//        }
-//
-//        invalidate()
     }
-//    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
-//        super.onSizeChanged(w, h, oldw, oldh)
-//        // Устанавливаем начальную позицию шара
-//        ballX = w / 2f
-//        ballY = ballRadius
-//    }
 }
