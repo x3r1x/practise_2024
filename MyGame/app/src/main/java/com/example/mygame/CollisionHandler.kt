@@ -35,7 +35,7 @@ class CollisionHandler(private val screenWidth: Float, private val screenHeight:
 
             if (ballXOnPlatformX && ballYInPlatformY) {
                 ball.state = Ball.States.JUMP_STATE
-                ball.speedY = -120f
+                ball.speedY = -125f
             }
         }
     }
