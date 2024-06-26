@@ -62,17 +62,16 @@ class MainActivity : Activity(), SensorHandler.SensorCallback {
     private fun startGameLoop() {
         handler.post(object : Runnable {
             override fun run() {
-
-                // Проверяем коллизии
-                collisionHandler.checkCollisions(ball, platforms)
-
                 // Обновляем позицию шара
                 positionHandler.updateCoords(deltaX, deltaY)
 
                 positionHandler.updatePositions(listOf(ball) + platforms)
 
+                // Проверяем коллизии
+                collisionHandler.checkCollisions(ball, platforms)
+
                 // Передаем список объектов для отрисовки в GameView
-                gameView.drawGame(listOf(ball, platform1, platform2, platform3))
+                gameView.drawGame(listOf(platform1, platform2, platform3, ball))
 
                 // Повторяем цикл с задержкой
                 handler.postDelayed(this, 16) // 60 fps (1000ms/60 ≈ 16ms)
