@@ -7,8 +7,8 @@ class CollisionHandler(private val screenWidth: Float, private val screenHeight:
 
     private fun checkBallCollision(ball: Ball) {
         val ballBottom = ball.y + ball.radius
-        val ballLeft = ball.x - ball.radius
-        val ballRight = ball.x + ball.radius
+        val ballLeft = ball.x
+        val ballRight = ball.x
         val ballTop = ball.y - ball.radius
 
         if (ballLeft < 0f) {

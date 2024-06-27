@@ -25,8 +25,8 @@ class GameViewModel(application: Application) : AndroidViewModel(application), S
     private lateinit var collisionHandler: CollisionHandler
     lateinit var sensorHandler: SensorHandler
 
-    var deltaX = 0f
-    var deltaY = 0f
+    private var deltaX = 0f
+    private var deltaY = 0f
 
     fun initialize(screenWidth: Float, screenHeight: Float) {
         collisionHandler = CollisionHandler(screenWidth, screenHeight)
@@ -34,7 +34,7 @@ class GameViewModel(application: Application) : AndroidViewModel(application), S
         startGameLoop()
     }
 
-    private fun startGameLoop() {
+    fun startGameLoop() {
         uiScope.launch {
             while (true) {
                 delay(16) // 60 FPS
@@ -43,7 +43,7 @@ class GameViewModel(application: Application) : AndroidViewModel(application), S
         }
     }
 
-    fun updateDelta(deltaX: Float, deltaY: Float) {
+    private fun updateDelta(deltaX: Float, deltaY: Float) {
         this.deltaX = deltaX
         this.deltaY = deltaY
     }
@@ -61,7 +61,6 @@ class GameViewModel(application: Application) : AndroidViewModel(application), S
     }
 
     override fun onSensorDataChanged(deltaX: Float, deltaY: Float) {
-        this.deltaX = deltaX
-        this.deltaY = deltaY
+        updateDelta(deltaX, deltaY)
     }
 }

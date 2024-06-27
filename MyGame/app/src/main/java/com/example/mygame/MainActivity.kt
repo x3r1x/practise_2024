@@ -3,8 +3,6 @@ package com.example.mygame
 import GameViewModel
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.WindowMetrics
 import androidx.activity.ComponentActivity
 import androidx.activity.viewModels
@@ -43,15 +41,7 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun startGameLoop() {
-        Handler(Looper.getMainLooper()).post(object : Runnable {
-            override fun run() {
-                // Передаем обновленные данные для ViewModel
-                gameViewModel.updateDelta(gameViewModel.deltaX, gameViewModel.deltaY)
-
-                // Повторяем цикл с задержкой
-                Handler(Looper.getMainLooper()).postDelayed(this, 16) // 60 fps (1000ms/60 ≈ 16ms)
-            }
-        })
+        gameViewModel.startGameLoop()
     }
 
     override fun onPause() {
