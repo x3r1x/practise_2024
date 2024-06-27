@@ -4,6 +4,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import com.example.mygame.`interface`.Drawable
+import kotlin.math.sqrt
 
 class Ball : Drawable {
     enum class DirectionY(val value: Int) {
@@ -11,10 +12,11 @@ class Ball : Drawable {
         DOWN(1)
     }
 
-    val gravity = 10f
+    val gravity = 7.5f
     val radius = 50f
-    val jumpSpeed = 100f
-    val maxJumpHeight = 500f // Максимальная высота прыжка
+    val maxJumpHeight = 600f // Максимальная высота прыжка
+    val jumpTime = 1.5f
+    val jumpSpeed = sqrt(gravity * (2 * maxJumpHeight - gravity))
 
     var x = 0f
     var y = 0f
