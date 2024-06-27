@@ -46,21 +46,16 @@ class Ball : Drawable {
     override fun updatePosition(newX: Float, newY: Float) {
         x += newX * speedX
         y += speedY
-
-        if (state == States.JUMP_STATE) {
-            updateSpeedY()
-            if (speedY >= 0) {
-                state = States.FALLING_STATE
-                speedY = gravity
-            }
-        }
+        updateSpeedY()
     }
 
-    private fun updateSpeedY() {
+    fun updateSpeedY() {
         if (speedY > 0) {
             speedY = gravity
+            state = States.FALLING_STATE
         } else {
             speedY += gravity
+            state = States.FALLING_STATE
         }
     }
 }
