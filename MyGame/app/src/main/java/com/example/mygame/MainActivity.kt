@@ -41,6 +41,8 @@ class MainActivity : Activity(), SensorHandler.SensorCallback {
         platform2.setPosition(600f, 1150f)
         platform3.setPosition(200f, 1650f)
 
+        ball.setPosition(500f, 500f)
+
         // Инициализация gameView и установка контента
         gameView = GameView(this, null)
         setContentView(gameView)

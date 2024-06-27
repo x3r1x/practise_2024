@@ -6,15 +6,17 @@ import android.graphics.Paint
 import com.example.mygame.`interface`.Drawable
 
 class Ball : Drawable {
-    enum class States(val value: Int) {
-        JUMP_STATE(1),
-        FALLING_STATE(2)
+    enum class DirectionY(val value: Int) {
+        UP(-1),
+        DOWN(1)
     }
 
     val gravity = 10f
+    val maxJumpHeight = 550f // Максимальная высота прыжка
 
     private val speedX = 3f
     var speedY = gravity
+    var directionY = DirectionY.DOWN
 
     private val ballPaint = Paint().apply {
         color = Color.RED
@@ -28,10 +30,9 @@ class Ball : Drawable {
 
     val radius = 50f
 
-    var x = 0f;
-    var y = 0f;
-
-    var state = States.FALLING_STATE
+    var x = 0f
+    var y = 0f
+    var initialY = 0f // Начальная позиция по оси Y для отслеживания высоты прыжка
 
     override fun draw(canvas: Canvas) {
         canvas.drawCircle(x, y, radius, ballPaint)
@@ -41,21 +42,27 @@ class Ball : Drawable {
     override fun setPosition(startX: Float, startY: Float) {
         x = startX
         y = startY
+        initialY = startY // Устанавливаем начальную позицию по Y
     }
 
     override fun updatePosition(newX: Float, newY: Float) {
         x += newX * speedX
-        y += speedY
+        y += speedY * directionY.value
         updateSpeedY()
     }
 
     private fun updateSpeedY() {
-        if (speedY > 0) {
-            speedY = gravity
-            state = States.FALLING_STATE
-        } else if (!(speedY == 0f && state == States.FALLING_STATE)) {
-            speedY += gravity
-            state = States.JUMP_STATE
+        when (directionY) {
+            DirectionY.UP -> {
+                speedY -= gravity
+                if (initialY - y >= maxJumpHeight) {
+                    directionY = DirectionY.DOWN
+                    speedY = gravity
+                }
+            }
+            DirectionY.DOWN -> {
+                speedY = gravity
+            }
         }
     }
 }
