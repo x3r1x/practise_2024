@@ -7,20 +7,14 @@ import android.os.Handler
 import android.os.Looper
 import android.view.WindowMetrics
 import androidx.activity.ComponentActivity
-import androidx.annotation.RequiresApi
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.Observer
 import com.example.mygame.view.GameView
 
-class MainActivity : ComponentActivity(), SensorHandler.SensorCallback {
-    private lateinit var sensorHandler: SensorHandler
+class MainActivity : ComponentActivity() {
     private lateinit var gameView: GameView
-    private val handler = Handler(Looper.getMainLooper())
-
     private val gameViewModel: GameViewModel by viewModels()
-
-    private var deltaX = 0f
-    private var deltaY = 0f
 
     @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,9 +30,6 @@ class MainActivity : ComponentActivity(), SensorHandler.SensorCallback {
         gameView = GameView(this, null)
         setContentView(gameView)
 
-        // Инициализация SensorHandler
-        sensorHandler = SensorHandler(this, this)
-
         // Инициализация GameViewModel
         gameViewModel.initialize(screenWidth, screenHeight)
 
@@ -52,24 +43,18 @@ class MainActivity : ComponentActivity(), SensorHandler.SensorCallback {
     }
 
     private fun startGameLoop() {
-        handler.post(object : Runnable {
+        Handler(Looper.getMainLooper()).post(object : Runnable {
             override fun run() {
                 // Передаем обновленные данные для ViewModel
-                gameViewModel.updateDelta(deltaX, deltaY)
+                gameViewModel.updateDelta(gameViewModel.deltaX, gameViewModel.deltaY)
 
                 // Повторяем цикл с задержкой
-                handler.postDelayed(this, 16) // 60 fps (1000ms/60 ≈ 16ms)
+                Handler(Looper.getMainLooper()).postDelayed(this, 16) // 60 fps (1000ms/60 ≈ 16ms)
             }
         })
     }
 
     override fun onPause() {
         super.onPause()
-        sensorHandler.unregister()
-    }
-
-    override fun onSensorDataChanged(deltaX: Float, deltaY: Float) {
-        this.deltaX = deltaX
-        this.deltaY = deltaY
     }
 }

@@ -1,13 +1,15 @@
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.example.mygame.CollisionHandler
+import com.example.mygame.SensorHandler
 import com.example.mygame.`interface`.Drawable
 import com.example.mygame.`object`.Ball
 import com.example.mygame.`object`.Platform
 import kotlinx.coroutines.*
 
-class GameViewModel : ViewModel() {
+class GameViewModel(application: Application) : AndroidViewModel(application), SensorHandler.SensorCallback {
     private val _gameObjects = MutableLiveData<List<Drawable>>()
     val gameObjects: LiveData<List<Drawable>> get() = _gameObjects
 
@@ -21,12 +23,14 @@ class GameViewModel : ViewModel() {
     private val platforms = listOf(platform1, platform2, platform3)
 
     private lateinit var collisionHandler: CollisionHandler
+    lateinit var sensorHandler: SensorHandler
 
-    private var deltaX = 0f
-    private var deltaY = 0f
+    var deltaX = 0f
+    var deltaY = 0f
 
     fun initialize(screenWidth: Float, screenHeight: Float) {
         collisionHandler = CollisionHandler(screenWidth, screenHeight)
+        sensorHandler = SensorHandler(getApplication(), this)
         startGameLoop()
     }
 
@@ -45,13 +49,19 @@ class GameViewModel : ViewModel() {
     }
 
     private fun updateGame() {
-        ball.updatePosition(deltaX, deltaY)
         collisionHandler.checkCollisions(ball, platforms)
+        ball.updatePosition(deltaX, deltaY)
         _gameObjects.value = listOf(ball) + platforms
     }
 
     override fun onCleared() {
         super.onCleared()
         viewModelJob.cancel()
+        sensorHandler.unregister()
+    }
+
+    override fun onSensorDataChanged(deltaX: Float, deltaY: Float) {
+        this.deltaX = deltaX
+        this.deltaY = deltaY
     }
 }
