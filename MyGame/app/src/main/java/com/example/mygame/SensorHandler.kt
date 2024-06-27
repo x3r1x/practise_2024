@@ -35,6 +35,10 @@ class SensorHandler(context: Context, private val callback: SensorCallback) : Se
         // No need to handle accuracy changes for this example
     }
 
+    fun register() {
+        sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_GAME)
+    }
+
     fun unregister() {
         sensorManager.unregisterListener(this)
     }

@@ -23,7 +23,7 @@ class GameViewModel(application: Application) : AndroidViewModel(application), S
     private val platforms = listOf(platform1, platform2, platform3)
 
     private lateinit var collisionHandler: CollisionHandler
-    lateinit var sensorHandler: SensorHandler
+    private lateinit var sensorHandler: SensorHandler
 
     private var deltaX = 0f
     private var deltaY = 0f
@@ -62,5 +62,13 @@ class GameViewModel(application: Application) : AndroidViewModel(application), S
 
     override fun onSensorDataChanged(deltaX: Float, deltaY: Float) {
         updateDelta(deltaX, deltaY)
+    }
+
+    fun registerSensorHandler() {
+        sensorHandler.register()
+    }
+
+    fun unregisterSensorHandler() {
+        sensorHandler.unregister()
     }
 }

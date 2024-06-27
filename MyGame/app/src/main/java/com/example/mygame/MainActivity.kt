@@ -37,14 +37,16 @@ class MainActivity : ComponentActivity() {
         })
 
         // Запускаем игровой цикл через ViewModel
-        startGameLoop()
+        gameViewModel.startGameLoop()
     }
 
-    private fun startGameLoop() {
-        gameViewModel.startGameLoop()
+    override fun onResume() {
+        super.onResume()
+        gameViewModel.registerSensorHandler()
     }
 
     override fun onPause() {
         super.onPause()
+        gameViewModel.unregisterSensorHandler()
     }
 }
