@@ -35,18 +35,42 @@ class GameViewModel(application: Application) : AndroidViewModel(application), S
     }
 
     fun startGameLoop() {
+        val frameRate = 1000 / 60 //~16ms = 60 FPS
         uiScope.launch {
             while (true) {
-                delay(16) // 60 FPS
+                val startTime = System.currentTimeMillis()
+
                 updateGame()
+
+                println("Frame at: $startTime")
+                countFrame()
+
+                val elapsedTime = System.currentTimeMillis() - startTime
+                val delayTime = frameRate - elapsedTime
+                if(delayTime > 0) {
+                    delay(delayTime)
+                }
             }
         }
     }
 
-    private fun updateDelta(deltaX: Float, deltaY: Float) {
-        this.deltaX = deltaX
-        this.deltaY = deltaY
+    private var frameCount = 0
+    private var startTime = System.currentTimeMillis()
+
+    fun countFrame() {
+        frameCount++
+        val currentTime = System.currentTimeMillis()
+        val elapsedTime = currentTime - startTime
+
+        if (elapsedTime >= 1000) {
+            val fps = frameCount * 1000 / elapsedTime
+            println("FPS: $fps")
+
+            frameCount = 0
+            startTime = currentTime
+        }
     }
+
 
     private fun updateGame() {
         collisionHandler.checkCollisions(ball, platforms)
@@ -61,7 +85,8 @@ class GameViewModel(application: Application) : AndroidViewModel(application), S
     }
 
     override fun onSensorDataChanged(deltaX: Float, deltaY: Float) {
-        updateDelta(deltaX, deltaY)
+        this.deltaX = deltaX
+        this.deltaY = deltaY
     }
 
     fun registerSensorHandler() {
