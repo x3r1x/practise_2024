@@ -5,7 +5,7 @@ import android.graphics.Color
 import android.graphics.Paint
 import com.example.mygame.`interface`.Drawable
 
-class Platform : Drawable {
+class Platform() : Drawable {
     var x = 0f
     var y = 0f
     val width = 220f
