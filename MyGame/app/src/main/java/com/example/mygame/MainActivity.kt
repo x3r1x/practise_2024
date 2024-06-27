@@ -37,7 +37,7 @@ class MainActivity : Activity(), SensorHandler.SensorCallback {
         val bounds = windowMetrics.bounds
         val screenWidth = bounds.width().toFloat()
         val screenHeight = bounds.height().toFloat()
-        platform1.setPosition(100f, 250f)
+        platform1.setPosition(100f, 450f)
         platform2.setPosition(600f, 750f)
         platform3.setPosition(200f, 1250f)
 

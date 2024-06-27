@@ -49,13 +49,13 @@ class Ball : Drawable {
         updateSpeedY()
     }
 
-    fun updateSpeedY() {
+    private fun updateSpeedY() {
         if (speedY > 0) {
             speedY = gravity
             state = States.FALLING_STATE
         } else {
             speedY += gravity
-            state = States.FALLING_STATE
+            state = States.JUMP_STATE
         }
     }
 }
