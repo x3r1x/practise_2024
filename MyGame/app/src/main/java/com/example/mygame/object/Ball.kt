@@ -12,9 +12,13 @@ class Ball : Drawable {
     }
 
     val gravity = 10f
-    val maxJumpHeight = 550f // Максимальная высота прыжка
+    val radius = 50f
+    val jumpSpeed = 100f
+    val maxJumpHeight = 500f // Максимальная высота прыжка
 
-    private val speedX = 3f
+    var x = 0f
+    var y = 0f
+    var initialY = 0f
     var speedY = gravity
     var directionY = DirectionY.DOWN
 
@@ -28,11 +32,7 @@ class Ball : Drawable {
         strokeWidth = 2f
     }
 
-    val radius = 50f
-
-    var x = 0f
-    var y = 0f
-    var initialY = 0f // Начальная позиция по оси Y для отслеживания высоты прыжка
+    private val speedX = 4f
 
     override fun draw(canvas: Canvas) {
         canvas.drawCircle(x, y, radius, ballPaint)

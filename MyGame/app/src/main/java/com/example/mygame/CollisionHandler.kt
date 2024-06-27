@@ -24,9 +24,7 @@ class CollisionHandler(private val screenWidth: Float, private val screenHeight:
         }
 
         if (ballBottom > screenHeight) {
-            ball.y = screenHeight - ball.radius
-            ball.speedY = 0f
-            ball.directionY = Ball.DirectionY.UP
+            ball.y = 0f + ball.radius
             ball.initialY = ball.y // Обновляем начальную позицию при столкновении с нижней границей экрана
         }
     }
@@ -37,9 +35,9 @@ class CollisionHandler(private val screenWidth: Float, private val screenHeight:
             val ballYInPlatformY = ball.y + ball.radius >= it.y && ball.y - ball.radius <= it.y + it.height
 
             if (ballXOnPlatformX && ballYInPlatformY) {
-                ball.speedY = 125f
+                ball.speedY = ball.jumpSpeed
                 ball.directionY = Ball.DirectionY.UP
-                ball.initialY = ball.y // Устанавливаем начальную позицию при столкновении с платформой
+                ball.initialY = ball.y
             }
         }
     }

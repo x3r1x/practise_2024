@@ -1,29 +1,23 @@
 package com.example.mygame
 
-import android.app.Activity
+import GameViewModel
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.WindowMetrics
+import androidx.activity.ComponentActivity
 import androidx.annotation.RequiresApi
-import com.example.mygame.`object`.Ball
-import com.example.mygame.`object`.Platform
+import androidx.activity.viewModels
+import androidx.lifecycle.Observer
 import com.example.mygame.view.GameView
 
-class MainActivity : Activity(), SensorHandler.SensorCallback {
-    private lateinit var collisionHandler: CollisionHandler
-    private lateinit var positionHandler: PositionHandler
+class MainActivity : ComponentActivity(), SensorHandler.SensorCallback {
     private lateinit var sensorHandler: SensorHandler
     private lateinit var gameView: GameView
     private val handler = Handler(Looper.getMainLooper())
 
-    private val platform1 = Platform()
-    private val platform2 = Platform()
-    private val platform3 = Platform()
-    private val platforms = listOf(platform1, platform2, platform3)
-
-    private val ball = Ball()
+    private val gameViewModel: GameViewModel by viewModels()
 
     private var deltaX = 0f
     private var deltaY = 0f
@@ -37,11 +31,6 @@ class MainActivity : Activity(), SensorHandler.SensorCallback {
         val bounds = windowMetrics.bounds
         val screenWidth = bounds.width().toFloat()
         val screenHeight = bounds.height().toFloat()
-        platform1.setPosition(100f, 950f)
-        platform2.setPosition(600f, 1150f)
-        platform3.setPosition(200f, 1650f)
-
-        ball.setPosition(500f, 500f)
 
         // Инициализация gameView и установка контента
         gameView = GameView(this, null)
@@ -50,29 +39,23 @@ class MainActivity : Activity(), SensorHandler.SensorCallback {
         // Инициализация SensorHandler
         sensorHandler = SensorHandler(this, this)
 
-        // Инициализация CollisionHandler
-        collisionHandler = CollisionHandler(screenWidth, screenHeight)
+        // Инициализация GameViewModel
+        gameViewModel.initialize(screenWidth, screenHeight)
 
-        //Инициализация PositionHandler
-        positionHandler = PositionHandler(deltaX, deltaY)
+        // Наблюдаем за изменениями в объектах игры
+        gameViewModel.gameObjects.observe(this, Observer { gameObjects ->
+            gameView.drawGame(gameObjects)
+        })
 
-        // Запускаем игровой цикл
+        // Запускаем игровой цикл через ViewModel
         startGameLoop()
     }
 
     private fun startGameLoop() {
         handler.post(object : Runnable {
             override fun run() {
-                // Обновляем позицию шара
-                positionHandler.updateCoords(deltaX, deltaY)
-
-                // Проверяем коллизии
-                collisionHandler.checkCollisions(ball, platforms)
-
-                positionHandler.updatePositions(listOf(ball) + platforms)
-
-                // Передаем список объектов для отрисовки в GameView
-                gameView.drawGame(listOf(platform1, platform2, platform3, ball))
+                // Передаем обновленные данные для ViewModel
+                gameViewModel.updateDelta(deltaX, deltaY)
 
                 // Повторяем цикл с задержкой
                 handler.postDelayed(this, 16) // 60 fps (1000ms/60 ≈ 16ms)
