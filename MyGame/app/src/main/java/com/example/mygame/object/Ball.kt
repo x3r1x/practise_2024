@@ -53,7 +53,7 @@ class Ball : Drawable {
         if (speedY > 0) {
             speedY = gravity
             state = States.FALLING_STATE
-        } else {
+        } else if (!(speedY == 0f && state == States.FALLING_STATE)) {
             speedY += gravity
             state = States.JUMP_STATE
         }

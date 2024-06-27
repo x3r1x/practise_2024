@@ -37,9 +37,9 @@ class MainActivity : Activity(), SensorHandler.SensorCallback {
         val bounds = windowMetrics.bounds
         val screenWidth = bounds.width().toFloat()
         val screenHeight = bounds.height().toFloat()
-        platform1.setPosition(100f, 450f)
-        platform2.setPosition(600f, 750f)
-        platform3.setPosition(200f, 1250f)
+        platform1.setPosition(100f, 950f)
+        platform2.setPosition(600f, 1150f)
+        platform3.setPosition(200f, 1650f)
 
         // Инициализация gameView и установка контента
         gameView = GameView(this, null)
@@ -64,10 +64,10 @@ class MainActivity : Activity(), SensorHandler.SensorCallback {
                 // Обновляем позицию шара
                 positionHandler.updateCoords(deltaX, deltaY)
 
-                positionHandler.updatePositions(listOf(ball) + platforms)
-
                 // Проверяем коллизии
                 collisionHandler.checkCollisions(ball, platforms)
+
+                positionHandler.updatePositions(listOf(ball) + platforms)
 
                 // Передаем список объектов для отрисовки в GameView
                 gameView.drawGame(listOf(platform1, platform2, platform3, ball))
