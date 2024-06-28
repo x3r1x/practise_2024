@@ -13,10 +13,11 @@ class Ball : Drawable {
     }
 
     val gravity = 7.5f
-    val radius = 50f
+    val gravityRatio = 0.01f
     val maxJumpHeight = 600f // Максимальная высота прыжка
-    val jumpTime = 1.5f
-    val jumpSpeed = sqrt(gravity * (2 * maxJumpHeight - gravity))
+    val fallBoost = 0.5f
+    val jumpSpeed = sqrt(2 * maxJumpHeight * fallBoost)
+    val radius = 50f
 
     var x = 0f
     var y = 0f
@@ -56,14 +57,14 @@ class Ball : Drawable {
     private fun updateSpeedY() {
         when (directionY) {
             DirectionY.UP -> {
-                speedY -= gravity
+                speedY -= fallBoost
                 if (initialY - y >= maxJumpHeight) {
                     directionY = DirectionY.DOWN
                     speedY = gravity
                 }
             }
             DirectionY.DOWN -> {
-                speedY = gravity
+                speedY += gravity * gravityRatio
             }
         }
     }

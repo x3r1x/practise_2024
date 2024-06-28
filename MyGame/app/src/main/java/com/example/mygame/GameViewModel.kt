@@ -57,7 +57,7 @@ class GameViewModel(application: Application) : AndroidViewModel(application), S
     private var frameCount = 0
     private var startTime = System.currentTimeMillis()
 
-    fun countFrame() {
+    private fun countFrame() {
         frameCount++
         val currentTime = System.currentTimeMillis()
         val elapsedTime = currentTime - startTime
