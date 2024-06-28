@@ -25,7 +25,7 @@ class PlatformGenerator(
 
             if (currentY > -platform.height && Random.nextFloat() < 0.1f) {
                 val randomX = Random.nextFloat() * (screenWidth - platform.width)
-                val randomY = currentY - (Random.nextFloat() * 350f + 200f) // случайное положение между 200 и 550 пикселями
+                val randomY = currentY - (Random.nextFloat() * 300f + 200f) // случайное положение между 200 и 500 пикселями
                 platforms.add(Platform(randomX, randomY))
                 currentY = randomY - platformGap
             }
