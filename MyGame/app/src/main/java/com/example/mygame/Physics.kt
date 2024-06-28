@@ -10,6 +10,16 @@ class Physics(private val screenHeight: Float) {
         GRAVITY_RATIO(0.01f),
     }
 
+    fun movePlatforms(ball: Ball, platforms: List<Platform>) {
+        val whereMove = this.screenHeight - 750f
+
+        if (ball.y <= whereMove && ball.directionY == Ball.DirectionY.UP) {
+            for (platform in platforms) {
+                platform.updatePosition(platform.x, platform.y + ball.speedY)
+            }
+        }
+    }
+
     fun getStartCollisionSpeed(s: Float, a: Float) : Float {
         return sqrt(2 * s * a)
     }
