@@ -9,11 +9,12 @@ import com.example.mygame.`interface`.Drawable
 class Ball : Drawable {
     enum class DirectionY(val value: Int) {
         UP(-1),
-        DOWN(1)
+        STILL(0),
+        DOWN(1),
     }
 
-    val gravity = 7.5f
-    val gravityRatio = 0.01f
+    val gravity = Physics.Constants.GRAVITY.value
+    val gravityRatio = Physics.Constants.GRAVITY_RATIO.value
     val maxJumpHeight = 600f // Максимальная высота прыжка
     val fallBoost = 0.5f
     val jumpSpeed = Physics(0f).getStartCollisionSpeed(maxJumpHeight, fallBoost)
@@ -65,6 +66,9 @@ class Ball : Drawable {
             }
             DirectionY.DOWN -> {
                 speedY += gravity * gravityRatio
+            }
+            DirectionY.STILL -> {
+                directionY = DirectionY.UP
             }
         }
     }
