@@ -34,7 +34,7 @@ class CollisionHandler(private val screenWidth: Float, private val screenHeight:
             val ballXOnPlatformX = ball.x + ball.radius >= it.x && ball.x - ball.radius <= it.x + it.width
             val ballYInPlatformY = ball.y + ball.radius >= it.y && ball.y - ball.radius <= it.y + it.height
 
-            if (ballXOnPlatformX && ballYInPlatformY) {
+            if (ballXOnPlatformX && ballYInPlatformY && ball.directionY != Ball.DirectionY.UP) {
                 ball.speedY = ball.jumpSpeed
                 ball.directionY = Ball.DirectionY.UP
                 ball.initialY = ball.y

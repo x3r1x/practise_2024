@@ -40,12 +40,13 @@ class GameViewModel(application: Application) : AndroidViewModel(application), S
             while (true) {
                 val startTime = System.currentTimeMillis()
 
-                updateGame()
-
                 println("Frame at: $startTime")
                 countFrame()
 
                 val elapsedTime = System.currentTimeMillis() - startTime
+
+                updateGame(elapsedTime.toFloat())
+
                 val delayTime = frameRate - elapsedTime
                 if(delayTime > 0) {
                     delay(delayTime)
@@ -71,10 +72,9 @@ class GameViewModel(application: Application) : AndroidViewModel(application), S
         }
     }
 
-
-    private fun updateGame() {
+    private fun updateGame(elapsedTime: Float) {
         collisionHandler.checkCollisions(ball, platforms)
-        ball.updatePosition(deltaX, deltaY)
+        ball.updatePosition(deltaX * elapsedTime, deltaY * elapsedTime)
         _gameObjects.value = listOf(ball) + platforms
     }
 
