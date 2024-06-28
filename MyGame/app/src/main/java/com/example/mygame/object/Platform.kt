@@ -42,6 +42,5 @@ class Platform : Drawable {
         bottom = y + height / 2
     }
 
-    override fun updatePosition(newX: Float, newY: Float) {
-    }
+    override fun updatePosition(newX: Float, newY: Float) {}
 }

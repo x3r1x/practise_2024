@@ -1,8 +1,12 @@
 import android.app.Application
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.mygame.CollisionHandler
+import com.example.mygame.MainActivity
+import com.example.mygame.Physics
 import com.example.mygame.SensorHandler
 import com.example.mygame.`interface`.Drawable
 import com.example.mygame.`object`.Ball
@@ -16,20 +20,23 @@ class GameViewModel(application: Application) : AndroidViewModel(application), S
     private var viewModelJob = Job()
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
-    private val ball = Ball().apply { setPosition(500f, 500f) }
-    private val platform1 = Platform().apply { setPosition(100f, 950f) }
+    private val ball = Ball().apply { setPosition(275f, 1450f) }
+    private val platform1 = Platform().apply { setPosition(100f, 950f)  }
     private val platform2 = Platform().apply { setPosition(600f, 1150f) }
     private val platform3 = Platform().apply { setPosition(200f, 1650f) }
-    private val platforms = listOf(platform1, platform2, platform3)
+    private val platform4 = Platform().apply { setPosition(600f, 450f)  }
+    private val platforms = listOf(platform1, platform2, platform3, platform4)
 
     private lateinit var collisionHandler: CollisionHandler
     private lateinit var sensorHandler: SensorHandler
+    private lateinit var physics: Physics
 
     private var deltaX = 0f
     private var deltaY = 0f
 
     fun initialize(screenWidth: Float, screenHeight: Float) {
         collisionHandler = CollisionHandler(screenWidth, screenHeight)
+        physics = Physics(screenHeight)
         sensorHandler = SensorHandler(getApplication(), this)
         startGameLoop()
     }
@@ -75,6 +82,7 @@ class GameViewModel(application: Application) : AndroidViewModel(application), S
     private fun updateGame(elapsedTime: Float) {
         collisionHandler.checkCollisions(ball, platforms)
         ball.updatePosition(deltaX + deltaX * elapsedTime, deltaY + deltaY * elapsedTime)
+        physics.movePlatforms(ball, platforms, )
         _gameObjects.value = listOf(ball) + platforms
     }
 

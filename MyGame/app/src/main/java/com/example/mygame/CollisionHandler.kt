@@ -4,7 +4,6 @@ import com.example.mygame.`object`.Ball
 import com.example.mygame.`object`.Platform
 
 class CollisionHandler(private val screenWidth: Float, private val screenHeight: Float) {
-
     private fun checkBallCollision(ball: Ball) {
         val ballLeft = ball.x
         val ballRight = ball.x
