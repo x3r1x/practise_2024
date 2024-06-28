@@ -35,7 +35,7 @@ class Ball : Drawable {
         strokeWidth = 2f
     }
 
-    private val speedX = 4f
+    private val speedX = 2.5f
 
     override fun draw(canvas: Canvas) {
         canvas.drawCircle(x, y, radius, ballPaint)

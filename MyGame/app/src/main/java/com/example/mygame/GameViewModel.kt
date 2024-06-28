@@ -74,7 +74,7 @@ class GameViewModel(application: Application) : AndroidViewModel(application), S
 
     private fun updateGame(elapsedTime: Float) {
         collisionHandler.checkCollisions(ball, platforms)
-        ball.updatePosition(deltaX * elapsedTime, deltaY * elapsedTime)
+        ball.updatePosition(deltaX + deltaX * elapsedTime, deltaY + deltaY * elapsedTime)
         _gameObjects.value = listOf(ball) + platforms
     }
 

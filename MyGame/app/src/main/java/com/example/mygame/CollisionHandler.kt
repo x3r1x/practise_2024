@@ -6,10 +6,10 @@ import com.example.mygame.`object`.Platform
 class CollisionHandler(private val screenWidth: Float, private val screenHeight: Float) {
 
     private fun checkBallCollision(ball: Ball) {
-        val ballBottom = ball.y + ball.radius
         val ballLeft = ball.x
         val ballRight = ball.x
         val ballTop = ball.y - ball.radius
+        val ballBottom = ball.y + ball.radius
 
         if (ballLeft < 0f) {
             ball.x = screenWidth - ball.radius
@@ -30,9 +30,12 @@ class CollisionHandler(private val screenWidth: Float, private val screenHeight:
     }
 
     private fun checkBallAndPlatformCollision(ball: Ball, platforms: List<Platform>) {
+        val ballLeft = ball.x - ball.radius
+        val ballRight = ball.x + ball.radius
+        val ballBottom = ball.y + ball.radius
         platforms.forEach {
-            val ballXOnPlatformX = ball.x + ball.radius >= it.x && ball.x - ball.radius <= it.x + it.width
-            val ballYInPlatformY = ball.y + ball.radius >= it.y && ball.y - ball.radius <= it.y + it.height
+            val ballXOnPlatformX = ballRight >= it.left && ballLeft <= it.right
+            val ballYInPlatformY = ballBottom >= it.top && ballBottom <= it.bottom
 
             if (ballXOnPlatformX && ballYInPlatformY && ball.directionY != Ball.DirectionY.UP) {
                 ball.speedY = ball.jumpSpeed
