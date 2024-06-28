@@ -1,61 +1,61 @@
-package com.example.mygame
-
 import android.app.Application
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.mygame.generator.PlatformGenerator
-import com.example.mygame.logic.CollisionHandler
-import com.example.mygame.logic.SensorHandler
+import com.example.mygame.CollisionHandler
+import com.example.mygame.MainActivity
+import com.example.mygame.Physics
+import com.example.mygame.SensorHandler
 import com.example.mygame.`interface`.Drawable
 import com.example.mygame.`object`.Ball
 import com.example.mygame.`object`.Platform
 import kotlinx.coroutines.*
-import kotlin.properties.Delegates
 
-class GameViewModel(application: Application) : AndroidViewModel(application),
-    SensorHandler.SensorCallback {
+class GameViewModel(application: Application) : AndroidViewModel(application), SensorHandler.SensorCallback {
     private val _gameObjects = MutableLiveData<List<Drawable>>()
     val gameObjects: LiveData<List<Drawable>> get() = _gameObjects
 
     private var viewModelJob = Job()
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
-    private val ball = Ball().apply { setPosition(500f, 1000f) }
-    private val platform1 = Platform(100f, 1150f)
+    private val ball = Ball().apply { setPosition(275f, 1450f) }
+    private val platform1 = Platform().apply { setPosition(100f, 950f)  }
+    private val platform2 = Platform().apply { setPosition(600f, 1150f) }
+    private val platform3 = Platform().apply { setPosition(200f, 1650f) }
+    private val platform4 = Platform().apply { setPosition(600f, 450f)  }
+    private val platforms = listOf(platform1, platform2, platform3, platform4)
 
-    private lateinit var platformGenerator: PlatformGenerator
     private lateinit var collisionHandler: CollisionHandler
     private lateinit var sensorHandler: SensorHandler
-    private lateinit var platforms: List<Platform>
-    private var screenHeight by Delegates.notNull<Float>()
+    private lateinit var physics: Physics
 
     private var deltaX = 0f
     private var deltaY = 0f
 
     fun initialize(screenWidth: Float, screenHeight: Float) {
-        platformGenerator = PlatformGenerator(screenWidth, screenHeight, platform1.width, platform1.height, platform1.height + 20f)
         collisionHandler = CollisionHandler(screenWidth, screenHeight)
+        physics = Physics(screenHeight)
         sensorHandler = SensorHandler(getApplication(), this)
-        platforms = platformGenerator.getPlatforms()
-
-        this.screenHeight = screenHeight
+        startGameLoop()
     }
 
     fun startGameLoop() {
-        val frameRate = 750 / 60 //~12.5ms = 60 FPS
+        val frameRate = 1000 / 60 //~16ms = 60 FPS
         uiScope.launch {
             while (true) {
                 val startTime = System.currentTimeMillis()
 
+                println("Frame at: $startTime")
                 countFrame()
 
                 val elapsedTime = System.currentTimeMillis() - startTime
 
-                updateGame(elapsedTime.toFloat()/1000)
+                updateGame(elapsedTime.toFloat())
 
                 val delayTime = frameRate - elapsedTime
-                if (delayTime > 0) {
+                if(delayTime > 0) {
                     delay(delayTime)
                 }
             }
@@ -80,19 +80,9 @@ class GameViewModel(application: Application) : AndroidViewModel(application),
     }
 
     private fun updateGame(elapsedTime: Float) {
-        platforms = platformGenerator.getPlatforms()
-
-        // Проверяем столкновения
         collisionHandler.checkCollisions(ball, platforms)
         ball.updatePosition(deltaX + deltaX * elapsedTime, deltaY + deltaY * elapsedTime)
-
-        if (ball.directionY == Ball.DirectionY.UP) {
-            platformGenerator.updatePlatforms(deltaY + deltaY * elapsedTime)
-            val newPlatform = platformGenerator.generateNextPlatform()
-            platforms += newPlatform
-        }
-
-        // Обновляем список игровых объектов
+        physics.movePlatforms(ball, platforms, )
         _gameObjects.value = listOf(ball) + platforms
     }
 

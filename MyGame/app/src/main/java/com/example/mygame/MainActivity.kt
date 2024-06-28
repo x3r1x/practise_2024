@@ -1,7 +1,11 @@
 package com.example.mygame
 
+import GameViewModel
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
+import android.util.DisplayMetrics
+import android.view.WindowManager
 import android.view.WindowMetrics
 import androidx.activity.ComponentActivity
 import androidx.activity.viewModels

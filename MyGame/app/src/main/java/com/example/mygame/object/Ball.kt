@@ -3,8 +3,8 @@ package com.example.mygame.`object`
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import com.example.mygame.Physics
 import com.example.mygame.`interface`.Drawable
-import kotlin.math.sqrt
 
 class Ball : Drawable {
     enum class DirectionY(val value: Int) {
@@ -16,7 +16,7 @@ class Ball : Drawable {
     val gravityRatio = 0.01f
     val maxJumpHeight = 600f // Максимальная высота прыжка
     val fallBoost = 0.5f
-    val jumpSpeed = sqrt(2 * maxJumpHeight * fallBoost)
+    val jumpSpeed = Physics(0f).getStartCollisionSpeed(maxJumpHeight, fallBoost)
     val radius = 50f
 
     var x = 0f
