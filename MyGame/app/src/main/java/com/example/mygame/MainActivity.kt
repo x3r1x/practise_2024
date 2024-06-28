@@ -1,6 +1,5 @@
 package com.example.mygame
 
-import GameViewModel
 import android.os.Build
 import android.os.Bundle
 import android.view.WindowMetrics

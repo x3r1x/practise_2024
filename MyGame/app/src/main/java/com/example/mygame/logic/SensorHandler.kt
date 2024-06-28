@@ -1,4 +1,4 @@
-package com.example.mygame
+package com.example.mygame.logic
 
 import android.content.Context
 import android.hardware.Sensor

@@ -1,4 +1,4 @@
-package com.example.mygame
+package com.example.mygame.logic
 
 import com.example.mygame.`interface`.Drawable
 

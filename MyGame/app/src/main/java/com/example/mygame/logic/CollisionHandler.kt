@@ -1,4 +1,4 @@
-package com.example.mygame
+package com.example.mygame.logic
 
 import com.example.mygame.`object`.Ball
 import com.example.mygame.`object`.Platform
@@ -21,6 +21,7 @@ class CollisionHandler(private val screenWidth: Float, private val screenHeight:
 
         if (ballTop < 0f) {
             ball.y = ball.radius
+            ball.directionY = Ball.DirectionY.DOWN
         }
 
         if (ballBottom > screenHeight) {
