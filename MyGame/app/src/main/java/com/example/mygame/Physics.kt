@@ -11,9 +11,9 @@ class Physics(private val screenHeight: Float) {
     }
 
     fun movePlatforms(ball: Ball, platforms: List<Platform>) {
-        val whereMove = this.screenHeight - 750f
+        val whereMove = this.screenHeight - 950f
 
-        if (ball.y <= whereMove && ball.directionY == Ball.DirectionY.UP) {
+        if (ball.y <= whereMove && ball.directionY == Ball.DirectionY.DOWN) {
             for (platform in platforms) {
                 platform.updatePosition(platform.x, platform.y + ball.speedY)
             }

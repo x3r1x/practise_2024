@@ -36,9 +36,11 @@ class Platform(var x: Float, var y: Float) : Drawable {
     }
 
     override fun updatePosition(newX: Float, newY: Float) {
-        var left = newX - width / 2
-        var right = newX + width / 2
-        var top = newY - height / 2
-        var bottom = newY + height / 2
+        x = newX
+        y = newY
+        left = newX - width / 2
+        right = newX + width / 2
+        top = newY - height / 2
+        bottom = newY + height / 2
     }
 }
