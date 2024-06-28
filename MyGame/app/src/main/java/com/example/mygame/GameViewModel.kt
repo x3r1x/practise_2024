@@ -87,6 +87,7 @@ class GameViewModel(application: Application) : AndroidViewModel(application), S
         // Проверяем столкновения
         collisionHandler.checkCollisions(ball, platforms)
         ball.updatePosition(deltaX + deltaX * elapsedTime, deltaY + deltaY * elapsedTime)
+        physics.movePlatforms(ball, platforms)
 
         // Обновляем список игровых объектов
         _gameObjects.value = listOf(ball) + platforms
