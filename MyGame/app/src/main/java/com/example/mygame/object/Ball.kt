@@ -12,17 +12,13 @@ class Ball : Drawable {
         DOWN(1),
     }
 
-    val gravity = Physics.Constants.GRAVITY.value
-    val gravityRatio = Physics.Constants.GRAVITY_RATIO.value
-    val maxJumpHeight = 600f // Максимальная высота прыжка
-    val fallBoost = 0.5f
-    val jumpSpeed = Physics(0f).getStartCollisionSpeed(maxJumpHeight, fallBoost)
+    val jumpSpeed = Physics(0f).getStartCollisionSpeed(MAX_JUMP_HEIGHT, FALL_BOOST)
     val radius = 50f
 
     var x = 0f
     var y = 0f
     var initialY = 0f
-    var speedY = gravity
+    var speedY = Physics.GRAVITY
     var directionY = DirectionY.DOWN
 
     private val ballPaint = Paint().apply {
@@ -36,6 +32,22 @@ class Ball : Drawable {
     }
 
     private val speedX = 2.5f
+
+    private fun updateSpeedY() {
+        when (directionY) {
+            DirectionY.UP -> {
+                speedY -= FALL_BOOST
+                if (initialY - y >= MAX_JUMP_HEIGHT) {
+                    directionY = DirectionY.DOWN
+                    speedY = Physics.GRAVITY
+                }
+            }
+
+            DirectionY.DOWN -> {
+                speedY += Physics.GRAVITY * Physics.GRAVITY_RATIO
+            }
+        }
+    }
 
     override fun draw(canvas: Canvas) {
         canvas.drawCircle(x, y, radius, ballPaint)
@@ -54,18 +66,8 @@ class Ball : Drawable {
         updateSpeedY()
     }
 
-    private fun updateSpeedY() {
-        when (directionY) {
-            DirectionY.UP -> {
-                speedY -= fallBoost
-                if (initialY - y >= maxJumpHeight) {
-                    directionY = DirectionY.DOWN
-                    speedY = gravity
-                }
-            }
-            DirectionY.DOWN -> {
-                speedY += gravity * gravityRatio
-            }
-        }
+    companion object {
+        private const val MAX_JUMP_HEIGHT = 600f // Максимальная высота прыжка
+        private const val FALL_BOOST = 0.5f
     }
 }
