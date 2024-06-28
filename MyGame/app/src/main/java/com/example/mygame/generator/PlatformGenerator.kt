@@ -33,26 +33,15 @@ class PlatformGenerator(
         }
     }
 
-    fun generateNextPlatform(): Platform {
-        val highestPlatform = Platform(0f, 0f)
-        val newY = highestPlatform.y - platformGap
-        val newX = Random.nextFloat() * (screenWidth - platform.width)
-        val newPlatform = Platform(newX, newY)
-        platforms.add(newPlatform)
-        return newPlatform
-    }
-
     fun getPlatforms(): List<Platform> {
         return platforms
     }
 
+    fun generateNextPlatform(): Platform {
+        TODO("Требуется реализация")
+    }
+
     fun updatePlatforms(dy: Float) {
-        val updatedPlatforms = platforms.map { platform ->
-            Platform(platform.x, platform.y + dy)
-        }.toMutableList()
-        platforms.clear()
-        platforms.addAll(updatedPlatforms)
-        // Удаляем платформы, которые вышли за нижнюю границу экрана
-        platforms.removeAll { it.y > screenHeight }
+        TODO("Требуется реализация")
     }
 }

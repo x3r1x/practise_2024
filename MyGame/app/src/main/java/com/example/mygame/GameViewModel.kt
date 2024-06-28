@@ -1,8 +1,9 @@
+package com.example.mygame
+
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.mygame.Physics
 import com.example.mygame.generator.PlatformGenerator
 import com.example.mygame.`interface`.Drawable
 import com.example.mygame.logic.CollisionHandler
@@ -11,7 +12,6 @@ import com.example.mygame.`object`.Ball
 import com.example.mygame.`object`.Platform
 import kotlinx.coroutines.*
 import kotlin.properties.Delegates
-import kotlin.random.Random
 
 class GameViewModel(application: Application) : AndroidViewModel(application), SensorHandler.SensorCallback {
     private val _gameObjects = MutableLiveData<List<Drawable>>()
