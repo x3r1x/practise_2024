@@ -4,20 +4,23 @@ import com.example.mygame.`object`.Ball
 import com.example.mygame.`object`.Platform
 import kotlin.math.sqrt
 
-class Physics(screenH: Float) {
-    private val screenHeigth = screenH
+class Physics(private val screenHeight: Float) {
+    enum class Constants(val value: Float) {
+        GRAVITY(7.5f),
+        GRAVITY_RATIO(0.01f),
+    }
 
     fun movePlatforms(ball: Ball, platforms: List<Platform>) {
-        val whenToMove = screenHeigth - 950f
+        val whereMove = this.screenHeight - 950f
 
-        if (ball.y <= whenToMove && ball.directionY == Ball.DirectionY.DOWN) {
+        if (ball.y <= whereMove && ball.directionY == Ball.DirectionY.STILL) {
             for (platform in platforms) {
                 platform.setPosition(platform.x, platform.y + ball.speedY)
             }
         }
     }
 
-    fun getStartCollisionSpeed(S: Float, a: Float) : Float {
-        return sqrt(2 * S * a)
+    fun getStartCollisionSpeed(s: Float, a: Float) : Float {
+        return sqrt(2 * s * a)
     }
 }
