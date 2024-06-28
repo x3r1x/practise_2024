@@ -5,11 +5,10 @@ import android.graphics.Color
 import android.graphics.Paint
 import com.example.mygame.`interface`.Drawable
 
-class Platform() : Drawable {
-    var x = 0f
-    var y = 0f
+class Platform : Drawable {
     val width = 220f
     val height = 45f
+    private val radius = height / 2
 
     private val platformColor = Paint().apply {
         color = Color.GREEN
@@ -21,20 +20,26 @@ class Platform() : Drawable {
         strokeWidth = 5f
     }
 
-    override fun draw(canvas: Canvas) {
-        val topLeftX = x
-        val topLeftY = y
-        val bottomRightX = x + width
-        val bottomRightY = y + height
-        val radius = height / 2
+    var x = 0f
+    var y = 0f
 
-        canvas.drawRoundRect(topLeftX, topLeftY, bottomRightX, bottomRightY, radius, radius, borderColor)
-        canvas.drawRoundRect(topLeftX, topLeftY, bottomRightX, bottomRightY, radius, radius, platformColor)
+    var left = 0f
+    var right = 0f
+    var top  = 0f
+    var bottom = 0f
+
+    override fun draw(canvas: Canvas) {
+        canvas.drawRoundRect(left, top, right, bottom, radius, radius, borderColor)
+        canvas.drawRoundRect(left, top, right, bottom, radius, radius, platformColor)
     }
 
     override fun setPosition(startX: Float, startY: Float) {
         x = startX
         y = startY
+        left = x - width / 2
+        right = x + width / 2
+        top = y - height / 2
+        bottom = y + height / 2
     }
 
     override fun updatePosition(newX: Float, newY: Float) {
