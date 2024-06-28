@@ -9,7 +9,6 @@ import com.example.mygame.`interface`.Drawable
 class Ball : Drawable {
     enum class DirectionY(val value: Int) {
         UP(-1),
-        STILL(0),
         DOWN(1),
     }
 
@@ -66,9 +65,6 @@ class Ball : Drawable {
             }
             DirectionY.DOWN -> {
                 speedY += gravity * gravityRatio
-            }
-            DirectionY.STILL -> {
-                directionY = DirectionY.UP
             }
         }
     }
