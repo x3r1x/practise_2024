@@ -24,9 +24,6 @@ class Physics(private val screenHeight: Float) {
         if (platformOffset == 0f) {
             platformSpeed = 0f
         }
-
-        println("#Debug platformOffset: ${platformOffset}, platformSpeed: ${platformSpeed}")
-        println()
     }
 
     fun getStartCollisionSpeed(S: Float, t: Float) : Float {
@@ -43,7 +40,6 @@ class Physics(private val screenHeight: Float) {
 
         const val MAX_JUMP_HEIGHT = 600f
         const val MAX_JUMP_PIXELS_FROM_BOTTOM = 1100f
-        const val WHERE_TO_MOVE_FROM_BOTTOM = 950f
         const val BOTTOM_POSITION_OF_PLATFORM = 285f
     }
 }
