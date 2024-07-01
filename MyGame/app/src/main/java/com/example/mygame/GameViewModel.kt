@@ -29,7 +29,7 @@ class GameViewModel(application: Application) : AndroidViewModel(application), S
 
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
-    private val ball = Ball().apply { setPosition(275f, 1450f) }
+    private val ball = Ball()
 
     private lateinit var screen: Screen
 
@@ -48,6 +48,7 @@ class GameViewModel(application: Application) : AndroidViewModel(application), S
         collisionHandler = CollisionHandler()
         platformGenerator = PlatformGenerator(screen.width, screen.height)
 
+        ball.setPosition(screen.width/2f, screen.height)
         platforms = platformGenerator.getPlatforms()
     }
 

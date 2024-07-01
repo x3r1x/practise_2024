@@ -56,7 +56,7 @@ class Ball : IDrawable, ICollidable {
     }
 
     fun updateSpeedAndBoost() {
-        jumpSpeed = Physics(0f).getStartCollisionSpeed(MAX_JUMP_HEIGHT, JUMP_TIME)
+        jumpSpeed = Physics(0f).getStartCollisionSpeed(realJumpHeight, JUMP_TIME)
         fallBoost = Physics(0f).getJumpBoost(jumpSpeed, JUMP_TIME)
         speedY = jumpSpeed
     }
@@ -115,7 +115,8 @@ class Ball : IDrawable, ICollidable {
         }
 
         if (bottom > screen.bottom) {
-            y = 0f + RADIUS
+//            y = screen.bottom - bottom
+            directionY = DirectionY.UP
             initialY = y
         }
     }
