@@ -7,18 +7,18 @@ import android.graphics.Canvas
 import android.util.AttributeSet
 import android.view.View
 import com.example.mygame.R
-import com.example.mygame.`interface`.Drawable
+import com.example.mygame.`interface`.IDrawable
 
 class GameView(context: Context, attributeSet: AttributeSet?): View(context, attributeSet) {
 
-    private var gameElements: List<Drawable> = emptyList()
+    private var gameElements: List<IDrawable> = emptyList()
     private var backgroundImage: Bitmap? = null
 
     init {
         backgroundImage = BitmapFactory.decodeResource(resources, R.drawable.background)
     }
 
-    fun drawGame(elements: List<Drawable>) {
+    fun drawGame(elements: List<IDrawable>) {
         gameElements = elements
         invalidate()
     }

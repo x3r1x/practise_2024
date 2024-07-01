@@ -4,22 +4,37 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import com.example.mygame.Physics
-import com.example.mygame.`interface`.Drawable
+import com.example.mygame.`interface`.ICollidable
+import com.example.mygame.`interface`.IDrawable
 
-class Ball : Drawable {
+class Ball : IDrawable, ICollidable {
     enum class DirectionY(val value: Int) {
         UP(-1),
         DOWN(1),
     }
 
-    val jumpSpeed = Physics(0f).getStartCollisionSpeed(MAX_JUMP_HEIGHT, FALL_BOOST)
-    val radius = 50f
-
-    var x = 0f
     var y = 0f
-    var initialY = 0f
+
     var speedY = Physics.GRAVITY
+
     var directionY = DirectionY.DOWN
+
+    private var x = 0f
+
+    private var initialY = 0f
+
+    private val jumpSpeed = Physics(0f).getStartCollisionSpeed(MAX_JUMP_HEIGHT, FALL_BOOST)
+
+    private val radius = 50f
+
+    override val left
+        get() = x - radius
+    override val right
+        get() = x + radius
+    override val top
+        get() = y - radius
+    override val bottom
+        get() = y + radius
 
     private val ballPaint = Paint().apply {
         color = Color.RED
@@ -64,6 +79,43 @@ class Ball : Drawable {
         x += newX * speedX
         y += speedY * directionY.value
         updateSpeedY()
+    }
+
+    override fun behaviour() {
+        if (directionY == DirectionY.DOWN) {
+            directionY = DirectionY.UP
+            speedY = jumpSpeed
+            initialY = y
+        }
+    }
+
+    override fun screenBehaviour(screen: Screen) {
+        if (left < screen.left) {
+            x = screen.width - radius
+        }
+
+        if (right > screen.right) {
+            x = 0f + radius
+        }
+
+        if (top < screen.top) {
+            y = radius
+            directionY = DirectionY.DOWN
+        }
+
+        if (bottom > screen.bottom) {
+            y = 0f + radius
+            initialY = y
+        }
+    }
+
+    override fun collidesWith(other: ICollidable?): Boolean {
+        other ?: return false
+
+        return !(right <= other.left ||
+                left >= other.right ||
+                bottom <= other.top ||
+                top >= other.bottom)
     }
 
     companion object {

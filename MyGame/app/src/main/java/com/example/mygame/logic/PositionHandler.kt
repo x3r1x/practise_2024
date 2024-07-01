@@ -1,9 +1,9 @@
 package com.example.mygame.logic
 
-import com.example.mygame.`interface`.Drawable
+import com.example.mygame.`interface`.IDrawable
 
 class PositionHandler(newX: Float, newY: Float) {
-    private var gameElements: List<Drawable> = emptyList()
+    private var gameElements: List<IDrawable> = emptyList()
     var x = newX
     var y = newY
 
@@ -12,7 +12,7 @@ class PositionHandler(newX: Float, newY: Float) {
         y = newY
     }
 
-    fun updatePositions(elements: List<Drawable>) {
+    fun updatePositions(elements: List<IDrawable>) {
         elements.forEach {
             it.updatePosition(x, y)
         }

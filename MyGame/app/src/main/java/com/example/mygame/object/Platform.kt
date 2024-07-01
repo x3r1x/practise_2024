@@ -3,9 +3,10 @@ package com.example.mygame.`object`
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
-import com.example.mygame.`interface`.Drawable
+import com.example.mygame.`interface`.ICollidable
+import com.example.mygame.`interface`.IDrawable
 
-class Platform(var x: Float, var y: Float) : Drawable {
+class Platform(var x: Float, var y: Float) : IDrawable, ICollidable {
     val width = 220f
     val height = 45f
     private val radius = height / 2
@@ -20,10 +21,14 @@ class Platform(var x: Float, var y: Float) : Drawable {
         strokeWidth = 5f
     }
 
-    var left = x - width / 2
-    var right = x + width / 2
-    var top = y - height / 2
-    var bottom = y + height / 2
+    override val left
+        get() = x - width / 2
+    override val right
+        get() = x + width / 2
+    override val top
+        get() = y - height / 2
+    override val bottom
+        get() = y + height / 2
 
     override fun draw(canvas: Canvas) {
         canvas.drawRoundRect(left, top, right, bottom, radius, radius, borderColor)
@@ -38,9 +43,20 @@ class Platform(var x: Float, var y: Float) : Drawable {
     override fun updatePosition(newX: Float, newY: Float) {
         x = newX
         y = newY
-        left = newX - width / 2
-        right = newX + width / 2
-        top = newY - height / 2
-        bottom = newY + height / 2
+    }
+
+    override fun behaviour() {
+    }
+
+    override fun screenBehaviour(screen: Screen) {
+    }
+
+    override fun collidesWith(other: ICollidable?): Boolean {
+        other ?: return false
+
+        return !(right <= other.left ||
+                left >= other.right ||
+                bottom <= other.top ||
+                top >= other.bottom)
     }
 }
