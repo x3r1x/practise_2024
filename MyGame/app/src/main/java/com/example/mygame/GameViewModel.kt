@@ -13,7 +13,6 @@ import com.example.mygame.`object`.Ball
 import com.example.mygame.`object`.Platform
 import com.example.mygame.`object`.Screen
 import kotlinx.coroutines.*
-import kotlin.properties.Delegates
 
 class GameViewModel(application: Application) : AndroidViewModel(application), SensorHandler.SensorCallback {
     val gameObjects: LiveData<List<IDrawable>> get() = _gameObjects
@@ -25,9 +24,6 @@ class GameViewModel(application: Application) : AndroidViewModel(application), S
 
     private var frameCount = 0
     private var startTime = System.currentTimeMillis()
-
-    private var lastGeneratedPlatformY = 0f
-    private var screenHeight by Delegates.notNull<Float>()
 
     private val _gameObjects = MutableLiveData<List<IDrawable>>()
 
@@ -45,17 +41,14 @@ class GameViewModel(application: Application) : AndroidViewModel(application), S
     private lateinit var platformGenerator: PlatformGenerator
 
     fun initialize(screenWidth: Float, screenHeight: Float) {
-        this.screenHeight = screenHeight
+        this.screen = Screen(screenWidth, screenHeight)
 
-        physics = Physics(screenHeight)
+        physics = Physics(screen.height)
         sensorHandler = SensorHandler(getApplication(), this)
         collisionHandler = CollisionHandler()
-        platformGenerator = PlatformGenerator(screenWidth, screenHeight)
+        platformGenerator = PlatformGenerator(screen.width, screen.height)
 
-        this.screen = Screen(screenWidth, screenHeight)
         platforms = platformGenerator.getPlatforms()
-
-        lastGeneratedPlatformY = platforms.maxByOrNull { it.y }?.y ?: 0f
     }
 
     fun startGameLoop() {
@@ -105,12 +98,11 @@ class GameViewModel(application: Application) : AndroidViewModel(application), S
 
         _gameObjects.value = listOf(ball) + platforms
 
-        // Проверяем столкновения
         collisionHandler.checkCollisions(ball, screen, _gameObjects.value?.filterIsInstance<ICollidable>())
-        ball.updatePosition(deltaX + deltaX * elapsedTime, deltaY + deltaY * elapsedTime)
-        physics.movePlatforms(ball, platforms)
 
-        // Обновляем список игровых объектов
+        ball.updatePosition(deltaX + deltaX * elapsedTime, deltaY + deltaY * elapsedTime)
+
+        physics.movePlatforms(ball, platforms)
     }
 
     override fun onCleared() {

@@ -56,7 +56,6 @@ class Ball : IDrawable, ICollidable {
                     speedY = Physics.GRAVITY
                 }
             }
-
             DirectionY.DOWN -> {
                 speedY += Physics.GRAVITY * Physics.GRAVITY_RATIO
             }
@@ -71,7 +70,7 @@ class Ball : IDrawable, ICollidable {
     override fun setPosition(startX: Float, startY: Float) {
         x = startX
         y = startY
-        initialY = startY // Устанавливаем начальную позицию по Y
+        initialY = startY
     }
 
     override fun updatePosition(newX: Float, newY: Float) {
@@ -118,7 +117,7 @@ class Ball : IDrawable, ICollidable {
     }
 
     companion object {
-        private const val MAX_JUMP_HEIGHT = 600f // Максимальная высота прыжка
+        const val MAX_JUMP_HEIGHT = 600f
         private const val FALL_BOOST = 0.5f
     }
 }

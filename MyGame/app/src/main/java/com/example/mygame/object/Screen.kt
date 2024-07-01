@@ -2,7 +2,7 @@ package com.example.mygame.`object`
 
 import com.example.mygame.`interface`.ICollidable
 
-class Screen(val width: Float, height: Float): ICollidable {
+class Screen(val width: Float, val height: Float): ICollidable {
     override val left = 0f
     override val right = width
     override val top = 0f
