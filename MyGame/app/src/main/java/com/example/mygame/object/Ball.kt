@@ -24,16 +24,14 @@ class Ball : IDrawable, ICollidable {
 
     private val jumpSpeed = Physics(0f).getStartCollisionSpeed(MAX_JUMP_HEIGHT, FALL_BOOST)
 
-    private val radius = 50f
-
     override val left
-        get() = x - radius
+        get() = x - RADIUS
     override val right
-        get() = x + radius
+        get() = x + RADIUS
     override val top
-        get() = y - radius
+        get() = y - RADIUS
     override val bottom
-        get() = y + radius
+        get() = y + RADIUS
 
     private val ballPaint = Paint().apply {
         color = Color.RED
@@ -63,8 +61,8 @@ class Ball : IDrawable, ICollidable {
     }
 
     override fun draw(canvas: Canvas) {
-        canvas.drawCircle(x, y, radius, ballPaint)
-        canvas.drawCircle(x, y, radius, borderPaint)
+        canvas.drawCircle(x, y, RADIUS, ballPaint)
+        canvas.drawCircle(x, y, RADIUS, borderPaint)
     }
 
     override fun setPosition(startX: Float, startY: Float) {
@@ -89,20 +87,20 @@ class Ball : IDrawable, ICollidable {
 
     override fun screenBehaviour(screen: Screen) {
         if (left < screen.left) {
-            x = screen.width - radius
+            x = screen.width - RADIUS
         }
 
         if (right > screen.right) {
-            x = 0f + radius
+            x = 0f + RADIUS
         }
 
         if (top < screen.top) {
-            y = radius
+            y = RADIUS
             directionY = DirectionY.DOWN
         }
 
         if (bottom > screen.bottom) {
-            y = 0f + radius
+            y = 0f + RADIUS
             initialY = y
         }
     }
@@ -118,6 +116,8 @@ class Ball : IDrawable, ICollidable {
 
     companion object {
         const val MAX_JUMP_HEIGHT = 600f
+        const val JUMP_TIME = 50f
         private const val FALL_BOOST = 0.5f
+        private const val RADIUS = 50f
     }
 }

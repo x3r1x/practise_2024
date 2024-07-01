@@ -96,13 +96,13 @@ class GameViewModel(application: Application) : AndroidViewModel(application), S
     private fun updateGame(elapsedTime: Float) {
         platforms = platformGenerator.getPlatforms()
 
+        physics.movePlatforms(ball, platforms)
+
         _gameObjects.value = listOf(ball) + platforms
 
         collisionHandler.checkCollisions(ball, screen, _gameObjects.value?.filterIsInstance<ICollidable>())
 
         ball.updatePosition(deltaX + deltaX * elapsedTime, deltaY + deltaY * elapsedTime)
-
-        physics.movePlatforms(ball, platforms)
     }
 
     override fun onCleared() {
