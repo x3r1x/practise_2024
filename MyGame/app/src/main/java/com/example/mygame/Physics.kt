@@ -5,26 +5,41 @@ import com.example.mygame.`object`.Platform
 import kotlin.math.sqrt
 
 class Physics(private val screenHeight: Float) {
-    fun movePlatforms(ball: Ball, platforms: List<Platform>) {
-        val whereMove = this.screenHeight - 950f
+    private var platformSpeed = 0f
 
-        if (ball.top <= whereMove && ball.directionY == Ball.DirectionY.DOWN) {
+    fun movePlatforms(ball: Ball, platforms: List<Platform>) {
+        var platformOffset = screenHeight - ball.platformCollided.y - BOTTOM_POSITION_OF_PLATFORM
+
+        if (platformSpeed == 0f) {
+            platformSpeed = platformOffset / (ball.jumpTime * 2.5f)
+        }
+
+        if (platformOffset > 0 && ball.directionY == Ball.DirectionY.UP) {
             for (platform in platforms) {
-                platform.updatePosition(platform.x, platform.y + ball.speedY)
+                platform.updatePosition(platform.x, platform.y + platformSpeed)
             }
+            platformOffset -= platformSpeed
+        }
+
+        if (platformOffset == 0f) {
+            platformSpeed = 0f
         }
     }
 
-    fun getStartCollisionSpeed(s: Float, a: Float) : Float {
-        return sqrt(2 * s * a)
+    fun getStartCollisionSpeed(S: Float, t: Float) : Float {
+        return 2 * S / t
     }
 
-    fun canMovePlatforms(ball: Ball, platforms: List<Platform>): Boolean {
-        return ball.top <= this.screenHeight - 950f && ball.directionY == Ball.DirectionY.UP
+    fun getJumpBoost(U: Float, t: Float) : Float {
+        return U / t
     }
 
-    companion object{
+    companion object {
         const val GRAVITY = 7.5f
-        const val GRAVITY_RATIO = 0.05f
+        const val GRAVITY_RATIO = 0.01f
+
+        const val MAX_JUMP_HEIGHT = 600f
+        const val MAX_JUMP_PIXELS_FROM_BOTTOM = 1100f
+        const val BOTTOM_POSITION_OF_PLATFORM = 285f
     }
 }
