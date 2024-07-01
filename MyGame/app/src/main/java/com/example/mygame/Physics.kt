@@ -8,10 +8,10 @@ class Physics(private val screenHeight: Float) {
     private var platformSpeed = 0f
 
     fun movePlatforms(ball: Ball, platforms: List<Platform>) {
-        var platformOffset = screenHeight - ball.platformCollided.y - BOTTOM_POSITION_OF_PLATFORM
+        var platformOffset = screenHeight - (ball.lastCollision?.bottom ?: 0f) - BOTTOM_POSITION_OF_PLATFORM
 
         if (platformSpeed == 0f) {
-            platformSpeed = platformOffset / (ball.jumpTime * 2.5f)
+            platformSpeed = platformOffset / (Ball.JUMP_TIME * 2.5f)
         }
 
         if (platformOffset > 0 && ball.directionY == Ball.DirectionY.UP) {
@@ -37,8 +37,6 @@ class Physics(private val screenHeight: Float) {
     companion object {
         const val GRAVITY = 7.5f
         const val GRAVITY_RATIO = 0.01f
-
-        const val MAX_JUMP_HEIGHT = 600f
         const val MAX_JUMP_PIXELS_FROM_BOTTOM = 1100f
         const val BOTTOM_POSITION_OF_PLATFORM = 285f
     }

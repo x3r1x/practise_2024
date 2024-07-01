@@ -17,12 +17,16 @@ class Ball : IDrawable, ICollidable {
 
     var directionY = DirectionY.DOWN
 
+    var lastCollision: ICollidable? = null
+
     private var x = 0f
     private var y = 0f
 
-    private var initialY = 0f
+    private var jumpSpeed = 0f
+    private var fallBoost = 0f
+    private var realJumpHeight = 0f
 
-    private val jumpSpeed = Physics(0f).getStartCollisionSpeed(MAX_JUMP_HEIGHT, FALL_BOOST)
+    private var initialY = 0f
 
     override val left
         get() = x - RADIUS
@@ -45,10 +49,24 @@ class Ball : IDrawable, ICollidable {
 
     private val speedX = 2.5f
 
+    fun updateJumpHeight(screenHeight: Float) {
+        realJumpHeight = if (Physics.MAX_JUMP_PIXELS_FROM_BOTTOM - (screenHeight - y) > MAX_JUMP_HEIGHT) {
+            MAX_JUMP_HEIGHT
+        } else {
+            Physics.MAX_JUMP_PIXELS_FROM_BOTTOM - (screenHeight - y)
+        }
+    }
+
+    fun updateSpeedAndBoost() {
+        jumpSpeed = Physics(0f).getStartCollisionSpeed(MAX_JUMP_HEIGHT, JUMP_TIME)
+        fallBoost = Physics(0f).getJumpBoost(jumpSpeed, JUMP_TIME)
+        speedY = jumpSpeed
+    }
+
     private fun updateSpeedY() {
         when (directionY) {
             DirectionY.UP -> {
-                speedY -= FALL_BOOST
+                speedY -= fallBoost
                 if (initialY - y >= MAX_JUMP_HEIGHT) {
                     directionY = DirectionY.DOWN
                     speedY = Physics.GRAVITY
@@ -108,16 +126,19 @@ class Ball : IDrawable, ICollidable {
     override fun collidesWith(other: ICollidable?): Boolean {
         other ?: return false
 
-        return !(right <= other.left ||
-                left >= other.right ||
-                bottom <= other.top ||
-                top >= other.bottom)
+        if (!(right <= other.left  ||
+              left >= other.right  ||
+              bottom <= other.top  ||
+              top >= other.bottom)) {
+            lastCollision = other
+            return true
+        }
+        return false
     }
 
     companion object {
-        const val MAX_JUMP_HEIGHT = 600f
         const val JUMP_TIME = 50f
-        private const val FALL_BOOST = 0.5f
+        private const val MAX_JUMP_HEIGHT = 600f
         private const val RADIUS = 50f
     }
 }
