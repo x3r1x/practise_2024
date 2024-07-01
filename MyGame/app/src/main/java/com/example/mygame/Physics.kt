@@ -2,16 +2,31 @@ package com.example.mygame
 
 import com.example.mygame.`object`.Ball
 import com.example.mygame.`object`.Platform
+import kotlin.math.sqrt
 
 class Physics(private val screenHeight: Float) {
-    fun movePlatforms(ball: Ball, platforms: List<Platform>) {
-        val whereMove = this.screenHeight - 950f
+    private var platformSpeed = 0f
 
-        if (ball.y <= whereMove && ball.directionY == Ball.DirectionY.UP) {
-            for (platform in platforms) {
-                platform.updatePosition(platform.x, platform.y + ball.speedY)
-            }
+    fun movePlatforms(ball: Ball, platforms: List<Platform>) {
+        var platformOffset = screenHeight - ball.platformCollided.y - BOTTOM_POSITION_OF_PLATFORM
+
+        if (platformSpeed == 0f) {
+            platformSpeed = platformOffset / (ball.jumpTime * 2.5f)
         }
+
+        if (platformOffset > 0 && ball.directionY == Ball.DirectionY.UP) {
+            for (platform in platforms) {
+                platform.updatePosition(platform.x, platform.y + platformSpeed)
+            }
+            platformOffset -= platformSpeed
+        }
+
+        if (platformOffset == 0f) {
+            platformSpeed = 0f
+        }
+
+        println("#Debug platformOffset: ${platformOffset}, platformSpeed: ${platformSpeed}")
+        println()
     }
 
     fun getStartCollisionSpeed(S: Float, t: Float) : Float {
@@ -28,5 +43,7 @@ class Physics(private val screenHeight: Float) {
 
         const val MAX_JUMP_HEIGHT = 600f
         const val MAX_JUMP_PIXELS_FROM_BOTTOM = 1100f
+        const val WHERE_TO_MOVE_FROM_BOTTOM = 950f
+        const val BOTTOM_POSITION_OF_PLATFORM = 285f
     }
 }

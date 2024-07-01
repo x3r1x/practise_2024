@@ -13,18 +13,19 @@ class Ball : Drawable {
         DOWN(1),
     }
 
-    val radius = 50f
-    val jumpTime = 50f
-
     var x = 0f
     var y = 0f
     var initialY = 0f
     var speedY = Physics.GRAVITY
     var directionY = DirectionY.DOWN
 
+    var platformCollided = Platform()
     var jumpHeight = 0f
     var jumpSpeed = 0f
     var fallBoost = 0f
+
+    val radius = 50f
+    val jumpTime = 50f
 
     private val ballPaint = Paint().apply {
         color = Color.RED

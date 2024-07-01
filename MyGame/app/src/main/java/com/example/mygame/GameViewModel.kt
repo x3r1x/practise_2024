@@ -24,7 +24,7 @@ class GameViewModel(application: Application) : AndroidViewModel(application), S
     private val platform1 = Platform().apply { setPosition(100f, 950f)  }
     private val platform2 = Platform().apply { setPosition(600f, 1150f) }
     private val platform3 = Platform().apply { setPosition(200f, 1650f) }
-    private val platform4 = Platform().apply { setPosition(600f, 350f)  }
+    private val platform4 = Platform().apply { setPosition(600f, 250f)  }
     private val platforms = listOf(platform1, platform2, platform3, platform4)
 
     private lateinit var collisionHandler: CollisionHandler
@@ -80,7 +80,7 @@ class GameViewModel(application: Application) : AndroidViewModel(application), S
     private fun updateGame(elapsedTime: Float) {
         collisionHandler.checkCollisions(ball, platforms)
         ball.updatePosition(deltaX + deltaX * elapsedTime, deltaY + deltaY * elapsedTime)
-        physics.movePlatforms(ball, platforms, )
+        physics.movePlatforms(ball, platforms)
         _gameObjects.value = listOf(ball) + platforms
     }
 
