@@ -1,3 +1,4 @@
+//Будет использован, когда будет готова физика
 package com.example.mygame.logic
 
 import com.example.mygame.`interface`.IDrawable

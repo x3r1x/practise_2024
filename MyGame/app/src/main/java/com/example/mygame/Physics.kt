@@ -1,6 +1,5 @@
 package com.example.mygame
 
-import android.view.Gravity
 import com.example.mygame.`object`.Ball
 import com.example.mygame.`object`.Platform
 import kotlin.math.sqrt
@@ -9,7 +8,7 @@ class Physics(private val screenHeight: Float) {
     fun movePlatforms(ball: Ball, platforms: List<Platform>) {
         val whereMove = this.screenHeight - 950f
 
-        if (ball.y <= whereMove && ball.directionY == Ball.DirectionY.DOWN) {
+        if (ball.top <= whereMove && ball.directionY == Ball.DirectionY.DOWN) {
             for (platform in platforms) {
                 platform.updatePosition(platform.x, platform.y + ball.speedY)
             }
@@ -21,7 +20,7 @@ class Physics(private val screenHeight: Float) {
     }
 
     fun canMovePlatforms(ball: Ball, platforms: List<Platform>): Boolean {
-        return ball.y <= this.screenHeight - 950f && ball.directionY == Ball.DirectionY.UP
+        return ball.top <= this.screenHeight - 950f && ball.directionY == Ball.DirectionY.UP
     }
 
     companion object{

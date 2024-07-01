@@ -13,13 +13,12 @@ class Ball : IDrawable, ICollidable {
         DOWN(1),
     }
 
-    var y = 0f
-
     var speedY = Physics.GRAVITY
 
     var directionY = DirectionY.DOWN
 
     private var x = 0f
+    private var y = 0f
 
     private var initialY = 0f
 

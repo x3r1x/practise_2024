@@ -9,6 +9,7 @@ import com.example.mygame.`interface`.IDrawable
 class Platform(var x: Float, var y: Float) : IDrawable, ICollidable {
     val width = 220f
     val height = 45f
+
     private val radius = height / 2
 
     private val platformColor = Paint().apply {

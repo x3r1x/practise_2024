@@ -16,6 +16,18 @@ class PlatformGenerator(
         generateInitialPlatforms()
     }
 
+    fun getPlatforms(): List<Platform> {
+        return platforms
+    }
+
+    fun generateNextPlatform(): Platform {
+        TODO("Требуется реализация")
+    }
+
+    fun updatePlatforms(dy: Float) {
+        TODO("Требуется реализация")
+    }
+
     private fun generateInitialPlatforms() {
         var currentY = screenHeight - platformGap
         while (currentY > -platform.height) {
@@ -30,17 +42,5 @@ class PlatformGenerator(
                 currentY = randomY - platformGap
             }
         }
-    }
-
-    fun getPlatforms(): List<Platform> {
-        return platforms
-    }
-
-    fun generateNextPlatform(): Platform {
-        TODO("Требуется реализация")
-    }
-
-    fun updatePlatforms(dy: Float) {
-        TODO("Требуется реализация")
     }
 }

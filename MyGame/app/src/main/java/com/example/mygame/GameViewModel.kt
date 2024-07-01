@@ -16,35 +16,45 @@ import kotlinx.coroutines.*
 import kotlin.properties.Delegates
 
 class GameViewModel(application: Application) : AndroidViewModel(application), SensorHandler.SensorCallback {
-    private val _gameObjects = MutableLiveData<List<IDrawable>>()
     val gameObjects: LiveData<List<IDrawable>> get() = _gameObjects
 
     private var viewModelJob = Job()
-    private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
-
-    private val ball = Ball().apply { setPosition(275f, 1450f) }
-
-    private lateinit var platformGenerator: PlatformGenerator
-    private lateinit var collisionHandler: CollisionHandler
-    private lateinit var sensorHandler: SensorHandler
-    private lateinit var platforms: List<Platform>
-    private lateinit var physics: Physics
-    private lateinit var screen: Screen
-    private var screenHeight by Delegates.notNull<Float>()
-    private var lastGeneratedPlatformY = 0f
 
     private var deltaX = 0f
     private var deltaY = 0f
 
+    private var frameCount = 0
+    private var startTime = System.currentTimeMillis()
+
+    private var lastGeneratedPlatformY = 0f
+    private var screenHeight by Delegates.notNull<Float>()
+
+    private val _gameObjects = MutableLiveData<List<IDrawable>>()
+
+    private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
+
+    private val ball = Ball().apply { setPosition(275f, 1450f) }
+
+    private lateinit var screen: Screen
+
+    private lateinit var platforms: List<Platform>
+
+    private lateinit var physics: Physics
+    private lateinit var sensorHandler: SensorHandler
+    private lateinit var collisionHandler: CollisionHandler
+    private lateinit var platformGenerator: PlatformGenerator
+
     fun initialize(screenWidth: Float, screenHeight: Float) {
-        platformGenerator = PlatformGenerator(screenWidth, screenHeight)
-        collisionHandler = CollisionHandler()
+        this.screenHeight = screenHeight
+
         physics = Physics(screenHeight)
         sensorHandler = SensorHandler(getApplication(), this)
-        platforms = platformGenerator.getPlatforms()
-        this.screen = Screen(screenWidth, screenHeight)
+        collisionHandler = CollisionHandler()
+        platformGenerator = PlatformGenerator(screenWidth, screenHeight)
 
-        this.screenHeight = screenHeight
+        this.screen = Screen(screenWidth, screenHeight)
+        platforms = platformGenerator.getPlatforms()
+
         lastGeneratedPlatformY = platforms.maxByOrNull { it.y }?.y ?: 0f
     }
 
@@ -68,8 +78,13 @@ class GameViewModel(application: Application) : AndroidViewModel(application), S
         }
     }
 
-    private var frameCount = 0
-    private var startTime = System.currentTimeMillis()
+    fun registerSensorHandler() {
+        sensorHandler.register()
+    }
+
+    fun unregisterSensorHandler() {
+        sensorHandler.unregister()
+    }
 
     private fun countFrame() {
         frameCount++
@@ -107,13 +122,5 @@ class GameViewModel(application: Application) : AndroidViewModel(application), S
     override fun onSensorDataChanged(deltaX: Float, deltaY: Float) {
         this.deltaX = deltaX
         this.deltaY = deltaY
-    }
-
-    fun registerSensorHandler() {
-        sensorHandler.register()
-    }
-
-    fun unregisterSensorHandler() {
-        sensorHandler.unregister()
     }
 }
