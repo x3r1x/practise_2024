@@ -47,8 +47,6 @@ class Ball : IDrawable, ICollidable {
         strokeWidth = 2f
     }
 
-    private val speedX = 2.5f
-
     fun updateJumpHeight(screenHeight: Float) {
         realJumpHeight = if (Physics.MAX_JUMP_PIXELS_FROM_BOTTOM - (screenHeight - y) > MAX_JUMP_HEIGHT) {
             MAX_JUMP_HEIGHT
@@ -90,7 +88,7 @@ class Ball : IDrawable, ICollidable {
     }
 
     override fun updatePosition(newX: Float, newY: Float) {
-        x += newX * speedX
+        x += newX * SPEED_X_MULTIPLIER
         y += speedY * directionY.value
         updateSpeedY()
     }
@@ -98,7 +96,6 @@ class Ball : IDrawable, ICollidable {
     override fun behaviour() {
         if (directionY == DirectionY.DOWN) {
             directionY = DirectionY.UP
-            speedY = jumpSpeed
             initialY = y
         }
     }
@@ -138,7 +135,8 @@ class Ball : IDrawable, ICollidable {
 
     companion object {
         const val JUMP_TIME = 50f
-        private const val MAX_JUMP_HEIGHT = 600f
         private const val RADIUS = 50f
+        private const val MAX_JUMP_HEIGHT = 600f
+        private const val SPEED_X_MULTIPLIER = 2.5f
     }
 }
