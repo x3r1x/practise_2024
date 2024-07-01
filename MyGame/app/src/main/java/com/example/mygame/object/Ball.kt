@@ -13,18 +13,18 @@ class Ball : Drawable {
         DOWN(1),
     }
 
-    val gravity = Physics.Constants.GRAVITY.value
-    val gravityRatio = Physics.Constants.GRAVITY_RATIO.value
-    val maxJumpHeight = 600f // Максимальная высота прыжка
-    val fallBoost = 0.5f
-    val jumpSpeed = Physics(0f).getStartCollisionSpeed(maxJumpHeight, fallBoost)
     val radius = 50f
+    val jumpTime = 50f
 
     var x = 0f
     var y = 0f
     var initialY = 0f
-    var speedY = gravity
+    var speedY = Physics.GRAVITY
     var directionY = DirectionY.DOWN
+
+    var jumpHeight = 0f
+    var jumpSpeed = 0f
+    var fallBoost = 0f
 
     private val ballPaint = Paint().apply {
         color = Color.RED
@@ -37,6 +37,40 @@ class Ball : Drawable {
     }
 
     private val speedX = 2.5f
+
+    fun updateJumpHeight(screenHeight: Float) {
+        if (Physics.MAX_JUMP_PIXELS_FROM_BOTTOM - (screenHeight - y) > Physics.MAX_JUMP_HEIGHT) {
+            jumpHeight = Physics.MAX_JUMP_HEIGHT
+        } else {
+            jumpHeight = Physics.MAX_JUMP_PIXELS_FROM_BOTTOM - (screenHeight - y)
+        }
+    }
+
+    fun updateSpeedAndBoost() {
+        jumpSpeed = Physics(0f).getStartCollisionSpeed(jumpHeight, jumpTime)
+        fallBoost = Physics(0f).getJumpBoost(jumpSpeed, jumpTime)
+        speedY = jumpSpeed
+    }
+
+    private fun updateSpeedY() {
+        when (directionY) {
+            DirectionY.UP -> {
+                speedY -= fallBoost
+                if (initialY - y >= jumpHeight) {
+                    directionY = DirectionY.DOWN
+                    speedY = Physics.GRAVITY
+                }
+            }
+
+            DirectionY.DOWN -> {
+                speedY += Physics.GRAVITY * Physics.GRAVITY_RATIO
+            }
+
+            DirectionY.STILL -> {
+                directionY = DirectionY.UP
+            }
+        }
+    }
 
     override fun draw(canvas: Canvas) {
         canvas.drawCircle(x, y, radius, ballPaint)
@@ -53,23 +87,5 @@ class Ball : Drawable {
         x += newX * speedX
         y += speedY * directionY.value
         updateSpeedY()
-    }
-
-    private fun updateSpeedY() {
-        when (directionY) {
-            DirectionY.UP -> {
-                speedY -= fallBoost
-                if (initialY - y >= maxJumpHeight) {
-                    directionY = DirectionY.DOWN
-                    speedY = gravity
-                }
-            }
-            DirectionY.DOWN -> {
-                speedY += gravity * gravityRatio
-            }
-            DirectionY.STILL -> {
-                directionY = DirectionY.UP
-            }
-        }
     }
 }

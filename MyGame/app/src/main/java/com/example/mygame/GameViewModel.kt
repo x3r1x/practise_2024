@@ -20,7 +20,7 @@ class GameViewModel(application: Application) : AndroidViewModel(application), S
     private var viewModelJob = Job()
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
-    private val ball = Ball().apply { setPosition(275f, 1450f) }
+    private val ball = Ball().apply { setPosition(275f, 1350f) }
     private val platform1 = Platform().apply { setPosition(100f, 950f)  }
     private val platform2 = Platform().apply { setPosition(600f, 1150f) }
     private val platform3 = Platform().apply { setPosition(200f, 1650f) }
@@ -46,8 +46,6 @@ class GameViewModel(application: Application) : AndroidViewModel(application), S
         uiScope.launch {
             while (true) {
                 val startTime = System.currentTimeMillis()
-
-                println("Frame at: $startTime")
                 countFrame()
 
                 val elapsedTime = System.currentTimeMillis() - startTime

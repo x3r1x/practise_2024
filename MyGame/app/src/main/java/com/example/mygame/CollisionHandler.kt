@@ -37,9 +37,14 @@ class CollisionHandler(private val screenWidth: Float, private val screenHeight:
             val ballYInPlatformY = ballBottom >= it.top && ballBottom <= it.bottom
 
             if (ballXOnPlatformX && ballYInPlatformY && ball.directionY != Ball.DirectionY.UP) {
-                ball.speedY = ball.jumpSpeed
                 ball.directionY = Ball.DirectionY.UP
                 ball.initialY = ball.y
+                ball.updateJumpHeight(screenHeight)
+                ball.updateSpeedAndBoost()
+                println("#Debug Left: ${Physics.MAX_JUMP_PIXELS_FROM_BOTTOM - (screenHeight - ball.y)}")
+                println("#Debug Right: ${Physics.MAX_JUMP_HEIGHT}")
+                println("#Debug jumpHeight: ${ball.jumpHeight}")
+                println("Nothing")
             }
         }
     }
