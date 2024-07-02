@@ -3,19 +3,12 @@ package com.example.mygame.logic
 
 import com.example.mygame.`interface`.IDrawable
 
-class PositionHandler(newX: Float, newY: Float) {
-    private var gameElements: List<IDrawable> = emptyList()
-    var x = newX
-    var y = newY
+class PositionHandler(entities: List<IDrawable>) {
+    private val elements = entities
 
-    fun updateCords(newX: Float, newY: Float) {
-        x = newX
-        y = newY
-    }
-
-    fun updatePositions(elements: List<IDrawable>) {
+    fun updatePositions(offsetX: Float, offsetY: Float) {
         elements.forEach {
-            it.updatePosition(x, y)
+            it.setPosition(it.x - offsetX, it.y - offsetY)
         }
     }
 }

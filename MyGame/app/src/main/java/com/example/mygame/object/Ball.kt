@@ -3,30 +3,24 @@ package com.example.mygame.`object`
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.util.Log
 import com.example.mygame.Physics
 import com.example.mygame.`interface`.ICollidable
 import com.example.mygame.`interface`.IDrawable
+import kotlin.math.log
 
 class Ball : IDrawable, ICollidable {
     enum class DirectionY(val value: Int) {
-        UP(-1),
-        DOWN(1),
+        UP(1),
+        DOWN(-1),
     }
-
-    var speedY = Physics.GRAVITY
 
     var directionY = DirectionY.DOWN
 
-    var lastCollision: ICollidable? = null
+    private var speedY = 0f
 
-    private var x = 0f
-    private var y = 0f
-
-    private var jumpSpeed = 0f
-    private var fallBoost = 0f
-    private var realJumpHeight = 0f
-
-    private var initialY = 0f
+    override var x = 0f
+    override var y = 0f
 
     override val left
         get() = x - RADIUS
@@ -47,35 +41,6 @@ class Ball : IDrawable, ICollidable {
         strokeWidth = 2f
     }
 
-    fun updateJumpHeight(screenHeight: Float) {
-        realJumpHeight = if (Physics.MAX_JUMP_PIXELS_FROM_BOTTOM - (screenHeight - y) > MAX_JUMP_HEIGHT) {
-            MAX_JUMP_HEIGHT
-        } else {
-            Physics.MAX_JUMP_PIXELS_FROM_BOTTOM - (screenHeight - y)
-        }
-    }
-
-    fun updateSpeedAndBoost() {
-        jumpSpeed = Physics(0f).getStartCollisionSpeed(realJumpHeight, JUMP_TIME)
-        fallBoost = Physics(0f).getJumpBoost(jumpSpeed, JUMP_TIME)
-        speedY = jumpSpeed
-    }
-
-    private fun updateSpeedY() {
-        when (directionY) {
-            DirectionY.UP -> {
-                speedY -= fallBoost
-                if (initialY - y >= MAX_JUMP_HEIGHT) {
-                    directionY = DirectionY.DOWN
-                    speedY = Physics.GRAVITY
-                }
-            }
-            DirectionY.DOWN -> {
-                speedY += Physics.GRAVITY * Physics.GRAVITY_RATIO
-            }
-        }
-    }
-
     override fun draw(canvas: Canvas) {
         canvas.drawCircle(x, y, RADIUS, ballPaint)
         canvas.drawCircle(x, y, RADIUS, borderPaint)
@@ -84,20 +49,29 @@ class Ball : IDrawable, ICollidable {
     override fun setPosition(startX: Float, startY: Float) {
         x = startX
         y = startY
-        initialY = startY
     }
 
-    override fun updatePosition(newX: Float, newY: Float) {
+    override fun updatePositionX(newX: Float) {
         x += newX * SPEED_X_MULTIPLIER
-        y += speedY * directionY.value
-        updateSpeedY()
     }
 
-    override fun behaviour() {
-        if (directionY == DirectionY.DOWN) {
-            directionY = DirectionY.UP
-            initialY = y
+    override fun updatePositionY(newY: Float, elapsedTime: Float) {
+        y += speedY * directionY.value * elapsedTime
+        speedY += elapsedTime * Physics.GRAVITY * directionY.value
+
+        if (speedY <= 0f && directionY == DirectionY.UP) {
+            directionY = DirectionY.DOWN
         }
+
+        Log.d("", "Speed: $speedY")
+        Log.d("", "Direction: $directionY")
+    }
+
+    override fun behaviour(platformTop: Float) {
+        setPosition(x, platformTop - RADIUS - 10f)
+        directionY = DirectionY.UP
+        speedY = JUMP_SPEED
+//        Log.d("", "We are in behaviour!")
     }
 
     override fun screenBehaviour(screen: Screen) {
@@ -109,35 +83,35 @@ class Ball : IDrawable, ICollidable {
             x = 0f + RADIUS
         }
 
-        if (top < screen.top) {
-            y = RADIUS
-            directionY = DirectionY.DOWN
-        }
-
-        if (bottom > screen.bottom) {
-//            y = screen.bottom - bottom
-            directionY = DirectionY.UP
-            initialY = y
-        }
+//        if (top < screen.top) {
+//            y = RADIUS
+//            directionY = DirectionY.DOWN
+//        }
+//
+//        if (bottom > screen.bottom) {
+////            y = screen.bottom - bottom
+//            directionY = DirectionY.UP
+//        }
     }
 
     override fun collidesWith(other: ICollidable?): Boolean {
         other ?: return false
 
-        if (!(right <= other.left  ||
-              left >= other.right  ||
-              bottom <= other.top  ||
-              top >= other.bottom)) {
-            lastCollision = other
-            return true
+        val isIntersect = !(right < other.left ||
+                left > other.right ||
+                bottom < other.top ||
+                top > other.bottom)
+
+        if (isIntersect) {
+            Log.d("", "Direction: ${directionY}")
         }
-        return false
+
+        return isIntersect && directionY == DirectionY.DOWN
     }
 
     companion object {
-        const val JUMP_TIME = 50f
         private const val RADIUS = 50f
-        private const val MAX_JUMP_HEIGHT = 600f
+        private const val JUMP_SPEED = 300f
         private const val SPEED_X_MULTIPLIER = 2.5f
     }
 }

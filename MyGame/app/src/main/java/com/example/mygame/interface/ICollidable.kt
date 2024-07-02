@@ -8,7 +8,7 @@ interface ICollidable {
     val top: Float
     val bottom: Float
 
-    fun behaviour()
+    fun behaviour(platformTop: Float)
 
     fun screenBehaviour(screen: Screen)
 

@@ -11,9 +11,7 @@ class CollisionHandler {
         if (objects != null) {
             for (obj in objects) {
                 if (player != obj && player.collidesWith(obj)) {
-                    player.behaviour()
-                    player.updateJumpHeight(screen.height)
-                    player.updateSpeedAndBoost()
+                    player.behaviour(obj.top)
                 }
             }
         }

@@ -6,7 +6,7 @@ import android.graphics.Paint
 import com.example.mygame.`interface`.ICollidable
 import com.example.mygame.`interface`.IDrawable
 
-class Platform(var x: Float, var y: Float) : IDrawable, ICollidable {
+class Platform(createdX: Float, createdY: Float) : IDrawable, ICollidable {
     val width = 220f
     val height = 45f
 
@@ -21,6 +21,9 @@ class Platform(var x: Float, var y: Float) : IDrawable, ICollidable {
         style = Paint.Style.STROKE
         strokeWidth = 5f
     }
+
+    override var x = createdX
+    override var y = createdY
 
     override val left
         get() = x - width / 2
@@ -41,12 +44,13 @@ class Platform(var x: Float, var y: Float) : IDrawable, ICollidable {
         y = startY
     }
 
-    override fun updatePosition(newX: Float, newY: Float) {
+    override fun updatePositionX(newX: Float) {
         x = newX
-        y = newY
     }
 
-    override fun behaviour() {
+    override fun updatePositionY(newY: Float, elapsedTime: Float) {}
+
+    override fun behaviour(platformTop: Float) {
     }
 
     override fun screenBehaviour(screen: Screen) {

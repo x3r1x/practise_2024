@@ -13,7 +13,7 @@ class PlatformGenerator(
     private val platformGap = 20f + platform.height
 
     init {
-        generateInitialPlatforms()
+        //generateInitialPlatforms()
     }
 
     fun getPlatforms(): List<Platform> {
