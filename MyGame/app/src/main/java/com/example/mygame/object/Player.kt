@@ -5,6 +5,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Matrix
 import android.graphics.Paint
+import android.graphics.Rect
 import android.graphics.RectF
 import com.example.mygame.Physics
 import com.example.mygame.`interface`.ICollidable
@@ -167,13 +168,23 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
         //Сделать с помощью метода intersects() у класса Rect
         other ?: return false
 
-        if (!(right <= other.left  ||
-              left >= other.right  ||
-              bottom <= other.top  ||
-              top >= other.bottom)) {
+        if (
+            right < other.right &&
+            left > other.left &&
+            bottom < other.bottom &&
+            top < other.top
+        ) {
             lastCollision = other
             return true
         }
+
+//        if (!(right <= other.left  ||
+//              left >= other.right  ||
+//              bottom <= other.top  ||
+//              top >= other.bottom)) {
+//            lastCollision = other
+//            return true
+//        }
         return false
     }
 

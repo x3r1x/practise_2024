@@ -2,6 +2,7 @@ package com.example.mygame
 
 import android.app.Application
 import android.graphics.BitmapFactory
+import android.util.Log
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
