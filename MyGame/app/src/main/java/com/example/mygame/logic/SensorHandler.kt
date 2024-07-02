@@ -21,25 +21,29 @@ class SensorHandler(context: Context, private val callback: SensorCallback) : Se
         }
     }
 
-    override fun onSensorChanged(event: SensorEvent?) {
-        event?.let {
-            if (it.sensor.type == Sensor.TYPE_ACCELEROMETER) {
-                val deltaX = -it.values[0]
-                val deltaY = it.values[1]
-                callback.onSensorDataChanged(deltaX, deltaY)
-            }
-        }
-    }
-
-    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
-        // No need to handle accuracy changes for this example
-    }
-
     fun register() {
         sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_GAME)
     }
 
     fun unregister() {
         sensorManager.unregisterListener(this)
+    }
+
+    //Умножать полученные данные на коэфициент какой-то
+    override fun onSensorChanged(event: SensorEvent?) {
+        event?.let {
+            if (it.sensor.type == Sensor.TYPE_ACCELEROMETER) {
+                val deltaX = -it.values[0] * MULTIPLIER
+                val deltaY = it.values[1] * MULTIPLIER
+                callback.onSensorDataChanged(deltaX, deltaY)
+            }
+        }
+    }
+
+    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
+    }
+
+    companion object {
+        const val MULTIPLIER = 2.5f
     }
 }

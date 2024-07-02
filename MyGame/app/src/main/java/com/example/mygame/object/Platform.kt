@@ -46,10 +46,10 @@ class Platform(var x: Float, var y: Float) : IDrawable, ICollidable {
         y = newY
     }
 
-    override fun behaviour() {
+    override fun onObjectCollide() {
     }
 
-    override fun screenBehaviour(screen: Screen) {
+    override fun onScreenCollide(screen: Screen) {
     }
 
     override fun collidesWith(other: ICollidable?): Boolean {

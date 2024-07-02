@@ -8,10 +8,10 @@ class Screen(val width: Float, val height: Float): ICollidable {
     override val top = 0f
     override val bottom = height
 
-    override fun behaviour() {
+    override fun onObjectCollide() {
     }
 
-    override fun screenBehaviour(screen: Screen) {
+    override fun onScreenCollide(screen: Screen) {
     }
 
     override fun collidesWith(other: ICollidable?): Boolean? {

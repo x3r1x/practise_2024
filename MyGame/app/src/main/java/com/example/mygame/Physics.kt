@@ -1,19 +1,19 @@
 package com.example.mygame
 
-import com.example.mygame.`object`.Ball
+import com.example.mygame.`object`.Player
 import com.example.mygame.`object`.Platform
 
 class Physics(private val screenHeight: Float) {
     private var platformSpeed = 0f
 
-    fun movePlatforms(ball: Ball, platforms: List<Platform>) {
-        var platformOffset = screenHeight - (ball.lastCollision?.bottom ?: 0f) - BOTTOM_POSITION_OF_PLATFORM
+    fun movePlatforms(player: Player, platforms: List<Platform>) {
+        var platformOffset = screenHeight - (player.lastCollision?.bottom ?: 0f) - BOTTOM_POSITION_OF_PLATFORM
 
         if (platformSpeed == 0f) {
-            platformSpeed = platformOffset / (Ball.JUMP_TIME * 2.5f)
+            platformSpeed = platformOffset / (Player.JUMP_TIME * 2.5f)
         }
 
-        if (platformOffset > 0 && ball.directionY == Ball.DirectionY.UP) {
+        if (platformOffset > 0 && player.directionY == Player.DirectionY.UP) {
             for (platform in platforms) {
                 platform.updatePosition(platform.x, platform.y + platformSpeed)
             }

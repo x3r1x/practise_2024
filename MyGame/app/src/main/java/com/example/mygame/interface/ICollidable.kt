@@ -8,9 +8,9 @@ interface ICollidable {
     val top: Float
     val bottom: Float
 
-    fun behaviour()
+    fun onObjectCollide()
 
-    fun screenBehaviour(screen: Screen)
+    fun onScreenCollide(screen: Screen)
 
     fun collidesWith(other: ICollidable?): Boolean?
 }

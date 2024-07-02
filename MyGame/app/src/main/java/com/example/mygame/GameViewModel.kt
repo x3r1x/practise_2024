@@ -1,6 +1,8 @@
 package com.example.mygame
 
 import android.app.Application
+import android.graphics.BitmapFactory
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -9,7 +11,7 @@ import com.example.mygame.`interface`.ICollidable
 import com.example.mygame.`interface`.IDrawable
 import com.example.mygame.logic.CollisionHandler
 import com.example.mygame.logic.SensorHandler
-import com.example.mygame.`object`.Ball
+import com.example.mygame.`object`.Player
 import com.example.mygame.`object`.Platform
 import com.example.mygame.`object`.Screen
 import kotlinx.coroutines.*
@@ -29,7 +31,10 @@ class GameViewModel(application: Application) : AndroidViewModel(application), S
 
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
-    private val ball = Ball()
+    private val player = Player(
+        BitmapFactory.decodeResource(getApplication<Application>().resources, R.drawable.player),
+        BitmapFactory.decodeResource(getApplication<Application>().resources, R.drawable.jump)
+    )
 
     private lateinit var screen: Screen
 
@@ -48,7 +53,7 @@ class GameViewModel(application: Application) : AndroidViewModel(application), S
         collisionHandler = CollisionHandler()
         platformGenerator = PlatformGenerator(screen.width, screen.height)
 
-        ball.setPosition(screen.width/2f, screen.height)
+        player.setPosition(screen.width/2f, screen.height -200f)
         platforms = platformGenerator.getPlatforms()
     }
 
@@ -95,15 +100,17 @@ class GameViewModel(application: Application) : AndroidViewModel(application), S
     }
 
     private fun updateGame(elapsedTime: Float) {
+        //Описать алгоритм на бумаге
         platforms = platformGenerator.getPlatforms()
+        //При смещении
 
-        physics.movePlatforms(ball, platforms)
+        physics.movePlatforms(player, platforms)
 
-        _gameObjects.value = listOf(ball) + platforms
+        _gameObjects.value = listOf(player) + platforms
 
-        collisionHandler.checkCollisions(ball, screen, _gameObjects.value?.filterIsInstance<ICollidable>())
+        collisionHandler.checkCollisions(player, screen, _gameObjects.value?.filterIsInstance<ICollidable>())
 
-        ball.updatePosition(deltaX + deltaX * elapsedTime, deltaY + deltaY * elapsedTime)
+        player.updatePosition(deltaX + deltaX * elapsedTime, deltaY + deltaY * elapsedTime)
     }
 
     override fun onCleared() {
