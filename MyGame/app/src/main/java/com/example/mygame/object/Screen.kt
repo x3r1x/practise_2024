@@ -21,6 +21,6 @@ class Screen(val width: Float, val height: Float): ICollidable {
     }
 
     companion object {
-        const val MOVE_OBJECTS_LINE = 3000f
+        const val MOVE_OBJECTS_LINE = 900f
     }
 }
