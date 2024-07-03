@@ -1,20 +1,20 @@
 package com.example.mygame
 
+import kotlinx.coroutines.*
 import android.app.Application
-import android.graphics.BitmapFactory
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import android.graphics.BitmapFactory
 import androidx.lifecycle.MutableLiveData
-import com.example.mygame.generator.PlatformGenerator
-import com.example.mygame.`interface`.ICollidable
-import com.example.mygame.`interface`.IDrawable
-import com.example.mygame.logic.CollisionHandler
-import com.example.mygame.logic.PositionHandler
-import com.example.mygame.logic.SensorHandler
-import com.example.mygame.`object`.Platform
 import com.example.mygame.`object`.Player
 import com.example.mygame.`object`.Screen
-import kotlinx.coroutines.*
+import androidx.lifecycle.AndroidViewModel
+import com.example.mygame.`object`.Platform
+import com.example.mygame.logic.SensorHandler
+import com.example.mygame.`interface`.IDrawable
+import com.example.mygame.logic.PositionHandler
+import com.example.mygame.logic.CollisionHandler
+import com.example.mygame.`interface`.ICollidable
+import com.example.mygame.generator.PlatformGenerator
 
 class GameViewModel(application: Application) : AndroidViewModel(application), SensorHandler.SensorCallback {
     val gameObjects: LiveData<List<IDrawable>> get() = _gameObjects
@@ -24,21 +24,19 @@ class GameViewModel(application: Application) : AndroidViewModel(application), S
     private var deltaX = 0f
     private var deltaY = 0f
 
-    private var frameCount = 0
-    private var startTime = System.currentTimeMillis()
-
     private val _gameObjects = MutableLiveData<List<IDrawable>>()
 
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
     private val ball = Player(
         BitmapFactory.decodeResource(getApplication<Application>().resources, R.drawable.player),
-        BitmapFactory.decodeResource(getApplication<Application>().resources, R.drawable.player)
+        BitmapFactory.decodeResource(getApplication<Application>().resources, R.drawable.jump)
     )
 
     private lateinit var screen: Screen
 
     private lateinit var platforms: List<Platform>
+
     private lateinit var sensorHandler: SensorHandler
     private lateinit var collisionHandler: CollisionHandler
     private lateinit var platformGenerator: PlatformGenerator
@@ -54,13 +52,14 @@ class GameViewModel(application: Application) : AndroidViewModel(application), S
     }
 
     fun startGameLoop() {
-        var elapsedTime = 0f
+        var elapsedTime: Float
 
-        startTime = System.currentTimeMillis()
+        var startTime = System.currentTimeMillis()
 
         uiScope.launch {
             while (true) {
                 val systemTime = System.currentTimeMillis()
+
                 elapsedTime = (systemTime - startTime) / 1000f
 
                 if (elapsedTime < MAX_FRAME_TIME) {
@@ -95,20 +94,6 @@ class GameViewModel(application: Application) : AndroidViewModel(application), S
         ball.updatePositionY(ball.y, elapsedTime)
 
         collisionHandler.checkCollisions(ball, screen, _gameObjects.value?.filterIsInstance<ICollidable>())
-    }
-
-    private fun countFrame() {
-        frameCount++
-        val currentTime = System.currentTimeMillis()
-        val elapsedTime = currentTime - startTime
-
-        if (elapsedTime >= 1000) {
-            val fps = frameCount * 1000 / elapsedTime
-            println("FPS: $fps")
-
-            frameCount = 0
-            startTime = currentTime
-        }
     }
 
     override fun onCleared() {

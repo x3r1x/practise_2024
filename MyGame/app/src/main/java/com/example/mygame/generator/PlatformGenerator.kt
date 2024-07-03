@@ -1,7 +1,7 @@
 package com.example.mygame.generator
 
-import com.example.mygame.`object`.Platform
 import kotlin.random.Random
+import com.example.mygame.`object`.Platform
 
 class PlatformGenerator(
     private val screenWidth: Float,

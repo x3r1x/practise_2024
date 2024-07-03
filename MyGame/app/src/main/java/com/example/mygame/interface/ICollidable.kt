@@ -2,6 +2,8 @@ package com.example.mygame.`interface`
 
 import com.example.mygame.`object`.Screen
 
+//Сделать поле: Rect, с помощью которого мы будем высчитывать коллизию
+
 interface ICollidable {
     val left: Float
     val right: Float

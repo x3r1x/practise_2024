@@ -1,7 +1,6 @@
 package com.example.mygame
 
 import com.example.mygame.`object`.Player
-import com.example.mygame.`object`.Platform
 
 class Physics {
     fun doWeNeedToMove(player: Player, line: Float) : Boolean {

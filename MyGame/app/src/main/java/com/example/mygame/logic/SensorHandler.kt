@@ -3,8 +3,8 @@ package com.example.mygame.logic
 import android.content.Context
 import android.hardware.Sensor
 import android.hardware.SensorEvent
-import android.hardware.SensorEventListener
 import android.hardware.SensorManager
+import android.hardware.SensorEventListener
 
 class SensorHandler(context: Context, private val callback: SensorCallback) : SensorEventListener {
 
@@ -44,6 +44,6 @@ class SensorHandler(context: Context, private val callback: SensorCallback) : Se
     }
 
     companion object {
-        const val MULTIPLIER = 2.5f
+        const val MULTIPLIER = 3f
     }
 }

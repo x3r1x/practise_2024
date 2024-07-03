@@ -1,14 +1,12 @@
 package com.example.mygame.`object`
 
+import android.graphics.RectF
 import android.graphics.Bitmap
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.Matrix
-import android.graphics.Paint
-import android.graphics.RectF
 import com.example.mygame.Physics
-import com.example.mygame.`interface`.ICollidable
 import com.example.mygame.`interface`.IDrawable
+import com.example.mygame.`interface`.ICollidable
 
 class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDrawable, ICollidable {
     enum class DirectionY(val value: Int) {
@@ -22,17 +20,11 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
         RIGHT(1)
     }
 
-    var directionX = DirectionX.STILL
+    private var directionX = DirectionX.STILL
 
-    var directionY = DirectionY.DOWN
+    private var directionY = DirectionY.DOWN
 
     private var speedY = 0f
-
-    private val borderPaint = Paint().apply {
-        color = Color.BLACK
-        style = Paint.Style.STROKE
-        strokeWidth = 2f
-    }
 
     override var x = 0f
     override var y = 0f
@@ -46,10 +38,9 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
     override val bottom
         get() = y + RADIUS
 
-
     private fun changeDirection(newX: Float) {
-        if (x + newX < x) {directionX = DirectionX.LEFT}
-        if (x + newX > x) {directionX = DirectionX.RIGHT}
+        if (newX < -DISTANCE_TO_TURN) {directionX = DirectionX.LEFT}
+        if (newX >  DISTANCE_TO_TURN) {directionX = DirectionX.RIGHT}
     }
 
     private fun applyTransformations(matrix: Matrix, destRect: RectF) {
@@ -81,8 +72,6 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
 
         val imageToDraw = selectImage()
         canvas.drawBitmap(imageToDraw, matrix, null)
-
-        canvas.drawRect(left, top, right, bottom, borderPaint)
     }
 
     override fun setPosition(startX: Float, startY: Float) {
@@ -91,8 +80,8 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
     }
 
     override fun updatePositionX(newX: Float) {
-        changeDirection(newX)
         x += newX
+        changeDirection(newX)
     }
 
     override fun updatePositionY(previousY: Float, elapsedTime: Float) {
@@ -118,16 +107,6 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
         if (right > screen.right) {
             x = 0f + RADIUS
         }
-
-        if (top < screen.top) {
-            y = RADIUS
-            directionY = DirectionY.DOWN
-        }
-
-//        if (bottom > screen.bottom) {
-//            y = screen.bottom - bottom
-//            directionY = DirectionY.UP
-//        }
     }
 
     override fun collidesWith(other: ICollidable?): Boolean {
@@ -143,7 +122,8 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
     }
 
     companion object {
-        private const val RADIUS = 60f
+        private const val DISTANCE_TO_TURN = 1f
+        private const val RADIUS = 75f
         private const val JUMP_SPEED = 920f
     }
 }

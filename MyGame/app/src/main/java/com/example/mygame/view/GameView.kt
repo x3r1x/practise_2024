@@ -1,12 +1,12 @@
 package com.example.mygame.view
 
-import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.Canvas
-import android.util.AttributeSet
 import android.view.View
 import com.example.mygame.R
+import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.util.AttributeSet
+import android.graphics.BitmapFactory
 import com.example.mygame.`interface`.IDrawable
 
 class GameView(context: Context, attributeSet: AttributeSet?): View(context, attributeSet) {
