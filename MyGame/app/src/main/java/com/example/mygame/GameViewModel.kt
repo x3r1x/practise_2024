@@ -67,8 +67,6 @@ class GameViewModel(application: Application) : AndroidViewModel(application), S
                     continue
                 }
 
-//                Log.d("", "elapsedTime: $elapsedTime")
-
                 startTime = systemTime
 
                 updateGame(elapsedTime)
@@ -85,22 +83,7 @@ class GameViewModel(application: Application) : AndroidViewModel(application), S
         sensorHandler.unregister()
     }
 
-//    private fun countFrame() {
-//        frameCount++
-//        val currentTime = System.currentTimeMillis()
-//        val elapsedTime = currentTime - startTime
-//
-//        if (elapsedTime >= 1000) {
-//            val fps = frameCount * 1000 / elapsedTime
-//            println("FPS: $fps")
-//
-//            frameCount = 0
-//            startTime = currentTime
-//        }
-//    }
-
     private fun updateGame(elapsedTime: Float) {
-//        Log.d("", "Elapsed time: $elapsedTime")
         _gameObjects.value = listOf(ball) + platformGenerator.getPlatforms()
 
         if (Physics().doWeNeedToMove(ball, screen.borderLine)) {
@@ -112,6 +95,20 @@ class GameViewModel(application: Application) : AndroidViewModel(application), S
         ball.updatePositionY(ball.y, elapsedTime)
 
         collisionHandler.checkCollisions(ball, screen, _gameObjects.value?.filterIsInstance<ICollidable>())
+    }
+
+    private fun countFrame() {
+        frameCount++
+        val currentTime = System.currentTimeMillis()
+        val elapsedTime = currentTime - startTime
+
+        if (elapsedTime >= 1000) {
+            val fps = frameCount * 1000 / elapsedTime
+            println("FPS: $fps")
+
+            frameCount = 0
+            startTime = currentTime
+        }
     }
 
     override fun onCleared() {

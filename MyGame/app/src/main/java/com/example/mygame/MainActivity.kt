@@ -15,6 +15,7 @@ import com.example.mygame.view.GameView
 
 class MainActivity : ComponentActivity() {
     private val gameViewModel: GameViewModel by viewModels()
+
     private lateinit var gameView: GameView
 
     @RequiresApi(Build.VERSION_CODES.R)
