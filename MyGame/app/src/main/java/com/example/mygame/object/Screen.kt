@@ -8,7 +8,9 @@ class Screen(val width: Float, val height: Float): ICollidable {
     override val top = 0f
     override val bottom = height
 
-    override fun onObjectCollide() {
+    val borderLine = height - MOVE_OBJECTS_LINE
+
+    override fun onObjectCollide(obj: ICollidable) {
     }
 
     override fun onScreenCollide(screen: Screen) {
@@ -16,5 +18,9 @@ class Screen(val width: Float, val height: Float): ICollidable {
 
     override fun collidesWith(other: ICollidable?): Boolean? {
         return null
+    }
+
+    companion object {
+        const val MOVE_OBJECTS_LINE = 900f
     }
 }

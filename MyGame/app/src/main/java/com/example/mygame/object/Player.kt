@@ -5,7 +5,6 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Matrix
 import android.graphics.Paint
-import android.graphics.Rect
 import android.graphics.RectF
 import com.example.mygame.Physics
 import com.example.mygame.`interface`.ICollidable
@@ -23,28 +22,20 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
         RIGHT(1)
     }
 
+    var directionX = DirectionX.STILL
+
     var directionY = DirectionY.DOWN
 
     private var speedY = 0f
-
-    private var directionX = DirectionX.STILL
-
-    private var x = 0f
-    private var y = 0f
-
-    //?Questionable part?
-    var lastCollision: ICollidable? = null
-    private var jumpSpeed = 0f
-    private var fallBoost = 0f
-    private var realJumpHeight = 0f
-    private var initialY = 0f
-    //??
 
     private val borderPaint = Paint().apply {
         color = Color.BLACK
         style = Paint.Style.STROKE
         strokeWidth = 2f
     }
+
+    override var x = 0f
+    override var y = 0f
 
     override val left
         get() = x - RADIUS
@@ -55,36 +46,8 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
     override val bottom
         get() = y + RADIUS
 
-    fun updateJumpHeight(screenHeight: Float) {
-        realJumpHeight = if (Physics.MAX_JUMP_PIXELS_FROM_BOTTOM - (screenHeight - y) > MAX_JUMP_HEIGHT) {
-            MAX_JUMP_HEIGHT
-        } else {
-            Physics.MAX_JUMP_PIXELS_FROM_BOTTOM - (screenHeight - y)
-        }
-    }
 
-    fun updateSpeedAndBoost() {
-        jumpSpeed = Physics(0f).getStartCollisionSpeed(realJumpHeight, JUMP_TIME)
-        fallBoost = Physics(0f).getJumpBoost(jumpSpeed, JUMP_TIME)
-        speedY = jumpSpeed
-    }
-
-    private fun updateSpeedY() {
-        when (directionY) {
-            DirectionY.UP -> {
-                speedY -= fallBoost
-                if (initialY - y >= MAX_JUMP_HEIGHT) {
-                    directionY = DirectionY.DOWN
-                    speedY = Physics.GRAVITY
-                }
-            }
-            DirectionY.DOWN -> {
-                speedY += Physics.GRAVITY * Physics.GRAVITY_RATIO
-            }
-        }
-    }
-
-    private fun changeDirection(newX: Float, newY: Float) {
+    private fun changeDirection(newX: Float) {
         if (x + newX < x) {directionX = DirectionX.LEFT}
         if (x + newX > x) {directionX = DirectionX.RIGHT}
     }
@@ -125,21 +88,26 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
     override fun setPosition(startX: Float, startY: Float) {
         x = startX
         y = startY
-        initialY = startY
     }
 
-    override fun updatePosition(newX: Float, newY: Float) {
-        changeDirection(newX, newY)
+    override fun updatePositionX(newX: Float) {
+        changeDirection(newX)
         x += newX
-        y += speedY * directionY.value
-        updateSpeedY()
     }
 
-    override fun onObjectCollide() {
-        if (directionY == DirectionY.DOWN) {
-            directionY = DirectionY.UP
-            initialY = y
+    override fun updatePositionY(previousY: Float, elapsedTime: Float) {
+        y += speedY * directionY.value * elapsedTime
+        speedY += elapsedTime * Physics.GRAVITY * directionY.value
+
+        if (y >= previousY && directionY == DirectionY.UP) {
+            directionY = DirectionY.DOWN
         }
+    }
+
+    override fun onObjectCollide(obj: ICollidable) {
+        setPosition(x, obj.top - RADIUS - 10f)
+        directionY = DirectionY.UP
+        speedY = JUMP_SPEED
     }
 
     override fun onScreenCollide(screen: Screen) {
@@ -156,11 +124,10 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
             directionY = DirectionY.DOWN
         }
 
-        if (bottom > screen.bottom) {
-//          y = screen.bottom - bottom
-            directionY = DirectionY.UP
-            initialY = y
-        }
+//        if (bottom > screen.bottom) {
+//            y = screen.bottom - bottom
+//            directionY = DirectionY.UP
+//        }
     }
 
     override fun collidesWith(other: ICollidable?): Boolean {
@@ -168,20 +135,16 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
         //Сделать с помощью метода intersects() у класса Rect
         other ?: return false
 
-        if (!(right <= other.left  ||
-              left >= other.right  ||
-              bottom <= other.top  ||
-              top >= other.bottom)) {
-            lastCollision = other
-            return true
-        }
-        return false
+        val isIntersect = !(right < other.left ||
+                left > other.right ||
+                bottom < other.top ||
+                top > other.bottom)
+
+        return isIntersect && directionY == DirectionY.DOWN
     }
 
     companion object {
-        const val JUMP_TIME = 50f
-        private const val START_JUMP_SPEED = 50f
-        private const val RADIUS = 100f
-        private const val MAX_JUMP_HEIGHT = 600f
+        private const val RADIUS = 50f
+        private const val JUMP_SPEED = 920f
     }
 }

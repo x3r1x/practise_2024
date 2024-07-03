@@ -8,7 +8,7 @@ interface ICollidable {
     val top: Float
     val bottom: Float
 
-    fun onObjectCollide()
+    fun onObjectCollide(obj: ICollidable)
 
     fun onScreenCollide(screen: Screen)
 
