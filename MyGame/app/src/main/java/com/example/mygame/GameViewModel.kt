@@ -14,9 +14,10 @@ import com.example.mygame.logic.SensorHandler
 import com.example.mygame.`object`.Platform
 import com.example.mygame.`object`.Player
 import com.example.mygame.`object`.Screen
+import com.example.mygame.`object`.platforms.MovingPlatformOnY
 import kotlinx.coroutines.*
 
-class GameViewModel(application: Application) : AndroidViewModel(application), SensorHandler.SensorCallback {
+class GameViewModel(private val application: Application) : AndroidViewModel(application), SensorHandler.SensorCallback {
     val gameObjects: LiveData<List<IDrawable>> get() = _gameObjects
 
     private var viewModelJob = Job()
@@ -47,7 +48,7 @@ class GameViewModel(application: Application) : AndroidViewModel(application), S
         this.screen = Screen(screenWidth, screenHeight)
         sensorHandler = SensorHandler(getApplication(), this)
         collisionHandler = CollisionHandler()
-        platformGenerator = PlatformGenerator(screen.width, screen.height)
+        platformGenerator = PlatformGenerator(application.resources, screenWidth, screenHeight)
 
         ball.setPosition(screen.width/2f, screen.height - 800)
         platforms = platformGenerator.getPlatforms()
@@ -110,6 +111,13 @@ class GameViewModel(application: Application) : AndroidViewModel(application), S
 
         ball.updatePositionX(deltaX + deltaX * elapsedTime)
         ball.updatePositionY(ball.y, elapsedTime)
+
+        // Обновление позиций платформ TODO: подумать
+        platforms.forEach {
+            if (it is MovingPlatformOnY) {
+                it.updatePositionY(0f, 0f)
+            }
+        }
 
         collisionHandler.checkCollisions(ball, screen, _gameObjects.value?.filterIsInstance<ICollidable>())
     }
