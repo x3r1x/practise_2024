@@ -102,7 +102,7 @@ class Ball : IDrawable, ICollidable {
 
     companion object {
         private const val RADIUS = 50f
-        private const val JUMP_SPEED = 300.0f
+        private const val JUMP_SPEED = 920f
         private const val SPEED_X_MULTIPLIER = 2.5f
     }
 }

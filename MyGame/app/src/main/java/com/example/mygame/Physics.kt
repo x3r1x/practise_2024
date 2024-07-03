@@ -13,6 +13,6 @@ class Physics {
     }
 
     companion object {
-        const val GRAVITY = 100.0f
+        const val GRAVITY = 900f
     }
 }
