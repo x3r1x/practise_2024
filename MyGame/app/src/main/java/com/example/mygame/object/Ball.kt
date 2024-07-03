@@ -7,12 +7,11 @@ import android.util.Log
 import com.example.mygame.Physics
 import com.example.mygame.`interface`.ICollidable
 import com.example.mygame.`interface`.IDrawable
-import kotlin.math.log
 
 class Ball : IDrawable, ICollidable {
     enum class DirectionY(val value: Int) {
-        UP(1),
-        DOWN(-1),
+        UP(-1),
+        DOWN(1),
     }
 
     var directionY = DirectionY.DOWN
@@ -55,23 +54,19 @@ class Ball : IDrawable, ICollidable {
         x += newX * SPEED_X_MULTIPLIER
     }
 
-    override fun updatePositionY(newY: Float, elapsedTime: Float) {
+    override fun updatePositionY(previousY: Float, elapsedTime: Float) {
         y += speedY * directionY.value * elapsedTime
         speedY += elapsedTime * Physics.GRAVITY * directionY.value
 
-        if (speedY <= 0f && directionY == DirectionY.UP) {
+        if (y >= previousY && directionY == DirectionY.UP) {
             directionY = DirectionY.DOWN
         }
-
-        Log.d("", "Speed: $speedY")
-        Log.d("", "Direction: $directionY")
     }
 
     override fun behaviour(platformTop: Float) {
         setPosition(x, platformTop - RADIUS - 10f)
         directionY = DirectionY.UP
         speedY = JUMP_SPEED
-//        Log.d("", "We are in behaviour!")
     }
 
     override fun screenBehaviour(screen: Screen) {
@@ -102,16 +97,12 @@ class Ball : IDrawable, ICollidable {
                 bottom < other.top ||
                 top > other.bottom)
 
-        if (isIntersect) {
-            Log.d("", "Direction: ${directionY}")
-        }
-
         return isIntersect && directionY == DirectionY.DOWN
     }
 
     companion object {
         private const val RADIUS = 50f
-        private const val JUMP_SPEED = 300f
+        private const val JUMP_SPEED = 300.0f
         private const val SPEED_X_MULTIPLIER = 2.5f
     }
 }

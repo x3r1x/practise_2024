@@ -108,7 +108,7 @@ class GameViewModel(application: Application) : AndroidViewModel(application), S
         }
 
         ball.updatePositionX(deltaX + deltaX * elapsedTime)
-        ball.updatePositionY(0f, elapsedTime)
+        ball.updatePositionY(ball.y, elapsedTime)
 
         collisionHandler.checkCollisions(ball, screen, _gameObjects.value?.filterIsInstance<ICollidable>())
     }
