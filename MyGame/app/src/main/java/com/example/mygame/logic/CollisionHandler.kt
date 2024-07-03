@@ -13,12 +13,22 @@ class CollisionHandler {
         //Предаём время, чтобы выявить коллизию в следующием кадре
 
         //СРАВНИВАЕМ ОБЪЕКТЫ КАЖДЫЙ С КАЖДЫМ!!!
+
         if (objects != null) {
-            for (obj in objects) {
-                if (player != obj && player.collidesWith(obj)) {
-                    player.onObjectCollide(obj)
-                }
+            for (first in objects) {
+                for (second in objects)
+                    if (first != second && first.collidesWith(second) == true) {
+                        first.onObjectCollide(second)
+                    }
             }
         }
+
+//        if (objects != null) {
+//            for (obj in objects) {
+//                if (player != obj && player.collidesWith(obj)) {
+//                    player.onObjectCollide(obj)
+//                }
+//            }
+//        }
     }
 }

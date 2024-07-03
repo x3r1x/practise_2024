@@ -45,10 +45,10 @@ class Platform(createdX: Float, createdY: Float) : IDrawable, ICollidable {
     }
 
     override fun updatePositionX(newX: Float) {
-        x = newX
     }
 
-    override fun updatePositionY(previousY: Float, elapsedTime: Float) {}
+    override fun updatePositionY(previousY: Float, elapsedTime: Float) {
+    }
 
     override fun onObjectCollide(obj: ICollidable) {
     }

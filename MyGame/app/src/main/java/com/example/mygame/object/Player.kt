@@ -131,7 +131,6 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
     }
 
     override fun collidesWith(other: ICollidable?): Boolean {
-        //Проверка на состояние шара. Если DOWN - обработка коллизии, иначе нет
         //Сделать с помощью метода intersects() у класса Rect
         other ?: return false
 
