@@ -144,7 +144,7 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
     }
 
     companion object {
-        private const val RADIUS = 50f
+        private const val RADIUS = 60f
         private const val JUMP_SPEED = 920f
     }
 }
