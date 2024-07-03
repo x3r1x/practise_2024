@@ -168,23 +168,13 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
         //Сделать с помощью метода intersects() у класса Rect
         other ?: return false
 
-        if (
-            right < other.right &&
-            left > other.left &&
-            bottom < other.bottom &&
-            top < other.top
-        ) {
+        if (!(right <= other.left  ||
+              left >= other.right  ||
+              bottom <= other.top  ||
+              top >= other.bottom)) {
             lastCollision = other
             return true
         }
-
-//        if (!(right <= other.left  ||
-//              left >= other.right  ||
-//              bottom <= other.top  ||
-//              top >= other.bottom)) {
-//            lastCollision = other
-//            return true
-//        }
         return false
     }
 
