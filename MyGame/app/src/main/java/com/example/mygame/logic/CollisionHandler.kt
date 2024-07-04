@@ -26,7 +26,7 @@ class CollisionHandler {
 
                     // Соприкосновение игрока сo сломанной платформой
                     if (obj is BreakingPlatform) {
-                        obj.runDestructionAnimation(screen.height, { }) // TODO: Убрать callback-функцию
+                        obj.runDestructionAnimation(screen.height) {} // TODO: Убрать callback-функцию
                         continue
                     }
 
@@ -35,7 +35,7 @@ class CollisionHandler {
 
                     // Соприкосновение игрока с исчезающей платформой
                     if (obj is DisappearingPlatform) {
-                        obj.animatePlatformColor({})
+                        obj.animatePlatformColor {}
                     }
                 }
             }

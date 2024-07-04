@@ -14,6 +14,7 @@ import com.example.mygame.logic.PositionHandler
 import com.example.mygame.logic.CollisionHandler
 import com.example.mygame.`interface`.ICollidable
 import com.example.mygame.generator.PlatformGenerator
+import com.example.mygame.`object`.iteractable.Shield
 import com.example.mygame.`object`.iteractable.Spring
 import com.example.mygame.`object`.platforms.MovingPlatformOnX
 import com.example.mygame.`object`.platforms.MovingPlatformOnY
@@ -44,6 +45,7 @@ class GameViewModel(private val application: Application) : AndroidViewModel(app
 
     private lateinit var platforms: List<Platform>
     private lateinit var spring: Spring
+    private lateinit var shield: Shield
 
     private lateinit var sensorHandler: SensorHandler
     private lateinit var collisionHandler: CollisionHandler
@@ -57,8 +59,11 @@ class GameViewModel(private val application: Application) : AndroidViewModel(app
 
         ball.setPosition(screen.width/2f, screen.height - 800)
         platforms = platformGenerator.getPlatforms()
-        spring = Spring(0f, 0f, application.resources).apply {
-            moveSpringToPlatform(platforms[0])
+        spring = Spring(application.resources).apply {
+            createOnPlatform(platforms[0])
+        }
+        shield = Shield(application.resources).apply {
+            createOnPlatform(platforms[2])
         }
     }
 
@@ -94,7 +99,7 @@ class GameViewModel(private val application: Application) : AndroidViewModel(app
     }
 
     private fun updateGame(elapsedTime: Float) {
-        _gameObjects.value = listOf(ball) + platformGenerator.getPlatforms() + spring
+        _gameObjects.value = listOf(ball) + platformGenerator.getPlatforms() + spring + shield
 
         if (Physics().doWeNeedToMove(ball, screen.borderLine)) {
             PositionHandler(_gameObjects.value as List<IDrawable>)

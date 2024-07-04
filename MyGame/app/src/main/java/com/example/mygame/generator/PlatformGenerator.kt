@@ -23,7 +23,9 @@ class PlatformGenerator(
     private val movingPlatformOnYFactory = MovingPlatformOnYFactory(resources, screenHeight)
 
     private val platform = staticPlatformFactory.generatePlatform(0f, 0f)
-    private val staticPlatform = staticPlatformFactory.generatePlatform(600f, 2150f)
+    private val staticPlatform1 = staticPlatformFactory.generatePlatform(600f, 2150f)
+    private val staticPlatform2 = staticPlatformFactory.generatePlatform(600f, -500f)
+    private val staticPlatform3 = staticPlatformFactory.generatePlatform(200f, -650f)
     private val breakingPlatform = breakingPlatformFactory.generatePlatform(400f, 500f)
     private val disappearingPlatform = disappearingPlatformFactory.generatePlatform(700f, 900f)
     private val movingPlatformOnX = movingPlatformOnXFactory.generatePlatform(300f, 1350f)
@@ -53,7 +55,9 @@ class PlatformGenerator(
 //        platforms.add(disappearingPlatform)
 //        platforms.add(movingPlatformOnX)
 //        platforms.add(movingPlatformOnY)
-        platforms.add(staticPlatform)
+        platforms.add(staticPlatform1)
+        platforms.add(staticPlatform2)
+        platforms.add(staticPlatform3)
         return // delete
 //        while (currentY > -platform.height) {
 //            val x = Random.nextFloat() * (screenWidth - platform.width)

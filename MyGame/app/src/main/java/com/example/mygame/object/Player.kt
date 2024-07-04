@@ -77,9 +77,9 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
         canvas.drawBitmap(imageToDraw, matrix, null)
     }
 
-    override fun setPosition(startX: Float, startY: Float) {
-        x = startX
-        y = startY
+    override fun setPosition(newX: Float, newY: Float) {
+        x = newX
+        y = newY
     }
 
     override fun updatePositionX(newX: Float) {
@@ -136,6 +136,6 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
         private const val DISTANCE_TO_TURN = 1f
         private const val RADIUS = 75f
         private const val JUMP_SPEED = 920f
-        private const val SPRING_JUMP_SPEED = 1500f
+        private const val SPRING_JUMP_SPEED = 2200f
     }
 }

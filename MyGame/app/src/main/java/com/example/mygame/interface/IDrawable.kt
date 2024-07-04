@@ -8,7 +8,7 @@ interface IDrawable {
 
     fun draw(canvas: Canvas)
 
-    fun setPosition(startX: Float, startY: Float)
+    fun setPosition(newX: Float, newY: Float)
 
     fun updatePositionX(newX: Float)
     fun updatePositionY(elapsedTime: Float)

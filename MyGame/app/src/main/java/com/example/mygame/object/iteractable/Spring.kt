@@ -4,18 +4,14 @@ import android.animation.ValueAnimator
 import android.content.res.Resources
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
-import android.graphics.Matrix
-import android.graphics.RectF
-import android.util.Log
 import com.example.mygame.R
 import com.example.mygame.`interface`.ICollidable
 import com.example.mygame.`interface`.IDrawable
 import com.example.mygame.`object`.Platform
 import com.example.mygame.`object`.Player
-import com.example.mygame.`object`.Player.DirectionX
 import com.example.mygame.`object`.Screen
 
-class Spring(createdX: Float, createdY: Float, resources: Resources) : IDrawable, ICollidable {
+class Spring(resources: Resources) : IDrawable, ICollidable {
     private val firstStateBitmap = BitmapFactory.decodeResource(resources, SPRING_IMAGES[0], BITMAP_OPTIONS)
     private val secondStateBitmap = BitmapFactory.decodeResource(resources, SPRING_IMAGES[1], BITMAP_OPTIONS)
     private val thirdStateBitmap = BitmapFactory.decodeResource(resources, SPRING_IMAGES[2], BITMAP_OPTIONS)
@@ -29,17 +25,17 @@ class Spring(createdX: Float, createdY: Float, resources: Resources) : IDrawable
     private var isStretchRunning = false
     private var animator : ValueAnimator? = null
 
-    override var x = createdX
-    override var y = createdY
+    override var x = 0f
+    override var y = 0f
 
     override var isInSpring: Boolean? = null
 
-    override var left = x - WIDTH / 2
-    override var right = x + WIDTH / 2
-    override var top = y - HEIGHT / 2
-    override var bottom = y + HEIGHT /2
+    override var left = 0f
+    override var right = 0f
+    override var top = 0f
+    override var bottom = 0f
 
-    fun moveSpringToPlatform(platform: Platform) {
+    fun createOnPlatform(platform: Platform) {
         val randomPosition = (MIN_SPRING_SPAWN_X .. MAX_SPRING_SPAWN_X).random()
 
         setPosition(platform.left + randomPosition,platform.top - HEIGHT / 2)
@@ -68,9 +64,9 @@ class Spring(createdX: Float, createdY: Float, resources: Resources) : IDrawable
         canvas.drawBitmap(bitmap, left, top, null)
     }
 
-    override fun setPosition(startX: Float, startY: Float) {
-        x = startX
-        y = startY
+    override fun setPosition(newX: Float, newY: Float) {
+        x = newX
+        y = newY
         left = x - WIDTH / 2
         right = x + WIDTH / 2
         top = y - HEIGHT / 2

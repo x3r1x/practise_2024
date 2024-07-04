@@ -31,9 +31,9 @@ open class Platform(createdX: Float, createdY: Float) : IDrawable, ICollidable {
         canvas.drawBitmap(bitmap, left, top, paint)
     }
 
-    override fun setPosition(startX: Float, startY: Float) {
-        x = startX
-        y = startY
+    override fun setPosition(newX: Float, newY: Float) {
+        x = newX
+        y = newY
     }
 
     override fun updatePositionX(newX: Float) {
