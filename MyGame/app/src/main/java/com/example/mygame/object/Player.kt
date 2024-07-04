@@ -136,6 +136,6 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
         private const val DISTANCE_TO_TURN = 1f
         private const val RADIUS = 75f
         private const val JUMP_SPEED = 920f
-        private const val SPRING_JUMP_SPEED = 1300f
+        private const val SPRING_JUMP_SPEED = 1500f
     }
 }

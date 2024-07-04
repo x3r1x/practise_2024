@@ -52,7 +52,11 @@ class Spring(createdX: Float, createdY: Float, resources: Resources) : IDrawable
                 this.duration = animationDuration
                 addUpdateListener { animator ->
                     currentFrame = animator.animatedValue as Int
+                    //эта штука растягивает изображение вниз, а не вверх. Это значит, что каждый раз
+                    //нам надо менять позицию пружины, что очень сильно влияет и на качество анимации,
+                    //и на производительность.
                     bitmap = bitmaps[currentFrame]
+                    //TODO: Kill that with fire!
                     setPosition(x, y - ANIMATION_HEIGHT_VALUE)
                 }
             }
@@ -95,7 +99,7 @@ class Spring(createdX: Float, createdY: Float, resources: Resources) : IDrawable
     companion object {
         private const val WIDTH = 78f
         private const val HEIGHT = 53f
-        private const val ANIMATION_HEIGHT_VALUE = 14f
+        private const val ANIMATION_HEIGHT_VALUE = 5f
 
         private const val MIN_SPRING_SPAWN_X = 40
         private const val MAX_SPRING_SPAWN_X = 180
