@@ -1,26 +1,17 @@
 package com.example.mygame.`object`
 
+import android.graphics.Bitmap
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.Paint
 import com.example.mygame.`interface`.ICollidable
 import com.example.mygame.`interface`.IDrawable
 
-class Platform(createdX: Float, createdY: Float) : IDrawable, ICollidable {
+open class Platform(createdX: Float, createdY: Float) : IDrawable, ICollidable {
     val width = 220f
     val height = 45f
 
-    private val radius = height / 2
-
-    private val platformColor = Paint().apply {
-        color = Color.GREEN
-    }
-
-    private val borderColor = Paint().apply {
-        color = Color.BLACK
-        style = Paint.Style.STROKE
-        strokeWidth = 5f
-    }
+    protected lateinit var bitmap: Bitmap
+    protected var paint = Paint()
 
     override var x = createdX
     override var y = createdY
@@ -35,8 +26,7 @@ class Platform(createdX: Float, createdY: Float) : IDrawable, ICollidable {
         get() = y + height / 2
 
     override fun draw(canvas: Canvas) {
-        canvas.drawRoundRect(left, top, right, bottom, radius, radius, borderColor)
-        canvas.drawRoundRect(left, top, right, bottom, radius, radius, platformColor)
+        canvas.drawBitmap(bitmap, left, top, paint)
     }
 
     override fun setPosition(startX: Float, startY: Float) {
@@ -47,7 +37,7 @@ class Platform(createdX: Float, createdY: Float) : IDrawable, ICollidable {
     override fun updatePositionX(newX: Float) {
     }
 
-    override fun updatePositionY(previousY: Float, elapsedTime: Float) {
+    override fun updatePositionY(elapsedTime: Float) {
     }
 
     override fun onObjectCollide(obj: ICollidable) {

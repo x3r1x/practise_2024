@@ -84,7 +84,9 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
         changeDirection(newX)
     }
 
-    override fun updatePositionY(previousY: Float, elapsedTime: Float) {
+    override fun updatePositionY(elapsedTime: Float) {
+        var previousY = y
+
         y += speedY * directionY.value * elapsedTime
         speedY += elapsedTime * Physics.GRAVITY * directionY.value
 

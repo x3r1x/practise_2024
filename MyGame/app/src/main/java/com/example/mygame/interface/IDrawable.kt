@@ -11,5 +11,5 @@ interface IDrawable {
     fun setPosition(startX: Float, startY: Float)
 
     fun updatePositionX(newX: Float)
-    fun updatePositionY(previousY: Float, elapsedTime: Float)
+    fun updatePositionY(elapsedTime: Float)
 }

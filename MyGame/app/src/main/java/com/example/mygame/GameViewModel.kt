@@ -1,6 +1,5 @@
 package com.example.mygame
 
-import kotlinx.coroutines.*
 import android.app.Application
 import androidx.lifecycle.LiveData
 import android.graphics.BitmapFactory
@@ -15,8 +14,15 @@ import com.example.mygame.logic.PositionHandler
 import com.example.mygame.logic.CollisionHandler
 import com.example.mygame.`interface`.ICollidable
 import com.example.mygame.generator.PlatformGenerator
+import com.example.mygame.`object`.platforms.MovingPlatformOnX
+import com.example.mygame.`object`.platforms.MovingPlatformOnY
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
-class GameViewModel(application: Application) : AndroidViewModel(application), SensorHandler.SensorCallback {
+class GameViewModel(private val application: Application) : AndroidViewModel(application), SensorHandler.SensorCallback {
     val gameObjects: LiveData<List<IDrawable>> get() = _gameObjects
 
     private var viewModelJob = Job()
@@ -45,7 +51,7 @@ class GameViewModel(application: Application) : AndroidViewModel(application), S
         this.screen = Screen(screenWidth, screenHeight)
         sensorHandler = SensorHandler(getApplication(), this)
         collisionHandler = CollisionHandler()
-        platformGenerator = PlatformGenerator(screen.width, screen.height)
+        platformGenerator = PlatformGenerator(application.resources, screenWidth, screenHeight)
 
         ball.setPosition(screen.width/2f, screen.height - 800)
         platforms = platformGenerator.getPlatforms()
@@ -91,7 +97,17 @@ class GameViewModel(application: Application) : AndroidViewModel(application), S
         }
 
         ball.updatePositionX(deltaX + deltaX * elapsedTime)
-        ball.updatePositionY(ball.y, elapsedTime)
+        ball.updatePositionY(elapsedTime)
+
+        // Обновление позиций платформ TODO: подумать
+        platforms.forEach {
+            if (it is MovingPlatformOnY) {
+                it.updatePositionY(0f) // TODO::: to elapsedTime
+            }
+            if (it is MovingPlatformOnX) {
+                it.updatePositionX(0f)
+            }
+        }
 
         collisionHandler.checkCollisions(ball, screen, _gameObjects.value?.filterIsInstance<ICollidable>())
     }
