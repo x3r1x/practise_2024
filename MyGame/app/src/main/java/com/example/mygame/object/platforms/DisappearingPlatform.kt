@@ -22,11 +22,9 @@ class DisappearingPlatform(
     }
 
     var isDestroying = false
-    // Callback - удаление текущего объекта из листа
-    fun animatePlatformColor(callback: () -> Unit) {
-        if (!isDestroying) {
-            isDestroying = true
 
+    fun animatePlatformColor() {
+        if (!isDestroying) {
             val colorAnimator = ValueAnimator.ofArgb(platformColor.color, endColor).apply {
                 this.duration = colorChangeDuration
                 addUpdateListener { animator ->
@@ -36,7 +34,7 @@ class DisappearingPlatform(
                 }
                 addListener(object : AnimatorListenerAdapter() {
                     override fun onAnimationEnd(animation: Animator) {
-                        runDisappearingAnimation(callback)
+                        runDisappearingAnimation()
                     }
                 })
             }
@@ -50,7 +48,7 @@ class DisappearingPlatform(
     private val transparentColor = Color.TRANSPARENT
     private val endColor = Color.RED
 
-    private fun runDisappearingAnimation(callback: () -> Unit) {
+    private fun runDisappearingAnimation() {
         val platformColorAnimator = ValueAnimator.ofArgb(platformColor.color, transparentColor).apply {
             this.duration = disappearingDuration
             addUpdateListener { animator ->
@@ -59,7 +57,7 @@ class DisappearingPlatform(
             }
             addListener(object : AnimatorListenerAdapter() {
                 override fun onAnimationEnd(animation: Animator) {
-                    callback()
+                    isDestroying = true
                 }
             })
         }

@@ -24,14 +24,14 @@ class CollisionHandler {
                 if (player != obj && player.collidesWith(obj)) {
                     // Соприкосновение игрока сo сломанной платформой
                     if (obj is BreakingPlatform) {
-                        obj.runDestructionAnimation(screen.height, { }) // TODO: Убрать callback-функцию
+                        obj.runDestructionAnimation(screen.bottom)
                         continue
                     }
                     // Реакция игрока на коллизию
                     player.onObjectCollide(obj)
                     // Соприкосновение игрока с исчезающей платформой
                     if (obj is DisappearingPlatform) {
-                        obj.animatePlatformColor({})
+                        obj.animatePlatformColor()
                     }
                 }
             }

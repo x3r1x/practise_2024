@@ -2,6 +2,7 @@ package com.example.mygame
 
 import android.app.Application
 import android.graphics.BitmapFactory
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -9,6 +10,7 @@ import com.example.mygame.generator.PlatformGenerator
 import com.example.mygame.`interface`.ICollidable
 import com.example.mygame.`interface`.IDrawable
 import com.example.mygame.logic.CollisionHandler
+import com.example.mygame.logic.ObjectsHandler
 import com.example.mygame.logic.PositionHandler
 import com.example.mygame.logic.SensorHandler
 import com.example.mygame.`object`.Platform
@@ -45,18 +47,22 @@ class GameViewModel(private val application: Application) : AndroidViewModel(app
     private lateinit var screen: Screen
 
     private lateinit var platforms: List<Platform>
+    private lateinit var objects: List<IDrawable>
     private lateinit var sensorHandler: SensorHandler
     private lateinit var collisionHandler: CollisionHandler
+    private lateinit var objectsHandler: ObjectsHandler
     private lateinit var platformGenerator: PlatformGenerator
 
     fun initialize(screenWidth: Float, screenHeight: Float) {
         this.screen = Screen(screenWidth, screenHeight)
         sensorHandler = SensorHandler(getApplication(), this)
         collisionHandler = CollisionHandler()
+        objectsHandler = ObjectsHandler()
         platformGenerator = PlatformGenerator(application.resources, screenWidth, screenHeight)
 
         ball.setPosition(screen.width/2f, screen.height - 800)
         platforms = platformGenerator.getPlatforms()
+        objects = listOf(ball) + platforms
     }
 
     fun startGameLoop() {
@@ -106,8 +112,8 @@ class GameViewModel(private val application: Application) : AndroidViewModel(app
 //    }
 
     private fun updateGame(elapsedTime: Float) {
-//        Log.d("", "Elapsed time: $elapsedTime")
-        _gameObjects.value = listOf(ball) + platformGenerator.getPlatforms()
+        //Log.d("", "Elapsed time: $elapsedTime")
+        _gameObjects.value = objects
 
         if (Physics().doWeNeedToMove(ball, screen.borderLine)) {
             PositionHandler(_gameObjects.value as List<IDrawable>)
@@ -117,10 +123,9 @@ class GameViewModel(private val application: Application) : AndroidViewModel(app
         ball.updatePositionX(deltaX + deltaX * elapsedTime)
         ball.updatePositionY(elapsedTime)
 
-        // Обновление позиций платформ TODO: подумать
-        platforms.forEach {
+        objects.forEach {
             if (it is MovingPlatformOnY) {
-                it.updatePositionY(0f) // TODO::: to elapsedTime
+                it.updatePositionY(elapsedTime) // TODO::: to elapsedTime
             }
             if (it is MovingPlatformOnX) {
                 it.updatePositionX(0f)
@@ -128,6 +133,8 @@ class GameViewModel(private val application: Application) : AndroidViewModel(app
         }
 
         collisionHandler.checkCollisions(ball, screen, _gameObjects.value?.filterIsInstance<ICollidable>())
+        objects = objectsHandler.updateObjects(screen, _gameObjects.value as List<IDrawable>)
+        Log.i("list size", "${objects}")
     }
 
     override fun onCleared() {
