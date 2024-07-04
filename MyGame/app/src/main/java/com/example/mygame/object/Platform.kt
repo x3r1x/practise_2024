@@ -25,6 +25,8 @@ open class Platform(createdX: Float, createdY: Float) : IDrawable, ICollidable {
     override val bottom
         get() = y + height / 2
 
+    override var isInSpring: Boolean? = null
+
     override fun draw(canvas: Canvas) {
         canvas.drawBitmap(bitmap, left, top, paint)
     }

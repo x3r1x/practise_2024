@@ -10,6 +10,8 @@ interface ICollidable {
     val top: Float
     val bottom: Float
 
+    var isInSpring: Boolean?
+
     fun onObjectCollide(obj: ICollidable)
 
     fun onScreenCollide(screen: Screen)

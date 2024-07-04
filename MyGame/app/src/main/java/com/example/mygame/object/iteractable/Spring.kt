@@ -6,10 +6,12 @@ import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Matrix
 import android.graphics.RectF
+import android.util.Log
 import com.example.mygame.R
 import com.example.mygame.`interface`.ICollidable
 import com.example.mygame.`interface`.IDrawable
 import com.example.mygame.`object`.Platform
+import com.example.mygame.`object`.Player
 import com.example.mygame.`object`.Player.DirectionX
 import com.example.mygame.`object`.Screen
 
@@ -30,23 +32,17 @@ class Spring(createdX: Float, createdY: Float, resources: Resources) : IDrawable
     override var x = createdX
     override var y = createdY
 
-    override val top: Float
-        get() = y - HEIGHT / 2
+    override var isInSpring: Boolean? = null
 
-    override val bottom: Float
-        get() = y + HEIGHT / 2
-
-    override val left: Float
-        get() = x - WIDTH / 2
-
-    override val right: Float
-        get() = x + WIDTH / 2
+    override var left = x - WIDTH / 2
+    override var right = x + WIDTH / 2
+    override var top = y - HEIGHT / 2
+    override var bottom = y + HEIGHT /2
 
     fun moveSpringToPlatform(platform: Platform) {
-        val platformBorderRadius = 20
-        val randomPosition = (0 .. platform.width.toInt() - platformBorderRadius * 2).random()
+        val randomPosition = (MIN_SPRING_SPAWN_X .. MAX_SPRING_SPAWN_X).random()
 
-        setPosition(platform.left + platformBorderRadius + randomPosition ,platform.top - HEIGHT / 2)
+        setPosition(platform.left + randomPosition,platform.top - HEIGHT / 2)
     }
 
     private fun runStretchAnimation() {
@@ -57,26 +53,12 @@ class Spring(createdX: Float, createdY: Float, resources: Resources) : IDrawable
                 addUpdateListener { animator ->
                     currentFrame = animator.animatedValue as Int
                     bitmap = bitmaps[currentFrame]
+                    setPosition(x, y - ANIMATION_HEIGHT_VALUE)
                 }
             }
             animator?.start()
         }
     }
-
-    override fun collidesWith(other: ICollidable?): Boolean {
-        other ?: return false
-
-        return !(right <= other.left ||
-                left >= other.right ||
-                bottom <= other.top ||
-                top >= other.bottom)
-    }
-
-    override fun onObjectCollide(obj: ICollidable) {
-        runStretchAnimation()
-    }
-
-    override fun onScreenCollide(screen: Screen) {}
 
     override fun draw(canvas: Canvas) {
         canvas.drawBitmap(bitmap, left, top, null)
@@ -85,14 +67,38 @@ class Spring(createdX: Float, createdY: Float, resources: Resources) : IDrawable
     override fun setPosition(startX: Float, startY: Float) {
         x = startX
         y = startY
+        left = x - WIDTH / 2
+        right = x + WIDTH / 2
+        top = y - HEIGHT / 2
+        bottom = y + HEIGHT /2
     }
 
     override fun updatePositionX(newX: Float) {}
     override fun updatePositionY(elapsedTime: Float) {}
 
+    override fun collidesWith(other: ICollidable?): Boolean {
+        return if (other !is Player) {
+            false
+        } else {
+            (other.bottom <= top && (other.left <= right || other.right >= left)
+                    && other.bottom >= bottom)
+        }
+    }
+
+    override fun onObjectCollide(obj: ICollidable) {
+        runStretchAnimation()
+        obj.isInSpring = true
+    }
+
+    override fun onScreenCollide(screen: Screen) {}
+
     companion object {
         private const val WIDTH = 78f
         private const val HEIGHT = 53f
+        private const val ANIMATION_HEIGHT_VALUE = 14f
+
+        private const val MIN_SPRING_SPAWN_X = 40
+        private const val MAX_SPRING_SPAWN_X = 180
 
         private val SPRING_IMAGES = listOf(
             R.drawable.spring_state_1,
@@ -104,10 +110,5 @@ class Spring(createdX: Float, createdY: Float, resources: Resources) : IDrawable
         private val BITMAP_OPTIONS = BitmapFactory.Options().apply {
             inScaled = false
         }
-
-//        private const val FIRST_STATE_HEIGHT = 53f
-//        private const val SECOND_STATE_HEIGHT = 73f
-//        private const val THIRD_STATE_HEIGHT = 93f
-//        private const val FOURTH_STATE_HEIGHT = 113f
     }
 }
