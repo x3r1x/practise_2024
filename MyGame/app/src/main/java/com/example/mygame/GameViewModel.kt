@@ -2,6 +2,7 @@ package com.example.mygame
 
 import android.app.Application
 import android.graphics.BitmapFactory
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -93,7 +94,6 @@ class GameViewModel(private val application: Application) : AndroidViewModel(app
     }
 
     private fun updateGame(elapsedTime: Float) {
-        //Log.d("", "Elapsed time: $elapsedTime")
         _gameObjects.value = objects
 
         if (Physics().doWeNeedToMove(ball, screen.maxPlayerHeight)) {
@@ -116,7 +116,7 @@ class GameViewModel(private val application: Application) : AndroidViewModel(app
 
         collisionHandler.checkCollisions(ball, screen, _gameObjects.value?.filterIsInstance<ICollidable>())
         objects = objectsHandler.updateObjects(screen, _gameObjects.value as List<IDrawable>)
-        Log.i("list size", "${objects}")
+        Log.i("object size", "${objects.size}")
     }
 
     override fun onCleared() {
