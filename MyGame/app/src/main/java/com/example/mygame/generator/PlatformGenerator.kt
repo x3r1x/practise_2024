@@ -1,13 +1,12 @@
 package com.example.mygame.generator
 
 import android.content.res.Resources
-import com.example.mygame.factories.BreakingPlatformFactory
+import com.example.mygame.factories.platforms.BreakingPlatformFactory
 import com.example.mygame.factories.DisappearingPlatformFactory
 import com.example.mygame.factories.MovingPlatformOnXFactory
 import com.example.mygame.factories.MovingPlatformOnYFactory
 import com.example.mygame.factories.StaticPlatformFactory
 import com.example.mygame.`object`.Platform
-import kotlin.random.Random
 
 
 class PlatformGenerator(
@@ -24,7 +23,7 @@ class PlatformGenerator(
     private val movingPlatformOnYFactory = MovingPlatformOnYFactory(resources, screenHeight)
 
     private val platform = staticPlatformFactory.generatePlatform(0f, 0f)
-    private val staticPlatform = staticPlatformFactory.generatePlatform(300f, 1750f)
+    private val staticPlatform = staticPlatformFactory.generatePlatform(600f, 1750f)
     private val breakingPlatform = breakingPlatformFactory.generatePlatform(400f, 500f)
     private val disappearingPlatform = disappearingPlatformFactory.generatePlatform(700f, 900f)
     private val movingPlatformOnX = movingPlatformOnXFactory.generatePlatform(300f, 1350f)
@@ -50,10 +49,10 @@ class PlatformGenerator(
 
     private fun generateInitialPlatforms() {
         var currentY = screenHeight - platformGap
-        platforms.add(breakingPlatform)
-        platforms.add(disappearingPlatform)
-        platforms.add(movingPlatformOnX)
-        platforms.add(movingPlatformOnY)
+//        platforms.add(breakingPlatform)
+//        platforms.add(disappearingPlatform)
+//        platforms.add(movingPlatformOnX)
+//        platforms.add(movingPlatformOnY)
         platforms.add(staticPlatform)
         return // delete
 //        while (currentY > -platform.height) {

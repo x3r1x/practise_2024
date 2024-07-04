@@ -11,9 +11,6 @@ class PositionHandler(entities: List<IDrawable>) {
     fun updatePositions(offsetX: Float, offsetY: Float) {
         elements.forEach {
             it.setPosition(it.x - offsetX, it.y - offsetY)
-            if (it is MovingPlatformOnY) {
-                Log.i("offsetY", "$offsetY")
-            }
         }
     }
 }
