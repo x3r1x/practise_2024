@@ -102,11 +102,11 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
     }
 
     override fun onScreenCollide(screen: Screen) {
-        if (left < screen.left) {
+        if (x < screen.left) {
             x = screen.width - RADIUS
         }
 
-        if (right > screen.right) {
+        if (x > screen.right) {
             x = 0f + RADIUS
         }
     }

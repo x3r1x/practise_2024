@@ -91,9 +91,10 @@ class GameViewModel(private val application: Application) : AndroidViewModel(app
     private fun updateGame(elapsedTime: Float) {
         _gameObjects.value = listOf(ball) + platformGenerator.getPlatforms()
 
-        if (Physics().doWeNeedToMove(ball, screen.borderLine)) {
+        if (Physics().doWeNeedToMove(ball, screen.maxPlayerHeight)) {
             PositionHandler(_gameObjects.value as List<IDrawable>)
-                .updatePositions(0f, Physics().moveOffset(ball, screen.borderLine))
+                .updatePositions(0f, Physics().moveOffset(ball, screen.maxPlayerHeight))
+            platformGenerator.generateNextPlatform()
         }
 
         ball.updatePositionX(deltaX + deltaX * elapsedTime)
