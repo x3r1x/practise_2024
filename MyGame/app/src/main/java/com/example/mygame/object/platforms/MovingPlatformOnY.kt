@@ -1,7 +1,6 @@
 package com.example.mygame.`object`.platforms
 
 import android.graphics.Bitmap
-import android.util.Log
 import com.example.mygame.`object`.Platform
 
 class MovingPlatformOnY(

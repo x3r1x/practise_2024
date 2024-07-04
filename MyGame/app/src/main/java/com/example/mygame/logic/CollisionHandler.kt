@@ -5,8 +5,6 @@ import com.example.mygame.`object`.Player
 import com.example.mygame.`object`.Screen
 import com.example.mygame.`object`.platforms.BreakingPlatform
 import com.example.mygame.`object`.platforms.DisappearingPlatform
-import com.example.mygame.`object`.platforms.MovingPlatformOnX
-import com.example.mygame.`object`.platforms.MovingPlatformOnY
 
 class CollisionHandler {
     fun checkCollisions(player: Player, screen: Screen, objects: List<ICollidable>?) {

@@ -9,7 +9,6 @@ import android.graphics.RectF
 import com.example.mygame.Physics
 import com.example.mygame.`interface`.ICollidable
 import com.example.mygame.`interface`.IDrawable
-import com.example.mygame.`object`.platforms.BreakingPlatform
 
 class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDrawable, ICollidable {
     enum class DirectionY(val value: Int) {
