@@ -51,7 +51,8 @@ class PlatformGenerator(
         currentY = randomY - platformGap
         val platform = factories.random().generatePlatform(
             Random.nextFloat() * (screenWidth - 350f) + 300f,
-                    randomY)
+                    randomY
+        )
 
         platforms += platform
     }
