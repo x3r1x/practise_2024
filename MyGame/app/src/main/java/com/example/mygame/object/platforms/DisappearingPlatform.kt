@@ -22,7 +22,6 @@ class DisappearingPlatform(
     }
 
     var isDestroying = false
-
     // Callback - удаление текущего объекта из листа
     fun animatePlatformColor(callback: () -> Unit) {
         if (!isDestroying) {
@@ -44,7 +43,6 @@ class DisappearingPlatform(
             colorAnimator.start()
         }
     }
-
 
     private val colorChangeDuration: Long = 2000
     private val disappearingDuration: Long = 800

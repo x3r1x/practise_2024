@@ -96,7 +96,9 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
         x += newX
     }
 
-    override fun updatePositionY(previousY: Float, elapsedTime: Float) {
+    override fun updatePositionY(elapsedTime: Float) {
+        var previousY = y
+
         y += speedY * directionY.value * elapsedTime
         speedY += elapsedTime * Physics.GRAVITY * directionY.value
 
@@ -106,10 +108,6 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
     }
 
     override fun onObjectCollide(obj: ICollidable) {
-        if (obj is BreakingPlatform) {
-            return
-        }
-
         setPosition(x, obj.top - RADIUS - 10f)
         directionY = DirectionY.UP
         speedY = JUMP_SPEED

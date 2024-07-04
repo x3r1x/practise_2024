@@ -14,8 +14,13 @@ import com.example.mygame.logic.SensorHandler
 import com.example.mygame.`object`.Platform
 import com.example.mygame.`object`.Player
 import com.example.mygame.`object`.Screen
+import com.example.mygame.`object`.platforms.MovingPlatformOnX
 import com.example.mygame.`object`.platforms.MovingPlatformOnY
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class GameViewModel(private val application: Application) : AndroidViewModel(application), SensorHandler.SensorCallback {
     val gameObjects: LiveData<List<IDrawable>> get() = _gameObjects
@@ -110,12 +115,15 @@ class GameViewModel(private val application: Application) : AndroidViewModel(app
         }
 
         ball.updatePositionX(deltaX + deltaX * elapsedTime)
-        ball.updatePositionY(ball.y, elapsedTime)
+        ball.updatePositionY(elapsedTime)
 
         // Обновление позиций платформ TODO: подумать
         platforms.forEach {
             if (it is MovingPlatformOnY) {
-                it.updatePositionY(0f, 0f)
+                it.updatePositionY(0f) // TODO::: to elapsedTime
+            }
+            if (it is MovingPlatformOnX) {
+                it.updatePositionX(0f)
             }
         }
 

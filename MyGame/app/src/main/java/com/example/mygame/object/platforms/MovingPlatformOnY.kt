@@ -46,18 +46,19 @@ class MovingPlatformOnY(
         }
     }
 
-    // Проблема при движении платформы вверх и смещении всех платформ - текущая платформа продолжает двигаться вверх и ее границы съезжают
     override fun setPosition(startX: Float, startY: Float) {
         var offsetY = startY - y
+
         minY += offsetY
         maxY += offsetY
+
         x = startX
         y = startY
-        Log.i("rangeY", "range: [$minY ; $maxY]  y: $y")
     }
 
-    override fun updatePositionY(previousY: Float, elapsedTime: Float) {
+    override fun updatePositionY(elapsedTime: Float) {
         updateDirection()
+
         if (directionY == DirectionY.UP) {
             y -= speedY
         } else if (directionY == DirectionY.DOWN) {

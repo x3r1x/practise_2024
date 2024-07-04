@@ -24,25 +24,18 @@ class CollisionHandler {
                 }
 
                 if (player != obj && player.collidesWith(obj)) {
+                    // Соприкосновение игрока сo сломанной платформой
+                    if (obj is BreakingPlatform) {
+                        obj.runDestructionAnimation(screen.height, { }) // TODO: Убрать callback-функцию
+                        continue
+                    }
                     // Реакция игрока на коллизию
                     player.onObjectCollide(obj)
-                    // Соприкосновение игрока с сломанной платформой
-                    if (obj is BreakingPlatform) {
-                        obj.runDestructionAnimation(screen.height, { })
-                    }
                     // Соприкосновение игрока с исчезающей платформой
                     if (obj is DisappearingPlatform) {
                         obj.animatePlatformColor({})
                     }
                 }
-                if (obj is MovingPlatformOnY) {
-                    obj.updatePositionY(0f, 0f)
-                }
-
-                if (obj is MovingPlatformOnX) {
-                    obj.updatePositionX(0f)
-                }
-
             }
         }
     }
