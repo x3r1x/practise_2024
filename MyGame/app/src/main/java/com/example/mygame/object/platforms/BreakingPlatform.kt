@@ -1,7 +1,5 @@
 package com.example.mygame.`object`.platforms
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
 import android.graphics.Bitmap
 import com.example.mygame.`object`.Platform
@@ -17,8 +15,8 @@ class BreakingPlatform(initBitmaps: MutableList<Bitmap>,
         bitmaps = initBitmaps
         bitmap = bitmaps[currentFrameIndex]
     }
-    // Callback - удаление текущего объекта из листа
-    fun runDestructionAnimation(screenHeight: Float, callback: () -> Unit) {
+
+    fun runDestructionAnimation(screenHeight: Float) {
         if (!isBreakRunning) {
             isBreakRunning = true
             animator = ValueAnimator.ofInt(0, bitmaps.size - 1).apply {
@@ -29,7 +27,7 @@ class BreakingPlatform(initBitmaps: MutableList<Bitmap>,
                 }
             }
             animator?.start()
-            runFallingAnimation(screenHeight, callback)
+            runFallingAnimation(screenHeight)
         }
     }
 
@@ -39,7 +37,7 @@ class BreakingPlatform(initBitmaps: MutableList<Bitmap>,
 
     private val durationBreakingAnimation : Long = 150
 
-    private fun runFallingAnimation(screenHeight: Float, callback: () -> Unit) {
+    private fun runFallingAnimation(screenHeight: Float) {
         val startY = y
         val endY = screenHeight
         val animator = ValueAnimator.ofFloat(startY, endY).apply {
@@ -48,11 +46,6 @@ class BreakingPlatform(initBitmaps: MutableList<Bitmap>,
                 val currentY = animation.animatedValue as Float
                 setPosition(x, currentY)
             }
-            addListener(object : AnimatorListenerAdapter() {
-                override fun onAnimationEnd(animation: Animator) {
-                    callback()
-                }
-            })
         }
         animator.start()
     }

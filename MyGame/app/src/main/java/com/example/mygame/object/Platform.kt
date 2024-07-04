@@ -49,6 +49,10 @@ open class Platform(createdX: Float, createdY: Float) : IDrawable, ICollidable {
     override fun collidesWith(other: ICollidable?): Boolean {
         other ?: return false
 
+        if (other is Screen) {
+            return top >= other.bottom
+        }
+
         return !(right <= other.left ||
                 left >= other.right ||
                 bottom <= other.top ||
