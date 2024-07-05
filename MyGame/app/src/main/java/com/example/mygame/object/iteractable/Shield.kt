@@ -41,7 +41,7 @@ class Shield(resources: Resources, entity: Player) : IDrawable, ICollidable {
     override var isInSpring: Boolean? = null
 
     fun createOnPlatform(platform: Platform) {
-        setPosition(platform.x, platform.top - DEFAULT_SIDE / 2 - SHIELD_OFFSET)
+        setPosition(platform.x, platform.top - DEFAULT_SIDE / 2 - OFFSET)
     }
 
     private fun convertShield() {
@@ -118,7 +118,7 @@ class Shield(resources: Resources, entity: Player) : IDrawable, ICollidable {
     }
 
     companion object {
-        private const val SHIELD_OFFSET = 25f
+        private const val OFFSET = 25f
         private const val DEFAULT_SIDE = 100f
         private const val ON_PLAYER_SIDE = 245f
 
