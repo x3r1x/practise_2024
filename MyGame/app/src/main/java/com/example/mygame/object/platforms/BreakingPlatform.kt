@@ -19,8 +19,8 @@ class BreakingPlatform(initBitmaps: MutableList<Bitmap>,
     fun runDestructionAnimation(screenHeight: Float) {
         if (!isBreakRunning) {
             isBreakRunning = true
-            animator = ValueAnimator.ofInt(0, bitmaps.size - 1).apply {
-                this.duration = durationBreakingAnimation
+            val animator = ValueAnimator.ofInt(0, bitmaps.size - 1).apply {
+                this.duration = DESTRUCTION_DURATION
                 addUpdateListener { animator ->
                     currentFrameIndex = animator.animatedValue as Int
                     bitmap = bitmaps[currentFrameIndex]
@@ -33,20 +33,21 @@ class BreakingPlatform(initBitmaps: MutableList<Bitmap>,
 
     private var isBreakRunning = false
 
-    private var animator: ValueAnimator? = null
-
-    private val durationBreakingAnimation : Long = 150
-
     private fun runFallingAnimation(screenHeight: Float) {
         val startY = y
         val endY = screenHeight
         val animator = ValueAnimator.ofFloat(startY, endY).apply {
-            duration = 2000 // Длительность анимации в миллисекундах
+            duration = FALLING_DURATION // Длительность анимации в миллисекундах
             addUpdateListener { animation ->
                 val currentY = animation.animatedValue as Float
                 setPosition(x, currentY)
             }
         }
         animator.start()
+    }
+
+    companion object {
+        private const val DESTRUCTION_DURATION : Long = 150
+        private const val FALLING_DURATION : Long = 2000
     }
 }

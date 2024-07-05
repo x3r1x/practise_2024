@@ -6,18 +6,15 @@ import com.example.mygame.`object`.Platform
 class MovingPlatformOnY(
     initBitmap: Bitmap,
     createdX: Float,
-    createdY: Float,
-    screenHeight: Float
+    createdY: Float
 ) : Platform(createdX, createdY) {
-    var minY = 0f
-    var maxY = 0f
+    private var minY = 0f
+    private var maxY = 0f
 
-    private var range = 0f
     init {
         this.bitmap = initBitmap
-        minY = createdY - screenHeight / 8
-        maxY = createdY + screenHeight / 8
-        range = screenHeight / 8
+        minY = createdY - RANGE
+        maxY = createdY + RANGE
     }
 
     enum class DirectionY(val value: Int) {
@@ -25,10 +22,10 @@ class MovingPlatformOnY(
         DOWN(1),
     }
 
-    var directionY = randomDirectionY()
+    private var directionY = randomDirectionY()
 
     private fun randomDirectionY() : DirectionY {
-        var value = (DirectionY.UP.value..DirectionY.DOWN.value).random()
+        val value = (DirectionY.UP.value..DirectionY.DOWN.value).random()
 
         if (value == DirectionY.UP.value) {
             return DirectionY.UP
@@ -37,7 +34,7 @@ class MovingPlatformOnY(
         }
     }
 
-    fun updateDirection() {
+    private fun updateDirection() {
         if (y <= minY) {
             directionY = DirectionY.DOWN
         } else if (y + height >= maxY) {
@@ -46,7 +43,7 @@ class MovingPlatformOnY(
     }
 
     override fun setPosition(startX: Float, startY: Float) {
-        var offsetY = startY - y
+        val offsetY = startY - y
 
         minY += offsetY
         maxY += offsetY
@@ -59,13 +56,14 @@ class MovingPlatformOnY(
         updateDirection()
 
         if (directionY == DirectionY.UP) {
-            y -= speedY
+            y -= SPEED_ON_Y
         } else if (directionY == DirectionY.DOWN) {
-            y += speedY
+            y += SPEED_ON_Y
         }
     }
 
     companion object {
-        const val speedY = 2f
+        const val SPEED_ON_Y = 2f
+        const val RANGE = 400f
     }
 }

@@ -8,14 +8,13 @@ import com.example.mygame.`object`.platforms.MovingPlatformOnY
 import com.example.mygame.`interface`.IPlatformFactory.Companion.BITMAP_OPTIONS
 
 class MovingPlatformOnYFactory(
-    private val resources: Resources,
-    private val screenHeight: Float
+    private val resources: Resources
 ) : IPlatformFactory {
     private val platformImage = R.drawable.moving_platform_on_y
 
     override fun generatePlatform(createdX: Float, createdY: Float): MovingPlatformOnY {
         val bitmap = BitmapFactory.decodeResource(resources, platformImage, BITMAP_OPTIONS)
 
-        return MovingPlatformOnY(bitmap, createdX, createdY, screenHeight)
+        return MovingPlatformOnY(bitmap, createdX, createdY)
     }
 }

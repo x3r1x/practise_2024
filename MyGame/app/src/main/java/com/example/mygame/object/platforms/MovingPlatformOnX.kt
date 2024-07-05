@@ -18,10 +18,10 @@ class MovingPlatformOnX(
         RIGHT(1)
     }
 
-    var directionX = directionXRandom()
+    private var directionX = directionXRandom()
 
     private fun directionXRandom() : DirectionX {
-        var value = (DirectionX.LEFT.value..DirectionX.RIGHT.value).random()
+        val value = (DirectionX.LEFT.value..DirectionX.RIGHT.value).random()
         if (value == DirectionX.LEFT.value) {
             return DirectionX.LEFT
         } else {
@@ -39,13 +39,13 @@ class MovingPlatformOnX(
 
     override fun updatePositionX(newX: Float) {
         if (directionX == DirectionX.LEFT) {
-            x -= speedX
+            x -= SPEED_ON_X
         } else {
-            x += speedX
+            x += SPEED_ON_X
         }
     }
 
     companion object {
-        const val speedX = 2f
+        private const val SPEED_ON_X = 2f
     }
 }

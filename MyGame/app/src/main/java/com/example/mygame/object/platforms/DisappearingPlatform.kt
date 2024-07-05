@@ -17,16 +17,12 @@ class DisappearingPlatform(
         this.bitmap = initBitmap
     }
 
-    var platformColor = Paint().apply {
-        color = bitmap.getPixel(bitmap.width / 2, bitmap.height / 2) //Color.YELLOW
-    }
-
     var isDestroying = false
 
     fun animatePlatformColor() {
         if (!isDestroying) {
-            val colorAnimator = ValueAnimator.ofArgb(platformColor.color, endColor).apply {
-                this.duration = colorChangeDuration
+            val colorAnimator = ValueAnimator.ofArgb(platformColor.color, RED_COLOR).apply {
+                this.duration = COLOR_CHANGE_DURATION
                 addUpdateListener { animator ->
                     val currentColor = animator.animatedValue as Int
                     platformColor.color = currentColor
@@ -42,15 +38,13 @@ class DisappearingPlatform(
         }
     }
 
-    private val colorChangeDuration: Long = 2000
-    private val disappearingDuration: Long = 800
-
-    private val transparentColor = Color.TRANSPARENT
-    private val endColor = Color.RED
+    private var platformColor = Paint().apply {
+        color = bitmap.getPixel(bitmap.width / 2, bitmap.height / 2) //Color.YELLOW
+    }
 
     private fun runDisappearingAnimation() {
-        val platformColorAnimator = ValueAnimator.ofArgb(platformColor.color, transparentColor).apply {
-            this.duration = disappearingDuration
+        val platformColorAnimator = ValueAnimator.ofArgb(platformColor.color, TRANSPARENT_COLOR).apply {
+            this.duration = DISAPPEARING_DURATION
             addUpdateListener { animator ->
                 val currentColor = animator.animatedValue as Int
                 paint.color = currentColor
@@ -61,7 +55,6 @@ class DisappearingPlatform(
                 }
             })
         }
-
         platformColorAnimator.start()
     }
 
@@ -70,6 +63,7 @@ class DisappearingPlatform(
         val width = bitmap.width
         val height = bitmap.height
         val pixels = IntArray(width * height)
+
         bitmap.getPixels(pixels, 0, width, 0, 0, width, height)
 
         for (i in pixels.indices) {
@@ -84,9 +78,15 @@ class DisappearingPlatform(
 
             pixels[i] = Color.argb(alpha, redModified, greenModified, blueModified)
         }
-
         val modifiedBitmap = Bitmap.createBitmap(width, height, bitmap.config)
         modifiedBitmap.setPixels(pixels, 0, width, 0, 0, width, height)
         return modifiedBitmap
+    }
+
+    companion object {
+        private const val COLOR_CHANGE_DURATION: Long = 2000
+        private val DISAPPEARING_DURATION: Long = 800
+        private val TRANSPARENT_COLOR = Color.TRANSPARENT
+        private val RED_COLOR = Color.RED
     }
 }

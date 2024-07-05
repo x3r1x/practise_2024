@@ -38,9 +38,14 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
     override val bottom
         get() = y + RADIUS
 
-    private fun changeDirection(newX: Float) {
-        if (newX < -DISTANCE_TO_TURN) {directionX = DirectionX.LEFT}
-        if (newX >  DISTANCE_TO_TURN) {directionX = DirectionX.RIGHT}
+    private fun changeDirectionX(newX: Float) {
+        if (newX < -DISTANCE_TO_TURN)
+        {
+            directionX = DirectionX.LEFT
+        } else if (newX > DISTANCE_TO_TURN)
+        {
+            directionX = DirectionX.RIGHT
+        }
     }
 
     private fun applyTransformations(matrix: Matrix, destRect: RectF) {
@@ -81,11 +86,11 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
 
     override fun updatePositionX(newX: Float) {
         x += newX
-        changeDirection(newX)
+        changeDirectionX(newX)
     }
 
     override fun updatePositionY(elapsedTime: Float) {
-        var previousY = y
+        val previousY = y
 
         y += speedY * directionY.value * elapsedTime
         speedY += elapsedTime * Physics.GRAVITY * directionY.value

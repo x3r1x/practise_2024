@@ -6,7 +6,6 @@ import com.example.mygame.factories.platforms.DisappearingPlatformFactory
 import com.example.mygame.factories.platforms.MovingPlatformOnXFactory
 import com.example.mygame.factories.platforms.MovingPlatformOnYFactory
 import com.example.mygame.factories.platforms.StaticPlatformFactory
-import com.example.mygame.`interface`.IPlatformFactory
 import com.example.mygame.`object`.Platform
 import kotlin.random.Random
 
@@ -14,7 +13,7 @@ import kotlin.random.Random
 class PlatformGenerator(
     var resources: Resources,
     private val screenWidth: Float,
-    private val screenHeight: Float
+    screenHeight: Float
 ) {
     private var currentY = screenHeight
 
@@ -29,7 +28,7 @@ class PlatformGenerator(
     private val disappearingPlatformFactory = DisappearingPlatformFactory(resources)
     private val movingPlatformOnXFactory = MovingPlatformOnXFactory(resources)
 
-    private val movingPlatformOnYFactory = MovingPlatformOnYFactory(resources, screenHeight)
+    private val movingPlatformOnYFactory = MovingPlatformOnYFactory(resources)
 
     private val factories = listOf(
         staticPlatformFactory,
