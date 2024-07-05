@@ -1,14 +1,14 @@
 package com.example.mygame.generator
 
-import kotlin.random.Random
 import android.content.res.Resources
-import com.example.mygame.`object`.Platform
-import com.example.mygame.`interface`.IPlatformFactory
-import com.example.mygame.factories.platforms.StaticPlatformFactory
 import com.example.mygame.factories.platforms.BreakingPlatformFactory
+import com.example.mygame.factories.platforms.DisappearingPlatformFactory
 import com.example.mygame.factories.platforms.MovingPlatformOnXFactory
 import com.example.mygame.factories.platforms.MovingPlatformOnYFactory
-import com.example.mygame.factories.platforms.DisappearingPlatformFactory
+import com.example.mygame.factories.platforms.StaticPlatformFactory
+import com.example.mygame.`interface`.IPlatformFactory
+import com.example.mygame.`object`.Platform
+import kotlin.random.Random
 
 class PlatformGenerator(
     var resources: Resources,
@@ -23,8 +23,6 @@ class PlatformGenerator(
     private val movingPlatformOnXFactory = MovingPlatformOnXFactory(resources)
     private val movingPlatformOnYFactory = MovingPlatformOnYFactory(resources)
 
-    private val platform = Platform(0f, 0f)
-
     private val platformGap: Float = 20f
 
     private val factories = listOf(
@@ -34,29 +32,38 @@ class PlatformGenerator(
         movingPlatformOnXFactory
     )
 
-    private val activePlatforms: MutableList<Platform> = mutableListOf()
+    private val platform = Platform(0f, 0f)
+
+    private val platforms: MutableList<Platform> = mutableListOf()
+
+    private var needsGeneration = true
 
     init {
         generateInitialPlatforms()
     }
 
-    fun getActivePlatforms(): List<Platform> {
-        return activePlatforms
+    fun getPlatforms(): List<Platform> {
+        return platforms
     }
 
     fun generatePlatformsIfNeeded() {
-        if (activePlatforms.lastIndex < 40) {
+        if (needsGeneration) {
             generatePlatforms()
+            needsGeneration = false
         }
     }
 
     fun update() {
-        val iterator = activePlatforms.iterator()
+        val iterator = platforms.iterator()
         while (iterator.hasNext()) {
             val platform = iterator.next()
             if (platform.top > screenHeight) {
                 iterator.remove()
             }
+        }
+
+        if (platforms.size < 40) {
+            needsGeneration = true
         }
     }
 
@@ -68,7 +75,7 @@ class PlatformGenerator(
         while (nextY >= 0) {
             val x = Random.nextFloat() * (screenWidth - platform.width)
             val newPlatform = staticPlatformFactory.generatePlatform(x, nextY)
-            activePlatforms.add(newPlatform)
+            platforms.add(newPlatform)
             nextY -= platform.height + platformGap
         }
     }
@@ -80,7 +87,7 @@ class PlatformGenerator(
         for (i in 0 until numberOfPlatforms) {
             val x = Random.nextFloat() * (screenWidth - platform.width)
             val platform = factory.generatePlatform(x, nextY)
-            activePlatforms.add(platform)
+            platforms.add(platform)
             nextY -= platform.height + platformGap
         }
     }

@@ -1,7 +1,7 @@
 package com.example.mygame.`object`
 
-import android.util.Log
 import com.example.mygame.`interface`.ICollidable
+import com.example.mygame.`interface`.IDrawable
 
 class Screen(val width: Float, val height: Float): ICollidable {
     override val left = 0f
@@ -25,7 +25,6 @@ class Screen(val width: Float, val height: Float): ICollidable {
         val isOutOfSideBounds = other.right < left || other.left > right
         val isOutOfTopBound = other.bottom < top
         val isOutOfBottomBound = other.top > bottom
-        Log.i("object positions", "${other.top}")
         return isOutOfSideBounds || isOutOfTopBound || isOutOfBottomBound
     }
 

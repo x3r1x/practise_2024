@@ -89,8 +89,6 @@ class GameViewModel(private val application: Application) : AndroidViewModel(app
         collisionHandler.checkCollisions(objectsManager.player, screen, _gameObjects.value?.filterIsInstance<ICollidable>())
 
         PositionHandler(_gameObjects.value!!.filterIsInstance<IMoveable>()).updatePositions(deltaX, elapsedTime)
-
-        Log.i("object size", "${objectsManager.objects.size}")
     }
 
     override fun onCleared() {
