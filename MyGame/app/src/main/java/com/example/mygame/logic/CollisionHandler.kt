@@ -1,8 +1,8 @@
 package com.example.mygame.logic
 
-import com.example.mygame.`interface`.ICollidable
 import com.example.mygame.`object`.Player
 import com.example.mygame.`object`.Screen
+import com.example.mygame.`interface`.ICollidable
 import com.example.mygame.`object`.platforms.BreakingPlatform
 import com.example.mygame.`object`.platforms.DisappearingPlatform
 

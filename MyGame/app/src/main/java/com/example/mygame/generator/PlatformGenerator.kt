@@ -1,14 +1,14 @@
 package com.example.mygame.generator
 
+import kotlin.random.Random
 import android.content.res.Resources
+import com.example.mygame.`object`.Platform
+import com.example.mygame.`interface`.IPlatformFactory
+import com.example.mygame.factories.platforms.StaticPlatformFactory
 import com.example.mygame.factories.platforms.BreakingPlatformFactory
-import com.example.mygame.factories.platforms.DisappearingPlatformFactory
 import com.example.mygame.factories.platforms.MovingPlatformOnXFactory
 import com.example.mygame.factories.platforms.MovingPlatformOnYFactory
-import com.example.mygame.factories.platforms.StaticPlatformFactory
-import com.example.mygame.`interface`.IPlatformFactory
-import com.example.mygame.`object`.Platform
-import kotlin.random.Random
+import com.example.mygame.factories.platforms.DisappearingPlatformFactory
 
 class PlatformGenerator(
     var resources: Resources,
@@ -43,6 +43,8 @@ class PlatformGenerator(
     }
 
     fun getPlatforms(): List<Platform> {
+        // TODO: Передавать последнюю платформу в генератор
+        // TODO: На основе её генерировать блок платформ
         return platforms
     }
 
@@ -68,6 +70,7 @@ class PlatformGenerator(
     }
 
     private fun getRandomFactory(): IPlatformFactory {
+        // TODO: Сделать шанс генерации на основе score 
         return factories[Random.nextInt(factories.size)]
     }
 
@@ -81,6 +84,8 @@ class PlatformGenerator(
     }
 
     private fun generatePlatforms() {
+        // TODO: Добавить генерацию сломанных платформ 
+        // TODO: Они генерируются в дополнение к основным
         val factory = getRandomFactory()
         val numberOfPlatforms = Random.nextInt(1, 5)
 

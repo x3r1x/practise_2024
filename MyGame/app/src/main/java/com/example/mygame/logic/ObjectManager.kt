@@ -1,22 +1,21 @@
 package com.example.mygame.logic
 
-import android.content.res.Resources
 import android.util.Log
-import com.example.mygame.factories.PlayerFactory
-import com.example.mygame.generator.PlatformGenerator
-import com.example.mygame.`interface`.ICollidable
-import com.example.mygame.`interface`.IDrawable
-import com.example.mygame.`object`.Platform
+import android.content.res.Resources
 import com.example.mygame.`object`.Player
 import com.example.mygame.`object`.Screen
+import com.example.mygame.`interface`.IDrawable
+import com.example.mygame.`interface`.ICollidable
+import com.example.mygame.factories.PlayerFactory
+import com.example.mygame.generator.PlatformGenerator
 import com.example.mygame.`object`.platforms.DisappearingPlatform
 
 class ObjectsManager(
     private val resources: Resources,
     private val screen: Screen
 ) {
-    val player = PlayerFactory(resources).generatePlayer()
     var objects = mutableListOf<IDrawable>()
+    val player = PlayerFactory(resources).generatePlayer()
     private val platformGenerator = PlatformGenerator(resources, screen.width, screen.height)
 
     fun initObjects() {
