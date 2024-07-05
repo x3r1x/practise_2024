@@ -5,8 +5,9 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import com.example.mygame.`interface`.ICollidable
 import com.example.mygame.`interface`.IDrawable
+import com.example.mygame.`interface`.IMoveable
 
-open class Platform(createdX: Float, createdY: Float) : IDrawable, ICollidable {
+open class Platform(createdX: Float, createdY: Float) : IDrawable, ICollidable, IMoveable {
     val width = 220f
     val height = 45f
 

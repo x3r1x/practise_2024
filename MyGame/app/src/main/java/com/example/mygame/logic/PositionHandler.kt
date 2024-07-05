@@ -1,9 +1,9 @@
 package com.example.mygame.logic
 
-import com.example.mygame.`interface`.IDrawable
+import com.example.mygame.`interface`.IMoveable
 import com.example.mygame.`object`.Player
 
-class PositionHandler(entities: List<IDrawable>) {
+class PositionHandler(entities: List<IMoveable>) {
     private val elements = entities
 
     // при движении экрана

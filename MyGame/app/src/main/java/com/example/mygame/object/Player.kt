@@ -7,8 +7,9 @@ import android.graphics.Matrix
 import com.example.mygame.Physics
 import com.example.mygame.`interface`.IDrawable
 import com.example.mygame.`interface`.ICollidable
+import com.example.mygame.`interface`.IMoveable
 
-class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDrawable, ICollidable {
+class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDrawable, ICollidable, IMoveable {
     enum class DirectionY(val value: Int) {
         UP(-1),
         DOWN(1),
@@ -101,9 +102,11 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
     }
 
     override fun onObjectCollide(obj: ICollidable) {
-        setPosition(x, obj.top - RADIUS - 10f)
-        directionY = DirectionY.UP
-        speedY = JUMP_SPEED
+        if (obj is Platform) {
+            setPosition(x, obj.top - RADIUS - 10f)
+            directionY = DirectionY.UP
+            speedY = JUMP_SPEED
+        }
     }
 
     override fun onScreenCollide(screen: Screen) {

@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.mygame.`interface`.ICollidable
 import com.example.mygame.`interface`.IDrawable
+import com.example.mygame.`interface`.IMoveable
 import com.example.mygame.logic.CollisionHandler
 import com.example.mygame.logic.ObjectsManager
 import com.example.mygame.logic.PositionHandler
@@ -80,14 +81,14 @@ class GameViewModel(private val application: Application) : AndroidViewModel(app
         _gameObjects.value = objectsManager.objects
 
         if (Physics().doWeNeedToMove(objectsManager.player, screen.maxPlayerHeight)) {
-            PositionHandler(_gameObjects.value as List<IDrawable>)
+            PositionHandler(_gameObjects.value!!.filterIsInstance<IMoveable>())
                 .screenPromotion(0f, Physics().moveOffset(objectsManager.player, screen.maxPlayerHeight))
             objectsManager.updateObjects()
         }
 
         collisionHandler.checkCollisions(objectsManager.player, screen, _gameObjects.value?.filterIsInstance<ICollidable>())
 
-        PositionHandler(_gameObjects.value as List<IDrawable>).updatePositions(deltaX, elapsedTime)
+        PositionHandler(_gameObjects.value!!.filterIsInstance<IMoveable>()).updatePositions(deltaX, elapsedTime)
 
         Log.i("object size", "${objectsManager.objects.size}")
     }
