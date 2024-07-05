@@ -58,7 +58,7 @@ class PlatformGenerator(
     }
 
     fun generatePlatformsIfNeeded() {
-        if (activePlatforms.isEmpty() || activePlatforms.last().top >= screenHeight - platform.height - platformGap) {
+        if (activePlatforms.lastIndex < 40) {
             generatePlatforms()
         }
     }
