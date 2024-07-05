@@ -44,6 +44,22 @@ class PlatformGenerator(
         return activePlatforms
     }
 
+    fun generatePlatformsIfNeeded() {
+        if (activePlatforms.lastIndex < 40) {
+            generatePlatforms()
+        }
+    }
+
+    fun update() {
+        val iterator = activePlatforms.iterator()
+        while (iterator.hasNext()) {
+            val platform = iterator.next()
+            if (platform.top > screenHeight) {
+                iterator.remove()
+            }
+        }
+    }
+
     private fun getRandomFactory(): IPlatformFactory {
         return factories[Random.nextInt(factories.size)]
     }
@@ -57,12 +73,6 @@ class PlatformGenerator(
         }
     }
 
-    fun generatePlatformsIfNeeded() {
-        if (activePlatforms.lastIndex < 40) {
-            generatePlatforms()
-        }
-    }
-
     private fun generatePlatforms() {
         val factory = getRandomFactory()
         val numberOfPlatforms = Random.nextInt(1, 5)
@@ -72,16 +82,6 @@ class PlatformGenerator(
             val platform = factory.generatePlatform(x, nextY)
             activePlatforms.add(platform)
             nextY -= platform.height + platformGap
-        }
-    }
-
-    fun update() {
-        val iterator = activePlatforms.iterator()
-        while (iterator.hasNext()) {
-            val platform = iterator.next()
-            if (platform.top > screenHeight) {
-                iterator.remove()
-            }
         }
     }
 }
