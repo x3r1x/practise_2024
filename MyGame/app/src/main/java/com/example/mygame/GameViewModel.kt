@@ -74,13 +74,13 @@ class GameViewModel(private val application: Application) : AndroidViewModel(app
                 elapsedTime = (systemTime - startTime) / 1000f
 
                 if (elapsedTime < MAX_FRAME_TIME) {
+                    delay(1)
                     continue
                 }
 
                 startTime = systemTime
 
                 updateGame(elapsedTime)
-                delay(1)
             }
         }
     }
