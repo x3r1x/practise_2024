@@ -1,34 +1,31 @@
 package com.example.mygame.generator
 
+import kotlin.random.Random
 import android.content.res.Resources
+import com.example.mygame.`object`.Platform
+import com.example.mygame.`interface`.IPlatformFactory
+import com.example.mygame.factories.platforms.StaticPlatformFactory
 import com.example.mygame.factories.platforms.BreakingPlatformFactory
-import com.example.mygame.factories.platforms.DisappearingPlatformFactory
 import com.example.mygame.factories.platforms.MovingPlatformOnXFactory
 import com.example.mygame.factories.platforms.MovingPlatformOnYFactory
-import com.example.mygame.factories.platforms.StaticPlatformFactory
-import com.example.mygame.`object`.Platform
-import kotlin.random.Random
-
+import com.example.mygame.factories.platforms.DisappearingPlatformFactory
 
 class PlatformGenerator(
     var resources: Resources,
     private val screenWidth: Float,
-    screenHeight: Float
+    private val screenHeight: Float
 ) {
-    private var currentY = screenHeight
-
-    private val platform = Platform(0f,0f)
-
-    private val platformGap = 20f + platform.height
-
-    private val platforms: MutableList<Platform> = mutableListOf()
+    private var nextY: Float = screenHeight
 
     private val staticPlatformFactory = StaticPlatformFactory(resources)
     private val breakingPlatformFactory = BreakingPlatformFactory(resources)
     private val disappearingPlatformFactory = DisappearingPlatformFactory(resources)
     private val movingPlatformOnXFactory = MovingPlatformOnXFactory(resources)
-
     private val movingPlatformOnYFactory = MovingPlatformOnYFactory(resources)
+
+    private val platform = Platform(0f, 0f)
+
+    private val platformGap: Float = 20f
 
     private val factories = listOf(
         staticPlatformFactory,
@@ -37,41 +34,53 @@ class PlatformGenerator(
         movingPlatformOnXFactory
     )
 
+    private val activePlatforms: MutableList<Platform> = mutableListOf()
+
     init {
         generateInitialPlatforms()
     }
 
-    fun getPlatforms(): MutableList<Platform> {
-        return platforms
+    fun getActivePlatforms(): List<Platform> {
+        return activePlatforms
     }
 
-    fun generateNextPlatform() {
-        val randomY = currentY - (Random.nextFloat() * 200f + 200f) // случайное положение между 200 и 400 пикселями
-        currentY = randomY - platformGap
-        val platform = factories.random().generatePlatform(
-            Random.nextFloat() * (screenWidth - 350f) + 300f,
-                    randomY
-        )
-
-        platforms += platform
-    }
-
-    fun updatePlatforms(dy: Float) {
-        TODO("Требуется реализация")
+    private fun getRandomFactory(): IPlatformFactory {
+        return factories[Random.nextInt(factories.size)]
     }
 
     private fun generateInitialPlatforms() {
-
-        while (currentY > -platform.height) {
+        while (nextY >= 0) {
             val x = Random.nextFloat() * (screenWidth - platform.width)
-            platforms.add(staticPlatformFactory.generatePlatform(x, currentY))
-            currentY -= platformGap
+            val newPlatform = staticPlatformFactory.generatePlatform(x, nextY)
+            activePlatforms.add(newPlatform)
+            nextY -= platform.height + platformGap
+        }
+    }
 
-            if (currentY > -platform.height && Random.nextFloat() < 0.1f) {
-                val randomX = Random.nextFloat() * (screenWidth - platform.width)
-                val randomY = currentY - (Random.nextFloat() * 300f + 200f) // случайное положение между 200 и 500 пикселями
-                platforms.add(staticPlatformFactory.generatePlatform(randomX, randomY))
-                currentY = randomY - platformGap
+    fun generatePlatformsIfNeeded() {
+        if (activePlatforms.isEmpty() || activePlatforms.last().top >= screenHeight - platform.height - platformGap) {
+            generatePlatforms()
+        }
+    }
+
+    private fun generatePlatforms() {
+        val factory = getRandomFactory()
+        val numberOfPlatforms = Random.nextInt(1, 5)
+
+        for (i in 0 until numberOfPlatforms) {
+            val x = Random.nextFloat() * (screenWidth - platform.width)
+            val platform = factory.generatePlatform(x, nextY)
+            activePlatforms.add(platform)
+            nextY -= platform.height + platformGap
+        }
+    }
+
+    fun update() {
+        val iterator = activePlatforms.iterator()
+        while (iterator.hasNext()) {
+            val platform = iterator.next()
+            if (platform.top > screenHeight) {
+                iterator.remove()
             }
         }
     }
