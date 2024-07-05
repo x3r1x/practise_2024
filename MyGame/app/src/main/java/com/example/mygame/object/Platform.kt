@@ -16,6 +16,8 @@ open class Platform(createdX: Float, createdY: Float) : IDrawable, ICollidable {
     override var x = createdX
     override var y = createdY
 
+    override val isPassable = false
+
     override val left
         get() = x - width / 2
     override val right

@@ -25,6 +25,8 @@ class Spring(resources: Resources) : IDrawable, ICollidable {
     private var isStretchRunning = false
     private var animator : ValueAnimator? = null
 
+    override val isPassable = false
+
     override var x = 0f
     override var y = 0f
 

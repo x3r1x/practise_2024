@@ -3,6 +3,7 @@ package com.example.mygame.logic
 import com.example.mygame.`object`.Player
 import com.example.mygame.`object`.Screen
 import com.example.mygame.`interface`.ICollidable
+import com.example.mygame.`object`.iteractable.Shield
 import com.example.mygame.`object`.iteractable.Spring
 import com.example.mygame.`object`.platforms.BreakingPlatform
 import com.example.mygame.`object`.platforms.DisappearingPlatform
@@ -19,8 +20,8 @@ class CollisionHandler {
                 }
 
                 if (player != obj && player.collidesWith(obj)) {
-                    //Соприкосновение игрока с пружиной
-                    if (obj is Spring) {
+                    //Соприкосновение игрока с пружиной и щитом
+                    if (obj is Spring || obj is Shield) {
                         obj.onObjectCollide(player)
                     }
 
@@ -31,7 +32,9 @@ class CollisionHandler {
                     }
 
                     // Реакция игрока на коллизию
-                    player.onObjectCollide(obj)
+                    if (!obj.isPassable) {
+                        player.onObjectCollide(obj)
+                    }
 
                     // Соприкосновение игрока с исчезающей платформой
                     if (obj is DisappearingPlatform) {

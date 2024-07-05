@@ -62,7 +62,7 @@ class GameViewModel(private val application: Application) : AndroidViewModel(app
         spring = Spring(application.resources).apply {
             createOnPlatform(platforms[0])
         }
-        shield = Shield(application.resources).apply {
+        shield = Shield(application.resources, ball).apply {
             createOnPlatform(platforms[2])
         }
     }
@@ -79,13 +79,13 @@ class GameViewModel(private val application: Application) : AndroidViewModel(app
                 elapsedTime = (systemTime - startTime) / 1000f
 
                 if (elapsedTime < MAX_FRAME_TIME) {
+                    delay(1)
                     continue
                 }
 
                 startTime = systemTime
 
                 updateGame(elapsedTime)
-                delay(1)
             }
         }
     }

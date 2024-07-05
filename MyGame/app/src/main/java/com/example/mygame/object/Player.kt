@@ -1,10 +1,13 @@
 package com.example.mygame.`object`
 
+import android.content.res.Resources
 import android.graphics.RectF
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Matrix
 import com.example.mygame.Physics
+import com.example.mygame.R
 import com.example.mygame.`interface`.IDrawable
 import com.example.mygame.`interface`.ICollidable
 import com.example.mygame.`object`.iteractable.Spring
@@ -32,6 +35,8 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
         get() = y - RADIUS
     override val bottom
         get() = y + RADIUS
+
+    override val isPassable = false
 
     override var isInSpring: Boolean? = false
 
