@@ -1,19 +1,26 @@
-//Будет использован, когда будет готова физика
 package com.example.mygame.logic
 
-import android.util.Log
 import com.example.mygame.`interface`.IDrawable
-import com.example.mygame.`object`.platforms.MovingPlatformOnY
+import com.example.mygame.`object`.Player
 
 class PositionHandler(entities: List<IDrawable>) {
     private val elements = entities
 
-    fun updatePositions(offsetX: Float, offsetY: Float) {
+    // при движении экрана
+    fun screenPromotion(offsetX: Float, offsetY: Float) {
         elements.forEach {
             it.setPosition(it.x - offsetX, it.y - offsetY)
-            if (it is MovingPlatformOnY) {
-                Log.i("offsetY", "$offsetY")
+        }
+    }
+
+    fun updatePositions(deltaX: Float, elapsedTime: Float) {
+        elements.forEach {
+            if (it is Player) {
+                it.updatePositionX(deltaX + deltaX * elapsedTime)
+            } else {
+                it.updatePositionX(0f) //?
             }
+            it.updatePositionY(elapsedTime)
         }
     }
 }

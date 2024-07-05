@@ -1,35 +1,46 @@
 package com.example.mygame.logic
 
+import com.example.mygame.`interface`.ICollidable
 import com.example.mygame.`object`.Player
 import com.example.mygame.`object`.Screen
-import com.example.mygame.`interface`.ICollidable
 import com.example.mygame.`object`.platforms.BreakingPlatform
 import com.example.mygame.`object`.platforms.DisappearingPlatform
 
 class CollisionHandler {
     fun checkCollisions(player: Player, screen: Screen, objects: List<ICollidable>?) {
-        player.onScreenCollide(screen)
-        //СРАВНИВАЕМ ОБЪЕКТЫ КАЖДЫЙ С КАЖДЫМ!!!
-
         if (objects != null) {
-            for (obj in objects) {
-                if (obj != player) {
-                    obj.onScreenCollide(screen)
-                }
+            objects.forEachIndexed { index, firstObj ->
+                checkCollisionObjectWithScreen(firstObj, screen)
 
-                if (player != obj && player.collidesWith(obj)) {
-                    // Соприкосновение игрока сo сломанной платформой
-                    if (obj is BreakingPlatform) {
-                        obj.runDestructionAnimation(screen.bottom)
-                        continue
+                checkCollisionObjectWithPlayer(firstObj, player)
+
+                objects.drop(index + 1).forEach { secondObj ->
+                    // Коллизии объектов одинакового типа нет
+                    if (firstObj::class == secondObj::class) {
+                        return@forEach
                     }
-                    // Реакция игрока на коллизию
-                    player.onObjectCollide(obj)
-                    // Соприкосновение игрока с исчезающей платформой
-                    if (obj is DisappearingPlatform) {
-                        obj.animatePlatformColor()
-                    }
+                    // TODO: проверка коллизии объектов разных типов
                 }
+            }
+        }
+    }
+
+    private fun checkCollisionObjectWithScreen(obj: ICollidable, screen: Screen) {
+        if (screen.collidesWith(obj)) {
+            obj.onScreenCollide(screen)
+        }
+    }
+
+    private fun checkCollisionObjectWithPlayer(obj: ICollidable, player: Player) {
+        if (obj != player && player.collidesWith(obj)) {
+            if (obj is DisappearingPlatform) {
+                obj.animatePlatformColor()
+            }
+            // TODO: подумать
+            if (obj is BreakingPlatform) {
+                obj.runDestructionAnimation(obj.bottom)
+            } else {
+                player.onObjectCollide(obj)
             }
         }
     }

@@ -14,5 +14,5 @@ interface ICollidable {
 
     fun onScreenCollide(screen: Screen)
 
-    fun collidesWith(other: ICollidable?): Boolean?
+    fun collidesWith(other: ICollidable?): Boolean
 }
