@@ -1,23 +1,17 @@
 package com.example.mygame
 
 import android.app.Application
-import android.graphics.BitmapFactory
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.mygame.generator.PlatformGenerator
 import com.example.mygame.`interface`.ICollidable
 import com.example.mygame.`interface`.IDrawable
 import com.example.mygame.logic.CollisionHandler
-import com.example.mygame.logic.ObjectsHandler
+import com.example.mygame.logic.ObjectsManager
 import com.example.mygame.logic.PositionHandler
 import com.example.mygame.logic.SensorHandler
-import com.example.mygame.`object`.Platform
-import com.example.mygame.`object`.Player
 import com.example.mygame.`object`.Screen
-import com.example.mygame.`object`.platforms.MovingPlatformOnX
-import com.example.mygame.`object`.platforms.MovingPlatformOnY
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -36,30 +30,19 @@ class GameViewModel(private val application: Application) : AndroidViewModel(app
 
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
-    private val ball = Player(
-        BitmapFactory.decodeResource(getApplication<Application>().resources, R.drawable.player),
-        BitmapFactory.decodeResource(getApplication<Application>().resources, R.drawable.jump)
-    )
-
     private lateinit var screen: Screen
 
-    private lateinit var platforms: List<Platform>
-    private lateinit var objects: List<IDrawable>
     private lateinit var sensorHandler: SensorHandler
     private lateinit var collisionHandler: CollisionHandler
-    private lateinit var objectsHandler: ObjectsHandler
-    private lateinit var platformGenerator: PlatformGenerator
+    private lateinit var objectsManager: ObjectsManager
 
     fun initialize(screenWidth: Float, screenHeight: Float) {
         this.screen = Screen(screenWidth, screenHeight)
         sensorHandler = SensorHandler(getApplication(), this)
         collisionHandler = CollisionHandler()
-        objectsHandler = ObjectsHandler()
-        platformGenerator = PlatformGenerator(application.resources, screenWidth, screenHeight)
+        objectsManager = ObjectsManager(application.resources, screen)
 
-        ball.setPosition(screen.width/2f, screen.height - 800)
-        platforms = platformGenerator.getPlatforms()
-        objects = listOf(ball) + platforms
+        objectsManager.initObjects()
     }
 
     fun startGameLoop() {
@@ -94,29 +77,19 @@ class GameViewModel(private val application: Application) : AndroidViewModel(app
     }
 
     private fun updateGame(elapsedTime: Float) {
-        _gameObjects.value = objects
+        _gameObjects.value = objectsManager.objects
 
-        if (Physics().doWeNeedToMove(ball, screen.maxPlayerHeight)) {
+        if (Physics().doWeNeedToMove(objectsManager.player, screen.maxPlayerHeight)) {
             PositionHandler(_gameObjects.value as List<IDrawable>)
-                .updatePositions(0f, Physics().moveOffset(ball, screen.maxPlayerHeight))
-            platformGenerator.generateNextPlatform()
+                .screenPromotion(0f, Physics().moveOffset(objectsManager.player, screen.maxPlayerHeight))
+            objectsManager.updateObjects()
         }
 
-        ball.updatePositionX(deltaX + deltaX * elapsedTime)
-        ball.updatePositionY(elapsedTime)
+        collisionHandler.checkCollisions(objectsManager.player, screen, _gameObjects.value?.filterIsInstance<ICollidable>())
 
-        objects.forEach {
-            if (it is MovingPlatformOnY) {
-                it.updatePositionY(elapsedTime) // TODO::: to elapsedTime
-            }
-            if (it is MovingPlatformOnX) {
-                it.updatePositionX(0f)
-            }
-        }
+        PositionHandler(_gameObjects.value as List<IDrawable>).updatePositions(deltaX, elapsedTime)
 
-        collisionHandler.checkCollisions(ball, screen, _gameObjects.value?.filterIsInstance<ICollidable>())
-        objects = objectsHandler.updateObjects(screen, _gameObjects.value as List<IDrawable>)
-        Log.i("object size", "${objects.size}")
+        Log.i("object size", "${objectsManager.objects.size}")
     }
 
     override fun onCleared() {

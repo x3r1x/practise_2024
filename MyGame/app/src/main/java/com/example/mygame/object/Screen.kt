@@ -1,5 +1,6 @@
 package com.example.mygame.`object`
 
+import android.util.Log
 import com.example.mygame.`interface`.ICollidable
 
 class Screen(val width: Float, val height: Float): ICollidable {
@@ -16,8 +17,16 @@ class Screen(val width: Float, val height: Float): ICollidable {
     override fun onScreenCollide(screen: Screen) {
     }
 
-    override fun collidesWith(other: ICollidable?): Boolean? {
-        return null
+    override fun collidesWith(other: ICollidable?): Boolean {
+        if (other == null) {
+            return false
+        }
+
+        val isOutOfSideBounds = other.right < left || other.left > right
+        val isOutOfTopBound = other.bottom < top
+        val isOutOfBottomBound = other.top > bottom
+        Log.i("object positions", "${other.top}")
+        return isOutOfSideBounds || isOutOfTopBound || isOutOfBottomBound
     }
 
     companion object {
