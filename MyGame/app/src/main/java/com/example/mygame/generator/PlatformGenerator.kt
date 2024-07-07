@@ -15,15 +15,21 @@ class PlatformGenerator(
     private val screenWidth: Float,
     private val screenHeight: Float
 ) {
+    // TODO: Генерировать новые платформы по запросу
+    // TODO: Генерировать на абстрактную высоту (5000)
+    // TODO: А управление будет из ObjectManager
     private var nextY: Float = screenHeight
 
     private val staticPlatformFactory = StaticPlatformFactory(resources)
     private val breakingPlatformFactory = BreakingPlatformFactory(resources)
     private val disappearingPlatformFactory = DisappearingPlatformFactory(resources)
     private val movingPlatformOnXFactory = MovingPlatformOnXFactory(resources)
+
     private val movingPlatformOnYFactory = MovingPlatformOnYFactory(resources)
 
     private val platformGap: Float = 20f
+
+    private val newPackageHeight = -5000f
 
     private val factories = listOf(
         staticPlatformFactory,
@@ -34,66 +40,42 @@ class PlatformGenerator(
 
     private val platform = Platform(0f, 0f)
 
-    private val platforms: MutableList<Platform> = mutableListOf()
-
-    private var needsGeneration = true
-
-    init {
-        generateInitialPlatforms()
-    }
-
-    fun getPlatforms(): List<Platform> {
-        // TODO: Передавать последнюю платформу в генератор
-        // TODO: На основе её генерировать блок платформ
-        return platforms
-    }
-
-    fun generatePlatformsIfNeeded() {
-        if (needsGeneration) {
-            generatePlatforms()
-            needsGeneration = false
-        }
-    }
-
-    fun update() {
-        val iterator = platforms.iterator()
-        while (iterator.hasNext()) {
-            val platform = iterator.next()
-            if (platform.top > screenHeight) {
-                iterator.remove()
-            }
-        }
-
-        if (platforms.size < 40) {
-            needsGeneration = true
-        }
-    }
-
-    private fun getRandomFactory(): IPlatformFactory {
-        // TODO: Сделать шанс генерации на основе score 
-        return factories[Random.nextInt(factories.size)]
-    }
-
-    private fun generateInitialPlatforms() {
+    fun generateInitialPlatforms(): MutableList<Platform> {
+        val platforms: MutableList<Platform> = mutableListOf()
         while (nextY >= 0) {
             val x = Random.nextFloat() * (screenWidth - platform.width)
             val newPlatform = staticPlatformFactory.generatePlatform(x, nextY)
             platforms.add(newPlatform)
             nextY -= platform.height + platformGap
         }
+
+        return platforms
     }
 
-    private fun generatePlatforms() {
-        // TODO: Добавить генерацию сломанных платформ 
+    fun generatePlatforms(): MutableList<Platform> {
+        val startY = nextY
+        // TODO: Добавить генерацию сломанных платформ
         // TODO: Они генерируются в дополнение к основным
-        val factory = getRandomFactory()
-        val numberOfPlatforms = Random.nextInt(1, 5)
+        val platforms: MutableList<Platform> = mutableListOf()
 
-        for (i in 0 until numberOfPlatforms) {
-            val x = Random.nextFloat() * (screenWidth - platform.width)
-            val platform = factory.generatePlatform(x, nextY)
-            platforms.add(platform)
-            nextY -= platform.height + platformGap
+        while (startY + newPackageHeight < nextY) {
+
+            val factory = getRandomFactory()
+            val numberOfPlatforms = Random.nextInt(1, 5)
+
+            for (i in 0 until numberOfPlatforms) {
+                val x = Random.nextFloat() * (screenWidth - platform.width)
+                val platform = factory.generatePlatform(x, nextY)
+                platforms.add(platform)
+                nextY -= platform.height + platformGap
+            }
         }
+
+        return platforms
+    }
+
+    private fun getRandomFactory(): IPlatformFactory {
+        // TODO: Сделать шанс генерации на основе score
+        return factories[Random.nextInt(factories.size)]
     }
 }

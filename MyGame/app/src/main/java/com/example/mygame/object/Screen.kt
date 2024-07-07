@@ -23,9 +23,11 @@ class Screen(val width: Float, val height: Float): ICollidable {
         }
 
         val isOutOfSideBounds = other.right < left || other.left > right
-        val isOutOfTopBound = other.bottom < top
+        //val isOutOfTopBound = other.bottom < top
         val isOutOfBottomBound = other.top > bottom
-        return isOutOfSideBounds || isOutOfTopBound || isOutOfBottomBound
+        return isOutOfSideBounds ||
+                //isOutOfTopBound  ||
+                isOutOfBottomBound
     }
 
     companion object {
