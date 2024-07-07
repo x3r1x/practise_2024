@@ -13,7 +13,7 @@ import com.example.mygame.factories.platforms.DisappearingPlatformFactory
 class PlatformGenerator(
     var resources: Resources,
     private val screenWidth: Float,
-    private val screenHeight: Float
+    screenHeight: Float
 ) {
     private var nextY: Float = screenHeight
 
@@ -75,10 +75,8 @@ class PlatformGenerator(
                     tries++
                 } while (isOverlapping(platforms, newPlatform) && tries < maxTries)
 
-                if (!isOverlapping(platforms, newPlatform)) {
-                    platforms.add(newPlatform)
-                    nextY -= platform.height + yGap
-                }
+                platforms.add(newPlatform)
+                nextY -= platform.height + yGap
             }
         }
 
