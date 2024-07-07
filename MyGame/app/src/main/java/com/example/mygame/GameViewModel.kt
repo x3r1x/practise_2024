@@ -1,23 +1,22 @@
 package com.example.mygame
 
-import android.app.Application
-import android.util.Log
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import com.example.mygame.`interface`.ICollidable
-import com.example.mygame.`interface`.IDrawable
-import com.example.mygame.`interface`.IMoveable
-import com.example.mygame.logic.CollisionHandler
-import com.example.mygame.logic.ObjectsManager
-import com.example.mygame.logic.PositionHandler
-import com.example.mygame.logic.SensorHandler
-import com.example.mygame.`object`.Screen
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import android.app.Application
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import androidx.lifecycle.LiveData
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineScope
+import com.example.mygame.`object`.Screen
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.AndroidViewModel
+import com.example.mygame.logic.SensorHandler
+import com.example.mygame.logic.ObjectsManager
+import com.example.mygame.`interface`.IDrawable
+import com.example.mygame.`interface`.IMoveable
+import com.example.mygame.logic.PositionHandler
+import com.example.mygame.logic.CollisionHandler
+import com.example.mygame.`interface`.ICollidable
 
 class GameViewModel(private val application: Application) : AndroidViewModel(application), SensorHandler.SensorCallback {
     val gameObjects: LiveData<List<IDrawable>> get() = _gameObjects

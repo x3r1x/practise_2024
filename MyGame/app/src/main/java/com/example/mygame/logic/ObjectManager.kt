@@ -22,7 +22,7 @@ class ObjectsManager(
 
     private val platformGenerator = PlatformGenerator(resources, screen.width, screen.height)
 
-    private var a = true
+    private var canGenerateObjects = true
 
     fun initObjects() {
         player.setPosition(screen.width / 2f, screen.height - 800)
@@ -37,9 +37,9 @@ class ObjectsManager(
     fun updateObjects() {
         removeObjectsOutOfBounds(objects)
 
-        if (a) {
+        if (canGenerateObjects) {
             generateObjects()
-            a = false
+            canGenerateObjects = false
         }
 
         Log.i("", "objects: ${objects.size}")

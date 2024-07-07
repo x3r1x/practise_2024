@@ -15,9 +15,6 @@ class PlatformGenerator(
     private val screenWidth: Float,
     private val screenHeight: Float
 ) {
-    // TODO: Генерировать новые платформы по запросу
-    // TODO: Генерировать на абстрактную высоту (5000)
-    // TODO: А управление будет из ObjectManager
     private var nextY: Float = screenHeight
 
     private val staticPlatformFactory = StaticPlatformFactory(resources)
@@ -28,6 +25,8 @@ class PlatformGenerator(
     private val movingPlatformOnYFactory = MovingPlatformOnYFactory(resources)
 
     private val platformGap: Float = 20f
+
+    private val maxVerticalGap = 350f
 
     private val newPackageHeight = -5000f
 
@@ -59,15 +58,27 @@ class PlatformGenerator(
         val platforms: MutableList<Platform> = mutableListOf()
 
         while (startY + newPackageHeight < nextY) {
-
             val factory = getRandomFactory()
-            val numberOfPlatforms = Random.nextInt(1, 5)
+            val numberOfPlatforms = Random.nextInt(2, 6)
 
             for (i in 0 until numberOfPlatforms) {
-                val x = Random.nextFloat() * (screenWidth - platform.width)
-                val platform = factory.generatePlatform(x, nextY)
-                platforms.add(platform)
-                nextY -= platform.height + platformGap
+                var newPlatform: Platform
+                var yGap: Float
+                var x: Float
+                var tries = 0
+                val maxTries = 10
+
+                do {
+                    x = Random.nextFloat() * (screenWidth - platform.width)
+                    yGap = platformGap + Random.nextFloat() * (maxVerticalGap - platformGap)
+                    newPlatform = factory.generatePlatform(x, nextY - yGap)
+                    tries++
+                } while (isOverlapping(platforms, newPlatform) && tries < maxTries)
+
+                if (!isOverlapping(platforms, newPlatform)) {
+                    platforms.add(newPlatform)
+                    nextY -= platform.height + yGap
+                }
             }
         }
 
@@ -77,5 +88,17 @@ class PlatformGenerator(
     private fun getRandomFactory(): IPlatformFactory {
         // TODO: Сделать шанс генерации на основе score
         return factories[Random.nextInt(factories.size)]
+    }
+
+    private fun isOverlapping(platforms: MutableList<Platform>, newPlatform: Platform): Boolean {
+        return platforms.any { existingPlatform ->
+            val horizontalOverlap = newPlatform.x < existingPlatform.right &&
+                                    newPlatform.x + platform.width > existingPlatform.left
+
+            val verticalOverlap = newPlatform.y < existingPlatform.bottom &&
+                                  newPlatform.y + platform.height > existingPlatform.top
+
+            horizontalOverlap && verticalOverlap
+        }
     }
 }
