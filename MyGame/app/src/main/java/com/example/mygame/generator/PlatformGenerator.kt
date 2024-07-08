@@ -82,21 +82,18 @@ class PlatformGenerator(
                 )
 
                 val random = Random.nextFloat()
-                var notGenerated = true
-                if (random < 0.30f && notGenerated) {
+
+                if (random < 0.30f) {
                     val spring = Spring(resources).apply { createOnPlatform(newPlatform) }
                     platformsPack.add(spring)
-                    notGenerated = false
                 }
-                if (random < 0.20f && notGenerated) {
+                if (random < 0.20f) {
                     val shield = Shield(resources, player).apply { createOnPlatform(newPlatform) }
                     platformsPack.add(shield)
-                    notGenerated = false
                 }
-                if (random < 0.15f && notGenerated) {
+                if (random < 0.15f) {
                     val jetpack = Jetpack(resources, player).apply { createOnPlatform(newPlatform) }
                     platformsPack.add(jetpack)
-                    notGenerated = false
                 }
 
                 platformsPack.add(newPlatform)
