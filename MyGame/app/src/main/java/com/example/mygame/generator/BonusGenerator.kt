@@ -9,9 +9,9 @@ import com.example.mygame.`interface`.IBonusFactory
 import com.example.mygame.`object`.interactable.Shield
 import com.example.mygame.`object`.interactable.Spring
 import com.example.mygame.`object`.interactable.Jetpack
-import com.example.mygame.factories.bonuses.ShieldFactory
-import com.example.mygame.factories.bonuses.SpringFactory
-import com.example.mygame.factories.bonuses.JetpackFactory
+import com.example.mygame.factory.bonus.ShieldFactory
+import com.example.mygame.factory.bonus.SpringFactory
+import com.example.mygame.factory.bonus.JetpackFactory
 
 class BonusGenerator(private val resources: Resources, private val player: Player) {
     private val shieldFactory = ShieldFactory()

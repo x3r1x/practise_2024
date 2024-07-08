@@ -5,9 +5,9 @@ import com.example.mygame.`object`.Player
 import com.example.mygame.`object`.Screen
 import com.example.mygame.`interface`.IDrawable
 import com.example.mygame.`interface`.ICollidable
-import com.example.mygame.factories.PlayerFactory
+import com.example.mygame.factory.PlayerFactory
 import com.example.mygame.generator.LevelGenerator
-import com.example.mygame.`object`.platforms.DisappearingPlatform
+import com.example.mygame.`object`.platform.DisappearingPlatform
 
 class ObjectsManager(
     resources: Resources,

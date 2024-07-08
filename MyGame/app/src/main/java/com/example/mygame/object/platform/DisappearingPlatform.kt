@@ -1,4 +1,4 @@
-package com.example.mygame.`object`.platforms
+package com.example.mygame.`object`.platform
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter

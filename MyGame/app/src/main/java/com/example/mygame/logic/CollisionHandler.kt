@@ -6,8 +6,8 @@ import com.example.mygame.`interface`.ICollidable
 import com.example.mygame.`object`.interactable.Jetpack
 import com.example.mygame.`object`.interactable.Shield
 import com.example.mygame.`object`.interactable.Spring
-import com.example.mygame.`object`.platforms.BreakingPlatform
-import com.example.mygame.`object`.platforms.DisappearingPlatform
+import com.example.mygame.`object`.platform.BreakingPlatform
+import com.example.mygame.`object`.platform.DisappearingPlatform
 
 class CollisionHandler {
     fun checkCollisions(player: Player, screen: Screen, objects: List<ICollidable>?) {

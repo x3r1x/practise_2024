@@ -4,7 +4,7 @@ import android.content.res.Resources
 import com.example.mygame.`object`.Player
 import com.example.mygame.`object`.Screen
 import com.example.mygame.`interface`.IDrawable
-import com.example.mygame.`object`.platforms.StaticPlatform
+import com.example.mygame.`object`.platform.StaticPlatform
 
 class LevelGenerator(
     resources: Resources,
