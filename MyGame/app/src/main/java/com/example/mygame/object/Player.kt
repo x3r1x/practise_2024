@@ -1,10 +1,13 @@
 package com.example.mygame.`object`
 
+import android.content.res.Resources
 import android.graphics.RectF
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Matrix
 import com.example.mygame.Physics
+import com.example.mygame.R
 import com.example.mygame.`interface`.IDrawable
 import com.example.mygame.`interface`.ICollidable
 import com.example.mygame.`interface`.IMoveable
@@ -21,11 +24,7 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
         RIGHT(1)
     }
 
-    private var directionX = DirectionX.STILL
-
-    private var directionY = DirectionY.DOWN
-
-    private var speedY = 0f
+    var isWithJetpack = false
 
     override var x = 0f
     override var y = 0f
@@ -39,14 +38,19 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
     override val bottom
         get() = y + RADIUS
 
-    private fun changeDirectionX(newX: Float) {
-        if (newX < -DISTANCE_TO_TURN)
-        {
-            directionX = DirectionX.LEFT
-        } else if (newX > DISTANCE_TO_TURN)
-        {
-            directionX = DirectionX.RIGHT
-        }
+    override val isPassable = false
+
+    override var isInSpring: Boolean? = false
+
+    var directionX = DirectionX.STILL
+
+    var directionY = DirectionY.DOWN
+
+    var speedY = 0f
+
+    private fun changeDirection(newX: Float) {
+        if (newX < -DISTANCE_TO_TURN) {directionX = DirectionX.LEFT}
+        if (newX >  DISTANCE_TO_TURN) {directionX = DirectionX.RIGHT}
     }
 
     private fun applyTransformations(matrix: Matrix, destRect: RectF) {
@@ -80,9 +84,9 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
         canvas.drawBitmap(imageToDraw, matrix, null)
     }
 
-    override fun setPosition(startX: Float, startY: Float) {
-        x = startX
-        y = startY
+    override fun setPosition(newX: Float, newY: Float) {
+        x = newX
+        y = newY
     }
 
     override fun updatePositionX(newX: Float) {
@@ -94,10 +98,13 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
         val previousY = y
 
         y += speedY * directionY.value * elapsedTime
-        speedY += elapsedTime * Physics.GRAVITY * directionY.value
 
-        if (y >= previousY && directionY == DirectionY.UP) {
-            directionY = DirectionY.DOWN
+        if (!isWithJetpack) {
+            speedY += elapsedTime * Physics.GRAVITY * directionY.value
+
+            if (y >= previousY && directionY == DirectionY.UP) {
+                directionY = DirectionY.DOWN
+            }
         }
     }
 
@@ -106,6 +113,9 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
             setPosition(x, obj.top - RADIUS - 10f)
             directionY = DirectionY.UP
             speedY = JUMP_SPEED
+        } else if (isInSpring == true) {
+            speedY = SPRING_JUMP_SPEED
+            isInSpring = false
         }
     }
 
@@ -120,7 +130,7 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
     }
 
     override fun collidesWith(other: ICollidable?): Boolean {
-        //Сделать с помощью метода intersects() у класса Rect
+        //TODO:Сделать с помощью метода intersects() у класса Rect
         other ?: return false
 
         val isIntersect = !(right < other.left ||
@@ -135,5 +145,6 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
         private const val DISTANCE_TO_TURN = 1f
         private const val RADIUS = 75f
         private const val JUMP_SPEED = 920f
+        private const val SPRING_JUMP_SPEED = 2200f
     }
 }

@@ -9,6 +9,10 @@ class Screen(val width: Float, val height: Float): ICollidable {
     override val bottom = height
 
     val maxPlayerHeight = height - MOVE_OBJECTS_LINE
+    
+    override val isPassable = false
+
+    override var isInSpring: Boolean? = null
 
     override fun onObjectCollide(obj: ICollidable) {
     }
