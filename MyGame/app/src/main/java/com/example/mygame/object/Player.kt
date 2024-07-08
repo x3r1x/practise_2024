@@ -1,12 +1,12 @@
 package com.example.mygame.`object`
 
-import android.graphics.RectF
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Matrix
+import android.graphics.RectF
 import com.example.mygame.Physics
-import com.example.mygame.`interface`.IDrawable
 import com.example.mygame.`interface`.ICollidable
+import com.example.mygame.`interface`.IDrawable
 import com.example.mygame.`interface`.IMoveable
 
 class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDrawable, ICollidable, IMoveable {
@@ -15,17 +15,18 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
         DOWN(1),
     }
 
-    enum class DirectionX(val value: Int) {
-        LEFT(1),
-        STILL(0),
-        RIGHT(1)
+    enum class DirectionX() {
+        LEFT,
+        RIGHT
     }
 
-    private var directionX = DirectionX.STILL
+    private var directionX = DirectionX.RIGHT
 
     private var directionY = DirectionY.DOWN
 
     private var speedY = 0f
+
+
 
     override var x = 0f
     override var y = 0f
@@ -103,7 +104,7 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
 
     override fun onObjectCollide(obj: ICollidable) {
         if (obj is Platform) {
-            setPosition(x, obj.top - RADIUS - 10f)
+            //setPosition(x, obj.top - RADIUS - 10f)
             directionY = DirectionY.UP
             speedY = JUMP_SPEED
         }
@@ -123,6 +124,16 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
         //Сделать с помощью метода intersects() у класса Rect
         other ?: return false
 
+        if (other is Platform) {
+            if (directionX == DirectionX.RIGHT) {
+                return bottom < other.bottom && bottom >= other.top && directionY == DirectionY.DOWN
+                        && (left + 15f < other.right && right - 50f > other.left)
+            } else {
+                return bottom < other.bottom && bottom >= other.top && directionY == DirectionY.DOWN
+                        && (left + 50f < other.right && right - 15f > other.left)
+            }
+        }
+
         val isIntersect = !(right < other.left ||
                 left > other.right ||
                 bottom < other.top ||
@@ -134,6 +145,6 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
     companion object {
         private const val DISTANCE_TO_TURN = 1f
         private const val RADIUS = 75f
-        private const val JUMP_SPEED = 920f
+        private const val JUMP_SPEED = 1000f //920f
     }
 }
