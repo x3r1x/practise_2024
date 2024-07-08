@@ -25,6 +25,10 @@ class Screen(val width: Float, val height: Float): ICollidable {
             return false
         }
 
+        if (other is Platform) {
+            return other.right >= right || other.left <= left
+        }
+
         val isOutOfSideBounds = other.right < left || other.left > right
         //val isOutOfTopBound = other.bottom < top
         val isOutOfBottomBound = other.top > bottom

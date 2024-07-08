@@ -90,11 +90,11 @@ class PlatformGenerator(
 
     private fun isOverlapping(platforms: MutableList<Platform>, newPlatform: Platform): Boolean {
         return platforms.any { existingPlatform ->
-            val horizontalOverlap = newPlatform.x < existingPlatform.right &&
-                                    newPlatform.x + platform.width > existingPlatform.left
+            val horizontalOverlap = newPlatform.left < existingPlatform.right &&
+                                    newPlatform.right > existingPlatform.left
 
-            val verticalOverlap = newPlatform.y < existingPlatform.bottom &&
-                                  newPlatform.y + platform.height > existingPlatform.top
+            val verticalOverlap = newPlatform.top < existingPlatform.bottom &&
+                                  newPlatform.bottom > existingPlatform.top
 
             horizontalOverlap && verticalOverlap
         }
