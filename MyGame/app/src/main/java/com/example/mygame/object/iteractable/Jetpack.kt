@@ -70,6 +70,7 @@ class Jetpack(resources: Resources, entity: Player) : IDrawable, ICollidable, IM
     private fun dispose() {
         player.isWithJetpack = false
         player.directionY = Player.DirectionY.DOWN
+        bitmap = BitmapFactory.decodeResource(res, IMAGE, BITMAP_OPTIONS)
         player.speedY = 0f
         isGone = true
         left = 0f
