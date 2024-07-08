@@ -17,10 +17,11 @@ class DisappearingPlatform(
         this.bitmap = initBitmap
     }
 
-    var isDestroying = false
+    var isRunDestroying = false
 
     fun animatePlatformColor() {
-        if (!isDestroying) {
+        if (!isRunDestroying) {
+            isRunDestroying = true
             val colorAnimator = ValueAnimator.ofArgb(platformColor.color, RED_COLOR).apply {
                 this.duration = COLOR_CHANGE_DURATION
                 addUpdateListener { animator ->
@@ -51,7 +52,7 @@ class DisappearingPlatform(
             }
             addListener(object : AnimatorListenerAdapter() {
                 override fun onAnimationEnd(animation: Animator) {
-                    isDestroying = true
+                    isDisappeared = true
                 }
             })
         }
@@ -85,7 +86,7 @@ class DisappearingPlatform(
 
     companion object {
         private const val COLOR_CHANGE_DURATION: Long = 2000
-        private val DISAPPEARING_DURATION: Long = 800
+        private val DISAPPEARING_DURATION: Long = 500
         private val TRANSPARENT_COLOR = Color.TRANSPARENT
         private val RED_COLOR = Color.RED
     }

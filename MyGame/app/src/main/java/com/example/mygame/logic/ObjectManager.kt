@@ -3,11 +3,9 @@ package com.example.mygame.logic
 import android.content.res.Resources
 import android.util.Log
 import com.example.mygame.generator.PlatformGenerator
-import com.example.mygame.`interface`.ICollidable
 import com.example.mygame.`interface`.IGameObject
 import com.example.mygame.`object`.Player
 import com.example.mygame.`object`.Screen
-import com.example.mygame.`object`.platforms.DisappearingPlatform
 
 class ObjectsManager(
     resources: Resources,
@@ -44,8 +42,7 @@ class ObjectsManager(
     private fun removeObjectsOutOfBounds() : MutableList<IGameObject> {
         val objects = objectStorage.getAll()
         objects.retainAll(objects.filterNot {
-            it is ICollidable && it !is Player && it.top > screen.height
-                    || (it is DisappearingPlatform && it.isDestroying)
+            it !is Player && it.isDisappeared
         }.toList())
 
         return objects

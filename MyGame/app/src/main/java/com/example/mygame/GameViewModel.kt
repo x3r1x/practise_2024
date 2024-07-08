@@ -4,7 +4,6 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.mygame.`interface`.ICollidable
 import com.example.mygame.`interface`.IGameObject
 import com.example.mygame.`interface`.IMoveable
 import com.example.mygame.logic.CollisionHandler
@@ -85,7 +84,9 @@ class GameViewModel(private val application: Application) : AndroidViewModel(app
             objectsManager.updateObjects()
         }
 
-        collisionHandler.checkCollisions(objectsManager.objectStorage.getPlayer(), screen, _gameObjects.value?.filterIsInstance<ICollidable>())
+        //collisionHandler.checkCollisions(objectsManager.objectStorage.getPlayer(), screen, _gameObjects.value?.filterIsInstance<ICollidable>())
+        //collisionHandler.checkCollisionPlayerWithPlatform(objectsManager.objectStorage.getPlayer(), screen, _gameObjects.value!!)
+        collisionHandler.checkCollisions2(objectsManager.objectStorage.getPlayer(), screen, _gameObjects.value!!)
 
         PositionHandler(_gameObjects.value!!.filterIsInstance<IMoveable>()).updatePositions(deltaX, elapsedTime)
     }

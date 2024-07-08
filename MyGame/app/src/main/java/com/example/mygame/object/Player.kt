@@ -5,12 +5,12 @@ import android.graphics.Canvas
 import android.graphics.Matrix
 import android.graphics.RectF
 import com.example.mygame.Physics
-import com.example.mygame.`interface`.ICollidable
 import com.example.mygame.`interface`.IDrawable
 import com.example.mygame.`interface`.IGameObject
 import com.example.mygame.`interface`.IMoveable
+import com.example.mygame.`interface`.IVisitor
 
-class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDrawable, ICollidable, IMoveable, IGameObject {
+class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDrawable, IMoveable, IGameObject {
     enum class DirectionY(val value: Int) {
         UP(-1),
         DOWN(1),
@@ -21,11 +21,40 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
         RIGHT
     }
 
+    fun getDirectionX() :DirectionX {
+        return directionX
+    }
+
+    fun getDirectionY() :DirectionY {
+        return directionY
+    }
+
+    fun repulsion() {
+        directionY = DirectionY.UP
+        speedY = JUMP_SPEED
+    }
+
+    fun movingThroughScreen(screen: Screen) {
+        if (x < screen.left) {
+            x = screen.width - RADIUS
+        }
+
+        if (x > screen.right) {
+            x = 0f + RADIUS
+        }
+    }
+
     private var directionX = DirectionX.RIGHT
 
     private var directionY = DirectionY.DOWN
 
     private var speedY = 0f
+
+    override fun accept(visitor: IVisitor) {
+        visitor.visit(this)
+    }
+
+    override var isDisappeared = false
 
     override var x = 0f
     override var y = 0f
@@ -99,46 +128,6 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
         if (y >= previousY && directionY == DirectionY.UP) {
             directionY = DirectionY.DOWN
         }
-    }
-
-    override fun onObjectCollide(obj: ICollidable) {
-        if (obj is Platform) {
-            //setPosition(x, obj.top - RADIUS - 10f)
-            directionY = DirectionY.UP
-            speedY = JUMP_SPEED
-        }
-    }
-
-    override fun onScreenCollide(screen: Screen) {
-        if (x < screen.left) {
-            x = screen.width - RADIUS
-        }
-
-        if (x > screen.right) {
-            x = 0f + RADIUS
-        }
-    }
-
-    override fun collidesWith(other: ICollidable?): Boolean {
-        //Сделать с помощью метода intersects() у класса Rect
-        other ?: return false
-
-        if (other is Platform) {
-            if (directionX == DirectionX.RIGHT) {
-                return bottom < other.bottom && bottom >= other.top && directionY == DirectionY.DOWN
-                        && (left + 15f < other.right && right - 50f > other.left)
-            } else {
-                return bottom < other.bottom && bottom >= other.top && directionY == DirectionY.DOWN
-                        && (left + 50f < other.right && right - 15f > other.left)
-            }
-        }
-
-        val isIntersect = !(right < other.left ||
-                left > other.right ||
-                bottom < other.top ||
-                top > other.bottom)
-
-        return isIntersect && directionY == DirectionY.DOWN
     }
 
     companion object {
