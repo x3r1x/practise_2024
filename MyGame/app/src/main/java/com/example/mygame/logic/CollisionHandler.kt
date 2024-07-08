@@ -1,53 +1,32 @@
 package com.example.mygame.logic
 
+import com.example.mygame.`interface`.IGameObject
 import com.example.mygame.`object`.Player
 import com.example.mygame.`object`.Screen
-import com.example.mygame.`interface`.ICollidable
-import com.example.mygame.`object`.interactable.Jetpack
-import com.example.mygame.`object`.interactable.Shield
-import com.example.mygame.`object`.interactable.Spring
-import com.example.mygame.`object`.platform.BreakingPlatform
-import com.example.mygame.`object`.platform.DisappearingPlatform
+import com.example.mygame.visitor.PlayerCollisionVisitor
+import com.example.mygame.visitor.ScreenCollisionVisitor
 
 class CollisionHandler {
-    fun checkCollisions(player: Player, screen: Screen, objects: List<ICollidable>?) {
-        if (objects != null) {
-            objects.forEachIndexed { index, firstObj ->
-                checkCollisionObjectWithScreen(firstObj, screen)
 
-                checkCollisionObjectWithPlayer(firstObj, player, screen)
+    fun checkCollisions(player: Player, screen: Screen, objects: List<IGameObject>) {
+        checkCollisionScreenWithObjects(screen, objects)
+        checkCollisionPlayerWithPlatform(player, screen, objects)
+    }
 
-                objects.drop(index + 1).forEach { secondObj ->
-                    // Коллизии объектов одинакового типа нет
-                    if (firstObj::class == secondObj::class) {
-                        return@forEach
-                    }
-                    // TODO: проверка коллизии объектов разных типов
-                }
-            }
+    private fun checkCollisionScreenWithObjects(screen: Screen, objects: List<IGameObject>) {
+        val screenCollisionVisitor = ScreenCollisionVisitor(screen)
+
+        objects.forEach {
+            it.accept(screenCollisionVisitor)
         }
     }
 
-    private fun checkCollisionObjectWithScreen(obj: ICollidable, screen: Screen) {
-        if (screen.collidesWith(obj)) {
-            obj.onScreenCollide(screen)
-        }
-    }
+    private fun checkCollisionPlayerWithPlatform(player: Player, screen: Screen, objects: List<IGameObject>) {
+        val playerCollisionVisitor = PlayerCollisionVisitor(player, screen.height)
 
-    private fun checkCollisionObjectWithPlayer(obj: ICollidable, player: Player, screen: Screen) {
-        if (obj != player && player.collidesWith(obj)) {
-            if (obj is Jetpack || obj is Spring || obj is Shield) {
-                obj.onObjectCollide(player)
-            }
-
-            if (obj is DisappearingPlatform) {
-                obj.animatePlatformColor()
-            }
-            // TODO: подумать
-            if (obj is BreakingPlatform) {
-                obj.runDestructionAnimation(screen.height)
-            } else {
-                player.onObjectCollide(obj)
+        objects.forEach {
+            if (it !is Player) {
+                it.accept(playerCollisionVisitor)
             }
         }
     }

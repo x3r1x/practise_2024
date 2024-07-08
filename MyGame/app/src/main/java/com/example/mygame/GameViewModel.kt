@@ -12,21 +12,20 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.AndroidViewModel
 import com.example.mygame.logic.SensorHandler
 import com.example.mygame.logic.ObjectsManager
-import com.example.mygame.`interface`.IDrawable
 import com.example.mygame.`interface`.IMoveable
 import com.example.mygame.logic.PositionHandler
 import com.example.mygame.logic.CollisionHandler
-import com.example.mygame.`interface`.ICollidable
+import com.example.mygame.`interface`.IGameObject
 
 class GameViewModel(private val application: Application) : AndroidViewModel(application), SensorHandler.SensorCallback {
-    val gameObjects: LiveData<List<IDrawable>> get() = _gameObjects
+    val gameObjects: LiveData<List<IGameObject>> get() = _gameObjects
 
     private var viewModelJob = Job()
 
     private var deltaX = 0f
     private var deltaY = 0f
 
-    private val _gameObjects = MutableLiveData<List<IDrawable>>()
+    private val _gameObjects = MutableLiveData<List<IGameObject>>()
 
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
@@ -77,15 +76,15 @@ class GameViewModel(private val application: Application) : AndroidViewModel(app
     }
 
     private fun updateGame(elapsedTime: Float) {
-        _gameObjects.value = objectsManager.objects
+        _gameObjects.value = objectsManager.getObjects()
 
-        if (Physics().doWeNeedToMove(objectsManager.player, screen.maxPlayerHeight)) {
+        if (Physics().doWeNeedToMove(objectsManager.objectStorage.getPlayer(), screen.maxPlayerHeight)) {
             PositionHandler(_gameObjects.value!!.filterIsInstance<IMoveable>())
-                .screenPromotion(0f, Physics().moveOffset(objectsManager.player, screen.maxPlayerHeight))
+                .screenPromotion(0f, Physics().moveOffset(objectsManager.objectStorage.getPlayer(), screen.maxPlayerHeight))
             objectsManager.updateObjects()
         }
 
-        collisionHandler.checkCollisions(objectsManager.player, screen, _gameObjects.value?.filterIsInstance<ICollidable>())
+        collisionHandler.checkCollisions(objectsManager.objectStorage.getPlayer(), screen, _gameObjects.value!!)
 
         PositionHandler(_gameObjects.value!!.filterIsInstance<IMoveable>()).updatePositions(deltaX, elapsedTime)
     }

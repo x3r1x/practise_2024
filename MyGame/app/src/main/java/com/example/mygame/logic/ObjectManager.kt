@@ -1,50 +1,50 @@
 package com.example.mygame.logic
 
+import android.util.Log
 import android.content.res.Resources
 import com.example.mygame.`object`.Player
 import com.example.mygame.`object`.Screen
-import com.example.mygame.`interface`.IDrawable
-import com.example.mygame.`interface`.ICollidable
-import com.example.mygame.factory.PlayerFactory
-import com.example.mygame.generator.LevelGenerator
-import com.example.mygame.`object`.platform.DisappearingPlatform
+import com.example.mygame.`interface`.IGameObject
+import com.example.mygame.generator.PlatformGenerator
 
 class ObjectsManager(
     resources: Resources,
-    private val screen: Screen
+    screen: Screen
 ) {
-    var objects = mutableListOf<IDrawable>()
-    val player = PlayerFactory(resources).generatePlayer()
+    val objectStorage = ObjectStorage(resources, screen)
 
-    private val levelGenerator = LevelGenerator(resources, screen, player)
+    private val platformGenerator = PlatformGenerator(resources, screen.width, screen.height)
 
-    private var numberOfPacks = 3
+    private var numberOfPlatformPacks = 2
 
     fun initObjects() {
-        player.setPosition(screen.width / 2f, screen.height - 800)
-
-        objects.add(player)
-
-        objects.addAll(levelGenerator.generateInitialPack())
+        objectStorage.addAll(platformGenerator.generateInitialPlatforms() as MutableList<IGameObject>)
     }
 
     fun updateObjects() {
-        removeObjectsOutOfBounds(objects)
+        objectStorage.setObjects(removeObjectsOutOfBounds())
 
-        if (numberOfPacks >= 0) {
+        if (numberOfPlatformPacks >= 0) {
             generateObjects()
-            numberOfPacks--
+            numberOfPlatformPacks--
         }
+
+        Log.i("objects size", "${objectStorage.getAll().size}")
+    }
+    fun getObjects() : List<IGameObject> {
+        return objectStorage.getAll()
     }
 
     private fun generateObjects() {
-        objects += levelGenerator.generateNewPack()
+        objectStorage.addAll(platformGenerator.generatePlatforms() as MutableList<IGameObject>)
     }
 
-    private fun removeObjectsOutOfBounds(objects: MutableList<IDrawable>) {
+    private fun removeObjectsOutOfBounds() : MutableList<IGameObject> {
+        val objects = objectStorage.getAll()
         objects.retainAll(objects.filterNot {
-            it is ICollidable && it !is Player && it.top > screen.height
-                    || (it is DisappearingPlatform && it.isDestroying)
-        }.toMutableList())
+            it !is Player && it.isDisappeared
+        }.toList())
+
+        return objects
     }
 }

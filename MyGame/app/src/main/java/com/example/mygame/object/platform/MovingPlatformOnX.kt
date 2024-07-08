@@ -18,6 +18,14 @@ class MovingPlatformOnX(
         RIGHT(1)
     }
 
+    fun changeDirectionX(screen: Screen) {
+        if (right >= screen.width) {
+            directionX = DirectionX.LEFT
+        } else if (left <= 0f) {
+            directionX = DirectionX.RIGHT
+        }
+    }
+
     private var directionX = directionXRandom()
 
     private fun directionXRandom() : DirectionX {
@@ -26,14 +34,6 @@ class MovingPlatformOnX(
             return DirectionX.LEFT
         } else {
             return DirectionX.RIGHT
-        }
-    }
-
-    override fun onScreenCollide(screen: Screen) {
-        if (right >= screen.width) {
-            directionX = DirectionX.LEFT
-        } else if (left <= 0f) {
-            directionX = DirectionX.RIGHT
         }
     }
 
