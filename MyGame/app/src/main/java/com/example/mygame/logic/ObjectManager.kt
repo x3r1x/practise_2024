@@ -12,7 +12,7 @@ import com.example.mygame.`object`.Platform
 import com.example.mygame.`object`.platforms.DisappearingPlatform
 
 class ObjectsManager(
-    private val resources: Resources,
+    resources: Resources,
     private val screen: Screen
 ) {
     var objects = mutableListOf<IDrawable>()

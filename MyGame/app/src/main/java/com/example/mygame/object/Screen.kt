@@ -1,7 +1,6 @@
 package com.example.mygame.`object`
 
 import com.example.mygame.`interface`.ICollidable
-import com.example.mygame.`interface`.IDrawable
 
 class Screen(val width: Float, val height: Float): ICollidable {
     override val left = 0f
