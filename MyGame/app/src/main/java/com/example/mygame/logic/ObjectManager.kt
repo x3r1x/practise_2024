@@ -22,7 +22,7 @@ class ObjectsManager(
 
     private val platformGenerator = PlatformGenerator(resources, screen.width, screen.height, player)
 
-    private var numberOfPlatformPacks = 2
+    private var numberOfPlatformPacks = 3
 
     fun initObjects() {
         player.setPosition(screen.width / 2f, screen.height - 800)

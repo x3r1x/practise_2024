@@ -84,17 +84,17 @@ class PlatformGenerator(
                 val random = Random.nextFloat()
 
                 when {
-                    random < 0.15f -> {
+                    random < 0.2f && factory == staticPlatformFactory -> {
                         val jetpack =
                             Jetpack(resources, player).apply { createOnPlatform(newPlatform) }
                         platformsPack.add(jetpack)
                     }
-                    random < 0.20f -> {
+                    random < 0.4f  && factory == staticPlatformFactory -> {
                         val shield =
                             Shield(resources, player).apply { createOnPlatform(newPlatform) }
                         platformsPack.add(shield)
                     }
-                    random < 0.30f -> {
+                    random < 0.5f  && factory == staticPlatformFactory -> {
                         val spring = Spring(resources).apply { createOnPlatform(newPlatform) }
                         platformsPack.add(spring)
                     }
