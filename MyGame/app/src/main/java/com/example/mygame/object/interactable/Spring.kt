@@ -31,9 +31,7 @@ class Spring(resources: Resources) : IDrawable, IMoveable, IBonus, IGameObject {
     override var x = 0f
     override var y = 0f
 
-    override var isDisappeared: Boolean
-        get() = TODO("Not yet implemented")
-        set(value) {}
+    override var isDisappeared = false
 
     override var left = 0f
     override var right = 0f

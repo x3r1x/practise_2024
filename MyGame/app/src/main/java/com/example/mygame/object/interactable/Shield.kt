@@ -88,9 +88,9 @@ class Shield(resources: Resources, entity: Player) : IDrawable, IMoveable, IBonu
         }
     }
 
-    override fun setPosition(newX: Float, newY: Float) {
-        x = newX
-        y = newY
+    override fun setPosition(startX: Float, startY: Float) {
+        x = startX
+        y = startY
         left = x - DEFAULT_SIDE / 2
         right = x + DEFAULT_SIDE / 2
         top = y - DEFAULT_SIDE / 2

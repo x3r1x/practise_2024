@@ -29,11 +29,11 @@ class PlayerCollisionVisitor(
     override fun visit(player: Player) {}
 
     private fun isCollidesPlayerWithPlatform(platform: Platform) : Boolean {
-        if (player.getDirectionX() == DirectionX.RIGHT) {
-            return player.bottom < platform.bottom && player.bottom >= platform.top && player.getDirectionY() == DirectionY.DOWN
+        if (player.directionX == DirectionX.RIGHT) {
+            return player.bottom < platform.bottom && player.bottom >= platform.top && player.directionY == DirectionY.DOWN
                     && (player.left + 15f < platform.right && player.right - 50f > platform.left)
         } else {
-            return player.bottom < platform.bottom && player.bottom >= platform.top && player.getDirectionY() == DirectionY.DOWN
+            return player.bottom < platform.bottom && player.bottom >= platform.top && player.directionY == DirectionY.DOWN
                     && (player.left + 50f < platform.right && player.right - 15f > platform.left)
         }
     }

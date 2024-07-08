@@ -16,17 +16,9 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
         DOWN(1),
     }
 
-    enum class DirectionX() {
+    enum class DirectionX {
         LEFT,
         RIGHT
-    }
-
-    fun getDirectionX() :DirectionX {
-        return directionX
-    }
-
-    fun getDirectionY() :DirectionY {
-        return directionY
     }
 
     fun jump() {
