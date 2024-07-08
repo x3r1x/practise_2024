@@ -5,8 +5,8 @@ import com.example.mygame.`object`.Platform
 import com.example.mygame.`interface`.IVisitor
 import com.example.mygame.`object`.Player.DirectionX
 import com.example.mygame.`object`.Player.DirectionY
-import com.example.mygame.`object`.platforms.BreakingPlatform
-import com.example.mygame.`object`.platforms.DisappearingPlatform
+import com.example.mygame.`object`.platform.BreakingPlatform
+import com.example.mygame.`object`.platform.DisappearingPlatform
 
 class PlayerCollisionVisitor(
     private val player: Player,

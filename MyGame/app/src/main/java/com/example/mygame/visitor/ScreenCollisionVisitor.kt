@@ -4,7 +4,7 @@ import com.example.mygame.`interface`.IVisitor
 import com.example.mygame.`object`.Platform
 import com.example.mygame.`object`.Player
 import com.example.mygame.`object`.Screen
-import com.example.mygame.`object`.platforms.MovingPlatformOnX
+import com.example.mygame.`object`.platform.MovingPlatformOnX
 
 class ScreenCollisionVisitor(private val screen: Screen) : IVisitor {
     override fun visit(player: Player) {

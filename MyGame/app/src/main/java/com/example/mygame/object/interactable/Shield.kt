@@ -13,6 +13,7 @@ import com.example.mygame.`interface`.IBonus
 import com.example.mygame.`interface`.IDrawable
 import com.example.mygame.`interface`.IMoveable
 import com.example.mygame.`interface`.IGameObject
+import com.example.mygame.`interface`.IVisitor
 
 class Shield(resources: Resources, entity: Player) : IDrawable, IMoveable, IBonus, IGameObject {
     private val res = resources
@@ -26,17 +27,18 @@ class Shield(resources: Resources, entity: Player) : IDrawable, IMoveable, IBonu
     private var isOnPlayer = false
     private var isGone = false
 
-    override val isPassable = true
-
     override var x: Float = 0f
     override var y: Float = 0f
+    override var isDisappeared = false
 
     override var left = 0f
     override var right = 0f
     override var top = 0f
     override var bottom = 0f
 
-    override var isInSpring: Boolean? = null
+    override fun accept(visitor: IVisitor) {
+        TODO("Not yet implemented")
+    }
 
     fun createOnPlatform(platform: Platform) {
         setPosition(platform.x, platform.top - DEFAULT_SIDE / 2 - OFFSET)
@@ -98,22 +100,22 @@ class Shield(resources: Resources, entity: Player) : IDrawable, IMoveable, IBonu
     override fun updatePositionX(newX: Float) {}
     override fun updatePositionY(elapsedTime: Float) {}
 
-    override fun onScreenCollide(screen: Screen) {}
-
-    override fun collidesWith(other: ICollidable?): Boolean {
-       return if (other !is Player) {
-           false
-       } else {
-           (other.bottom <= top && (other.left <= right || other.right >= left)
-                   && other.bottom >= bottom)
-       }
-    }
-
-    override fun onObjectCollide(obj: ICollidable) {
-        convertShield()
-        isOnPlayer = true
-        startDisappearingTimer()
-    }
+//    override fun onScreenCollide(screen: Screen) {}
+//
+//    override fun collidesWith(other: ICollidable?): Boolean {
+//       return if (other !is Player) {
+//           false
+//       } else {
+//           (other.bottom <= top && (other.left <= right || other.right >= left)
+//                   && other.bottom >= bottom)
+//       }
+//    }
+//
+//    override fun onObjectCollide(obj: ICollidable) {
+//        convertShield()
+//        isOnPlayer = true
+//        startDisappearingTimer()
+//    }
 
     companion object {
         private const val OFFSET = 25f

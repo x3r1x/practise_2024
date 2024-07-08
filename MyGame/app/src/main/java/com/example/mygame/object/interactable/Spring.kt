@@ -9,6 +9,7 @@ import com.example.mygame.`interface`.IBonus
 import com.example.mygame.`interface`.IDrawable
 import com.example.mygame.`interface`.IGameObject
 import com.example.mygame.`interface`.IMoveable
+import com.example.mygame.`interface`.IVisitor
 import com.example.mygame.`object`.Platform
 import com.example.mygame.`object`.Player
 import com.example.mygame.`object`.Screen
@@ -27,17 +28,20 @@ class Spring(resources: Resources) : IDrawable, IMoveable, IBonus, IGameObject {
     private var isStretchRunning = false
     private var animator : ValueAnimator? = null
 
-    override val isPassable = false
-
     override var x = 0f
     override var y = 0f
 
-    override var isInSpring: Boolean? = null
+    override var isDisappeared: Boolean
+        get() = TODO("Not yet implemented")
+        set(value) {}
 
     override var left = 0f
     override var right = 0f
     override var top = 0f
     override var bottom = 0f
+    override fun accept(visitor: IVisitor) {
+        TODO("Not yet implemented")
+    }
 
     fun createOnPlatform(platform: Platform) {
         val randomPosition = (MIN_SPRING_SPAWN_X .. MAX_SPRING_SPAWN_X).random()
@@ -76,21 +80,21 @@ class Spring(resources: Resources) : IDrawable, IMoveable, IBonus, IGameObject {
     override fun updatePositionX(newX: Float) {}
     override fun updatePositionY(elapsedTime: Float) {}
 
-    override fun collidesWith(other: ICollidable?): Boolean {
-        return if (other !is Player) {
-            false
-        } else {
-            (other.bottom <= top && (other.left <= right || other.right >= left)
-                    && other.bottom >= bottom)
-        }
-    }
-
-    override fun onObjectCollide(obj: ICollidable) {
-        runStretchAnimation()
-        obj.isInSpring = true
-    }
-
-    override fun onScreenCollide(screen: Screen) {}
+//    override fun collidesWith(other: ICollidable?): Boolean {
+//        return if (other !is Player) {
+//            false
+//        } else {
+//            (other.bottom <= top && (other.left <= right || other.right >= left)
+//                    && other.bottom >= bottom)
+//        }
+//    }
+//
+//    override fun onObjectCollide(obj: ICollidable) {
+//        runStretchAnimation()
+//        obj.isInSpring = true
+//    }
+//
+//    override fun onScreenCollide(screen: Screen) {}
 
     companion object {
         private const val WIDTH = 78f
