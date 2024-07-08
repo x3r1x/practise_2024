@@ -20,7 +20,7 @@ class ObjectsManager(
 
     private lateinit var platforms: MutableList<Platform>
 
-    private val platformGenerator = PlatformGenerator(resources, screen.width, screen.height)
+    private val platformGenerator = PlatformGenerator(resources, screen.width, screen.height, player)
 
     private var numberOfPlatformPacks = 2
 
@@ -46,7 +46,7 @@ class ObjectsManager(
     }
 
     private fun generateObjects() {
-        objects += platformGenerator.generatePlatforms()
+        objects += platformGenerator.generatePlatforms() as MutableList<IDrawable>
     }
 
     private fun removeObjectsOutOfBounds(objects: MutableList<IDrawable>) {
