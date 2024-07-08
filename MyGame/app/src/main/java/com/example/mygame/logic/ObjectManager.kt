@@ -3,7 +3,6 @@ package com.example.mygame.logic
 import android.content.res.Resources
 import com.example.mygame.`object`.Player
 import com.example.mygame.`object`.Screen
-import com.example.mygame.`object`.Platform
 import com.example.mygame.`interface`.IDrawable
 import com.example.mygame.`interface`.ICollidable
 import com.example.mygame.factories.PlayerFactory
