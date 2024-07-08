@@ -71,12 +71,10 @@ class PlatformGenerator(
                     x = Random.nextFloat() * (screen.width - platform.width)
                     yGap = platformGap + Random.nextFloat() * (maxVerticalGap - platformGap)
                     newPlatform = factory.generatePlatform(x, nextY - yGap)
-                } while (
-                    false
-                    //isOverlapping(platformsPack as MutableList<Platform>, newPlatform)
-                )
+                } while (isOverlapping(platformsPack, newPlatform))
 
                 platformsPack.add(newPlatform)
+
                 nextY -= platform.height + yGap
             }
 
