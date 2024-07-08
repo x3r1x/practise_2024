@@ -14,6 +14,7 @@ import com.example.mygame.logic.PositionHandler
 import com.example.mygame.logic.CollisionHandler
 import com.example.mygame.`interface`.ICollidable
 import com.example.mygame.generator.PlatformGenerator
+import com.example.mygame.`object`.iteractable.Jetpack
 import com.example.mygame.`object`.iteractable.Shield
 import com.example.mygame.`object`.iteractable.Spring
 import com.example.mygame.`object`.platforms.MovingPlatformOnX
@@ -46,6 +47,7 @@ class GameViewModel(private val application: Application) : AndroidViewModel(app
     private lateinit var platforms: List<Platform>
     private lateinit var spring: Spring
     private lateinit var shield: Shield
+    private lateinit var jetpack: Jetpack
 
     private lateinit var sensorHandler: SensorHandler
     private lateinit var collisionHandler: CollisionHandler
@@ -64,6 +66,9 @@ class GameViewModel(private val application: Application) : AndroidViewModel(app
         }
         shield = Shield(application.resources, ball).apply {
             createOnPlatform(platforms[2])
+        }
+        jetpack = Jetpack(application.resources, ball).apply {
+            createOnPlatform(platforms[3])
         }
     }
 
@@ -99,7 +104,7 @@ class GameViewModel(private val application: Application) : AndroidViewModel(app
     }
 
     private fun updateGame(elapsedTime: Float) {
-        _gameObjects.value = listOf(ball) + platformGenerator.getPlatforms() + spring + shield
+        _gameObjects.value = listOf(jetpack) + listOf(ball) + platformGenerator.getPlatforms() + spring + shield
 
         if (Physics().doWeNeedToMove(ball, screen.borderLine)) {
             PositionHandler(_gameObjects.value as List<IDrawable>)

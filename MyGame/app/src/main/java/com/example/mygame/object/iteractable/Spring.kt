@@ -50,11 +50,7 @@ class Spring(resources: Resources) : IDrawable, ICollidable {
                 this.duration = animationDuration
                 addUpdateListener { animator ->
                     currentFrame = animator.animatedValue as Int
-                    //эта штука растягивает изображение вниз, а не вверх. Это значит, что каждый раз
-                    //нам надо менять позицию пружины, что очень сильно влияет и на качество анимации,
-                    //и на производительность.
                     bitmap = bitmaps[currentFrame]
-                    //TODO: Kill that with fire!
                     setPosition(x, y - ANIMATION_HEIGHT_VALUE)
                 }
             }

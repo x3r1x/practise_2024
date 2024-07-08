@@ -3,6 +3,7 @@ package com.example.mygame.logic
 import com.example.mygame.`object`.Player
 import com.example.mygame.`object`.Screen
 import com.example.mygame.`interface`.ICollidable
+import com.example.mygame.`object`.iteractable.Jetpack
 import com.example.mygame.`object`.iteractable.Shield
 import com.example.mygame.`object`.iteractable.Spring
 import com.example.mygame.`object`.platforms.BreakingPlatform
@@ -21,7 +22,7 @@ class CollisionHandler {
 
                 if (player != obj && player.collidesWith(obj)) {
                     //Соприкосновение игрока с пружиной и щитом
-                    if (obj is Spring || obj is Shield) {
+                    if (obj is Spring || obj is Shield || obj is Jetpack) {
                         obj.onObjectCollide(player)
                     }
 
