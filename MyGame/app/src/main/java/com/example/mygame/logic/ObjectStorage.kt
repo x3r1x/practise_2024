@@ -1,7 +1,7 @@
 package com.example.mygame.logic
 
 import android.content.res.Resources
-import com.example.mygame.factories.PlayerFactory
+import com.example.mygame.factory.PlayerFactory
 import com.example.mygame.`interface`.IGameObject
 import com.example.mygame.`object`.Platform
 import com.example.mygame.`object`.Player

@@ -12,9 +12,9 @@ import com.example.mygame.`object`.Platform
 import com.example.mygame.`interface`.IBonus
 import com.example.mygame.`interface`.IDrawable
 import com.example.mygame.`interface`.IMoveable
-import com.example.mygame.`interface`.ICollidable
+import com.example.mygame.`interface`.IGameObject
 
-class Shield(resources: Resources, entity: Player) : IDrawable, ICollidable, IMoveable, IBonus {
+class Shield(resources: Resources, entity: Player) : IDrawable, IMoveable, IBonus, IGameObject {
     private val res = resources
     private val player = entity
 

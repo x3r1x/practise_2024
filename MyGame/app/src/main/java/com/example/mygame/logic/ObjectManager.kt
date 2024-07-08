@@ -2,23 +2,25 @@ package com.example.mygame.logic
 
 import android.util.Log
 import android.content.res.Resources
+import com.example.mygame.generator.LevelGenerator
 import com.example.mygame.`object`.Player
 import com.example.mygame.`object`.Screen
 import com.example.mygame.`interface`.IGameObject
 import com.example.mygame.generator.PlatformGenerator
 
 class ObjectsManager(
-    resources: Resources,
-    screen: Screen
+    private val resources: Resources,
+    private val screen: Screen
 ) {
     val objectStorage = ObjectStorage(resources, screen)
 
-    private val platformGenerator = PlatformGenerator(resources, screen.width, screen.height)
+    private lateinit var levelGenerator: LevelGenerator
 
     private var numberOfPlatformPacks = 2
 
     fun initObjects() {
-        objectStorage.addAll(platformGenerator.generateInitialPlatforms() as MutableList<IGameObject>)
+        levelGenerator = LevelGenerator(resources, screen, objectStorage.getPlayer())
+        objectStorage.addAll(levelGenerator.generateInitialPack())
     }
 
     fun updateObjects() {
@@ -36,7 +38,7 @@ class ObjectsManager(
     }
 
     private fun generateObjects() {
-        objectStorage.addAll(platformGenerator.generatePlatforms() as MutableList<IGameObject>)
+        objectStorage.addAll(levelGenerator.generateNewPack())
     }
 
     private fun removeObjectsOutOfBounds() : MutableList<IGameObject> {

@@ -4,6 +4,7 @@ import android.content.res.Resources
 import com.example.mygame.`object`.Player
 import com.example.mygame.`object`.Screen
 import com.example.mygame.`interface`.IDrawable
+import com.example.mygame.`interface`.IGameObject
 import com.example.mygame.`object`.platform.StaticPlatform
 
 class LevelGenerator(
@@ -14,11 +15,11 @@ class LevelGenerator(
     private val platformGenerator = PlatformGenerator(resources, screen)
     private val bonusGenerator = BonusGenerator(resources, player)
 
-    fun generateInitialPack(): MutableList<IDrawable> {
-        return platformGenerator.generateInitialPlatforms() as MutableList<IDrawable>
+    fun generateInitialPack(): MutableList<IGameObject> {
+        return platformGenerator.generateInitialPlatforms() as MutableList<IGameObject>
     }
 
-    fun generateNewPack(): MutableList<IDrawable> {
+    fun generateNewPack(): MutableList<IGameObject> {
         val platforms = platformGenerator.generatePlatforms()
         val staticPlatforms = platforms.filter {
             it::class == StaticPlatform::class
@@ -26,7 +27,7 @@ class LevelGenerator(
 
         val bonuses = bonusGenerator.generateBonuses(staticPlatforms)
 
-        val objects = platforms + bonuses as MutableList<IDrawable>
+        val objects = platforms + bonuses as MutableList<IGameObject>
 
         return objects.toMutableList()
     }

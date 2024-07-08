@@ -6,14 +6,14 @@ import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import com.example.mygame.R
 import com.example.mygame.`interface`.IBonus
-import com.example.mygame.`interface`.ICollidable
 import com.example.mygame.`interface`.IDrawable
+import com.example.mygame.`interface`.IGameObject
 import com.example.mygame.`interface`.IMoveable
 import com.example.mygame.`object`.Platform
 import com.example.mygame.`object`.Player
 import com.example.mygame.`object`.Screen
 
-class Spring(resources: Resources) : IDrawable, ICollidable, IMoveable, IBonus {
+class Spring(resources: Resources) : IDrawable, IMoveable, IBonus, IGameObject {
     private val firstStateBitmap = BitmapFactory.decodeResource(resources, SPRING_IMAGES[0], BITMAP_OPTIONS)
     private val secondStateBitmap = BitmapFactory.decodeResource(resources, SPRING_IMAGES[1], BITMAP_OPTIONS)
     private val thirdStateBitmap = BitmapFactory.decodeResource(resources, SPRING_IMAGES[2], BITMAP_OPTIONS)

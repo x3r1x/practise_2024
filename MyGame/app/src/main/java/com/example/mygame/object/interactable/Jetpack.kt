@@ -7,14 +7,15 @@ import android.graphics.Paint
 import android.os.CountDownTimer
 import com.example.mygame.R
 import com.example.mygame.`interface`.IBonus
-import com.example.mygame.`interface`.ICollidable
 import com.example.mygame.`interface`.IDrawable
+import com.example.mygame.`interface`.IGameObject
 import com.example.mygame.`interface`.IMoveable
+import com.example.mygame.`interface`.IVisitor
 import com.example.mygame.`object`.Platform
 import com.example.mygame.`object`.Player
 import com.example.mygame.`object`.Screen
 
-class Jetpack(resources: Resources, entity: Player) : IDrawable, ICollidable, IMoveable, IBonus {
+class Jetpack(resources: Resources, entity: Player) : IDrawable, IMoveable, IBonus, IGameObject {
     private val res = resources
     private val player = entity
 
@@ -27,15 +28,16 @@ class Jetpack(resources: Resources, entity: Player) : IDrawable, ICollidable, IM
 
     override var x = 0f
     override var y = 0f
+    override var isDisappeared = false
 
     override var left = 0f
     override var top = 0f
     override var bottom = 0f
+
+    override fun accept(visitor: IVisitor) {
+    }
+
     override var right = 0f
-
-    override val isPassable = true
-
-    override var isInSpring: Boolean? = null
 
     fun createOnPlatform(platform: Platform) {
         setPosition(platform.x, platform.top - HEIGHT / 2 - OFFSET)
@@ -106,22 +108,22 @@ class Jetpack(resources: Resources, entity: Player) : IDrawable, ICollidable, IM
     override fun updatePositionX(newX: Float) {}
     override fun updatePositionY(elapsedTime: Float) {}
 
-    override fun onScreenCollide(screen: Screen) {}
-
-    override fun onObjectCollide(obj: ICollidable) {
-        player.isWithJetpack = true
-        startDisappearingTimer()
-        movePlayer(player)
-    }
-
-    override fun collidesWith(other: ICollidable?): Boolean {
-        return if (other !is Player) {
-            false
-        } else {
-            (other.bottom <= top && (other.left <= right || other.right >= left)
-                    && other.bottom >= bottom)
-        }
-    }
+//    override fun onScreenCollide(screen: Screen) {}
+//
+//    override fun onObjectCollide(obj: ICollidable) {
+//        player.isWithJetpack = true
+//        startDisappearingTimer()
+//        movePlayer(player)
+//    }
+//
+//    override fun collidesWith(other: ICollidable?): Boolean {
+//        return if (other !is Player) {
+//            false
+//        } else {
+//            (other.bottom <= top && (other.left <= right || other.right >= left)
+//                    && other.bottom >= bottom)
+//        }
+//    }
 
     companion object {
         private const val WIDTH = 124f

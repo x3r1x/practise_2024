@@ -44,11 +44,13 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
         }
     }
 
-    private var directionX = DirectionX.RIGHT
+    var isWithJetpack = false
 
-    private var directionY = DirectionY.DOWN
+    var directionX = DirectionX.RIGHT
 
-    private var speedY = 0f
+    var directionY = DirectionY.DOWN
+
+    var speedY = 0f
 
     override fun accept(visitor: IVisitor) {
         visitor.visit(this)
