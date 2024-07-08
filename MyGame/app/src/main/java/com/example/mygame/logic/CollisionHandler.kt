@@ -8,7 +8,7 @@ import com.example.mygame.visitor.ScreenCollisionVisitor
 
 class CollisionHandler {
 
-    fun checkCollisions2(player: Player, screen: Screen, objects: List<IGameObject>) {
+    fun checkCollisions(player: Player, screen: Screen, objects: List<IGameObject>) {
         checkCollisionScreenWithObjects(screen, objects)
         checkCollisionPlayerWithPlatform(player, screen, objects)
     }
