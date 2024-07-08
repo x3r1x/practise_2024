@@ -4,6 +4,9 @@ import com.example.mygame.`interface`.IGameObject
 import com.example.mygame.`object`.Player
 import com.example.mygame.`object`.Screen
 import com.example.mygame.visitor.PlayerCollisionVisitor
+import com.example.mygame.`object`.iteractable.Jetpack
+import com.example.mygame.`object`.iteractable.Shield
+import com.example.mygame.`object`.iteractable.Spring
 import com.example.mygame.visitor.ScreenCollisionVisitor
 
 class CollisionHandler {

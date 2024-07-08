@@ -20,6 +20,8 @@ open class Platform(createdX: Float, createdY: Float) : IDrawable, IMoveable, IG
     override var x = createdX
     override var y = createdY
 
+    override val isPassable = false
+
     override val left
         get() = x - width / 2
     override val right
@@ -33,13 +35,15 @@ open class Platform(createdX: Float, createdY: Float) : IDrawable, IMoveable, IG
         visitor.visit(this)
     }
 
+    override var isInSpring: Boolean? = null
+
     override fun draw(canvas: Canvas) {
         canvas.drawBitmap(bitmap, left, top, paint)
     }
 
-    override fun setPosition(startX: Float, startY: Float) {
-        x = startX
-        y = startY
+    override fun setPosition(newX: Float, newY: Float) {
+        x = newX
+        y = newY
     }
 
     override fun updatePositionX(newX: Float) {

@@ -13,9 +13,9 @@ class ObjectsManager(
 ) {
     val objectStorage = ObjectStorage(resources, screen)
 
-    private val platformGenerator = PlatformGenerator(resources, screen.width, screen.height)
+    private val platformGenerator = PlatformGenerator(resources, screen.width, screen.height, player)
 
-    private var numberOfPlatformPacks = 2
+    private var numberOfPlatformPacks = 3
 
     fun initObjects() {
         objectStorage.addAll(platformGenerator.generateInitialPlatforms() as MutableList<IGameObject>)
