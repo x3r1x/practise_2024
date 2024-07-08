@@ -5,13 +5,14 @@ import android.os.Build
 import android.os.Bundle
 import android.view.WindowManager
 import android.view.WindowMetrics
+import androidx.activity.ComponentActivity
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.core.view.WindowCompat
-import com.example.mygame.view.GameView
-import androidx.activity.ComponentActivity
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import com.example.mygame.`interface`.IDrawable
+import com.example.mygame.view.GameView
 
 class MainActivity : ComponentActivity() {
     private val gameViewModel: GameViewModel by viewModels()
@@ -47,7 +48,7 @@ class MainActivity : ComponentActivity() {
 
         // Наблюдаем за изменениями в объектах игры
         gameViewModel.gameObjects.observe(this) { gameObjects ->
-            gameView.drawGame(gameObjects)
+            gameView.drawGame(gameObjects as List<IDrawable>)
         }
 
         //запрещаем выключение экрана и прячем UI системы

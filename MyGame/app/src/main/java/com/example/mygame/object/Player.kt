@@ -7,9 +7,10 @@ import android.graphics.RectF
 import com.example.mygame.Physics
 import com.example.mygame.`interface`.ICollidable
 import com.example.mygame.`interface`.IDrawable
+import com.example.mygame.`interface`.IGameObject
 import com.example.mygame.`interface`.IMoveable
 
-class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDrawable, ICollidable, IMoveable {
+class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDrawable, ICollidable, IMoveable, IGameObject {
     enum class DirectionY(val value: Int) {
         UP(-1),
         DOWN(1),
@@ -25,8 +26,6 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
     private var directionY = DirectionY.DOWN
 
     private var speedY = 0f
-
-
 
     override var x = 0f
     override var y = 0f
