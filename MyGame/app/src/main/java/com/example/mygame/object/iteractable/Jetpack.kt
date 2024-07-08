@@ -6,6 +6,7 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.os.CountDownTimer
 import com.example.mygame.R
+import com.example.mygame.`interface`.IBonus
 import com.example.mygame.`interface`.ICollidable
 import com.example.mygame.`interface`.IDrawable
 import com.example.mygame.`interface`.IMoveable
@@ -13,7 +14,7 @@ import com.example.mygame.`object`.Platform
 import com.example.mygame.`object`.Player
 import com.example.mygame.`object`.Screen
 
-class Jetpack(resources: Resources, entity: Player) : IDrawable, ICollidable, IMoveable {
+class Jetpack(resources: Resources, entity: Player) : IDrawable, ICollidable, IMoveable, IBonus {
     private val res = resources
     private val player = entity
 
@@ -93,9 +94,9 @@ class Jetpack(resources: Resources, entity: Player) : IDrawable, ICollidable, IM
         }
     }
 
-    override fun setPosition(newX: Float, newY: Float) {
-        x = newX
-        y = newY
+    override fun setPosition(startX: Float, startY: Float) {
+        x = startX
+        y = startY
         left = x - WIDTH / 2
         right = x + WIDTH / 2
         top = y - HEIGHT / 2

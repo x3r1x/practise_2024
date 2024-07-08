@@ -5,6 +5,7 @@ import android.content.res.Resources
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import com.example.mygame.R
+import com.example.mygame.`interface`.IBonus
 import com.example.mygame.`interface`.ICollidable
 import com.example.mygame.`interface`.IDrawable
 import com.example.mygame.`interface`.IMoveable
@@ -12,7 +13,7 @@ import com.example.mygame.`object`.Platform
 import com.example.mygame.`object`.Player
 import com.example.mygame.`object`.Screen
 
-class Spring(resources: Resources) : IDrawable, ICollidable, IMoveable {
+class Spring(resources: Resources) : IDrawable, ICollidable, IMoveable, IBonus {
     private val firstStateBitmap = BitmapFactory.decodeResource(resources, SPRING_IMAGES[0], BITMAP_OPTIONS)
     private val secondStateBitmap = BitmapFactory.decodeResource(resources, SPRING_IMAGES[1], BITMAP_OPTIONS)
     private val thirdStateBitmap = BitmapFactory.decodeResource(resources, SPRING_IMAGES[2], BITMAP_OPTIONS)
@@ -63,9 +64,9 @@ class Spring(resources: Resources) : IDrawable, ICollidable, IMoveable {
         canvas.drawBitmap(bitmap, left, top, null)
     }
 
-    override fun setPosition(newX: Float, newY: Float) {
-        x = newX
-        y = newY
+    override fun setPosition(startX: Float, startY: Float) {
+        x = startX
+        y = startY
         left = x - WIDTH / 2
         right = x + WIDTH / 2
         top = y - HEIGHT / 2

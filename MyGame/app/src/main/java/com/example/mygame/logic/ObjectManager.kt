@@ -1,14 +1,13 @@
 package com.example.mygame.logic
 
-import android.util.Log
 import android.content.res.Resources
 import com.example.mygame.`object`.Player
 import com.example.mygame.`object`.Screen
+import com.example.mygame.`object`.Platform
 import com.example.mygame.`interface`.IDrawable
 import com.example.mygame.`interface`.ICollidable
 import com.example.mygame.factories.PlayerFactory
-import com.example.mygame.generator.PlatformGenerator
-import com.example.mygame.`object`.Platform
+import com.example.mygame.generator.LevelGenerator
 import com.example.mygame.`object`.platforms.DisappearingPlatform
 
 class ObjectsManager(
@@ -18,9 +17,7 @@ class ObjectsManager(
     var objects = mutableListOf<IDrawable>()
     val player = PlayerFactory(resources).generatePlayer()
 
-    private lateinit var platforms: MutableList<Platform>
-
-    private val platformGenerator = PlatformGenerator(resources, screen.width, screen.height, player)
+    private val levelGenerator = LevelGenerator(resources, screen, player)
 
     private var numberOfPlatformPacks = 3
 
@@ -29,9 +26,7 @@ class ObjectsManager(
 
         objects.add(player)
 
-        platforms = platformGenerator.generateInitialPlatforms()
-
-        objects.addAll(platforms)
+        objects.addAll(levelGenerator.generateInitialPack())
     }
 
     fun updateObjects() {
@@ -41,12 +36,10 @@ class ObjectsManager(
             generateObjects()
             numberOfPlatformPacks--
         }
-
-        Log.i("", "objects: ${objects.size}")
     }
 
     private fun generateObjects() {
-        objects += platformGenerator.generatePlatforms() as MutableList<IDrawable>
+        objects += levelGenerator.generateNewPack()
     }
 
     private fun removeObjectsOutOfBounds(objects: MutableList<IDrawable>) {

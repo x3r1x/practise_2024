@@ -144,7 +144,7 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
                 bottom < other.top ||
                 top > other.bottom)
 
-        return isIntersect && directionY == DirectionY.DOWN
+        return isIntersect
     }
 
     companion object {
