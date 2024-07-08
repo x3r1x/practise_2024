@@ -36,6 +36,10 @@ class CollisionHandler {
 
     private fun checkCollisionObjectWithPlayer(obj: ICollidable, player: Player, screen: Screen) {
         if (obj != player && player.collidesWith(obj)) {
+            if (obj is Jetpack || obj is Spring || obj is Shield) {
+                obj.onObjectCollide(player)
+            }
+
             if (obj is DisappearingPlatform) {
                 obj.animatePlatformColor()
             }
