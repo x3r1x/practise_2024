@@ -1,7 +1,6 @@
 package com.example.mygame.`object`
 
 import com.example.mygame.`interface`.ICollidable
-import com.example.mygame.`interface`.IDrawable
 
 class Screen(val width: Float, val height: Float): ICollidable {
     override val left = 0f
@@ -20,6 +19,10 @@ class Screen(val width: Float, val height: Float): ICollidable {
     override fun collidesWith(other: ICollidable?): Boolean {
         if (other == null) {
             return false
+        }
+
+        if (other is Platform) {
+            return other.right >= right || other.left <= left
         }
 
         val isOutOfSideBounds = other.right < left || other.left > right

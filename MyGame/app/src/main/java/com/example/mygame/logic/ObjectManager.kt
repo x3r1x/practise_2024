@@ -51,7 +51,7 @@ class ObjectsManager(
 
     private fun removeObjectsOutOfBounds(objects: MutableList<IDrawable>) {
         objects.retainAll(objects.filterNot {
-            it is ICollidable && it !is Player && screen.collidesWith(it)
+            it is ICollidable && it !is Player && it.top > screen.height
                     || (it is DisappearingPlatform && it.isDestroying)
         }.toMutableList())
     }

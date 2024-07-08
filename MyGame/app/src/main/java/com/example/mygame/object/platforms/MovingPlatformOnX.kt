@@ -30,7 +30,7 @@ class MovingPlatformOnX(
     }
 
     override fun onScreenCollide(screen: Screen) {
-        if (left + width >= screen.width) {
+        if (right >= screen.width) {
             directionX = DirectionX.LEFT
         } else if (left <= 0f) {
             directionX = DirectionX.RIGHT

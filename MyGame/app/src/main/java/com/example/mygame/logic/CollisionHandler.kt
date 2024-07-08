@@ -12,7 +12,7 @@ class CollisionHandler {
             objects.forEachIndexed { index, firstObj ->
                 checkCollisionObjectWithScreen(firstObj, screen)
 
-                checkCollisionObjectWithPlayer(firstObj, player)
+                checkCollisionObjectWithPlayer(firstObj, player, screen)
 
                 objects.drop(index + 1).forEach { secondObj ->
                     // Коллизии объектов одинакового типа нет
@@ -31,14 +31,14 @@ class CollisionHandler {
         }
     }
 
-    private fun checkCollisionObjectWithPlayer(obj: ICollidable, player: Player) {
+    private fun checkCollisionObjectWithPlayer(obj: ICollidable, player: Player, screen: Screen) {
         if (obj != player && player.collidesWith(obj)) {
             if (obj is DisappearingPlatform) {
                 obj.animatePlatformColor()
             }
             // TODO: подумать
             if (obj is BreakingPlatform) {
-                obj.runDestructionAnimation(obj.bottom)
+                obj.runDestructionAnimation(screen.height)
             } else {
                 player.onObjectCollide(obj)
             }
