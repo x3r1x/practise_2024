@@ -1,13 +1,10 @@
 package com.example.mygame.`object`
 
-import android.content.res.Resources
 import android.graphics.RectF
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Matrix
 import com.example.mygame.Physics
-import com.example.mygame.R
 import com.example.mygame.`interface`.IDrawable
 import com.example.mygame.`interface`.ICollidable
 import com.example.mygame.`interface`.IMoveable
@@ -83,9 +80,9 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
         canvas.drawBitmap(imageToDraw, matrix, null)
     }
 
-    override fun setPosition(newX: Float, newY: Float) {
-        x = newX
-        y = newY
+    override fun setPosition(startX: Float, startY: Float) {
+        x = startX
+        y = startY
     }
 
     override fun updatePositionX(newX: Float) {
@@ -109,10 +106,10 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
 
     override fun onObjectCollide(obj: ICollidable) {
         if (obj is Platform) {
-            //setPosition(x, obj.top - RADIUS - 10f)
             directionY = DirectionY.UP
             speedY = JUMP_SPEED
         } else if (isInSpring == true) {
+            directionY = DirectionY.UP
             speedY = SPRING_JUMP_SPEED
             isInSpring = false
         }
