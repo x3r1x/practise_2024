@@ -1,15 +1,15 @@
 package com.example.mygame.logic
 
-import android.content.res.Resources
 import android.util.Log
-import com.example.mygame.generator.PlatformGenerator
-import com.example.mygame.`interface`.IGameObject
+import android.content.res.Resources
 import com.example.mygame.`object`.Player
 import com.example.mygame.`object`.Screen
+import com.example.mygame.`interface`.IGameObject
+import com.example.mygame.generator.PlatformGenerator
 
 class ObjectsManager(
     resources: Resources,
-    private val screen: Screen
+    screen: Screen
 ) {
     val objectStorage = ObjectStorage(resources, screen)
 

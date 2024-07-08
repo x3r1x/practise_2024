@@ -29,7 +29,7 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
         return directionY
     }
 
-    fun repulsion() {
+    fun jump() {
         directionY = DirectionY.UP
         speedY = JUMP_SPEED
     }
