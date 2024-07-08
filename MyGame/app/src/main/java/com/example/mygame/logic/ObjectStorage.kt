@@ -2,6 +2,7 @@ package com.example.mygame.logic
 
 import android.content.res.Resources
 import com.example.mygame.factory.PlayerFactory
+import com.example.mygame.`interface`.IBonus
 import com.example.mygame.`interface`.IGameObject
 import com.example.mygame.`object`.Platform
 import com.example.mygame.`object`.Player
@@ -12,6 +13,7 @@ class ObjectStorage(
     screen: Screen
 ) {
     // TODO: враги, бонусы
+    private val bonuses = mutableListOf<IBonus>()
     private val platforms = mutableListOf<Platform>()
     private var player = PlayerFactory(resources).generatePlayer()
     private val objects = mutableListOf<IGameObject>()
