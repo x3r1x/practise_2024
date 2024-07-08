@@ -24,13 +24,6 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
     }
 
     var isWithJetpack = false
-    private var directionX = DirectionX.RIGHT
-
-    private var directionY = DirectionY.DOWN
-
-    private var speedY = 0f
-
-
 
     override var x = 0f
     override var y = 0f
@@ -48,13 +41,13 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
 
     override var isInSpring: Boolean? = false
 
-    var directionX = DirectionX.STILL
+    var directionX = DirectionX.RIGHT
 
     var directionY = DirectionY.DOWN
 
     var speedY = 0f
 
-    private fun changeDirection(newX: Float) {
+    private fun changeDirectionX(newX: Float) {
         if (newX < -DISTANCE_TO_TURN) {directionX = DirectionX.LEFT}
         if (newX >  DISTANCE_TO_TURN) {directionX = DirectionX.RIGHT}
     }

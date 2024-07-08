@@ -9,6 +9,7 @@ import androidx.core.graphics.alpha
 import com.example.mygame.R
 import com.example.mygame.`interface`.ICollidable
 import com.example.mygame.`interface`.IDrawable
+import com.example.mygame.`interface`.IMoveable
 import com.example.mygame.`object`.Platform
 import com.example.mygame.`object`.Player
 import com.example.mygame.`object`.Screen
@@ -16,7 +17,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 
-class Shield(resources: Resources, entity: Player) : IDrawable, ICollidable {
+class Shield(resources: Resources, entity: Player) : IDrawable, ICollidable, IMoveable {
     private val res = resources
     private val player = entity
 
