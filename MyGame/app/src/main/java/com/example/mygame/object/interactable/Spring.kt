@@ -1,4 +1,4 @@
-package com.example.mygame.`object`.iteractable
+package com.example.mygame.`object`.interactable
 
 import android.animation.ValueAnimator
 import android.content.res.Resources

@@ -1,4 +1,4 @@
-package com.example.mygame.`object`.iteractable
+package com.example.mygame.`object`.interactable
 
 import com.example.mygame.R
 import android.graphics.Paint

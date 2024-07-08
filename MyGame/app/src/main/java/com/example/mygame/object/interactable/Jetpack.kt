@@ -1,4 +1,4 @@
-package com.example.mygame.`object`.iteractable
+package com.example.mygame.`object`.interactable
 
 import android.content.res.Resources
 import android.graphics.BitmapFactory

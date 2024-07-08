@@ -18,7 +18,7 @@ class ObjectsManager(
 
     private val levelGenerator = LevelGenerator(resources, screen, player)
 
-    private var numberOfPlatformPacks = 3
+    private var numberOfPacks = 3
 
     fun initObjects() {
         player.setPosition(screen.width / 2f, screen.height - 800)
@@ -31,9 +31,9 @@ class ObjectsManager(
     fun updateObjects() {
         removeObjectsOutOfBounds(objects)
 
-        if (numberOfPlatformPacks >= 0) {
+        if (numberOfPacks >= 0) {
             generateObjects()
-            numberOfPlatformPacks--
+            numberOfPacks--
         }
     }
 

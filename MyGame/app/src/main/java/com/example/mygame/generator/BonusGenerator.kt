@@ -6,9 +6,9 @@ import com.example.mygame.`object`.Player
 import com.example.mygame.`object`.Platform
 import com.example.mygame.`interface`.IBonus
 import com.example.mygame.`interface`.IBonusFactory
-import com.example.mygame.`object`.iteractable.Shield
-import com.example.mygame.`object`.iteractable.Spring
-import com.example.mygame.`object`.iteractable.Jetpack
+import com.example.mygame.`object`.interactable.Shield
+import com.example.mygame.`object`.interactable.Spring
+import com.example.mygame.`object`.interactable.Jetpack
 import com.example.mygame.factories.bonuses.ShieldFactory
 import com.example.mygame.factories.bonuses.SpringFactory
 import com.example.mygame.factories.bonuses.JetpackFactory
