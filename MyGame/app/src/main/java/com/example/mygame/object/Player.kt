@@ -21,40 +21,6 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
         RIGHT
     }
 
-    fun getDirectionX() :DirectionX {
-        return directionX
-    }
-
-    fun getDirectionY() :DirectionY {
-        return directionY
-    }
-
-    fun jump() {
-        directionY = DirectionY.UP
-        speedY = JUMP_SPEED
-    }
-
-    fun movingThroughScreen(screen: Screen) {
-        if (x < screen.left) {
-            x = screen.width - RADIUS
-        }
-
-        if (x > screen.right) {
-            x = 0f + RADIUS
-        }
-    }
-
-    private var directionX = DirectionX.RIGHT
-
-    private var directionY = DirectionY.DOWN
-
-    private var speedY = 0f
-
-    override fun accept(visitor: IVisitor) {
-        visitor.visit(this)
-    }
-
-    override var isDisappeared = false
     var isWithJetpack = false
 
     override var x = 0f
@@ -69,15 +35,40 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
     override val bottom
         get() = y + RADIUS
 
-    override val isPassable = false
-
-    override var isInSpring: Boolean? = false
-
     var directionX = DirectionX.RIGHT
 
     var directionY = DirectionY.DOWN
 
     var speedY = 0f
+
+    var isInSpring = false
+
+    override var isDisappeared = false
+
+    fun jump() {
+        directionY = DirectionY.UP
+
+        if (isInSpring) {
+            speedY = SPRING_JUMP_SPEED
+            isInSpring = false
+        } else {
+            speedY = JUMP_SPEED
+        }
+    }
+
+    fun movingThroughScreen(screen: Screen) {
+        if (x < screen.left) {
+            x = screen.width - RADIUS
+        }
+
+        if (x > screen.right) {
+            x = 0f + RADIUS
+        }
+    }
+
+    override fun accept(visitor: IVisitor) {
+        visitor.visit(this)
+    }
 
     private fun changeDirectionX(newX: Float) {
         if (newX < -DISTANCE_TO_TURN) {directionX = DirectionX.LEFT}
@@ -137,46 +128,6 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
                 directionY = DirectionY.DOWN
             }
         }
-    }
-
-    override fun onObjectCollide(obj: ICollidable) {
-        if (obj is Platform) {
-            //setPosition(x, obj.top - RADIUS - 10f)
-            directionY = DirectionY.UP
-            speedY = JUMP_SPEED
-        }
-    }
-
-    override fun onScreenCollide(screen: Screen) {
-        if (x < screen.left) {
-            x = screen.width - RADIUS
-        }
-
-        if (x > screen.right) {
-            x = 0f + RADIUS
-        }
-    }
-
-    override fun collidesWith(other: ICollidable?): Boolean {
-        //Сделать с помощью метода intersects() у класса Rect
-        other ?: return false
-
-        if (other is Platform) {
-            if (directionX == DirectionX.RIGHT) {
-                return bottom < other.bottom && bottom >= other.top && directionY == DirectionY.DOWN
-                        && (left + 15f < other.right && right - 50f > other.left)
-            } else {
-                return bottom < other.bottom && bottom >= other.top && directionY == DirectionY.DOWN
-                        && (left + 50f < other.right && right - 15f > other.left)
-            }
-        }
-
-        val isIntersect = !(right < other.left ||
-                left > other.right ||
-                bottom < other.top ||
-                top > other.bottom)
-
-        return isIntersect && directionY == DirectionY.DOWN
     }
 
     companion object {

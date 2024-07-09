@@ -1,10 +1,15 @@
 package com.example.mygame.visitor
 
+import com.example.mygame.`interface`.IGameObject
 import com.example.mygame.`object`.Player
 import com.example.mygame.`object`.Platform
 import com.example.mygame.`interface`.IVisitor
+import com.example.mygame.`object`.Enemy
 import com.example.mygame.`object`.Player.DirectionX
 import com.example.mygame.`object`.Player.DirectionY
+import com.example.mygame.`object`.interactable.Jetpack
+import com.example.mygame.`object`.interactable.Shield
+import com.example.mygame.`object`.interactable.Spring
 import com.example.mygame.`object`.platforms.BreakingPlatform
 import com.example.mygame.`object`.platforms.DisappearingPlatform
 
@@ -14,7 +19,7 @@ class PlayerCollisionVisitor(
 ) : IVisitor {
 
     override fun visit(platform: Platform) {
-        if (isCollidesPlayerWithPlatform(platform)) {
+        if (doesPlayerCollideWithSolid(platform)) {
             if (platform is BreakingPlatform) {
                 platform.runDestructionAnimation(screenHeight)
                 return
@@ -26,15 +31,62 @@ class PlayerCollisionVisitor(
         }
     }
 
+    //player cannot interact with player
     override fun visit(player: Player) {}
 
-    private fun isCollidesPlayerWithPlatform(platform: Platform) : Boolean {
-        if (player.getDirectionX() == DirectionX.RIGHT) {
-            return player.bottom < platform.bottom && player.bottom >= platform.top && player.getDirectionY() == DirectionY.DOWN
-                    && (player.left + 15f < platform.right && player.right - 50f > platform.left)
+    override fun visit(jetpack: Jetpack) {
+        if (doesPlayerCollideWithPassable(jetpack)) {
+            jetpack.initPlayer(player)
+            jetpack.startDisappearingTimer()
+            jetpack.fly()
+        }
+    }
+
+    override fun visit(shield: Shield) {
+        if (doesPlayerCollideWithPassable(shield)) {
+            shield.convertShield()
+            shield.initPlayer(player)
+            shield.startDisappearingTimer()
+        }
+    }
+
+    override fun visit(spring: Spring) {
+        if (doesPlayerCollideWithSolid(spring)) {
+            spring.runStretchAnimation()
+            spring.throwPlayer(player)
+            player.jump()
+        }
+    }
+
+    override fun visit(enemy: Enemy) {
+        TODO("Not yet implemented")
+    }
+
+    private fun doesPlayerCollideWithSolid(other: IGameObject) : Boolean {
+        if (other !is Platform && other !is Spring) {
+            return false
+        }
+
+        return if (player.directionX == DirectionX.RIGHT) {
+            (player.bottom < other.bottom && player.bottom >= other.top && player.directionY == DirectionY.DOWN
+                    && (player.left + 15f < other.right && player.right - 50f > other.left))
         } else {
-            return player.bottom < platform.bottom && player.bottom >= platform.top && player.getDirectionY() == DirectionY.DOWN
-                    && (player.left + 50f < platform.right && player.right - 15f > platform.left)
+            (player.bottom < other.bottom && player.bottom >= other.top && player.directionY == DirectionY.DOWN
+                    && (player.left + 50f < other.right && player.right - 15f > other.left))
+        }
+    }
+
+    private fun doesPlayerCollideWithPassable(other: IGameObject) : Boolean {
+        if (other !is Shield && other !is Jetpack) {
+            return false
+        }
+
+        return if (player.directionX == DirectionX.RIGHT) {
+            (player.bottom < other.bottom && player.bottom >= other.top
+                    && (player.left < other.right && player.right > other.left))
+        } else {
+            (player.bottom < other.bottom && player.bottom >= other.top
+                    && (player.left < other.right && player.right > other.left))
         }
     }
 }

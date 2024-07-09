@@ -1,35 +1,25 @@
-package com.example.mygame.`object`.iteractable
+package com.example.mygame.`object`.interactable
 
 import android.content.res.Resources
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.os.CountDownTimer
-import androidx.core.graphics.alpha
 import com.example.mygame.R
-import com.example.mygame.`interface`.ICollidable
 import com.example.mygame.`interface`.IDrawable
+import com.example.mygame.`interface`.IGameObject
 import com.example.mygame.`interface`.IMoveable
+import com.example.mygame.`interface`.IVisitor
 import com.example.mygame.`object`.Platform
 import com.example.mygame.`object`.Player
-import com.example.mygame.`object`.Screen
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 
-class Shield(resources: Resources, entity: Player) : IDrawable, ICollidable, IMoveable {
-    private val res = resources
-    private val player = entity
+class Shield(private val resources: Resources) : IDrawable, IMoveable, IGameObject {
+    private var isOnPlayer = false
 
-    private var bitmap = BitmapFactory.decodeResource(res, DEFAULT_IMAGE, BITMAP_OPTIONS)
+    private var bitmap = BitmapFactory.decodeResource(resources, DEFAULT_IMAGE, BITMAP_OPTIONS)
     private var paint = Paint().apply {
         alpha = DEFAULT_TRANSPARENCY
     }
-
-    private var isOnPlayer = false
-    private var isGone = false
-
-    override val isPassable = true
 
     override var x: Float = 0f
     override var y: Float = 0f
@@ -39,18 +29,25 @@ class Shield(resources: Resources, entity: Player) : IDrawable, ICollidable, IMo
     override var top = 0f
     override var bottom = 0f
 
-    override var isInSpring: Boolean? = null
+    override var isDisappeared = false
+
+    private lateinit var player: Player
 
     fun createOnPlatform(platform: Platform) {
         setPosition(platform.x, platform.top - DEFAULT_SIDE / 2 - OFFSET)
     }
 
-    private fun convertShield() {
-        bitmap = BitmapFactory.decodeResource(res, ON_PLAYER_IMAGE, BITMAP_OPTIONS)
+    fun convertShield() {
+        bitmap = BitmapFactory.decodeResource(resources, ON_PLAYER_IMAGE, BITMAP_OPTIONS)
+    }
+
+    fun initPlayer(entity: Player) {
+        player = entity
+        isOnPlayer = true
     }
 
     //thanks god for ending my suffering
-    private fun startDisappearingTimer() {
+    fun startDisappearingTimer() {
         val timer = object : CountDownTimer(SHIELD_DURATION, SHIELD_TIMER_TICK) {
             override fun onTick(p0: Long) {
                 if (p0 <= WHEN_TO_PULSE) {
@@ -70,11 +67,9 @@ class Shield(resources: Resources, entity: Player) : IDrawable, ICollidable, IMo
         timer.start()
     }
 
-    //FIXME: The problem with that is that it doesn't really dispose. It just goes invisible and
-    //FIXME: teleports to the up left of the screen.
     private fun dispose() {
         isOnPlayer = false
-        isGone = true
+        isDisappeared = true
         left = 0f
         right = 0f
         top = 0f
@@ -84,14 +79,14 @@ class Shield(resources: Resources, entity: Player) : IDrawable, ICollidable, IMo
     override fun draw(canvas: Canvas) {
         if (isOnPlayer) {
             canvas.drawBitmap(bitmap, player.x - ON_PLAYER_SIDE / 2, player.y - ON_PLAYER_SIDE / 2, paint)
-        } else if (!isGone) {
+        } else if (!isDisappeared) {
             canvas.drawBitmap(bitmap, left, top, null)
         }
     }
 
-    override fun setPosition(newX: Float, newY: Float) {
-        x = newX
-        y = newY
+    override fun setPosition(startX: Float, startY: Float) {
+        x = startX
+        y = startY
         left = x - DEFAULT_SIDE / 2
         right = x + DEFAULT_SIDE / 2
         top = y - DEFAULT_SIDE / 2
@@ -101,21 +96,8 @@ class Shield(resources: Resources, entity: Player) : IDrawable, ICollidable, IMo
     override fun updatePositionX(newX: Float) {}
     override fun updatePositionY(elapsedTime: Float) {}
 
-    override fun onScreenCollide(screen: Screen) {}
-
-    override fun collidesWith(other: ICollidable?): Boolean {
-       return if (other !is Player) {
-           false
-       } else {
-           (other.bottom <= top && (other.left <= right || other.right >= left)
-                   && other.bottom >= bottom)
-       }
-    }
-
-    override fun onObjectCollide(obj: ICollidable) {
-        convertShield()
-        isOnPlayer = true
-        startDisappearingTimer()
+    override fun accept(visitor: IVisitor) {
+        visitor.visit(this)
     }
 
     companion object {

@@ -3,9 +3,6 @@ package com.example.mygame.generator
 import kotlin.random.Random
 import android.content.res.Resources
 import com.example.mygame.`object`.Platform
-import com.example.mygame.`object`.iteractable.Spring
-import com.example.mygame.`object`.iteractable.Shield
-import com.example.mygame.`object`.iteractable.Jetpack
 import com.example.mygame.`interface`.IPlatformFactory
 import com.example.mygame.factories.platforms.StaticPlatformFactory
 import com.example.mygame.factories.platforms.BreakingPlatformFactory
@@ -13,6 +10,9 @@ import com.example.mygame.factories.platforms.MovingPlatformOnXFactory
 import com.example.mygame.factories.platforms.MovingPlatformOnYFactory
 import com.example.mygame.factories.platforms.DisappearingPlatformFactory
 import com.example.mygame.`object`.Player
+import com.example.mygame.`object`.interactable.Jetpack
+import com.example.mygame.`object`.interactable.Shield
+import com.example.mygame.`object`.interactable.Spring
 
 class PlatformGenerator(
     var resources: Resources,
@@ -46,12 +46,13 @@ class PlatformGenerator(
 
     fun generateInitialPlatforms(): MutableList<Platform> {
         val platforms: MutableList<Platform> = mutableListOf()
-        while (nextY >= 0) {
-            val x = Random.nextFloat() * (screenWidth - platform.width)
-            val newPlatform = staticPlatformFactory.generatePlatform(x, nextY)
-            platforms.add(newPlatform)
-            nextY -= platform.height + platformGap
-        }
+
+//        while (nextY >= 0) {
+//            val x = Random.nextFloat() * (screenWidth - platform.width)
+//            val newPlatform = staticPlatformFactory.generatePlatform(x, nextY)
+//            platforms.add(newPlatform)
+//            nextY -= platform.height + platformGap
+//        }
 
         return platforms
     }
@@ -83,22 +84,22 @@ class PlatformGenerator(
 
                 val random = Random.nextFloat()
 
-                when {
-                    random < 0.2f && factory == staticPlatformFactory -> {
-                        val jetpack =
-                            Jetpack(resources, player).apply { createOnPlatform(newPlatform) }
-                        platformsPack.add(jetpack)
-                    }
-                    random < 0.4f  && factory == staticPlatformFactory -> {
-                        val shield =
-                            Shield(resources, player).apply { createOnPlatform(newPlatform) }
-                        platformsPack.add(shield)
-                    }
-                    random < 0.5f  && factory == staticPlatformFactory -> {
-                        val spring = Spring(resources).apply { createOnPlatform(newPlatform) }
-                        platformsPack.add(spring)
-                    }
-                }
+//                when {
+//                    random < 0.2f && factory == staticPlatformFactory -> {
+//                        val jetpack =
+//                            Jetpack(resources, player).apply { createOnPlatform(newPlatform) }
+//                        platformsPack.add(jetpack)
+//                    }
+//                    random < 0.4f  && factory == staticPlatformFactory -> {
+//                        val shield =
+//                            Shield(resources, player).apply { createOnPlatform(newPlatform) }
+//                        platformsPack.add(shield)
+//                    }
+//                    random < 0.5f  && factory == staticPlatformFactory -> {
+//                        val spring = Spring(resources).apply { createOnPlatform(newPlatform) }
+//                        platformsPack.add(spring)
+//                    }
+//               }
 
                 platformsPack.add(newPlatform)
                 nextY -= platform.height + yGap
