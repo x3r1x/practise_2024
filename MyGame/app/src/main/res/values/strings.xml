@@ -1,3 +1,16 @@
 <resources>
-    <string name="app_name">MyGame</string>
+    <string name="app_name">iJump</string>
+    <string name="dev_name">Window</string>
+    <string name="singleplayer">Singleplayer</string>
+    <string name="multiplayer">Multiplayer</string>
+    <string name="about_us">About us</string>
+    <string name="game_over">Game over!</string>
+    <string name="current_score">Your score:</string>
+    <string name="best_score">Your best score:</string>
+    <string name="play_again">Play again</string>
+    <string name="menu">Menu</string>
+    <string name="enter_nickname">Enter nickname:</string>
+    <string name="nickname">Nickname</string>
+    <string name="connect">Connect</string>
+    <string name="lobby">Lobby</string>
 </resources>
