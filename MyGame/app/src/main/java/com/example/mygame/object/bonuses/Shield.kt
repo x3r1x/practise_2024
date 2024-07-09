@@ -14,14 +14,12 @@ import com.example.mygame.`interface`.IVisitor
 import com.example.mygame.`object`.Platform
 import com.example.mygame.`object`.Player
 
-class Shield(initDefaultBitmap: Bitmap,
-             private val initTransformedBitmap: Bitmap,
+class Shield(private val initDefaultShield: Bitmap,
+             private val initTransformedShield: Bitmap,
              createdX: Float,
              createdY: Float
 ) : IDrawable, IMoveable, IGameObject {
     private var isOnPlayer = false
-
-    private var bitmap = initDefaultBitmap
 
     private var paint = Paint().apply {
         alpha = DEFAULT_TRANSPARENCY
@@ -38,10 +36,6 @@ class Shield(initDefaultBitmap: Bitmap,
     override var isDisappeared = false
 
     private lateinit var player: Player
-
-    fun convertShield() {
-        bitmap = initTransformedBitmap
-    }
 
     fun initPlayer(entity: Player) {
         player = entity
@@ -80,9 +74,9 @@ class Shield(initDefaultBitmap: Bitmap,
 
     override fun draw(canvas: Canvas) {
         if (isOnPlayer) {
-            canvas.drawBitmap(bitmap, player.x - ON_PLAYER_SIDE / 2, player.y - ON_PLAYER_SIDE / 2, paint)
+            canvas.drawBitmap(initTransformedShield, player.x - ON_PLAYER_SIDE / 2, player.y - ON_PLAYER_SIDE / 2, paint)
         } else if (!isDisappeared) {
-            canvas.drawBitmap(bitmap, left, top, null)
+            canvas.drawBitmap(initDefaultShield, left, top, null)
         }
     }
 

@@ -44,7 +44,6 @@ class PlayerCollisionVisitor(
 
     override fun visit(shield: Shield) {
         if (doesPlayerCollideWithCollectable(shield)) {
-            shield.convertShield()
             shield.initPlayer(player)
             shield.startDisappearingTimer()
         }

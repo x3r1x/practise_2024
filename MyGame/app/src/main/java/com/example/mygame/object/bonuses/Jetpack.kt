@@ -10,15 +10,14 @@ import com.example.mygame.`interface`.IMoveable
 import com.example.mygame.`interface`.IVisitor
 import com.example.mygame.`object`.Player
 
-class Jetpack(initDefaultBimap: Bitmap,
-              private val initLeftPlayerBitmap: Bitmap,
-              private val initRightPlayerBitmap: Bitmap,
+class Jetpack(private val initDefaultJetpack: Bitmap,
+              private val initLeftPlayerJetpack: Bitmap,
+              private val initRightPlayerJetpack: Bitmap,
               createdX: Float,
               createdY: Float
 ) : IDrawable, IMoveable, IGameObject {
     private var isOnPlayer = false
 
-    private var bitmap = initDefaultBimap
     private var paint = Paint().apply {
         alpha = DEFAULT_TRANSPARENCY
     }
@@ -77,14 +76,12 @@ class Jetpack(initDefaultBimap: Bitmap,
     override fun draw(canvas: Canvas) {
         if (isOnPlayer) {
             if (player.directionX == Player.DirectionX.LEFT) {
-                bitmap = initLeftPlayerBitmap
-                canvas.drawBitmap(bitmap, player.x - WIDTH / 2 + OFFSET_ON_PLAYER_LEFT, player.y - HEIGHT / 2, paint)
+                canvas.drawBitmap(initLeftPlayerJetpack, player.x - WIDTH / 2 + OFFSET_ON_PLAYER_LEFT, player.y - HEIGHT / 2, paint)
             } else if (player.directionX == Player.DirectionX.RIGHT) {
-                bitmap = initRightPlayerBitmap
-                canvas.drawBitmap(bitmap, player.x - WIDTH / 2 - OFFSET_ON_PLAYER_RIGHT, player.y - HEIGHT / 2, paint)
+                canvas.drawBitmap(initRightPlayerJetpack, player.x - WIDTH / 2 - OFFSET_ON_PLAYER_RIGHT, player.y - HEIGHT / 2, paint)
             }
         } else if(!isDisappeared) {
-            canvas.drawBitmap(bitmap, left, top, null)
+            canvas.drawBitmap(initDefaultJetpack, left, top, null)
         }
     }
 
