@@ -9,6 +9,8 @@ class MovingPlatformOnX(
     createdX: Float,
     createdY: Float
 ) : Platform(createdX, createdY) {
+    private var directionX = directionXRandom()
+
     init {
         this.bitmap = initBitmap
     }
@@ -25,8 +27,6 @@ class MovingPlatformOnX(
             directionX = DirectionX.RIGHT
         }
     }
-
-    private var directionX = directionXRandom()
 
     private fun directionXRandom() : DirectionX {
         val value = (DirectionX.LEFT.value..DirectionX.RIGHT.value).random()

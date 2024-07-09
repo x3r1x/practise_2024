@@ -19,6 +19,10 @@ class DisappearingPlatform(
 
     var isRunDestroying = false
 
+    private var platformColor = Paint().apply {
+        color = bitmap.getPixel(bitmap.width / 2, bitmap.height / 2) //Color.YELLOW
+    }
+
     fun animatePlatformColor() {
         if (!isRunDestroying) {
             isRunDestroying = true
@@ -37,10 +41,6 @@ class DisappearingPlatform(
             }
             colorAnimator.start()
         }
-    }
-
-    private var platformColor = Paint().apply {
-        color = bitmap.getPixel(bitmap.width / 2, bitmap.height / 2) //Color.YELLOW
     }
 
     private fun runDisappearingAnimation() {

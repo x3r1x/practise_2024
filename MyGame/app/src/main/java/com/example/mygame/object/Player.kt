@@ -11,6 +11,25 @@ import com.example.mygame.`interface`.IMoveable
 import com.example.mygame.`interface`.IVisitor
 
 class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDrawable, IMoveable, IGameObject {
+    private var directionX = DirectionX.RIGHT
+    private var directionY = DirectionY.DOWN
+
+    private var speedY = 0f
+
+    override var isDisappeared = false
+
+    override var x = 0f
+    override var y = 0f
+
+    override val left
+        get() = x - RADIUS
+    override val right
+        get() = x + RADIUS
+    override val top
+        get() = y - RADIUS
+    override val bottom
+        get() = y + RADIUS
+
     enum class DirectionY(val value: Int) {
         UP(-1),
         DOWN(1),
@@ -29,7 +48,7 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
         return directionY
     }
 
-    fun jump() {
+    fun repulsion() {
         directionY = DirectionY.UP
         speedY = JUMP_SPEED
     }
@@ -44,29 +63,9 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
         }
     }
 
-    private var directionX = DirectionX.RIGHT
-
-    private var directionY = DirectionY.DOWN
-
-    private var speedY = 0f
-
     override fun accept(visitor: IVisitor) {
         visitor.visit(this)
     }
-
-    override var isDisappeared = false
-
-    override var x = 0f
-    override var y = 0f
-
-    override val left
-        get() = x - RADIUS
-    override val right
-        get() = x + RADIUS
-    override val top
-        get() = y - RADIUS
-    override val bottom
-        get() = y + RADIUS
 
     private fun changeDirectionX(newX: Float) {
         if (newX < -DISTANCE_TO_TURN)
