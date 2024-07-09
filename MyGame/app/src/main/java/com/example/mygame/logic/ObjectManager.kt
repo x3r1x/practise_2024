@@ -26,29 +26,29 @@ class ObjectsManager(
         platformGenerator =
             PlatformGenerator(resources, screen.width, screen.height, objectStorage.getPlayer())
 
-        val entities: MutableList<IGameObject> = mutableListOf()
-
-        val platform1 = StaticPlatformFactory(resources).generatePlatform(500f, 2000f)
-        val platform2 = StaticPlatformFactory(resources).generatePlatform(500f, -700f)
-        val platform3 = StaticPlatformFactory(resources).generatePlatform(200f, -1000f)
-        val platform4 = StaticPlatformFactory(resources).generatePlatform(200f, -1700f)
-        val platform5 = StaticPlatformFactory(resources).generatePlatform(800f, -1500f)
-
-        val spring = Spring(resources).apply { createOnPlatform(platform1) }
-        val shield = Shield(resources).apply { createOnPlatform(platform3) }
-        val jetpack = Jetpack(resources).apply { createOnPlatform(platform5) }
-
-        entities.add(platform1)
-        entities.add(platform2)
-        entities.add(platform3)
-        entities.add(platform4)
-        entities.add(platform5)
-
-        entities.add(spring)
-        entities.add(shield)
-        entities.add(jetpack)
-
-        objectStorage.addAll(entities)
+//        val entities: MutableList<IGameObject> = mutableListOf()
+//
+//        val platform1 = StaticPlatformFactory(resources).generatePlatform(500f, 2000f)
+//        val platform2 = StaticPlatformFactory(resources).generatePlatform(500f, -700f)
+//        val platform3 = StaticPlatformFactory(resources).generatePlatform(200f, -1000f)
+//        val platform4 = StaticPlatformFactory(resources).generatePlatform(200f, -1700f)
+//        val platform5 = StaticPlatformFactory(resources).generatePlatform(800f, -1500f)
+//
+//        val spring = Spring(resources).apply { createOnPlatform(platform1) }
+//        val shield = Shield(resources).apply { createOnPlatform(platform3) }
+//        val jetpack = Jetpack(resources).apply { createOnPlatform(platform5) }
+//
+//        entities.add(platform1)
+//        entities.add(platform2)
+//        entities.add(platform3)
+//        entities.add(platform4)
+//        entities.add(platform5)
+//
+//        entities.add(spring)
+//        entities.add(shield)
+//        entities.add(jetpack)
+//
+//        objectStorage.addAll(entities)
         objectStorage.addAll(platformGenerator.generateInitialPlatforms() as MutableList<IGameObject>)
     }
 
@@ -56,7 +56,7 @@ class ObjectsManager(
         objectStorage.setObjects(removeObjectsOutOfBounds())
 
         if (numberOfPlatformPacks >= 0) {
-            //generateObjects()
+            generateObjects()
             numberOfPlatformPacks--
         }
 

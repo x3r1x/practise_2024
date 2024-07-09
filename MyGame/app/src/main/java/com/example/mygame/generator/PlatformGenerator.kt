@@ -47,12 +47,12 @@ class PlatformGenerator(
     fun generateInitialPlatforms(): MutableList<Platform> {
         val platforms: MutableList<Platform> = mutableListOf()
 
-//        while (nextY >= 0) {
-//            val x = Random.nextFloat() * (screenWidth - platform.width)
-//            val newPlatform = staticPlatformFactory.generatePlatform(x, nextY)
-//            platforms.add(newPlatform)
-//            nextY -= platform.height + platformGap
-//        }
+        while (nextY >= 0) {
+            val x = Random.nextFloat() * (screenWidth - platform.width)
+            val newPlatform = staticPlatformFactory.generatePlatform(x, nextY)
+            platforms.add(newPlatform)
+            nextY -= platform.height + platformGap
+        }
 
         return platforms
     }
@@ -84,22 +84,22 @@ class PlatformGenerator(
 
                 val random = Random.nextFloat()
 
-//                when {
-//                    random < 0.2f && factory == staticPlatformFactory -> {
-//                        val jetpack =
-//                            Jetpack(resources, player).apply { createOnPlatform(newPlatform) }
-//                        platformsPack.add(jetpack)
-//                    }
-//                    random < 0.4f  && factory == staticPlatformFactory -> {
-//                        val shield =
-//                            Shield(resources, player).apply { createOnPlatform(newPlatform) }
-//                        platformsPack.add(shield)
-//                    }
-//                    random < 0.5f  && factory == staticPlatformFactory -> {
-//                        val spring = Spring(resources).apply { createOnPlatform(newPlatform) }
-//                        platformsPack.add(spring)
-//                    }
-//               }
+                when {
+                    random < 0.2f && factory == staticPlatformFactory -> {
+                        val jetpack =
+                            Jetpack(resources).apply { createOnPlatform(newPlatform) }
+                        platformsPack.add(jetpack)
+                    }
+                    random < 0.4f  && factory == staticPlatformFactory -> {
+                        val shield =
+                            Shield(resources).apply { createOnPlatform(newPlatform) }
+                        platformsPack.add(shield)
+                    }
+                    random < 0.5f  && factory == staticPlatformFactory -> {
+                        val spring = Spring(resources).apply { createOnPlatform(newPlatform) }
+                        platformsPack.add(spring)
+                    }
+               }
 
                 platformsPack.add(newPlatform)
                 nextY -= platform.height + yGap
