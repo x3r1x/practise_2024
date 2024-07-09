@@ -1,6 +1,7 @@
-package com.example.mygame.`object`.interactable
+package com.example.mygame.`object`.bonuses
 
 import android.content.res.Resources
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Paint
@@ -13,32 +14,33 @@ import com.example.mygame.`interface`.IVisitor
 import com.example.mygame.`object`.Platform
 import com.example.mygame.`object`.Player
 
-class Shield(private val resources: Resources) : IDrawable, IMoveable, IGameObject {
+class Shield(initDefaultBitmap: Bitmap,
+             private val initTransformedBitmap: Bitmap,
+             createdX: Float,
+             createdY: Float
+) : IDrawable, IMoveable, IGameObject {
     private var isOnPlayer = false
 
-    private var bitmap = BitmapFactory.decodeResource(resources, DEFAULT_IMAGE, BITMAP_OPTIONS)
+    private var bitmap = initDefaultBitmap
+
     private var paint = Paint().apply {
         alpha = DEFAULT_TRANSPARENCY
     }
 
-    override var x: Float = 0f
-    override var y: Float = 0f
+    override var x: Float = createdX
+    override var y: Float = createdY
 
-    override var left = 0f
-    override var right = 0f
-    override var top = 0f
-    override var bottom = 0f
+    override var left = x - DEFAULT_SIDE / 2
+    override var right = x + DEFAULT_SIDE / 2
+    override var top = y - DEFAULT_SIDE / 2
+    override var bottom = y + DEFAULT_SIDE / 2
 
     override var isDisappeared = false
 
     private lateinit var player: Player
 
-    fun createOnPlatform(platform: Platform) {
-        setPosition(platform.x, platform.top - DEFAULT_SIDE / 2 - OFFSET)
-    }
-
     fun convertShield() {
-        bitmap = BitmapFactory.decodeResource(resources, ON_PLAYER_IMAGE, BITMAP_OPTIONS)
+        bitmap = initTransformedBitmap
     }
 
     fun initPlayer(entity: Player) {
@@ -101,7 +103,6 @@ class Shield(private val resources: Resources) : IDrawable, IMoveable, IGameObje
     }
 
     companion object {
-        private const val OFFSET = 25f
         private const val DEFAULT_SIDE = 100f
         private const val ON_PLAYER_SIDE = 245f
 
@@ -111,12 +112,5 @@ class Shield(private val resources: Resources) : IDrawable, IMoveable, IGameObje
 
         private const val DEFAULT_TRANSPARENCY = 128
         private const val PULSE_TRANSPARENCY = 64
-
-        private val DEFAULT_IMAGE = R.drawable.shield
-        private val ON_PLAYER_IMAGE = R.drawable.shield_on_player
-
-        private val BITMAP_OPTIONS = BitmapFactory.Options().apply {
-            inScaled = false
-        }
     }
 }

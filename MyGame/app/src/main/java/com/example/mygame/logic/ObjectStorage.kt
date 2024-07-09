@@ -6,9 +6,9 @@ import com.example.mygame.`interface`.IGameObject
 import com.example.mygame.`object`.Platform
 import com.example.mygame.`object`.Player
 import com.example.mygame.`object`.Screen
-import com.example.mygame.`object`.interactable.Jetpack
-import com.example.mygame.`object`.interactable.Shield
-import com.example.mygame.`object`.interactable.Spring
+import com.example.mygame.`object`.bonuses.Jetpack
+import com.example.mygame.`object`.bonuses.Shield
+import com.example.mygame.`object`.bonuses.Spring
 
 class ObjectStorage(
     resources: Resources,

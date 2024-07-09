@@ -1,7 +1,8 @@
-package com.example.mygame.`object`.interactable
+package com.example.mygame.`object`.bonuses
 
 import android.animation.ValueAnimator
 import android.content.res.Resources
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import com.example.mygame.R
@@ -12,44 +13,35 @@ import com.example.mygame.`interface`.IVisitor
 import com.example.mygame.`object`.Platform
 import com.example.mygame.`object`.Player
 
-class Spring(resources: Resources) : IDrawable, IMoveable, IGameObject {
-    private val firstStateBitmap = BitmapFactory.decodeResource(resources, SPRING_IMAGES[0], BITMAP_OPTIONS)
-    private val secondStateBitmap = BitmapFactory.decodeResource(resources, SPRING_IMAGES[1], BITMAP_OPTIONS)
-    private val thirdStateBitmap = BitmapFactory.decodeResource(resources, SPRING_IMAGES[2], BITMAP_OPTIONS)
-    private val fourthStateBitmap = BitmapFactory.decodeResource(resources, SPRING_IMAGES[3], BITMAP_OPTIONS)
-    private val bitmaps = mutableListOf(firstStateBitmap, secondStateBitmap, thirdStateBitmap, fourthStateBitmap)
-
+class Spring(private val initBitmap: MutableList<Bitmap>,
+             createdX: Float,
+             createdY: Float
+) : IDrawable, IMoveable, IGameObject {
     private val animationDuration : Long = 150
 
     private var currentFrame = 0
-    private var bitmap = bitmaps[currentFrame]
+    private var bitmap = initBitmap[currentFrame]
     private var isStretchRunning = false
     private var animator : ValueAnimator? = null
 
-    override var x = 0f
-    override var y = 0f
+    override var x = createdX
+    override var y = createdY
 
-    override var left = 0f
-    override var right = 0f
-    override var top = 0f
-    override var bottom = 0f
+    override var left = x - WIDTH / 2
+    override var right = x + WIDTH / 2
+    override var top = y - WIDTH / 2
+    override var bottom = y + WIDTH / 2
 
     override var isDisappeared = false
-
-    fun createOnPlatform(platform: Platform) {
-        val randomPosition = (MIN_SPRING_SPAWN_X .. MAX_SPRING_SPAWN_X).random()
-
-        setPosition(platform.left + randomPosition,platform.top - HEIGHT / 2)
-    }
 
     fun runStretchAnimation() {
         if (!isStretchRunning) {
             isStretchRunning = true
-            animator = ValueAnimator.ofInt(0, bitmaps.size - 1).apply {
+            animator = ValueAnimator.ofInt(0, initBitmap.size - 1).apply {
                 this.duration = animationDuration
                 addUpdateListener { animator ->
                     currentFrame = animator.animatedValue as Int
-                    bitmap = bitmaps[currentFrame]
+                    bitmap = initBitmap[currentFrame]
                     setPosition(x, y - ANIMATION_HEIGHT_VALUE)
                 }
             }
@@ -85,19 +77,5 @@ class Spring(resources: Resources) : IDrawable, IMoveable, IGameObject {
         private const val WIDTH = 78f
         private const val HEIGHT = 53f
         private const val ANIMATION_HEIGHT_VALUE = 5f
-
-        private const val MIN_SPRING_SPAWN_X = 40
-        private const val MAX_SPRING_SPAWN_X = 180
-
-        private val SPRING_IMAGES = listOf(
-            R.drawable.spring_state_1,
-            R.drawable.spring_state_2,
-            R.drawable.spring_state_3,
-            R.drawable.spring_state_4
-        )
-
-        private val BITMAP_OPTIONS = BitmapFactory.Options().apply {
-            inScaled = false
-        }
     }
 }

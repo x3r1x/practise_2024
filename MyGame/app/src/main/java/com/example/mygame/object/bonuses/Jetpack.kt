@@ -1,41 +1,39 @@
-package com.example.mygame.`object`.interactable
+package com.example.mygame.`object`.bonuses
 
-import android.content.res.Resources
-import android.graphics.BitmapFactory
+import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.os.CountDownTimer
-import com.example.mygame.R
 import com.example.mygame.`interface`.IDrawable
 import com.example.mygame.`interface`.IGameObject
 import com.example.mygame.`interface`.IMoveable
 import com.example.mygame.`interface`.IVisitor
-import com.example.mygame.`object`.Platform
 import com.example.mygame.`object`.Player
 
-class Jetpack(private val resources: Resources) : IDrawable, IMoveable, IGameObject {
+class Jetpack(initDefaultBimap: Bitmap,
+              private val initLeftPlayerBitmap: Bitmap,
+              private val initRightPlayerBitmap: Bitmap,
+              createdX: Float,
+              createdY: Float
+) : IDrawable, IMoveable, IGameObject {
     private var isOnPlayer = false
 
-    private var bitmap = BitmapFactory.decodeResource(resources, IMAGE, BITMAP_OPTIONS)
+    private var bitmap = initDefaultBimap
     private var paint = Paint().apply {
         alpha = DEFAULT_TRANSPARENCY
     }
 
-    override var x = 0f
-    override var y = 0f
+    override var x = createdX
+    override var y = createdY
 
-    override var left = 0f
-    override var top = 0f
-    override var bottom = 0f
-    override var right = 0f
+    override var left = x - WIDTH / 2
+    override var top = y - WIDTH / 2
+    override var bottom = y + WIDTH / 2
+    override var right = x + WIDTH / 2
 
     override var isDisappeared = false
 
     private lateinit var player: Player
-
-    fun createOnPlatform(platform: Platform) {
-        setPosition(platform.x, platform.top - HEIGHT / 2 - OFFSET)
-    }
 
     fun initPlayer(entity: Player) {
         player = entity
@@ -72,7 +70,6 @@ class Jetpack(private val resources: Resources) : IDrawable, IMoveable, IGameObj
         player.isWithJetpack = false
         isOnPlayer = false
         player.directionY = Player.DirectionY.DOWN
-        bitmap = BitmapFactory.decodeResource(resources, IMAGE, BITMAP_OPTIONS)
         player.speedY = 0f
         isDisappeared = true
     }
@@ -80,10 +77,10 @@ class Jetpack(private val resources: Resources) : IDrawable, IMoveable, IGameObj
     override fun draw(canvas: Canvas) {
         if (isOnPlayer) {
             if (player.directionX == Player.DirectionX.LEFT) {
-                bitmap = BitmapFactory.decodeResource(resources, IMAGE_ON_PLAYER_LEFT, BITMAP_OPTIONS)
+                bitmap = initLeftPlayerBitmap
                 canvas.drawBitmap(bitmap, player.x - WIDTH / 2 + OFFSET_ON_PLAYER_LEFT, player.y - HEIGHT / 2, paint)
             } else if (player.directionX == Player.DirectionX.RIGHT) {
-                bitmap = BitmapFactory.decodeResource(resources, IMAGE_ON_PLAYER_RIGHT, BITMAP_OPTIONS)
+                bitmap = initRightPlayerBitmap
                 canvas.drawBitmap(bitmap, player.x - WIDTH / 2 - OFFSET_ON_PLAYER_RIGHT, player.y - HEIGHT / 2, paint)
             }
         } else if(!isDisappeared) {
@@ -107,19 +104,9 @@ class Jetpack(private val resources: Resources) : IDrawable, IMoveable, IGameObj
         visitor.visit(this)
     }
 
-//    override fun collidesWith(other: ICollidable?): Boolean {
-//        return if (other !is Player) {
-//            false
-//        } else {
-//            (other.bottom <= top && (other.left <= right || other.right >= left)
-//                    && other.bottom >= bottom)
-//        }
-//    }
-
     companion object {
         private const val WIDTH = 124f
         private const val HEIGHT = 111f
-        private const val OFFSET = 20f
 
         private const val OFFSET_ON_PLAYER_RIGHT = 95f
         private const val OFFSET_ON_PLAYER_LEFT = 127f
@@ -132,13 +119,5 @@ class Jetpack(private val resources: Resources) : IDrawable, IMoveable, IGameObj
         private const val PULSE_TRANSPARENCY = 128
 
         private const val PLAYER_SPEED_WITH_JETPACK = 800f
-
-        private val IMAGE = R.drawable.jetpack
-        private val IMAGE_ON_PLAYER_LEFT = R.drawable.player_jetpack_left
-        private val IMAGE_ON_PLAYER_RIGHT = R.drawable.player_jetpack_right
-
-        private val BITMAP_OPTIONS = BitmapFactory.Options().apply {
-            inScaled = false
-        }
     }
 }

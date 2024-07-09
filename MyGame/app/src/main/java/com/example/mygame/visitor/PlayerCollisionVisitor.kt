@@ -7,9 +7,9 @@ import com.example.mygame.`interface`.IVisitor
 import com.example.mygame.`object`.Enemy
 import com.example.mygame.`object`.Player.DirectionX
 import com.example.mygame.`object`.Player.DirectionY
-import com.example.mygame.`object`.interactable.Jetpack
-import com.example.mygame.`object`.interactable.Shield
-import com.example.mygame.`object`.interactable.Spring
+import com.example.mygame.`object`.bonuses.Jetpack
+import com.example.mygame.`object`.bonuses.Shield
+import com.example.mygame.`object`.bonuses.Spring
 import com.example.mygame.`object`.platforms.BreakingPlatform
 import com.example.mygame.`object`.platforms.DisappearingPlatform
 
@@ -35,7 +35,7 @@ class PlayerCollisionVisitor(
     override fun visit(player: Player) {}
 
     override fun visit(jetpack: Jetpack) {
-        if (doesPlayerCollideWithPassable(jetpack)) {
+        if (doesPlayerCollideWithCollectable(jetpack)) {
             jetpack.initPlayer(player)
             jetpack.startDisappearingTimer()
             jetpack.fly()
@@ -43,7 +43,7 @@ class PlayerCollisionVisitor(
     }
 
     override fun visit(shield: Shield) {
-        if (doesPlayerCollideWithPassable(shield)) {
+        if (doesPlayerCollideWithCollectable(shield)) {
             shield.convertShield()
             shield.initPlayer(player)
             shield.startDisappearingTimer()
@@ -76,7 +76,7 @@ class PlayerCollisionVisitor(
         }
     }
 
-    private fun doesPlayerCollideWithPassable(other: IGameObject) : Boolean {
+    private fun doesPlayerCollideWithCollectable(other: IGameObject) : Boolean {
         if (other !is Shield && other !is Jetpack) {
             return false
         }

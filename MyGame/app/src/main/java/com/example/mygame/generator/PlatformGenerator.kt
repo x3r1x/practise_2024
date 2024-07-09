@@ -10,9 +10,9 @@ import com.example.mygame.factories.platforms.MovingPlatformOnXFactory
 import com.example.mygame.factories.platforms.MovingPlatformOnYFactory
 import com.example.mygame.factories.platforms.DisappearingPlatformFactory
 import com.example.mygame.`object`.Player
-import com.example.mygame.`object`.interactable.Jetpack
-import com.example.mygame.`object`.interactable.Shield
-import com.example.mygame.`object`.interactable.Spring
+import com.example.mygame.`object`.bonuses.Jetpack
+import com.example.mygame.`object`.bonuses.Shield
+import com.example.mygame.`object`.bonuses.Spring
 
 class PlatformGenerator(
     var resources: Resources,
