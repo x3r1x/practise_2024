@@ -16,7 +16,7 @@ class LevelGenerator(
     private val bonusGenerator = BonusGenerator(resources, player)
 
     fun generateInitialPack(): MutableList<IGameObject> {
-        return platformGenerator.generateInitialPlatforms() as MutableList<IGameObject>
+        return platformGenerator.generateInitialPlatforms().toMutableList()
     }
 
     fun generateNewPack(from: Float): MutableList<IGameObject> {
@@ -27,7 +27,7 @@ class LevelGenerator(
 
         val bonuses = bonusGenerator.generateBonuses(staticPlatforms)
 
-        val objects = platforms + bonuses as MutableList<IGameObject>
+        val objects = (platforms + bonuses) as MutableList<IGameObject>
 
         return objects.toMutableList()
     }
