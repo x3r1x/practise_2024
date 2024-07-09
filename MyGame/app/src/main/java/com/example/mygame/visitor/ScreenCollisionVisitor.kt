@@ -8,30 +8,30 @@ import com.example.mygame.`object`.platform.MovingPlatformOnX
 
 class ScreenCollisionVisitor(private val screen: Screen) : IVisitor {
     override fun visit(player: Player) {
-        if (IsCollidePlayerWithScreen(player)) {
+        if (isCollidePlayerWithScreen(player)) {
             player.movingThroughScreen(screen)
         }
     }
 
     override fun visit(platform: Platform) {
-        if (platform is MovingPlatformOnX && IsCollidePlatformWithBoundsOfScreen(platform)) {
+        if (platform is MovingPlatformOnX && isCollidePlatformWithBoundsOfScreen(platform)) {
             platform.changeDirectionX(screen)
         }
 
-        if (IsOutPlatformBelowBottomOfScreen(platform)) {
+        if (isOutPlatformBelowBottomOfScreen(platform)) {
             platform.isDisappeared = true
         }
     }
 
-    private fun IsCollidePlayerWithScreen(player: Player) : Boolean {
+    private fun isCollidePlayerWithScreen(player: Player) : Boolean {
         return player.right < screen.left || player.left > screen.right
     }
 
-    private fun IsCollidePlatformWithBoundsOfScreen(platform: Platform) : Boolean {
+    private fun isCollidePlatformWithBoundsOfScreen(platform: Platform) : Boolean {
         return platform.right >= screen.right || platform.left <= screen.left
     }
 
-    private fun IsOutPlatformBelowBottomOfScreen(platform: Platform) : Boolean {
+    private fun isOutPlatformBelowBottomOfScreen(platform: Platform) : Boolean {
         return platform.top > screen.bottom + SIZE_OF_ALLOWED_ZONE_FOR_OBJECTS
     }
 

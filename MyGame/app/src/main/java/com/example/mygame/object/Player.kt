@@ -5,10 +5,11 @@ import android.graphics.Canvas
 import android.graphics.Matrix
 import android.graphics.RectF
 import com.example.mygame.Physics
-import com.example.mygame.`interface`.IDrawable
-import com.example.mygame.`interface`.IGameObject
-import com.example.mygame.`interface`.IMoveable
 import com.example.mygame.`interface`.IVisitor
+import com.example.mygame.`interface`.IDrawable
+import com.example.mygame.`interface`.IMoveable
+import com.example.mygame.`interface`.IGameObject
+import com.example.mygame.logic.Score
 
 class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDrawable, IMoveable, IGameObject {
     enum class DirectionY(val value: Int) {
@@ -20,6 +21,29 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
         LEFT,
         RIGHT
     }
+
+    var isWithJetpack = false
+
+    var directionX = DirectionX.RIGHT
+
+    var directionY = DirectionY.DOWN
+
+    var speedY = 0f
+
+    override var isDisappeared = false
+
+    override var x = 0f
+
+    override var y = 0f
+
+    override val left
+        get() = x - RADIUS
+    override val right
+        get() = x + RADIUS
+    override val top
+        get() = y - RADIUS
+    override val bottom
+        get() = y + RADIUS
 
     fun jump() {
         directionY = DirectionY.UP
@@ -35,32 +59,6 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
             x = 0f + RADIUS
         }
     }
-
-    var isWithJetpack = false
-
-    var directionX = DirectionX.RIGHT
-
-    var directionY = DirectionY.DOWN
-
-    var speedY = 0f
-
-    override fun accept(visitor: IVisitor) {
-        visitor.visit(this)
-    }
-
-    override var isDisappeared = false
-
-    override var x = 0f
-    override var y = 0f
-
-    override val left
-        get() = x - RADIUS
-    override val right
-        get() = x + RADIUS
-    override val top
-        get() = y - RADIUS
-    override val bottom
-        get() = y + RADIUS
 
     private fun changeDirectionX(newX: Float) {
         if (newX < -DISTANCE_TO_TURN)
@@ -93,6 +91,10 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
         }
     }
 
+    override fun accept(visitor: IVisitor) {
+        visitor.visit(this)
+    }
+
     override fun draw(canvas: Canvas) {
         val matrix = Matrix()
         val destRect = RectF(left, top, right, bottom)
@@ -114,6 +116,7 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
     }
 
     override fun updatePositionY(elapsedTime: Float) {
+
         val previousY = y
 
         y += speedY * directionY.value * elapsedTime
@@ -122,6 +125,7 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
         if (y >= previousY && directionY == DirectionY.UP) {
             directionY = DirectionY.DOWN
         }
+
     }
 
     companion object {

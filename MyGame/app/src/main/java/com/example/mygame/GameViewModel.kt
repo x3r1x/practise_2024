@@ -16,6 +16,7 @@ import com.example.mygame.`interface`.IMoveable
 import com.example.mygame.logic.PositionHandler
 import com.example.mygame.logic.CollisionHandler
 import com.example.mygame.`interface`.IGameObject
+import com.example.mygame.logic.Score
 
 class GameViewModel(private val application: Application) : AndroidViewModel(application), SensorHandler.SensorCallback {
     val gameObjects: LiveData<List<IGameObject>> get() = _gameObjects
@@ -79,9 +80,10 @@ class GameViewModel(private val application: Application) : AndroidViewModel(app
         _gameObjects.value = objectsManager.getObjects()
 
         if (Physics().doWeNeedToMove(objectsManager.objectStorage.getPlayer(), screen.maxPlayerHeight)) {
+            val offsetY = Physics().moveOffset(objectsManager.objectStorage.getPlayer(), screen.maxPlayerHeight)
             PositionHandler(_gameObjects.value!!.filterIsInstance<IMoveable>())
-                .screenPromotion(0f, Physics().moveOffset(objectsManager.objectStorage.getPlayer(), screen.maxPlayerHeight))
-            objectsManager.updateObjects()
+                .screenScroll(0f, offsetY)
+            objectsManager.updateObjects(offsetY)
         }
 
         collisionHandler.checkCollisions(objectsManager.objectStorage.getPlayer(), screen, _gameObjects.value!!)

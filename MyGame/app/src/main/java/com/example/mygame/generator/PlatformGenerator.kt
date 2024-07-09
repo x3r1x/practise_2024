@@ -10,13 +10,12 @@ import com.example.mygame.factory.platform.BreakingPlatformFactory
 import com.example.mygame.factory.platform.MovingPlatformOnXFactory
 import com.example.mygame.factory.platform.MovingPlatformOnYFactory
 import com.example.mygame.factory.platform.DisappearingPlatformFactory
+import kotlin.math.abs
 
 class PlatformGenerator(
     resources: Resources,
     private val screen: Screen
 ) {
-    private var nextY: Float = screen.height
-
     private val staticPlatformFactory = StaticPlatformFactory(resources)
     private val breakingPlatformFactory = BreakingPlatformFactory(resources)
     private val movingPlatformOnXFactory = MovingPlatformOnXFactory(resources)
@@ -24,40 +23,45 @@ class PlatformGenerator(
 
     private val movingPlatformOnYFactory = MovingPlatformOnYFactory(resources)
 
-    private val platformGap: Float = 20f
+    private val platformGap: Float = 40f
 
-    private val maxVerticalGap = 300f
+    private val maxVerticalGap = 350f
 
-    private val newPackageHeight = -5000f
+    private val startPackageHeight = -3000f
+
+    private val newPackageHeight = 5000f
 
     private val factories = listOf(
-        staticPlatformFactory,
-        movingPlatformOnYFactory,
-        movingPlatformOnXFactory,
+        //staticPlatformFactory,
+        //movingPlatformOnYFactory,
+        //movingPlatformOnXFactory,
         disappearingPlatformFactory
     )
 
     private val platform = Platform(0f, 0f)
 
     fun generateInitialPlatforms(): MutableList<Platform> {
+        var newY = screen.height
+
         val platforms: MutableList<Platform> = mutableListOf()
-        while (nextY >= 0) {
+        while (newY >= startPackageHeight) {
             val x = Random.nextFloat() * (screen.width - platform.width) + platform.width
-            val newPlatform = staticPlatformFactory.generatePlatform(x, nextY)
+            val newPlatform = staticPlatformFactory.generatePlatform(x, newY)
             platforms.add(newPlatform)
-            nextY -= platform.height + platformGap
+            newY -= platform.height + platformGap
         }
 
         return platforms
     }
 
-    fun generatePlatforms(): MutableList<Platform> {
-        val startY = nextY
+    fun generatePlatforms(from: Float): MutableList<Platform> {
+
         // TODO: Добавить генерацию сломанных платформ
         // TODO: Они генерируются в дополнение к основным
         val platforms: MutableList<Platform> = mutableListOf()
+        var newY = 0f
 
-        while (startY + newPackageHeight < nextY) {
+        while (abs(from + newY) < newPackageHeight) {
             val factory = getRandomFactory()
             val numberOfPlatforms = Random.nextInt(2, 6)
             val platformsPack: MutableList<Platform> = mutableListOf()
@@ -68,14 +72,15 @@ class PlatformGenerator(
                 var x: Float
 
                 do {
-                    x = Random.nextFloat() * (screen.width - platform.width)
-                    yGap = platformGap + Random.nextFloat() * (maxVerticalGap - platformGap)
-                    newPlatform = factory.generatePlatform(x, nextY - yGap)
+                    x = Random.nextFloat() * (screen.width - platform.width * 2) + platform.width
+                    yGap = platformGap
+                    //+ Random.nextFloat() * (maxVerticalGap - platformGap)
+                    newPlatform = factory.generatePlatform(x, newY - yGap)
                 } while (isOverlapping(platformsPack, newPlatform))
 
                 platformsPack.add(newPlatform)
 
-                nextY -= platform.height + yGap
+                newY -= platform.height + yGap
             }
 
             platforms.addAll(platformsPack)

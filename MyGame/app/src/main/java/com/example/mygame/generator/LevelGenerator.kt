@@ -19,8 +19,8 @@ class LevelGenerator(
         return platformGenerator.generateInitialPlatforms() as MutableList<IGameObject>
     }
 
-    fun generateNewPack(): MutableList<IGameObject> {
-        val platforms = platformGenerator.generatePlatforms()
+    fun generateNewPack(from: Float): MutableList<IGameObject> {
+        val platforms = platformGenerator.generatePlatforms(from - 2500f)
         val staticPlatforms = platforms.filter {
             it::class == StaticPlatform::class
         }

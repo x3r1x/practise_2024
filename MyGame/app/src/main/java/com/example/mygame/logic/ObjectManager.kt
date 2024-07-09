@@ -6,7 +6,8 @@ import com.example.mygame.generator.LevelGenerator
 import com.example.mygame.`object`.Player
 import com.example.mygame.`object`.Screen
 import com.example.mygame.`interface`.IGameObject
-import com.example.mygame.generator.PlatformGenerator
+import com.example.mygame.`object`.Platform
+import kotlin.math.abs
 
 class ObjectsManager(
     private val resources: Resources,
@@ -14,31 +15,41 @@ class ObjectsManager(
 ) {
     val objectStorage = ObjectStorage(resources, screen)
 
-    private lateinit var levelGenerator: LevelGenerator
+    private val score = Score()
 
-    private var numberOfPlatformPacks = 2
+    private var tempScore = 0.0
+
+    private val scoreThreshold = 3000.0
+
+    private lateinit var levelGenerator: LevelGenerator
 
     fun initObjects() {
         levelGenerator = LevelGenerator(resources, screen, objectStorage.getPlayer())
         objectStorage.addAll(levelGenerator.generateInitialPack())
     }
 
-    fun updateObjects() {
+    fun updateObjects(delta: Float) {
         objectStorage.setObjects(removeObjectsOutOfBounds())
 
-        if (numberOfPlatformPacks >= 0) {
+        score.increase(delta)
+
+        tempScore += abs(delta)
+
+        if (tempScore >= scoreThreshold) {
             generateObjects()
-            numberOfPlatformPacks--
+            tempScore = 0.0
         }
 
         Log.i("objects size", "${objectStorage.getAll().size}")
     }
+
     fun getObjects() : List<IGameObject> {
         return objectStorage.getAll()
     }
 
     private fun generateObjects() {
-        objectStorage.addAll(levelGenerator.generateNewPack())
+        val lastPlatform = getObjects().minBy { it.top }
+        objectStorage.addAll(levelGenerator.generateNewPack(lastPlatform.top))
     }
 
     private fun removeObjectsOutOfBounds() : MutableList<IGameObject> {

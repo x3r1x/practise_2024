@@ -7,7 +7,7 @@ class PositionHandler(entities: List<IMoveable>) {
     private val elements = entities
 
     // при движении экрана
-    fun screenPromotion(offsetX: Float, offsetY: Float) {
+    fun screenScroll(offsetX: Float, offsetY: Float) {
         elements.forEach {
             it.setPosition(it.x - offsetX, it.y - offsetY)
         }
