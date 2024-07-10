@@ -1,4 +1,4 @@
-package com.example.mygame.factories
+package com.example.mygame.factory
 
 import android.content.res.Resources
 import android.graphics.BitmapFactory

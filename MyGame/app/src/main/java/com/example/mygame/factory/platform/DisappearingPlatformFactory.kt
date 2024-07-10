@@ -1,10 +1,10 @@
-package com.example.mygame.factories.platforms
+package com.example.mygame.factory.platform
 
 import com.example.mygame.R
 import android.content.res.Resources
 import android.graphics.BitmapFactory
 import com.example.mygame.`interface`.IPlatformFactory
-import com.example.mygame.`object`.platforms.DisappearingPlatform
+import com.example.mygame.`object`.platform.DisappearingPlatform
 import com.example.mygame.`interface`.IPlatformFactory.Companion.BITMAP_OPTIONS
 
 class DisappearingPlatformFactory(private val resources: Resources) : IPlatformFactory {

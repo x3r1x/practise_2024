@@ -1,4 +1,4 @@
-package com.example.mygame.`object`.platforms
+package com.example.mygame.`object`.platform
 
 import android.graphics.Bitmap
 import com.example.mygame.`object`.Platform

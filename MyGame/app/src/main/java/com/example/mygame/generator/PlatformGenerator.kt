@@ -4,11 +4,11 @@ import kotlin.random.Random
 import android.content.res.Resources
 import com.example.mygame.`object`.Platform
 import com.example.mygame.`interface`.IPlatformFactory
-import com.example.mygame.factories.platforms.StaticPlatformFactory
-import com.example.mygame.factories.platforms.BreakingPlatformFactory
-import com.example.mygame.factories.platforms.MovingPlatformOnXFactory
-import com.example.mygame.factories.platforms.MovingPlatformOnYFactory
-import com.example.mygame.factories.platforms.DisappearingPlatformFactory
+import com.example.mygame.factory.platform.StaticPlatformFactory
+import com.example.mygame.factory.platform.BreakingPlatformFactory
+import com.example.mygame.factory.platform.MovingPlatformOnXFactory
+import com.example.mygame.factory.platform.MovingPlatformOnYFactory
+import com.example.mygame.factory.platform.DisappearingPlatformFactory
 
 class PlatformGenerator(
     var resources: Resources,
