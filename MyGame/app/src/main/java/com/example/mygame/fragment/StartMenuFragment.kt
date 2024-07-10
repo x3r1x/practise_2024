@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import com.example.mygame.R
 
-class StartFragment : Fragment() {
+class StartMenuFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -21,7 +21,6 @@ class StartFragment : Fragment() {
             Navigation.findNavController(view).navigate(R.id.navigateToSinglePlayerFragment)
         }
 
-        // Inflate the layout for this fragment
         return view
     }
 }

@@ -7,12 +7,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowMetrics
 import androidx.annotation.RequiresApi
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.example.mygame.GameViewModel
 import com.example.mygame.`interface`.IDrawable
 import com.example.mygame.view.GameView
 
-class GameFragment(private val gameViewModel: GameViewModel) : Fragment() {
+class GameFragment : Fragment() {
+    private val gameViewModel: GameViewModel by viewModels()
+
     private lateinit var gameView: GameView
 
     @RequiresApi(Build.VERSION_CODES.R)
@@ -23,6 +29,9 @@ class GameFragment(private val gameViewModel: GameViewModel) : Fragment() {
         val screenWidth = bounds.width().toFloat()
         val screenHeight = bounds.height().toFloat()
 
+        // Инициализация GameViewModel
+        gameViewModel.initialize(screenWidth, screenHeight)
+
         // Инициализация gameView и установка контента
         gameView = GameView(requireContext(), null)
         return gameView
@@ -30,9 +39,6 @@ class GameFragment(private val gameViewModel: GameViewModel) : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        // Инициализация GameViewModel
-        gameViewModel.initialize(gameView.width.toFloat(), gameView.height.toFloat())
 
         // Наблюдаем за изменениями в объектах игры
         gameViewModel.gameObjects.observe(viewLifecycleOwner) { gameObjects ->

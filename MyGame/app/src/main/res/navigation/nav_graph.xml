@@ -6,7 +6,7 @@
     app:startDestination="@id/startFragment">
     <fragment
         android:id="@+id/startFragment"
-        android:name="com.example.mygame.fragment.StartFragment"
+        android:name="com.example.mygame.fragment.StartMenuFragment"
         android:label="fragment_start"
         tools:layout="@layout/fragment_start_menu" >
         <action
