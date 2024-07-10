@@ -12,8 +12,11 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.Navigation
 import com.example.mygame.GameViewModel
+import com.example.mygame.R
 import com.example.mygame.`interface`.IDrawable
+import com.example.mygame.`object`.Player
 import com.example.mygame.view.GameView
 
 class GameFragment : Fragment() {
@@ -43,6 +46,10 @@ class GameFragment : Fragment() {
         // Наблюдаем за изменениями в объектах игры
         gameViewModel.gameObjects.observe(viewLifecycleOwner) { gameObjects ->
             gameView.drawGame(gameObjects as List<IDrawable>)
+
+            if (gameViewModel.isGameLost()) {
+                Navigation.findNavController(view).navigate(R.id.navigateToGameOverFragment)
+            }
         }
 
         // Запускаем игровой цикл через ViewModel

@@ -82,6 +82,10 @@ class GameViewModel(private val application: Application) : AndroidViewModel(app
         sensorHandler.unregister()
     }
 
+    fun isGameLost() : Boolean {
+        return objectsManager.objectStorage.getPlayer().top > screen.height
+    }
+
     private fun updateGame(elapsedTime: Float) {
         _gameObjects.value = objectsManager.getObjects()
 
