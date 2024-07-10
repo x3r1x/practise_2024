@@ -19,8 +19,6 @@ class Shield(private val initDefaultShield: Bitmap,
              createdX: Float,
              createdY: Float
 ) : IDrawable, IMoveable, IGameObject {
-    private var isOnPlayer = false
-
     private var paint = Paint().apply {
         alpha = DEFAULT_TRANSPARENCY
     }
@@ -35,11 +33,11 @@ class Shield(private val initDefaultShield: Bitmap,
 
     override var isDisappeared = false
 
-    private lateinit var player: Player
+    private var player: Player? = null
 
     fun initPlayer(entity: Player) {
         player = entity
-        isOnPlayer = true
+        player?.isWithShield = true
     }
 
     //thanks god for ending my suffering
@@ -64,7 +62,6 @@ class Shield(private val initDefaultShield: Bitmap,
     }
 
     private fun dispose() {
-        isOnPlayer = false
         isDisappeared = true
         left = 0f
         right = 0f
@@ -73,9 +70,13 @@ class Shield(private val initDefaultShield: Bitmap,
     }
 
     override fun draw(canvas: Canvas) {
-        if (isOnPlayer) {
-            canvas.drawBitmap(initTransformedShield, player.x - ON_PLAYER_SIDE / 2, player.y - ON_PLAYER_SIDE / 2, paint)
-        } else if (!isDisappeared) {
+        if (isDisappeared) {
+            return
+        }
+
+        player?.let {
+            canvas.drawBitmap(initTransformedShield, it.x - ON_PLAYER_SIDE / 2, it.y - ON_PLAYER_SIDE / 2, paint)
+        } ?: run {
             canvas.drawBitmap(initDefaultShield, left, top, null)
         }
     }

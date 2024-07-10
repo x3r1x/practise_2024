@@ -22,6 +22,7 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
     }
 
     var isWithJetpack = false
+    var isWithShield = false
 
     override var x = 0f
     override var y = 0f
@@ -41,19 +42,12 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
 
     var speedY = 0f
 
-    var isInSpring = false
-
     override var isDisappeared = false
 
-    fun jump() {
+    fun jump(jumpSpeed: Float = JUMP_SPEED) {
         directionY = DirectionY.UP
 
-        if (isInSpring) {
-            speedY = SPRING_JUMP_SPEED
-            isInSpring = false
-        } else {
-            speedY = JUMP_SPEED
-        }
+        speedY = jumpSpeed
     }
 
     fun movingThroughScreen(screen: Screen) {
@@ -131,9 +125,10 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
     }
 
     companion object {
+        const val SPRING_JUMP_SPEED = 2200f
+
         private const val DISTANCE_TO_TURN = 1f
         private const val RADIUS = 75f
-        private const val SPRING_JUMP_SPEED = 2200f
         private const val JUMP_SPEED = 1000f //920f
     }
 }

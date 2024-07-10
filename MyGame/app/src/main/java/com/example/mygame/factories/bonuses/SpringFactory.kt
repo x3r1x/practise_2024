@@ -19,12 +19,14 @@ class SpringFactory(resources: Resources) : IBonusFactory {
     override fun generateBonus(platform: Platform): IGameObject {
         val randomPosition = (MIN_SPRING_SPAWN_X..MAX_SPRING_SPAWN_X).random()
 
-        return Spring(bitmaps, platform.left + randomPosition, platform.top)
+        return Spring(bitmaps, platform.left + randomPosition, platform.top - HEIGHT / 2)
     }
 
     companion object {
         private const val MIN_SPRING_SPAWN_X = 40
         private const val MAX_SPRING_SPAWN_X = 180
+
+        private const val HEIGHT = 53f
 
         private val SPRING_IMAGES = listOf(
             R.drawable.spring_state_1,

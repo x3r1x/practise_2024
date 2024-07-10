@@ -49,10 +49,6 @@ class Spring(private val initBitmap: MutableList<Bitmap>,
         }
     }
 
-    fun throwPlayer(player: Player) {
-        player.isInSpring = true
-    }
-
     override fun draw(canvas: Canvas) {
         canvas.drawBitmap(bitmap, left, top, null)
     }

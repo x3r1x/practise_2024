@@ -16,8 +16,6 @@ class Jetpack(private val initDefaultJetpack: Bitmap,
               createdX: Float,
               createdY: Float
 ) : IDrawable, IMoveable, IGameObject {
-    private var isOnPlayer = false
-
     private var paint = Paint().apply {
         alpha = DEFAULT_TRANSPARENCY
     }
@@ -32,17 +30,16 @@ class Jetpack(private val initDefaultJetpack: Bitmap,
 
     override var isDisappeared = false
 
-    private lateinit var player: Player
+    private var player: Player? = null
 
     fun initPlayer(entity: Player) {
         player = entity
-        player.isWithJetpack = true
-        isOnPlayer = true
+        player?.isWithJetpack = true
     }
 
     fun fly() {
-        player.directionY = Player.DirectionY.UP
-        player.speedY = PLAYER_SPEED_WITH_JETPACK
+        player?.directionY = Player.DirectionY.UP
+        player?.speedY = PLAYER_SPEED_WITH_JETPACK
     }
 
     fun startDisappearingTimer() {
@@ -66,21 +63,34 @@ class Jetpack(private val initDefaultJetpack: Bitmap,
     }
 
     private fun dispose() {
-        player.isWithJetpack = false
-        isOnPlayer = false
-        player.directionY = Player.DirectionY.DOWN
-        player.speedY = 0f
+        player?.isWithJetpack = false
+        player?.directionY = Player.DirectionY.DOWN
+        player?.speedY = 0f
         isDisappeared = true
     }
 
     override fun draw(canvas: Canvas) {
-        if (isOnPlayer) {
-            if (player.directionX == Player.DirectionX.LEFT) {
-                canvas.drawBitmap(initLeftPlayerJetpack, player.x - WIDTH / 2 + OFFSET_ON_PLAYER_LEFT, player.y - HEIGHT / 2, paint)
-            } else if (player.directionX == Player.DirectionX.RIGHT) {
-                canvas.drawBitmap(initRightPlayerJetpack, player.x - WIDTH / 2 - OFFSET_ON_PLAYER_RIGHT, player.y - HEIGHT / 2, paint)
+        if (isDisappeared) {
+            return
+        }
+
+        player?.let {
+            if (it.directionX == Player.DirectionX.LEFT) {
+                canvas.drawBitmap(
+                    initLeftPlayerJetpack,
+                    it.x - WIDTH / 2 + OFFSET_ON_PLAYER_LEFT,
+                    it.y - HEIGHT / 2,
+                    paint
+                )
+            } else {
+                canvas.drawBitmap(
+                    initRightPlayerJetpack,
+                    it.x - WIDTH / 2 - OFFSET_ON_PLAYER_RIGHT,
+                    it.y - HEIGHT / 2,
+                    paint
+                )
             }
-        } else if(!isDisappeared) {
+        } ?: run {
             canvas.drawBitmap(initDefaultJetpack, left, top, null)
         }
     }

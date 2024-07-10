@@ -2,6 +2,9 @@ package com.example.mygame.generator
 
 import kotlin.random.Random
 import android.content.res.Resources
+import com.example.mygame.factories.bonuses.JetpackFactory
+import com.example.mygame.factories.bonuses.ShieldFactory
+import com.example.mygame.factories.bonuses.SpringFactory
 import com.example.mygame.`object`.Platform
 import com.example.mygame.`interface`.IPlatformFactory
 import com.example.mygame.factories.platforms.StaticPlatformFactory
@@ -84,22 +87,22 @@ class PlatformGenerator(
 
                 val random = Random.nextFloat()
 
-//                when {
-//                    random < 0.2f && factory == staticPlatformFactory -> {
-//                        val jetpack =
-//                            Jetpack(resources).apply { createOnPlatform(newPlatform) }
-//                        platformsPack.add(jetpack)
-//                    }
-//                    random < 0.4f  && factory == staticPlatformFactory -> {
-//                        val shield =
-//                            Shield(resources).apply { createOnPlatform(newPlatform) }
-//                        platformsPack.add(shield)
-//                    }
-//                    random < 0.5f  && factory == staticPlatformFactory -> {
-//                        val spring = Spring(resources).apply { createOnPlatform(newPlatform) }
-//                        platformsPack.add(spring)
-//                    }
-//                }
+                when {
+                    random < 0.2f && factory == staticPlatformFactory -> {
+                        val jetpack =
+                            JetpackFactory(resources).generateBonus(newPlatform)
+                        platformsPack.add(jetpack)
+                    }
+                    random < 0.4f  && factory == staticPlatformFactory -> {
+                        val shield =
+                            ShieldFactory(resources).generateBonus(newPlatform)
+                        platformsPack.add(shield)
+                    }
+                    random < 0.5f  && factory == staticPlatformFactory -> {
+                        val spring = SpringFactory(resources).generateBonus(newPlatform)
+                        platformsPack.add(spring)
+                    }
+                }
 
                 platformsPack.add(newPlatform)
                 nextY -= platform.height + yGap

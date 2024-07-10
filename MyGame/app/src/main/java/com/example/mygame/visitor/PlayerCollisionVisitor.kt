@@ -35,7 +35,7 @@ class PlayerCollisionVisitor(
     override fun visit(player: Player) {}
 
     override fun visit(jetpack: Jetpack) {
-        if (doesPlayerCollideWithCollectable(jetpack)) {
+        if (doesPlayerCollideWithCollectable(jetpack) && !player.isWithJetpack) {
             jetpack.initPlayer(player)
             jetpack.startDisappearingTimer()
             jetpack.fly()
@@ -43,7 +43,7 @@ class PlayerCollisionVisitor(
     }
 
     override fun visit(shield: Shield) {
-        if (doesPlayerCollideWithCollectable(shield)) {
+        if (doesPlayerCollideWithCollectable(shield) && !player.isWithShield) {
             shield.initPlayer(player)
             shield.startDisappearingTimer()
         }
@@ -52,8 +52,7 @@ class PlayerCollisionVisitor(
     override fun visit(spring: Spring) {
         if (doesPlayerCollideWithSolid(spring)) {
             spring.runStretchAnimation()
-            spring.throwPlayer(player)
-            player.jump()
+            player.jump(Player.SPRING_JUMP_SPEED)
         }
     }
 
