@@ -5,6 +5,7 @@ import com.example.mygame.`object`.Platform
 import com.example.mygame.`interface`.IVisitor
 import com.example.mygame.`object`.Player.DirectionX
 import com.example.mygame.`object`.Player.DirectionY
+import com.example.mygame.`object`.Score
 import com.example.mygame.`object`.platform.BreakingPlatform
 import com.example.mygame.`object`.platform.DisappearingPlatform
 
@@ -26,7 +27,11 @@ class PlayerCollisionVisitor(
         }
     }
 
-    override fun visit(player: Player) {}
+    override fun visit(player: Player) {
+    }
+
+    override fun visit(score: Score) {
+    }
 
     private fun isCollidesPlayerWithPlatform(platform: Platform) : Boolean {
         if (player.directionX == DirectionX.RIGHT) {

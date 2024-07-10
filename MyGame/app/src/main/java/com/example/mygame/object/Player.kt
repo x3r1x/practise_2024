@@ -9,7 +9,6 @@ import com.example.mygame.`interface`.IVisitor
 import com.example.mygame.`interface`.IDrawable
 import com.example.mygame.`interface`.IMoveable
 import com.example.mygame.`interface`.IGameObject
-import com.example.mygame.logic.Score
 
 class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDrawable, IMoveable, IGameObject {
     enum class DirectionY(val value: Int) {

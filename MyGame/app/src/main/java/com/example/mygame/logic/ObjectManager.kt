@@ -7,14 +7,13 @@ import com.example.mygame.`object`.Screen
 import com.example.mygame.`object`.Player
 import com.example.mygame.`interface`.IGameObject
 import com.example.mygame.generator.LevelGenerator
+import com.example.mygame.`object`.Score
 
 class ObjectsManager(
     private val resources: Resources,
     private val screen: Screen
 ) {
     val objectStorage = ObjectStorage(resources, screen)
-
-    private val score = Score()
 
     private var tempScore = 0.0
 
@@ -30,7 +29,7 @@ class ObjectsManager(
     fun updateObjects(delta: Float) {
         objectStorage.setObjects(removeObjectsOutOfBounds())
 
-        score.increase(delta)
+        objectStorage.score.increase(delta)
 
         tempScore += abs(delta)
 

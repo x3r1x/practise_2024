@@ -3,6 +3,7 @@ package com.example.mygame.visitor
 import com.example.mygame.`interface`.IVisitor
 import com.example.mygame.`object`.Platform
 import com.example.mygame.`object`.Player
+import com.example.mygame.`object`.Score
 import com.example.mygame.`object`.Screen
 import com.example.mygame.`object`.platform.MovingPlatformOnX
 
@@ -11,6 +12,10 @@ class ScreenCollisionVisitor(private val screen: Screen) : IVisitor {
         if (isCollidePlayerWithScreen(player)) {
             player.movingThroughScreen(screen)
         }
+    }
+
+    override fun visit(score: Score) {
+
     }
 
     override fun visit(platform: Platform) {
