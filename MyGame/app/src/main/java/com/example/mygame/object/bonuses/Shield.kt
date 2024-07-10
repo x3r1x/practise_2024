@@ -7,6 +7,7 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.os.CountDownTimer
 import com.example.mygame.R
+import com.example.mygame.`interface`.IBonus
 import com.example.mygame.`interface`.IDrawable
 import com.example.mygame.`interface`.IGameObject
 import com.example.mygame.`interface`.IMoveable
@@ -18,7 +19,7 @@ class Shield(private val initDefaultShield: Bitmap,
              private val initTransformedShield: Bitmap,
              createdX: Float,
              createdY: Float
-) : IDrawable, IMoveable, IGameObject {
+) : IDrawable, IMoveable, IBonus, IGameObject {
     private var paint = Paint().apply {
         alpha = DEFAULT_TRANSPARENCY
     }
@@ -62,6 +63,7 @@ class Shield(private val initDefaultShield: Bitmap,
     }
 
     private fun dispose() {
+        player?.isWithShield = false
         isDisappeared = true
         left = 0f
         right = 0f

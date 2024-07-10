@@ -1,18 +1,16 @@
 package com.example.mygame.generator
 
 import android.content.res.Resources
-import com.example.mygame.`object`.Player
 import com.example.mygame.`object`.Screen
 import com.example.mygame.`interface`.IGameObject
 import com.example.mygame.`object`.platform.StaticPlatform
 
 class LevelGenerator(
     resources: Resources,
-    screen: Screen,
-    player: Player
+    screen: Screen
 ) {
     private val platformGenerator = PlatformGenerator(resources, screen)
-    private val bonusGenerator = BonusGenerator(resources, player)
+    private val bonusGenerator = BonusGenerator(resources)
 
     fun generateInitialPack(): MutableList<IGameObject> {
         return platformGenerator.generateInitialPlatforms().toMutableList()
@@ -20,14 +18,13 @@ class LevelGenerator(
 
     fun generateNewPack(from: Float): MutableList<IGameObject> {
         val platforms = platformGenerator.generatePlatforms(from - 100f)
+
         val staticPlatforms = platforms.filter {
             it::class == StaticPlatform::class
         }
 
         val bonuses = bonusGenerator.generateBonuses(staticPlatforms)
 
-        val objects = (platforms + bonuses) as MutableList<IGameObject>
-
-        return objects.toMutableList()
+        return (platforms + bonuses) as MutableList<IGameObject>
     }
 }

@@ -15,7 +15,9 @@ class Score: IGameObject, IDrawable {
     private var x = 100f
     private var y = 100f
 
-    private var value: Double = 0.0
+    private var value = 0.0
+
+    private var viewValue = 0.0
 
     private val paint = Paint().apply {
         textSize = 60f
@@ -36,6 +38,7 @@ class Score: IGameObject, IDrawable {
 
     fun increase(amount: Float) {
         value += abs(amount)
+        viewValue += abs(amount / 10)
         Log.i("", "Score: $value")
     }
 
@@ -44,7 +47,7 @@ class Score: IGameObject, IDrawable {
     }
 
     override fun draw(canvas: Canvas) {
-        canvas.drawText("${value.toInt() / 10}", x, y, paint)
+        canvas.drawText("${viewValue.toInt()}", x, y, paint)
     }
 
     companion object {

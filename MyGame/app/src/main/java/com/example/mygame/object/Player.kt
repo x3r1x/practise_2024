@@ -22,6 +22,7 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
     }
 
     var isWithJetpack = false
+
     var isWithShield = false
 
     override var x = 0f
@@ -59,10 +60,6 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
         if (x > screen.right) {
             x = 0f + RADIUS
         }
-    }
-
-    override fun accept(visitor: IVisitor) {
-        visitor.visit(this)
     }
 
     private fun changeDirectionX(newX: Float) {

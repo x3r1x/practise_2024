@@ -35,6 +35,7 @@ class ObjectStorage(
         objects.clear()
 
         objects.addAll(platforms)
+        objects.addAll(bonuses as MutableList<IGameObject>)
         // TODO: добавлять бонусы, врагов
         objects.add(player)
         objects.add(score)
@@ -49,6 +50,9 @@ class ObjectStorage(
 
         platforms.clear()
         platforms.addAll(list.filterIsInstance<Platform>())
+
+        bonuses.clear()
+        bonuses.addAll(list.filterIsInstance<IBonus>())
         // TODO: очистка бонусов и врагов и их добавление
     }
 
@@ -56,6 +60,7 @@ class ObjectStorage(
         objects.addAll(collection)
 
         platforms.addAll(collection.filterIsInstance<Platform>())
+        bonuses.addAll(collection.filterIsInstance<IBonus>())
         // TODO: добавлять бонусы в бонусы, врагов во врагов
     }
 }

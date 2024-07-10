@@ -72,7 +72,7 @@ class PlatformGenerator(
                 var x: Float
 
                 do {
-                    x = Random.nextFloat() * (screen.width - platform.width * 2) + platform.width
+                    x = Random.nextFloat() * (screen.width - platform.width) + platform.width
                     yGap = platformGap + Random.nextFloat() * (maxVerticalGap - platformGap)
                     newPlatform = factory.generatePlatform(x, newY - yGap)
                 } while (isOverlapping(platformsPack, newPlatform))

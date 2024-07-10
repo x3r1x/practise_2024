@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import com.example.mygame.R
+import com.example.mygame.`interface`.IBonus
 import com.example.mygame.`interface`.IDrawable
 import com.example.mygame.`interface`.IGameObject
 import com.example.mygame.`interface`.IMoveable
@@ -16,7 +17,7 @@ import com.example.mygame.`object`.Player
 class Spring(private val initBitmap: MutableList<Bitmap>,
              createdX: Float,
              createdY: Float
-) : IDrawable, IMoveable, IGameObject {
+) : IDrawable, IMoveable, IBonus, IGameObject {
     private val animationDuration : Long = 150
 
     private var currentFrame = 0

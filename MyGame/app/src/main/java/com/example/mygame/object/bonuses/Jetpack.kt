@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.os.CountDownTimer
+import com.example.mygame.`interface`.IBonus
 import com.example.mygame.`interface`.IDrawable
 import com.example.mygame.`interface`.IGameObject
 import com.example.mygame.`interface`.IMoveable
@@ -15,7 +16,7 @@ class Jetpack(private val initDefaultJetpack: Bitmap,
               private val initRightPlayerJetpack: Bitmap,
               createdX: Float,
               createdY: Float
-) : IDrawable, IMoveable, IGameObject {
+) : IDrawable, IMoveable, IBonus, IGameObject {
     private var paint = Paint().apply {
         alpha = DEFAULT_TRANSPARENCY
     }

@@ -3,14 +3,13 @@ package com.example.mygame.logic
 import kotlin.math.abs
 import android.util.Log
 import android.content.res.Resources
-import com.example.mygame.`object`.Screen
 import com.example.mygame.`object`.Player
+import com.example.mygame.`object`.Screen
 import com.example.mygame.`interface`.IGameObject
 import com.example.mygame.generator.LevelGenerator
-import com.example.mygame.`object`.Score
 
 class ObjectsManager(
-    private val resources: Resources,
+    val resources: Resources,
     private val screen: Screen
 ) {
     val objectStorage = ObjectStorage(resources, screen)
@@ -22,7 +21,7 @@ class ObjectsManager(
     private lateinit var levelGenerator: LevelGenerator
 
     fun initObjects() {
-        levelGenerator = LevelGenerator(resources, screen, objectStorage.getPlayer())
+        levelGenerator = LevelGenerator(resources, screen)
         objectStorage.addAll(levelGenerator.generateInitialPack())
     }
 

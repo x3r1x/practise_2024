@@ -2,21 +2,17 @@ package com.example.mygame.generator
 
 import kotlin.random.Random
 import android.content.res.Resources
-import com.example.mygame.`object`.Player
-import com.example.mygame.`object`.Platform
-import com.example.mygame.`interface`.IBonus
 import com.example.mygame.`interface`.IBonusFactory
-import com.example.mygame.`object`.interactable.Shield
-import com.example.mygame.`object`.interactable.Spring
-import com.example.mygame.`object`.interactable.Jetpack
 import com.example.mygame.factory.bonus.ShieldFactory
 import com.example.mygame.factory.bonus.SpringFactory
 import com.example.mygame.factory.bonus.JetpackFactory
+import com.example.mygame.`interface`.IBonus
+import com.example.mygame.`object`.Platform
 
-class BonusGenerator(private val resources: Resources, private val player: Player) {
-    private val shieldFactory = ShieldFactory()
-    private val springFactory = SpringFactory()
-    private val jetpackFactory = JetpackFactory()
+class BonusGenerator(resources: Resources) {
+    private val shieldFactory = ShieldFactory(resources)
+    private val springFactory = SpringFactory(resources)
+    private val jetpackFactory = JetpackFactory(resources)
 
     private val factories = listOf(
         shieldFactory,
@@ -31,15 +27,15 @@ class BonusGenerator(private val resources: Resources, private val player: Playe
             val random = Random.nextFloat()
             when {
                 random < 0.1f-> {
-                    val jetpack = Jetpack(resources, player).apply { createOnPlatform(it) }
+                    val jetpack = jetpackFactory.generateBonus(it)
                     bonuses.add(jetpack)
                 }
                 random < 0.15f -> {
-                    val shield = Shield(resources, player).apply { createOnPlatform(it) }
+                    val shield = shieldFactory.generateBonus(it)
                     bonuses.add(shield)
                 }
                 random < 0.25f -> {
-                    val spring = Spring(resources).apply { createOnPlatform(it) }
+                    val spring = springFactory.generateBonus(it)
                     bonuses.add(spring)
                 }
             }
