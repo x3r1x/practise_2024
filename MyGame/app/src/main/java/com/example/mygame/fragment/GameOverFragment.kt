@@ -1,20 +1,30 @@
 package com.example.mygame.fragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import com.example.mygame.R
 
 class GameOverFragment : Fragment() {
+    private var score = 0
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            score = it.getInt(SCORE_ARG, 0)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         val view = inflater.inflate(R.layout.fragment_game_over, container, false)
 
         view.findViewById<Button>(R.id.playAgainButton).setOnClickListener {
@@ -25,6 +35,12 @@ class GameOverFragment : Fragment() {
             Navigation.findNavController(view).navigate(R.id.navigateToMenuFragment)
         }
 
+        view.findViewById<TextView>(R.id.currentScore).text = score.toString()
+
         return view
+    }
+
+    companion object {
+        const val SCORE_ARG = "score"
     }
 }

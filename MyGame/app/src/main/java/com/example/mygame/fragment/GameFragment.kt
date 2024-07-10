@@ -7,16 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowMetrics
 import androidx.annotation.RequiresApi
-import androidx.core.view.WindowCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import com.example.mygame.GameViewModel
 import com.example.mygame.R
 import com.example.mygame.`interface`.IDrawable
-import com.example.mygame.`object`.Player
 import com.example.mygame.view.GameView
 
 class GameFragment : Fragment() {
@@ -48,7 +44,9 @@ class GameFragment : Fragment() {
             gameView.drawGame(gameObjects as List<IDrawable>)
 
             if (gameViewModel.isGameLost()) {
-                Navigation.findNavController(view).navigate(R.id.navigateToGameOverFragment)
+                val bundle = Bundle()
+                bundle.putInt(GameOverFragment.SCORE_ARG, gameViewModel.returnScore())
+                Navigation.findNavController(view).navigate(R.id.navigateToGameOverFragment, bundle)
             }
         }
 
