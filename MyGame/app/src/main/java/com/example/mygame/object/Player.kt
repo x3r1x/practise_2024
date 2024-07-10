@@ -63,8 +63,13 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
     }
 
     private fun changeDirectionX(newX: Float) {
-        if (newX < -DISTANCE_TO_TURN) {directionX = DirectionX.LEFT}
-        if (newX >  DISTANCE_TO_TURN) {directionX = DirectionX.RIGHT}
+        if (newX < -DISTANCE_TO_TURN)
+        {
+            directionX = DirectionX.LEFT
+        } else if (newX > DISTANCE_TO_TURN)
+        {
+            directionX = DirectionX.RIGHT
+        }
     }
 
     private fun applyTransformations(matrix: Matrix, destRect: RectF) {

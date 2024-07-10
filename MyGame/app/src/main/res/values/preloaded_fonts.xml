@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="preloaded_fonts" translatable="false">
+        <item>@font/joti_one_regular</item>
+        <item>@font/macondo_swash_caps</item>
+        <item>@font/magra</item>
+    </array>
+</resources>

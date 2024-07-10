@@ -20,6 +20,8 @@ import com.example.mygame.`interface`.IGameObject
 class GameViewModel(private val application: Application) : AndroidViewModel(application), SensorHandler.SensorCallback {
     val gameObjects: LiveData<List<IGameObject>> get() = _gameObjects
 
+    private var isGameLoopRunning = false
+
     private var viewModelJob = Job()
 
     private var deltaX = 0f
@@ -45,12 +47,13 @@ class GameViewModel(private val application: Application) : AndroidViewModel(app
     }
 
     fun startGameLoop() {
+        isGameLoopRunning = true
         var elapsedTime: Float
 
         var startTime = System.currentTimeMillis()
 
         uiScope.launch {
-            while (true) {
+            while (isGameLoopRunning) {
                 val systemTime = System.currentTimeMillis()
 
                 elapsedTime = (systemTime - startTime) / 1000f
@@ -67,12 +70,20 @@ class GameViewModel(private val application: Application) : AndroidViewModel(app
         }
     }
 
+    fun stopGameLoop() {
+        isGameLoopRunning = false
+    }
+
     fun registerSensorHandler() {
         sensorHandler.register()
     }
 
     fun unregisterSensorHandler() {
         sensorHandler.unregister()
+    }
+
+    fun isGameLost() : Boolean {
+        return objectsManager.objectStorage.getPlayer().top > screen.height
     }
 
     private fun updateGame(elapsedTime: Float) {

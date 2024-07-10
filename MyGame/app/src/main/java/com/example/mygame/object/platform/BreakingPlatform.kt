@@ -11,6 +11,8 @@ class BreakingPlatform(initBitmaps: MutableList<Bitmap>,
     private var currentFrameIndex = 0
     private var bitmaps = mutableListOf<Bitmap>()
 
+    private var isBreakRunning = false
+
     init {
         bitmaps = initBitmaps
         bitmap = bitmaps[currentFrameIndex]
@@ -30,8 +32,6 @@ class BreakingPlatform(initBitmaps: MutableList<Bitmap>,
             runFallingAnimation(screenHeight)
         }
     }
-
-    private var isBreakRunning = false
 
     private fun runFallingAnimation(screenHeight: Float) {
         val startY = y

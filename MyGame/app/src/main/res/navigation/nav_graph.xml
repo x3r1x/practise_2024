@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/startFragment">
+    <fragment
+        android:id="@+id/startFragment"
+        android:name="com.example.mygame.fragment.StartMenuFragment"
+        android:label="fragment_start"
+        tools:layout="@layout/fragment_start_menu" >
+        <action
+            android:id="@+id/navigateToSinglePlayerFragment"
+            app:destination="@id/gameFragment" />
+        <action
+            android:id="@+id/action_startFragment_to_gameOverFragment22"
+            app:destination="@id/gameOverFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/gameFragment"
+        android:name="com.example.mygame.fragment.GameFragment"
+        android:label="fragment_game"
+        tools:layout="@layout/fragment_game" >
+        <action
+            android:id="@+id/navigateToGameOverFragment"
+            app:destination="@id/gameOverFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/gameOverFragment2"
+        android:name="com.example.mygame.fragment.GameOverFragment"
+        android:label="fragment_game_over"
+        tools:layout="@layout/fragment_game_over" >
+        <action
+            android:id="@+id/navigateToSinglePlayerFragment"
+            app:destination="@id/gameFragment" />
+        <action
+            android:id="@+id/navigateToMenuFragment"
+            app:destination="@id/startFragment" />
+    </fragment>
+</navigation>
