@@ -1,5 +1,6 @@
 package com.example.mygame.generator
 
+import kotlin.math.abs
 import kotlin.random.Random
 import android.content.res.Resources
 import com.example.mygame.`object`.Screen
@@ -10,7 +11,6 @@ import com.example.mygame.factory.platform.BreakingPlatformFactory
 import com.example.mygame.factory.platform.MovingPlatformOnXFactory
 import com.example.mygame.factory.platform.MovingPlatformOnYFactory
 import com.example.mygame.factory.platform.DisappearingPlatformFactory
-import kotlin.math.abs
 
 class PlatformGenerator(
     resources: Resources,
@@ -27,14 +27,14 @@ class PlatformGenerator(
 
     private val maxVerticalGap = 350f
 
-    private val startPackageHeight = -3000f
+    private val startPackageHeight = -4000f
 
-    private val newPackageHeight = 5000f
+    private val newPackageHeight = 4500f
 
     private val factories = listOf(
-        //staticPlatformFactory,
-        //movingPlatformOnYFactory,
-        //movingPlatformOnXFactory,
+        staticPlatformFactory,
+        movingPlatformOnYFactory,
+        movingPlatformOnXFactory,
         disappearingPlatformFactory
     )
 
@@ -59,9 +59,9 @@ class PlatformGenerator(
         // TODO: Добавить генерацию сломанных платформ
         // TODO: Они генерируются в дополнение к основным
         val platforms: MutableList<Platform> = mutableListOf()
-        var newY = 0f
+        var newY = from
 
-        while (abs(from + newY) < newPackageHeight) {
+        while (abs(newY) < newPackageHeight - from) {
             val factory = getRandomFactory()
             val numberOfPlatforms = Random.nextInt(2, 6)
             val platformsPack: MutableList<Platform> = mutableListOf()
@@ -73,8 +73,7 @@ class PlatformGenerator(
 
                 do {
                     x = Random.nextFloat() * (screen.width - platform.width * 2) + platform.width
-                    yGap = platformGap
-                    //+ Random.nextFloat() * (maxVerticalGap - platformGap)
+                    yGap = platformGap + Random.nextFloat() * (maxVerticalGap - platformGap)
                     newPlatform = factory.generatePlatform(x, newY - yGap)
                 } while (isOverlapping(platformsPack, newPlatform))
 

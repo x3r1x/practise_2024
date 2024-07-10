@@ -5,14 +5,14 @@ import android.os.Build
 import android.os.Bundle
 import android.view.WindowManager
 import android.view.WindowMetrics
-import androidx.activity.ComponentActivity
 import androidx.activity.viewModels
-import androidx.annotation.RequiresApi
 import androidx.core.view.WindowCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.WindowInsetsControllerCompat
-import com.example.mygame.`interface`.IDrawable
+import androidx.annotation.RequiresApi
 import com.example.mygame.view.GameView
+import androidx.activity.ComponentActivity
+import androidx.core.view.WindowInsetsCompat
+import com.example.mygame.`interface`.IDrawable
+import androidx.core.view.WindowInsetsControllerCompat
 
 class MainActivity : ComponentActivity() {
     private val gameViewModel: GameViewModel by viewModels()

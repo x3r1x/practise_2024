@@ -3,7 +3,6 @@ package com.example.mygame.generator
 import android.content.res.Resources
 import com.example.mygame.`object`.Player
 import com.example.mygame.`object`.Screen
-import com.example.mygame.`interface`.IDrawable
 import com.example.mygame.`interface`.IGameObject
 import com.example.mygame.`object`.platform.StaticPlatform
 
@@ -20,7 +19,7 @@ class LevelGenerator(
     }
 
     fun generateNewPack(from: Float): MutableList<IGameObject> {
-        val platforms = platformGenerator.generatePlatforms(from - 2500f)
+        val platforms = platformGenerator.generatePlatforms(from - 100f)
         val staticPlatforms = platforms.filter {
             it::class == StaticPlatform::class
         }

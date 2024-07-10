@@ -16,7 +16,6 @@ import com.example.mygame.`interface`.IMoveable
 import com.example.mygame.logic.PositionHandler
 import com.example.mygame.logic.CollisionHandler
 import com.example.mygame.`interface`.IGameObject
-import com.example.mygame.logic.Score
 
 class GameViewModel(private val application: Application) : AndroidViewModel(application), SensorHandler.SensorCallback {
     val gameObjects: LiveData<List<IGameObject>> get() = _gameObjects

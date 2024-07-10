@@ -1,13 +1,12 @@
 package com.example.mygame.logic
 
+import kotlin.math.abs
 import android.util.Log
 import android.content.res.Resources
-import com.example.mygame.generator.LevelGenerator
-import com.example.mygame.`object`.Player
 import com.example.mygame.`object`.Screen
+import com.example.mygame.`object`.Player
 import com.example.mygame.`interface`.IGameObject
-import com.example.mygame.`object`.Platform
-import kotlin.math.abs
+import com.example.mygame.generator.LevelGenerator
 
 class ObjectsManager(
     private val resources: Resources,
@@ -19,7 +18,7 @@ class ObjectsManager(
 
     private var tempScore = 0.0
 
-    private val scoreThreshold = 3000.0
+    private val scoreThreshold = 4000.0
 
     private lateinit var levelGenerator: LevelGenerator
 
