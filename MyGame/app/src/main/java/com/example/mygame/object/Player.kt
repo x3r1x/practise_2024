@@ -1,9 +1,9 @@
 package com.example.mygame.`object`
 
+import android.graphics.RectF
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Matrix
-import android.graphics.RectF
 import com.example.mygame.Physics
 import com.example.mygame.`interface`.IVisitor
 import com.example.mygame.`interface`.IDrawable
@@ -22,14 +22,7 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
     }
 
     var isWithJetpack = false
-
-    var directionX = DirectionX.RIGHT
-
-    var directionY = DirectionY.DOWN
-
-    var speedY = 0f
-
-    override var isDisappeared = false
+    var isWithShield = false
 
     override var x = 0f
 
@@ -44,9 +37,18 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
     override val bottom
         get() = y + RADIUS
 
-    fun jump() {
+    var directionX = DirectionX.RIGHT
+
+    var directionY = DirectionY.DOWN
+
+    var speedY = 0f
+
+    override var isDisappeared = false
+
+    fun jump(jumpSpeed: Float = JUMP_SPEED) {
         directionY = DirectionY.UP
-        speedY = JUMP_SPEED
+
+        speedY = jumpSpeed
     }
 
     fun movingThroughScreen(screen: Screen) {
@@ -59,14 +61,13 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
         }
     }
 
+    override fun accept(visitor: IVisitor) {
+        visitor.visit(this)
+    }
+
     private fun changeDirectionX(newX: Float) {
-        if (newX < -DISTANCE_TO_TURN)
-        {
-            directionX = DirectionX.LEFT
-        } else if (newX > DISTANCE_TO_TURN)
-        {
-            directionX = DirectionX.RIGHT
-        }
+        if (newX < -DISTANCE_TO_TURN) {directionX = DirectionX.LEFT}
+        if (newX >  DISTANCE_TO_TURN) {directionX = DirectionX.RIGHT}
     }
 
     private fun applyTransformations(matrix: Matrix, destRect: RectF) {
@@ -119,15 +120,20 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
         val previousY = y
 
         y += speedY * directionY.value * elapsedTime
-        speedY += elapsedTime * Physics.GRAVITY * directionY.value
 
-        if (y >= previousY && directionY == DirectionY.UP) {
-            directionY = DirectionY.DOWN
+        if (!isWithJetpack) {
+            speedY += elapsedTime * Physics.GRAVITY * directionY.value
+
+            if (y >= previousY && directionY == DirectionY.UP) {
+                directionY = DirectionY.DOWN
+            }
         }
 
     }
 
     companion object {
+        const val SPRING_JUMP_SPEED = 2200f
+
         private const val DISTANCE_TO_TURN = 1f
         private const val RADIUS = 75f
         private const val JUMP_SPEED = 1000f //920f

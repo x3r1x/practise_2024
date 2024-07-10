@@ -1,10 +1,14 @@
 package com.example.mygame.visitor
 
 import com.example.mygame.`interface`.IVisitor
+import com.example.mygame.`object`.Enemy
 import com.example.mygame.`object`.Platform
 import com.example.mygame.`object`.Player
 import com.example.mygame.`object`.Score
 import com.example.mygame.`object`.Screen
+import com.example.mygame.`object`.bonuses.Jetpack
+import com.example.mygame.`object`.bonuses.Shield
+import com.example.mygame.`object`.bonuses.Spring
 import com.example.mygame.`object`.platform.MovingPlatformOnX
 
 class ScreenCollisionVisitor(private val screen: Screen) : IVisitor {
@@ -27,6 +31,11 @@ class ScreenCollisionVisitor(private val screen: Screen) : IVisitor {
             platform.isDisappeared = true
         }
     }
+
+    override fun visit(spring: Spring) {}
+    override fun visit(shield: Shield) {}
+    override fun visit(jetpack: Jetpack) {}
+    override fun visit(enemy: Enemy) {}
 
     private fun isCollidePlayerWithScreen(player: Player) : Boolean {
         return player.right < screen.left || player.left > screen.right
