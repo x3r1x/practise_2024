@@ -1,14 +1,13 @@
 package com.example.mygame.`object`
 
-import kotlin.math.abs
-import android.util.Log
-import android.graphics.RectF
-import android.graphics.Paint
 import android.graphics.Canvas
+import android.graphics.Paint
 import android.graphics.Typeface
-import com.example.mygame.`interface`.IVisitor
+import android.util.Log
 import com.example.mygame.`interface`.IDrawable
 import com.example.mygame.`interface`.IGameObject
+import com.example.mygame.`interface`.IVisitor
+import kotlin.math.abs
 
 class Score: IGameObject, IDrawable {
 
@@ -40,6 +39,10 @@ class Score: IGameObject, IDrawable {
         value += abs(amount)
         viewValue += abs(amount / 10)
         Log.i("", "Score: $value")
+    }
+
+    fun getScore() : Int {
+        return viewValue.toInt()
     }
 
     override fun accept(visitor: IVisitor) {

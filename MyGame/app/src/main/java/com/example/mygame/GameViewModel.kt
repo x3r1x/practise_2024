@@ -86,6 +86,10 @@ class GameViewModel(private val application: Application) : AndroidViewModel(app
         return objectsManager.objectStorage.getPlayer().top > screen.height
     }
 
+    fun returnScore(): Int {
+        return objectsManager.objectStorage.score.getScore()
+    }
+
     private fun updateGame(elapsedTime: Float) {
         _gameObjects.value = objectsManager.getObjects()
 
