@@ -16,6 +16,10 @@ class Score: IGameObject, IDrawable {
 
     private var value: Double = 0.0
 
+    private val paint = Paint().apply {
+        textSize = 60f
+    }
+
     override var isDisappeared = false
 
     override val left: Float
@@ -38,12 +42,6 @@ class Score: IGameObject, IDrawable {
     }
 
     override fun draw(canvas: Canvas) {
-        val destRect = RectF(left, right, top, bottom)
-        val paint = Paint().apply {
-            textSize = 60f
-        }
-
-        //canvas.drawRect(destRect, paint)
         canvas.drawText("${value.toInt() / 10}", x, y, paint)
     }
 
