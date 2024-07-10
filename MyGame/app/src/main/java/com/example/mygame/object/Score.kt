@@ -5,6 +5,7 @@ import android.util.Log
 import android.graphics.RectF
 import android.graphics.Paint
 import android.graphics.Canvas
+import android.graphics.Typeface
 import com.example.mygame.`interface`.IVisitor
 import com.example.mygame.`interface`.IDrawable
 import com.example.mygame.`interface`.IGameObject
@@ -18,6 +19,7 @@ class Score: IGameObject, IDrawable {
 
     private val paint = Paint().apply {
         textSize = 60f
+        typeface = Typeface.create("Arial",Typeface.ITALIC);
     }
 
     override var isDisappeared = false
