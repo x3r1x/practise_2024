@@ -16,7 +16,7 @@ class ObjectsManager(
 
     private var tempScore = 0.0
 
-    private val scoreThreshold = 4000.0
+    private val scoreThreshold = 4500.0
 
     private lateinit var levelGenerator: LevelGenerator
 
