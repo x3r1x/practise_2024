@@ -25,31 +25,6 @@ class EnemyGenerator(
         ninjaFactory
     )
 
-    fun generateEnemies(platforms: List<Platform>): MutableList<Enemy> {
-        val enemies: MutableList<Enemy> = mutableListOf()
-
-        platforms.forEach {
-            val random = Random.nextFloat()
-            val x = Random.nextFloat() * (screen.width - it.width) + 100f
-            when {
-                random < 0.1f-> {
-                    val fly = flyFactory.generateEnemy(x, it.top)
-                    enemies.add(fly)
-                }
-                random < 0.15f -> {
-                    val bully = bullyFactory.generateEnemy(x, it.top)
-                    enemies.add(bully)
-                }
-                random < 0.25f -> {
-                    val ninja = ninjaFactory.generateEnemy(x, it.top)
-                    enemies.add(ninja)
-                }
-            }
-        }
-
-        return enemies
-    }
-
     fun generateEnemy(platform: Platform): IGameObject? {
         var enemy: Enemy? = null
         val random = Random.nextFloat()

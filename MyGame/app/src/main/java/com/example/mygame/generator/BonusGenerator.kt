@@ -21,36 +21,6 @@ class BonusGenerator(resources: Resources) {
         jetpackFactory
     )
 
-    fun generateBonuses(platforms: List<Platform>): MutableList<IBonus> {
-        val bonuses: MutableList<IBonus> = mutableListOf()
-        var canGenerate = true
-
-        platforms.forEach {
-            val random = Random.nextFloat()
-            when {
-                random < 0.1f && canGenerate -> {
-                    val jetpack = jetpackFactory.generateBonus(it)
-                    bonuses.add(jetpack)
-                    canGenerate = false
-                }
-
-                random < 0.15f && canGenerate -> {
-                    val shield = shieldFactory.generateBonus(it)
-                    bonuses.add(shield)
-                    canGenerate = false
-                }
-
-                random < 0.25f && canGenerate -> {
-                    val spring = springFactory.generateBonus(it)
-                    bonuses.add(spring)
-                    canGenerate = false
-                }
-            }
-        }
-
-        return bonuses
-    }
-
     fun generateBonus(platform: Platform): IBonus? {
         if (platform::class != StaticPlatform::class) {
             return null

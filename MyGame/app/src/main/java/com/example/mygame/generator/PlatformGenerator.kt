@@ -86,31 +86,6 @@ class PlatformGenerator(
         return platforms
     }
 
-    fun generatePack(from: Float): MutableList<Platform> {
-        var newY = from
-        val factory = getRandomFactory()
-        val numberOfPlatforms = Random.nextInt(2, 6)
-        val platformsPack: MutableList<Platform> = mutableListOf()
-
-        for (i in 0 until numberOfPlatforms) {
-            var newPlatform: Platform
-            var yGap: Float
-            var x: Float
-
-            do {
-                x = Random.nextFloat() * (screen.width - platform.width) + 100f
-                yGap = platformGap + Random.nextFloat() * (maxVerticalGap - platformGap)
-                newPlatform = factory.generatePlatform(x, newY - yGap)
-            } while (isOverlapping(platformsPack, newPlatform))
-
-            platformsPack.add(newPlatform)
-
-            newY -= platform.height + yGap
-        }
-
-        return platformsPack
-    }
-
     fun generatePlatform(from: Float): Platform {
         val factory = getRandomFactory()
         val x = Random.nextFloat() * (screen.width - platform.width) + 100f
