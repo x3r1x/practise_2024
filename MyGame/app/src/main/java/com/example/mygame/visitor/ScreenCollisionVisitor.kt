@@ -39,8 +39,6 @@ class ScreenCollisionVisitor(private val screen: Screen) : IVisitor {
     override fun visit(enemy: Enemy) {}
 
     override fun visit(bullet: Bullet) {
-        //val screenRect = RectF(screen.left, screen.top, screen.right, screen.bottom)
-        //val bulletRect = RectF(bullet.left, bullet.top, bullet.right, bullet.bottom)
         if (screen.top > bullet.bottom) {
             bullet.isDisappeared = true
         }
