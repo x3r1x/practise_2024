@@ -28,7 +28,7 @@ class EnemyGenerator(
     fun generateEnemy(platform: Platform): IGameObject? {
         var enemy: Enemy? = null
         val random = Random.nextFloat()
-        val x = Random.nextFloat() * (screen.width - platform.width) + 361f
+        val x = Random.nextFloat() * (screen.width - platform.width) + GAP_X
         when {
             random < 0.1f-> {
                 val fly = flyFactory.generateEnemy(x, platform.y)
@@ -50,5 +50,9 @@ class EnemyGenerator(
     private fun getRandomFactory(): IEnemyFactory {
         // TODO: Сделать шанс генерации на основе score
         return factories[Random.nextInt(factories.size)]
+    }
+
+    companion object {
+        private const val GAP_X = 275f
     }
 }
