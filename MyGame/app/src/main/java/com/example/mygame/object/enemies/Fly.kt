@@ -35,7 +35,7 @@ class Fly(initBitmap: Bitmap,
         }
     }
 
-    private fun changeDirection() {
+    private fun changeDirectionX() {
         if (right >= screen.right) {
             directionX = DirectionX.LEFT
         } else if (left <= screen.left) {
@@ -50,7 +50,7 @@ class Fly(initBitmap: Bitmap,
             x += MOVE_SPEED
         }
 
-        changeDirection()
+        changeDirectionX()
     }
 
     companion object {
