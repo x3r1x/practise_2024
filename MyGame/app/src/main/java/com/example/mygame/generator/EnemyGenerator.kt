@@ -50,30 +50,30 @@ class EnemyGenerator(
         return enemies
     }
 
-    private fun getRandomFactory(): IEnemyFactory {
-        // TODO: Сделать шанс генерации на основе score
-        return factories[Random.nextInt(factories.size)]
-    }
-
     fun generateEnemy(platform: Platform): IGameObject? {
         var enemy: Enemy? = null
         val random = Random.nextFloat()
         val x = Random.nextFloat() * (screen.width - platform.width) + 100f
         when {
             random < 0.01f-> {
-                val fly = flyFactory.generateEnemy(x, platform.top)
+                val fly = flyFactory.generateEnemy(x, platform.y)
                 enemy = fly
             }
             random < 0.02f -> {
-                val bully = bullyFactory.generateEnemy(x, platform.top)
+                val bully = bullyFactory.generateEnemy(x, platform.y)
                 enemy = bully
             }
             random < 0.03f -> {
-                val ninja = ninjaFactory.generateEnemy(x, platform.top)
+                val ninja = ninjaFactory.generateEnemy(x, platform.y)
                 enemy = ninja
             }
         }
 
         return enemy
+    }
+
+    private fun getRandomFactory(): IEnemyFactory {
+        // TODO: Сделать шанс генерации на основе score
+        return factories[Random.nextInt(factories.size)]
     }
 }

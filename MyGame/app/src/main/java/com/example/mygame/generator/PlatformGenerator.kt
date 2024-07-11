@@ -25,7 +25,7 @@ class PlatformGenerator(
 
     private val platformGap: Float = 50f
 
-    private val maxVerticalGap = 350f
+    private val maxVerticalGap = 400f
 
     private val newPackageHeight = 4500f
 
@@ -114,7 +114,7 @@ class PlatformGenerator(
     fun generatePlatform(from: Float): Platform {
         val factory = getRandomFactory()
         val x = Random.nextFloat() * (screen.width - platform.width) + 100f
-        val y = from - Random.nextFloat() * (maxVerticalGap - platformGap)
+        val y = from - Random.nextFloat() * (maxVerticalGap) - platformGap
 
         return factory.generatePlatform(x, y)
     }

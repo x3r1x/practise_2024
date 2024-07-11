@@ -38,9 +38,13 @@ class LevelGenerator(
             val platform = platformGenerator.generatePlatform(newY)
             pack.add(platform)
 
-            (bonusGenerator.generateBonus(platform) as IGameObject?)?.let { pack.add(it) }
+            (bonusGenerator.generateBonus(platform) as IGameObject?)?.let {
+                bonus -> pack.add(bonus)
+            }
 
-            enemyGenerator.generateEnemy(platform)?.let { pack.add(it) }
+            enemyGenerator.generateEnemy(platform)?.let {
+                enemy -> pack.add(enemy); pack.remove(platform) }
+
 
             newY = pack.last().top
 
