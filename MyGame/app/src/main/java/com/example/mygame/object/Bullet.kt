@@ -4,6 +4,8 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Color
+import android.graphics.Matrix
+import android.graphics.RectF
 import com.example.mygame.`interface`.IDrawable
 import com.example.mygame.`interface`.IMoveable
 import com.example.mygame.`interface`.IGameObject
@@ -49,18 +51,19 @@ class Bullet(
     }
 
     override fun draw(canvas: Canvas) {
-        //val matrix = Matrix()
-        //matrix.postTranslate(left, top)
-        val paint = Paint().apply {
-            color = Color.RED
-        }
-        canvas.drawRect(left, top, right, bottom, paint)
-        //canvas.drawBitmap(image, matrix, null)
+        val matrix = Matrix()
+        val destRect = RectF(left, top, right, bottom)
+        val scaleX = destRect.width() / image.width
+        val scaleY = destRect.height() / image.height
+
+        matrix.postScale(scaleX, scaleY)
+        matrix.postTranslate(right, top)
+        canvas.drawBitmap(image, matrix, null)
     }
 
     companion object {
-        private const val WIDTH = 20f
-        private const val HEIGHT = 20f
-        private const val DEFAULT_ACCELERATION = -110f // Ускорение по умолчанию
+        private const val WIDTH = 40f
+        private const val HEIGHT = 100f
+        private const val DEFAULT_ACCELERATION = 1000f // Ускорение по умолчанию
     }
 }
