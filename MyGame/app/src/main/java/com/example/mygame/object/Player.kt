@@ -10,7 +10,10 @@ import com.example.mygame.`interface`.IDrawable
 import com.example.mygame.`interface`.IMoveable
 import com.example.mygame.`interface`.IGameObject
 
-class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDrawable, IMoveable, IGameObject {
+class Player(private val idleImage: Bitmap,
+             private val jumpImage: Bitmap,
+             private val deadImage: Bitmap
+) : IDrawable, IMoveable, IGameObject {
     enum class DirectionY(val value: Int) {
         UP(-1),
         DOWN(1),
@@ -73,9 +76,9 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
         }
     }
 
-    private fun applyTransformations(matrix: Matrix, destRect: RectF) {
-        val scaleX = destRect.width() / idleImage.width
-        val scaleY = destRect.height() / idleImage.height
+    private fun applyTransformations(matrix: Matrix, destRect: RectF, image: Bitmap) {
+        val scaleX = destRect.width() / image.width
+        val scaleY = destRect.height() / image.height
 
         if (directionX == DirectionX.LEFT) {
             matrix.preScale(-scaleX, scaleY)
@@ -87,10 +90,20 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
     }
 
     private fun selectImage(): Bitmap {
-        return if (directionY == DirectionY.UP) {
+        return if (isDead) {
+            deadImage
+        } else if (directionY == DirectionY.UP) {
             jumpImage
         } else {
             idleImage
+        }
+    }
+
+    private fun applyRect() : RectF {
+        return if (isDead) {
+            RectF(x - DEAD_WIDTH / 2, y - DEAD_HEIGHT / 2, x + DEAD_WIDTH / 2, y + DEAD_HEIGHT / 2)
+        } else {
+            RectF(left, top, right, bottom)
         }
     }
 
@@ -100,11 +113,11 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
 
     override fun draw(canvas: Canvas) {
         val matrix = Matrix()
-        val destRect = RectF(left, top, right, bottom)
-
-        applyTransformations(matrix, destRect)
-
+        val destRect = applyRect()
         val imageToDraw = selectImage()
+
+        applyTransformations(matrix, destRect, imageToDraw)
+
         canvas.drawBitmap(imageToDraw, matrix, null)
     }
 
@@ -131,7 +144,6 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
                 directionY = DirectionY.DOWN
             }
         }
-
     }
 
     companion object {
@@ -140,5 +152,8 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
         private const val DISTANCE_TO_TURN = 1f
         private const val RADIUS = 75f
         private const val JUMP_SPEED = 1000f //920f
+
+        private const val DEAD_WIDTH = 120f
+        private const val DEAD_HEIGHT = 190f
     }
 }
