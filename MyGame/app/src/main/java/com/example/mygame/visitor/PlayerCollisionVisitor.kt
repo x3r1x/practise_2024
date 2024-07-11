@@ -12,6 +12,7 @@ import com.example.mygame.`object`.bonuses.Jetpack
 import com.example.mygame.`object`.bonuses.Shield
 import com.example.mygame.`object`.bonuses.Spring
 import com.example.mygame.`object`.Score
+import com.example.mygame.`object`.enemies.Bully
 import com.example.mygame.`object`.platform.BreakingPlatform
 import com.example.mygame.`object`.platform.DisappearingPlatform
 
@@ -91,7 +92,12 @@ class PlayerCollisionVisitor(
     }
 
     private fun checkCollisionWithEnemy(other: IGameObject) : Boolean {
-        return (player.top < other.bottom && player.bottom >= other.top
-                && (player.left < other.right && player.right > other.left))
+        return if (other !is Bully) {
+            (player.top < other.bottom && player.bottom >= other.top
+                    && (player.left < other.right && player.right > other.left))
+        } else {
+            (player.top < other.bottom && player.bottom >= other.top
+                    && (player.left < other.right - Bully.DEATH_OFFSET_X && player.right > other.left + Bully.DEATH_OFFSET_X))
+        }
     }
 }
