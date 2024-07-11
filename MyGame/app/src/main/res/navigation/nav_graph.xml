@@ -12,9 +12,6 @@
         <action
             android:id="@+id/navigateToSinglePlayerFragment"
             app:destination="@id/gameFragment" />
-        <action
-            android:id="@+id/action_startFragment_to_gameOverFragment22"
-            app:destination="@id/gameOverFragment2" />
     </fragment>
     <fragment
         android:id="@+id/gameFragment"
@@ -23,18 +20,22 @@
         tools:layout="@layout/fragment_game" >
         <action
             android:id="@+id/navigateToGameOverFragment"
-            app:destination="@id/gameOverFragment2" />
+            app:destination="@id/gameOverFragment" />
     </fragment>
     <fragment
-        android:id="@+id/gameOverFragment2"
+        android:id="@+id/gameOverFragment"
         android:name="com.example.mygame.fragment.GameOverFragment"
         android:label="fragment_game_over"
         tools:layout="@layout/fragment_game_over" >
         <action
             android:id="@+id/navigateToSinglePlayerFragment"
-            app:destination="@id/gameFragment" />
+            app:destination="@id/gameFragment"
+            app:popUpTo="@id/gameOverFragment"
+            app:popUpToInclusive="true"/>
         <action
             android:id="@+id/navigateToMenuFragment"
-            app:destination="@id/startFragment" />
+            app:destination="@id/startFragment"
+            app:popUpTo="@id/gameFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 </navigation>

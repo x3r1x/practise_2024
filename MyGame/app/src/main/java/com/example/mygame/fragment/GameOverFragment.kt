@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import com.example.mygame.R
@@ -38,6 +39,13 @@ class GameOverFragment : Fragment() {
         view.findViewById<TextView>(R.id.currentScore).text = score.toString()
 
         return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
+            Navigation.findNavController(view).navigate(R.id.navigateToMenuFragment)
+        }
     }
 
     companion object {
