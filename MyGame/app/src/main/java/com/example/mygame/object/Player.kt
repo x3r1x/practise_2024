@@ -146,7 +146,7 @@ class Player(private val idleImage: Bitmap,
     }
 
     companion object {
-        const val SPRING_JUMP_SPEED = 2200f
+        const val SPRING_JUMP_SPEED = 3700f
 
         private const val DISTANCE_TO_TURN = 1f
         private const val RADIUS = 75f

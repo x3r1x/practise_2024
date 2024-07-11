@@ -33,12 +33,10 @@ class BonusGenerator(resources: Resources) {
                 val jetpack = jetpackFactory.generateBonus(platform)
                 bonus = jetpack
             }
-
             random < 0.08f -> {
                 val shield = shieldFactory.generateBonus(platform)
                 bonus = shield
             }
-
             random < 0.25f -> {
                 val spring = springFactory.generateBonus(platform)
                 bonus = spring
