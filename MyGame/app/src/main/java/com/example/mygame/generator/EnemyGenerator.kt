@@ -30,17 +30,17 @@ class EnemyGenerator(
         val random = Random.nextFloat()
         val x = Random.nextFloat() * (screen.width - platform.width) + GAP_X
         when {
-            random < 0.1f-> {
-                val fly = flyFactory.generateEnemy(x, platform.y)
-                enemy = fly
+            random < 0.015f -> {
+                val ninja = ninjaFactory.generateEnemy(x, platform.y)
+                enemy = ninja
             }
-            random < 0.2f -> {
+            random < 0.02f -> {
                 val bully = bullyFactory.generateEnemy(x, platform.y)
                 enemy = bully
             }
-            random < 0.3f -> {
-                val ninja = ninjaFactory.generateEnemy(x, platform.y)
-                enemy = ninja
+            random < 0.03f-> {
+                val fly = flyFactory.generateEnemy(x, platform.y)
+                enemy = fly
             }
         }
 
