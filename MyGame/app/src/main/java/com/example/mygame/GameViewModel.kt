@@ -116,6 +116,10 @@ class GameViewModel(private val application: Application) : AndroidViewModel(app
         this.deltaY = deltaY
     }
 
+    fun onClick(touchX: Float, touchY: Float) {
+        objectsManager.createBullet(touchX, touchY)
+    }
+
     companion object {
         private const val MAX_FRAME_TIME = 0.016f
     }

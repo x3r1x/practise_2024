@@ -4,6 +4,7 @@ import com.example.mygame.`interface`.IGameObject
 import com.example.mygame.`object`.Player
 import com.example.mygame.`object`.Platform
 import com.example.mygame.`interface`.IVisitor
+import com.example.mygame.`object`.Bullet
 import com.example.mygame.`object`.Enemy
 import com.example.mygame.`object`.Player.DirectionX
 import com.example.mygame.`object`.Player.DirectionY
@@ -69,6 +70,9 @@ class PlayerCollisionVisitor(
                 player.jump()
             }
         }
+    }
+
+    override fun visit(bullet: Bullet) {
     }
 
     private fun doesPlayerCollideWithSolid(other: IGameObject) : Boolean {

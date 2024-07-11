@@ -1,6 +1,7 @@
 package com.example.mygame.visitor
 
 import com.example.mygame.`interface`.IVisitor
+import com.example.mygame.`object`.Bullet
 import com.example.mygame.`object`.Enemy
 import com.example.mygame.`object`.Platform
 import com.example.mygame.`object`.Player
@@ -36,6 +37,8 @@ class ScreenCollisionVisitor(private val screen: Screen) : IVisitor {
     override fun visit(shield: Shield) {}
     override fun visit(jetpack: Jetpack) {}
     override fun visit(enemy: Enemy) {}
+    override fun visit(bullet: Bullet) {
+    }
 
     private fun isCollidePlayerWithScreen(player: Player) : Boolean {
         return player.right < screen.left || player.left > screen.right

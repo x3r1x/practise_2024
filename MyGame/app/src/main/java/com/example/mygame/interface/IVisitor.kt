@@ -1,5 +1,6 @@
 package com.example.mygame.`interface`
 
+import com.example.mygame.`object`.Bullet
 import com.example.mygame.`object`.Score
 import com.example.mygame.`object`.Enemy
 import com.example.mygame.`object`.Player
@@ -16,5 +17,6 @@ interface IVisitor {
     fun visit(shield: Shield)
     fun visit(jetpack: Jetpack)
     fun visit(enemy: Enemy)
+    fun visit(bullet: Bullet)
     //with enemy, with bonus, with player
 }
