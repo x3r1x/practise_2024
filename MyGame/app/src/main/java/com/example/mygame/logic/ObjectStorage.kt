@@ -15,6 +15,7 @@ class ObjectStorage(
 ) {
     // TODO: враги, бонусы
 
+    private val platforms = mutableListOf<Platform>()
     private val bonuses = mutableListOf<IBonus>()
     private val enemies = mutableListOf<Enemy>()
     private var player = PlayerFactory(resources).generatePlayer()
