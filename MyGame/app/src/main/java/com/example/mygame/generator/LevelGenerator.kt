@@ -27,10 +27,6 @@ class LevelGenerator(
     fun generateNewPack(from: Float): MutableList<IGameObject> {
         var newY = from
 
-        val platforms = mutableListOf<Platform>()
-        val enemies = mutableListOf<Enemy>()
-        val bonuses = mutableListOf<IBonus>()
-
         val level = mutableListOf<IGameObject>()
 
         while (abs(newY) < abs(newPackageHeight + from)) {
@@ -43,8 +39,8 @@ class LevelGenerator(
             }
 
             enemyGenerator.generateEnemy(platform)?.let {
-                enemy -> pack.add(enemy); pack.remove(platform) }
-
+                enemy -> pack.add(enemy); pack.remove(platform)
+            }
 
             newY = pack.last().top
 
