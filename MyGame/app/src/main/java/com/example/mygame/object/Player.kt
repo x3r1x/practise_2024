@@ -4,6 +4,7 @@ import android.graphics.RectF
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Matrix
+import android.graphics.Rect
 import com.example.mygame.Physics
 import com.example.mygame.`interface`.IVisitor
 import com.example.mygame.`interface`.IDrawable
@@ -67,11 +68,9 @@ class Player(private val idleImage: Bitmap,
     }
 
     private fun changeDirectionX(newX: Float) {
-        if (newX < -DISTANCE_TO_TURN)
-        {
+        if (newX < -DISTANCE_TO_TURN) {
             directionX = DirectionX.LEFT
-        } else if (newX > DISTANCE_TO_TURN)
-        {
+        } else if (newX > DISTANCE_TO_TURN) {
             directionX = DirectionX.RIGHT
         }
     }

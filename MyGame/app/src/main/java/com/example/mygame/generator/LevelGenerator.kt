@@ -30,16 +30,23 @@ class LevelGenerator(
         val level = mutableListOf<IGameObject>()
 
         while (abs(newY) < abs(newPackageHeight + from)) {
+            var bonusSpawned = false
             val pack = mutableListOf<IGameObject>()
             val platform = platformGenerator.generatePlatform(newY)
             pack.add(platform)
 
             (bonusGenerator.generateBonus(platform) as IGameObject?)?.let {
                 bonus -> pack.add(bonus)
+                bonusSpawned = true
             }
 
             enemyGenerator.generateEnemy(platform)?.let {
-                enemy -> pack.add(enemy); pack.remove(platform)
+                enemy ->
+                if (!bonusSpawned) {
+                    pack.add(enemy)
+                    pack.remove(platform)
+                    pack.add(platformGenerator.generatePlatform(newY))
+                }
             }
 
             newY = pack.last().top

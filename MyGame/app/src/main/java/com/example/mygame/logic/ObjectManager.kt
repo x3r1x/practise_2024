@@ -3,6 +3,7 @@ package com.example.mygame.logic
 import android.content.res.Resources
 import com.example.mygame.generator.LevelGenerator
 import com.example.mygame.`interface`.IGameObject
+import com.example.mygame.factory.BulletFactory
 import com.example.mygame.`object`.Player
 import com.example.mygame.`object`.Score
 import com.example.mygame.`object`.Screen
@@ -14,7 +15,7 @@ class ObjectsManager(
 ) {
     val objectStorage = ObjectStorage(resources, screen)
 
-    val score = Score()
+    private val bulletFactory = BulletFactory(resources)
 
     private var tempScore = 0.0
 
@@ -42,6 +43,18 @@ class ObjectsManager(
 
     fun getObjects() : List<IGameObject> {
         return objectStorage.getAll()
+    }
+
+    fun createBullet(touchX: Float, touchY: Float): Bullet? {
+        val player = objectStorage.getPlayer()
+        if (!player.isDead) {
+            val bullet = bulletFactory.generateBullet(player.x, player.y)
+            bullet.shoot()
+            objectStorage.addBullet(bullet)
+            return bullet
+        }
+
+        return null
     }
 
     private fun generateObjects() {

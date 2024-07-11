@@ -32,4 +32,5 @@ class GameView(context: Context, attributeSet: AttributeSet?): View(context, att
             it.draw(canvas)
         }
     }
+
 }

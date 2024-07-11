@@ -4,6 +4,7 @@ import com.example.mygame.`interface`.IGameObject
 import com.example.mygame.`object`.Player
 import com.example.mygame.`object`.Platform
 import com.example.mygame.`interface`.IVisitor
+import com.example.mygame.`object`.Bullet
 import com.example.mygame.`object`.Enemy
 import com.example.mygame.`object`.Player.DirectionX
 import com.example.mygame.`object`.Player.DirectionY
@@ -11,6 +12,7 @@ import com.example.mygame.`object`.bonuses.Jetpack
 import com.example.mygame.`object`.bonuses.Shield
 import com.example.mygame.`object`.bonuses.Spring
 import com.example.mygame.`object`.Score
+import com.example.mygame.`object`.enemies.Bully
 import com.example.mygame.`object`.platform.BreakingPlatform
 import com.example.mygame.`object`.platform.DisappearingPlatform
 
@@ -71,6 +73,9 @@ class PlayerCollisionVisitor(
         }
     }
 
+    override fun visit(bullet: Bullet) {
+    }
+
     private fun doesPlayerCollideWithSolid(other: IGameObject) : Boolean {
         return if (player.directionX == DirectionX.RIGHT) {
             (player.bottom < other.bottom && player.bottom >= other.top && player.directionY == DirectionY.DOWN
@@ -87,7 +92,12 @@ class PlayerCollisionVisitor(
     }
 
     private fun checkCollisionWithEnemy(other: IGameObject) : Boolean {
-        return (player.top < other.bottom && player.bottom >= other.top
-                && (player.left < other.right && player.right > other.left))
+        return if (other !is Bully) {
+            (player.top < other.bottom && player.bottom >= other.top
+                    && (player.left < other.right && player.right > other.left))
+        } else {
+            (player.top < other.bottom && player.bottom >= other.top
+                    && (player.left < other.right - Bully.DEATH_OFFSET_X && player.right > other.left + Bully.DEATH_OFFSET_X))
+        }
     }
 }
