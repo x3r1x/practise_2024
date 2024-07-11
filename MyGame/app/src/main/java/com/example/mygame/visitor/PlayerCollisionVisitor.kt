@@ -83,22 +83,12 @@ class PlayerCollisionVisitor(
     }
 
     private fun doesPlayerCollideWithCollectable(other: IGameObject) : Boolean {
-        return if (player.directionX == DirectionX.RIGHT) {
-            (player.bottom < other.bottom && player.bottom >= other.top
+        return (player.top < other.bottom && player.bottom >= other.top
                     && (player.left < other.right && player.right > other.left))
-        } else {
-            (player.bottom < other.bottom && player.bottom >= other.top
-                    && (player.left < other.right && player.right > other.left))
-        }
     }
 
     private fun checkCollisionWithEnemy(other: IGameObject) : Boolean {
-        return if (player.directionX == DirectionX.RIGHT) {
-                (player.bottom < other.bottom && player.bottom >= other.top
-                        && (player.left < other.right && player.right > other.left))
-            } else {
-                (player.bottom < other.bottom && player.bottom >= other.top
-                        && (player.left < other.right && player.right > other.left))
-            }
+        return (player.top < other.bottom && player.bottom >= other.top
+                && (player.left < other.right && player.right > other.left))
     }
 }
