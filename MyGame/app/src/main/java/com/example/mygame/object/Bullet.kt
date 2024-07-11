@@ -50,20 +50,28 @@ class Bullet(
         visitor.visit(this)
     }
 
+    private val paint = Paint().apply {
+        color = Color.RED
+    }
+
     override fun draw(canvas: Canvas) {
         val matrix = Matrix()
+
         val destRect = RectF(left, top, right, bottom)
+
         val scaleX = destRect.width() / image.width
         val scaleY = destRect.height() / image.height
 
         matrix.postScale(scaleX, scaleY)
-        matrix.postTranslate(right, top)
+        matrix.postTranslate(left, top)
+
+//        canvas.drawRect(destRect, paint)
         canvas.drawBitmap(image, matrix, null)
     }
 
     companion object {
         private const val WIDTH = 40f
         private const val HEIGHT = 100f
-        private const val DEFAULT_ACCELERATION = 1000f // Ускорение по умолчанию
+        private const val DEFAULT_ACCELERATION = 1500f // Ускорение по умолчанию
     }
 }

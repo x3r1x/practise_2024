@@ -28,17 +28,17 @@ class EnemyGenerator(
     fun generateEnemy(platform: Platform): IGameObject? {
         var enemy: Enemy? = null
         val random = Random.nextFloat()
-        val x = Random.nextFloat() * (screen.width - platform.width) + 100f
+        val x = Random.nextFloat() * (screen.width - platform.width) + 361f
         when {
-            random < 0.01f-> {
+            random < 0.1f-> {
                 val fly = flyFactory.generateEnemy(x, platform.y)
                 enemy = fly
             }
-            random < 0.02f -> {
+            random < 0.2f -> {
                 val bully = bullyFactory.generateEnemy(x, platform.y)
                 enemy = bully
             }
-            random < 0.03f -> {
+            random < 0.3f -> {
                 val ninja = ninjaFactory.generateEnemy(x, platform.y)
                 enemy = ninja
             }

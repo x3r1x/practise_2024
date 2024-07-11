@@ -48,12 +48,16 @@ class ObjectsManager(
         return objectStorage.getAll()
     }
 
-    fun createBullet(touchX: Float, touchY: Float): Bullet {
+    fun createBullet(touchX: Float, touchY: Float): Bullet? {
         val player = objectStorage.getPlayer()
-        val bullet = bulletFactory.generateBullet(player.x, player.y)
-        bullet.shoot()
-        objectStorage.addBullet(bullet)
-        return bullet
+        if (!player.isDead) {
+            val bullet = bulletFactory.generateBullet(player.x, player.y)
+            bullet.shoot()
+            objectStorage.addBullet(bullet)
+            return bullet
+        }
+
+        return null
     }
 
     private fun generateObjects() {
