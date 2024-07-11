@@ -125,6 +125,6 @@ class Jetpack(private val initDefaultJetpack: Bitmap,
         private const val DEFAULT_TRANSPARENCY = 256
         private const val PULSE_TRANSPARENCY = 128
 
-        private const val PLAYER_SPEED_WITH_JETPACK = 800f
+        private const val PLAYER_SPEED_WITH_JETPACK = 1900f
     }
 }
