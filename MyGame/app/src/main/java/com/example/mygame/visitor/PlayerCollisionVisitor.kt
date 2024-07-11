@@ -32,7 +32,6 @@ class PlayerCollisionVisitor(
         }
     }
 
-    //player cannot interact with player
     override fun visit(player: Player) {
     }
 
