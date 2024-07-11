@@ -65,8 +65,7 @@ class Jetpack(private val initDefaultJetpack: Bitmap,
 
     private fun dispose() {
         player?.isWithJetpack = false
-        player?.directionY = Player.DirectionY.DOWN
-        player?.speedY = 0f
+        player?.jump()
         isDisappeared = true
     }
 
