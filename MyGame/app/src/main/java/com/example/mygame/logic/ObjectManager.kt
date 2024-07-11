@@ -16,7 +16,7 @@ class ObjectsManager(
 
     val score = Score()
 
-    var tempScore = 0.0
+    private var tempScore = 0.0
 
     private val scoreThreshold = 4500.0
 

@@ -56,7 +56,7 @@ class GameViewModel(private val application: Application) : AndroidViewModel(app
 
         uiScope.launch {
             while (isGameLoopRunning) {
-                _scoreObservable.value = returnScore()
+                _scoreObservable.value = getScore()
                 val systemTime = System.currentTimeMillis()
 
                 elapsedTime = (systemTime - startTime) / 1000f
@@ -94,7 +94,7 @@ class GameViewModel(private val application: Application) : AndroidViewModel(app
         return objectsManager.objectStorage.getPlayer().top > screen.height
     }
 
-    fun returnScore(): Int {
+    fun getScore(): Int {
         return objectsManager.score.getScore()
     }
 

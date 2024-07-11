@@ -88,7 +88,7 @@ class GameFragment : Fragment() {
 
             if (gameViewModel.isGameLost()) {
                 val bundle = Bundle()
-                bundle.putInt(GameOverFragment.SCORE_ARG, gameViewModel.returnScore())
+                bundle.putInt(GameOverFragment.SCORE_ARG, gameViewModel.getScore())
                 Navigation.findNavController(view).navigate(R.id.navigateFromSinglePlayerFragmentToGameOverFragment, bundle)
             }
         }
