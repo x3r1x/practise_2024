@@ -72,6 +72,6 @@ class Bullet(
     companion object {
         private const val WIDTH = 40f
         private const val HEIGHT = 100f
-        private const val DEFAULT_ACCELERATION = 1500f // Ускорение по умолчанию
+        private const val DEFAULT_ACCELERATION = 2200f // Ускорение по умолчанию
     }
 }
