@@ -29,11 +29,11 @@ class GameOverFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_game_over, container, false)
 
         view.findViewById<Button>(R.id.playAgainButton).setOnClickListener {
-            Navigation.findNavController(view).navigate(R.id.navigateToSinglePlayerFragment)
+            Navigation.findNavController(view).navigate(R.id.navigateFromGameOverFragmentToSinglePlayerFragment)
         }
 
         view.findViewById<Button>(R.id.goToMenuButton).setOnClickListener {
-            Navigation.findNavController(view).navigate(R.id.navigateToMenuFragment)
+            Navigation.findNavController(view).navigate(R.id.navigateFromGameOverFragmentToMenuFragment)
         }
 
         view.findViewById<TextView>(R.id.currentScore).text = score.toString()
@@ -44,7 +44,7 @@ class GameOverFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         requireActivity().onBackPressedDispatcher.addCallback(this) {
-            Navigation.findNavController(view).navigate(R.id.navigateToMenuFragment)
+            Navigation.findNavController(view).navigate(R.id.navigateFromGameOverFragmentToMenuFragment)
         }
     }
 

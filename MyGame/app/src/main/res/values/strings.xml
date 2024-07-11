@@ -8,6 +8,9 @@
     <string name="current_score">Your score:</string>
     <string name="best_score">Your best score:</string>
     <string name="play_again">Play again</string>
+    <string name="exit_to_menu">Exit to menu</string>
+    <string name="resume">Resume</string>
+    <string name="pause">Pause</string>
     <string name="menu">Menu</string>
     <string name="enter_nickname">Enter nickname:</string>
     <string name="nickname">Nickname</string>

@@ -46,8 +46,7 @@ class GameViewModel(private val application: Application) : AndroidViewModel(app
         objectsManager.initObjects()
     }
 
-    fun startGameLoop() {
-        isGameLoopRunning = true
+    fun gameLoop() {
         var elapsedTime: Float
 
         var startTime = System.currentTimeMillis()
@@ -68,6 +67,11 @@ class GameViewModel(private val application: Application) : AndroidViewModel(app
                 updateGame(elapsedTime)
             }
         }
+    }
+
+    fun startGameLoop() {
+        isGameLoopRunning = true
+        gameLoop()
     }
 
     fun stopGameLoop() {
