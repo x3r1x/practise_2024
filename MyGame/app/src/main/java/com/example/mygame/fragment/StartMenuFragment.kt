@@ -17,8 +17,8 @@ class StartMenuFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_start_menu, container, false)
 
-        view.findViewById<Button>(R.id.singleplayerButton).setOnClickListener {
-            Navigation.findNavController(view).navigate(R.id.navigateToSinglePlayerFragment)
+        view.findViewById<Button>(R.id.singlePlayerButton).setOnClickListener {
+            Navigation.findNavController(view).navigate(R.id.navigateFromStartFragmentToSinglePlayerFragment)
         }
 
         return view

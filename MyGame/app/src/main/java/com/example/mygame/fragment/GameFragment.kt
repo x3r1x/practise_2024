@@ -4,10 +4,15 @@ import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.INVISIBLE
+import android.view.View.VISIBLE
 import com.example.mygame.R
 import android.view.ViewGroup
 import android.view.WindowMetrics
+import android.widget.Button
+import android.widget.ImageButton
 import androidx.annotation.RequiresApi
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.fragment.app.viewModels
@@ -20,20 +25,52 @@ class GameFragment : Fragment() {
 
     private lateinit var gameView: GameView
 
+    private fun setupPauseButtonClickListener(
+        pauseButton: ImageButton,
+        pauseGroup: ConstraintLayout,
+        exitToMenuButton: Button
+    ) {
+        pauseButton.setOnClickListener {
+            gameViewModel.stopGameLoop()
+            pauseGroup.visibility = VISIBLE
+
+            val resumeButton = pauseGroup.findViewById<Button>(R.id.resumeButton)
+            resumeButton.setOnClickListener {
+                pauseGroup.visibility = INVISIBLE
+                gameViewModel.startGameLoop()
+            }
+
+            exitToMenuButton.setOnClickListener {
+                Navigation.findNavController(pauseGroup).navigate(R.id.navigateFromSinglePlayerFragmentToStartFragment)
+            }
+        }
+    }
+
     @RequiresApi(Build.VERSION_CODES.R)
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         // Получаем размеры экрана
         val windowMetrics: WindowMetrics = requireActivity().windowManager.currentWindowMetrics
         val bounds = windowMetrics.bounds
         val screenWidth = bounds.width().toFloat()
         val screenHeight = bounds.height().toFloat()
 
-        // Инициализация GameViewModel
         gameViewModel.initialize(screenWidth, screenHeight)
 
-        // Инициализация gameView и установка контента
-        gameView = GameView(requireContext(), null)
-        return gameView
+        val view = inflater.inflate(R.layout.fragment_game, container, false)
+
+        gameView = view.findViewById(R.id.gameView)
+
+        val pauseButton = view.findViewById<ImageButton>(R.id.pauseButton)
+        val pauseGroup = view.findViewById<ConstraintLayout>(R.id.pauseGroup)
+        val exitToMenuButton = view.findViewById<Button>(R.id.exitToMenuButton)
+
+        setupPauseButtonClickListener(pauseButton, pauseGroup, exitToMenuButton)
+
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -46,7 +83,7 @@ class GameFragment : Fragment() {
             if (gameViewModel.isGameLost()) {
                 val bundle = Bundle()
                 bundle.putInt(GameOverFragment.SCORE_ARG, gameViewModel.returnScore())
-                Navigation.findNavController(view).navigate(R.id.navigateToGameOverFragment, bundle)
+                Navigation.findNavController(view).navigate(R.id.navigateFromSinglePlayerFragmentToGameOverFragment, bundle)
             }
         }
 
