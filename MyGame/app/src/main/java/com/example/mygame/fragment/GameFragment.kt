@@ -4,16 +4,16 @@ import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import com.example.mygame.R
 import android.view.ViewGroup
 import android.view.WindowMetrics
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
+import androidx.fragment.app.viewModels
 import com.example.mygame.GameViewModel
-import com.example.mygame.R
-import com.example.mygame.`interface`.IDrawable
 import com.example.mygame.view.GameView
+import com.example.mygame.`interface`.IDrawable
 
 class GameFragment : Fragment() {
     private val gameViewModel: GameViewModel by viewModels()
