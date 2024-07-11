@@ -45,6 +45,7 @@ class Player(private val idleImage: Bitmap, private val jumpImage: Bitmap) : IDr
     var speedY = 0f
 
     override var isDisappeared = false
+    var isDead = false
 
     fun jump(jumpSpeed: Float = JUMP_SPEED) {
         directionY = DirectionY.UP
