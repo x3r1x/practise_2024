@@ -150,7 +150,7 @@ class Player(private val idleImage: Bitmap,
 
         private const val DISTANCE_TO_TURN = 1f
         private const val RADIUS = 75f
-        private const val JUMP_SPEED = 1850f
+        private const val JUMP_SPEED = 1600f
 
         private const val DEAD_WIDTH = 120f
         private const val DEAD_HEIGHT = 190f
