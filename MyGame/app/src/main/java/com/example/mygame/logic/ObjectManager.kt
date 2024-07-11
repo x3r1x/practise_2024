@@ -4,6 +4,7 @@ import android.content.res.Resources
 import com.example.mygame.generator.LevelGenerator
 import com.example.mygame.`interface`.IGameObject
 import com.example.mygame.factory.BulletFactory
+import com.example.mygame.`object`.Bullet
 import com.example.mygame.`object`.Player
 import com.example.mygame.`object`.Score
 import com.example.mygame.`object`.Screen
@@ -16,6 +17,8 @@ class ObjectsManager(
     val objectStorage = ObjectStorage(resources, screen)
 
     private val bulletFactory = BulletFactory(resources)
+
+    val score = Score()
 
     private var tempScore = 0.0
 
