@@ -48,6 +48,4 @@ class BonusGenerator(resources: Resources) {
         // TODO: Сделать шанс генерации на основе score
         return factories[Random.nextInt(factories.size)]
     }
-
-
 }

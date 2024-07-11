@@ -8,6 +8,7 @@ import com.example.mygame.`object`.Platform
 import com.example.mygame.`interface`.IBonus
 import com.example.mygame.factory.PlayerFactory
 import com.example.mygame.`interface`.IGameObject
+import com.example.mygame.`object`.Enemy
 
 class ObjectStorage(
     resources: Resources,
@@ -19,6 +20,7 @@ class ObjectStorage(
 
     private val platforms = mutableListOf<Platform>()
     private val bonuses = mutableListOf<IBonus>()
+    private val enemies = mutableListOf<Enemy>()
     private var player = PlayerFactory(resources).generatePlayer()
     private val objects = mutableListOf<IGameObject>()
 
@@ -35,9 +37,10 @@ class ObjectStorage(
 
         objects.addAll(platforms)
         objects.addAll(bonuses as MutableList<IGameObject>)
-        // TODO: добавлять бонусы, врагов
+        objects.addAll(enemies)
         objects.add(player)
         objects.add(score)
+        // TODO: добавлять бонусы, врагов
 
         return objects
     }
@@ -52,6 +55,10 @@ class ObjectStorage(
 
         bonuses.clear()
         bonuses.addAll(list.filterIsInstance<IBonus>())
+
+        enemies.clear()
+        enemies.addAll(list.filterIsInstance<Enemy>())
+
         // TODO: очистка бонусов и врагов и их добавление
     }
 
@@ -60,6 +67,7 @@ class ObjectStorage(
 
         platforms.addAll(collection.filterIsInstance<Platform>())
         bonuses.addAll(collection.filterIsInstance<IBonus>())
+        enemies.addAll(collection.filterIsInstance<Enemy>())
         // TODO: добавлять бонусы в бонусы, врагов во врагов
     }
 }

@@ -10,6 +10,7 @@ class LevelGenerator(
     screen: Screen
 ) {
     private val platformGenerator = PlatformGenerator(resources, screen)
+    private val enemyGenerator = EnemyGenerator(resources, screen)
     private val bonusGenerator = BonusGenerator(resources)
 
     fun generateInitialPack(): MutableList<IGameObject> {
@@ -19,12 +20,14 @@ class LevelGenerator(
     fun generateNewPack(from: Float): MutableList<IGameObject> {
         val platforms = platformGenerator.generatePlatforms(from)
 
+        val enemies = enemyGenerator.generateEnemies(platforms)
+
         val staticPlatforms = platforms.filter {
             it::class == StaticPlatform::class
         }
 
         val bonuses = bonusGenerator.generateBonuses(staticPlatforms)
 
-        return (platforms + bonuses) as MutableList<IGameObject>
+        return (platforms + bonuses + enemies) as MutableList<IGameObject>
     }
 }
