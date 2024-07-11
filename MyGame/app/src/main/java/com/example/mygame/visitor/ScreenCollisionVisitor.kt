@@ -53,10 +53,6 @@ class ScreenCollisionVisitor(private val screen: Screen) : IVisitor {
     }
 
     private fun isOutPlatformBelowBottomOfScreen(platform: Platform) : Boolean {
-        return platform.top > screen.bottom + SIZE_OF_ALLOWED_ZONE_FOR_OBJECTS
-    }
-
-    companion object {
-        private const val SIZE_OF_ALLOWED_ZONE_FOR_OBJECTS = 200f
+        return platform.top > screen.bottom
     }
 }
