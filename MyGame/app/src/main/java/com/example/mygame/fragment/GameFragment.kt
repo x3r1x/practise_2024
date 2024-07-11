@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.view.WindowMetrics
 import android.widget.Button
 import android.widget.ImageButton
+import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
@@ -67,6 +68,11 @@ class GameFragment : Fragment() {
         val pauseButton = view.findViewById<ImageButton>(R.id.pauseButton)
         val pauseGroup = view.findViewById<ConstraintLayout>(R.id.pauseGroup)
         val exitToMenuButton = view.findViewById<Button>(R.id.exitToMenuButton)
+        val scoreView = view.findViewById<TextView>(R.id.scoreView)
+
+        gameViewModel.scoreObservable.observe(viewLifecycleOwner) { newScore ->
+            scoreView.text = newScore.toString()
+        }
 
         setupPauseButtonClickListener(pauseButton, pauseGroup, exitToMenuButton)
 

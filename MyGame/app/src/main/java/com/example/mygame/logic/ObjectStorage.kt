@@ -6,7 +6,6 @@ import com.example.mygame.`interface`.IBonus
 import com.example.mygame.`interface`.IGameObject
 import com.example.mygame.`object`.Platform
 import com.example.mygame.`object`.Player
-import com.example.mygame.`object`.Score
 import com.example.mygame.`object`.Screen
 
 class ObjectStorage(
@@ -14,8 +13,6 @@ class ObjectStorage(
     screen: Screen
 ) {
     // TODO: враги, бонусы
-
-    val score = Score()
 
     private val bonuses = mutableListOf<IBonus>()
     private val platforms = mutableListOf<Platform>()
@@ -38,7 +35,6 @@ class ObjectStorage(
         objects.addAll(bonuses as MutableList<IGameObject>)
         // TODO: добавлять бонусы, врагов
         objects.add(player)
-        objects.add(score)
 
         return objects
     }
