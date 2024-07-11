@@ -28,7 +28,6 @@ class GameViewModel(private val application: Application) : AndroidViewModel(app
     private var viewModelJob = Job()
 
     private var deltaX = 0f
-    private var deltaY = 0f
 
     private val _gameObjects = MutableLiveData<List<IGameObject>>()
 
@@ -119,9 +118,8 @@ class GameViewModel(private val application: Application) : AndroidViewModel(app
         sensorHandler.unregister()
     }
 
-    override fun onSensorDataChanged(deltaX: Float, deltaY: Float) {
+    override fun onSensorDataChanged(deltaX: Float) {
         this.deltaX = deltaX
-        this.deltaY = deltaY
     }
 
     companion object {

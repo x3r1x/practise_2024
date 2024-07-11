@@ -9,7 +9,7 @@ import android.hardware.SensorEventListener
 class SensorHandler(context: Context, private val callback: SensorCallback) : SensorEventListener {
 
     interface SensorCallback {
-        fun onSensorDataChanged(deltaX: Float, deltaY: Float)
+        fun onSensorDataChanged(deltaX: Float)
     }
 
     private val sensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
@@ -34,8 +34,7 @@ class SensorHandler(context: Context, private val callback: SensorCallback) : Se
         event?.let {
             if (it.sensor.type == Sensor.TYPE_ACCELEROMETER) {
                 val deltaX = -it.values[0] * MULTIPLIER
-                val deltaY = it.values[1] * MULTIPLIER
-                callback.onSensorDataChanged(deltaX, deltaY)
+                callback.onSensorDataChanged(deltaX)
             }
         }
     }
