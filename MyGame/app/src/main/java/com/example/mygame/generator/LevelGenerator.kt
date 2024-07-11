@@ -1,9 +1,14 @@
 package com.example.mygame.generator
 
 import android.content.res.Resources
+import com.example.mygame.`interface`.IBonus
 import com.example.mygame.`object`.Screen
 import com.example.mygame.`interface`.IGameObject
+import com.example.mygame.`object`.Enemy
+import com.example.mygame.`object`.Platform
 import com.example.mygame.`object`.platform.StaticPlatform
+import kotlin.math.abs
+import kotlin.random.Random
 
 class LevelGenerator(
     resources: Resources,
@@ -13,21 +18,35 @@ class LevelGenerator(
     private val enemyGenerator = EnemyGenerator(resources, screen)
     private val bonusGenerator = BonusGenerator(resources)
 
+    private val newPackageHeight = 4500f
+
     fun generateInitialPack(): MutableList<IGameObject> {
         return platformGenerator.generateInitialPlatforms().toMutableList()
     }
 
     fun generateNewPack(from: Float): MutableList<IGameObject> {
-        val platforms = platformGenerator.generatePlatforms(from)
+        var newY = from
 
-        val enemies = enemyGenerator.generateEnemies(platforms)
+        val platforms = mutableListOf<Platform>()
+        val enemies = mutableListOf<Enemy>()
+        val bonuses = mutableListOf<IBonus>()
 
-        val staticPlatforms = platforms.filter {
-            it::class == StaticPlatform::class
+        val level = mutableListOf<IGameObject>()
+
+        while (abs(newY) < abs(newPackageHeight + from)) {
+            val pack = mutableListOf<IGameObject>()
+            val platform = platformGenerator.generatePlatform(newY)
+            pack.add(platform)
+
+            (bonusGenerator.generateBonus(platform) as IGameObject?)?.let { pack.add(it) }
+
+            enemyGenerator.generateEnemy(platform)?.let { pack.add(it) }
+
+            newY = pack.last().top
+
+            level.addAll(pack)
         }
 
-        val bonuses = bonusGenerator.generateBonuses(staticPlatforms)
-
-        return (platforms + bonuses + enemies) as MutableList<IGameObject>
+        return level
     }
 }
