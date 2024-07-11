@@ -1,18 +1,20 @@
 package com.example.mygame.logic
 
-import kotlin.math.abs
-import android.util.Log
 import android.content.res.Resources
-import com.example.mygame.`object`.Player
-import com.example.mygame.`object`.Screen
-import com.example.mygame.`interface`.IGameObject
 import com.example.mygame.generator.LevelGenerator
+import com.example.mygame.`interface`.IGameObject
+import com.example.mygame.`object`.Player
+import com.example.mygame.`object`.Score
+import com.example.mygame.`object`.Screen
+import kotlin.math.abs
 
 class ObjectsManager(
     val resources: Resources,
     private val screen: Screen
 ) {
     val objectStorage = ObjectStorage(resources, screen)
+
+    val score = Score()
 
     private var tempScore = 0.0
 
@@ -28,7 +30,7 @@ class ObjectsManager(
     fun updateObjects(delta: Float) {
         objectStorage.setObjects(removeObjectsOutOfBounds())
 
-        objectStorage.score.increase(delta)
+        score.increase(delta)
 
         tempScore += abs(delta)
 
@@ -36,8 +38,6 @@ class ObjectsManager(
             generateObjects()
             tempScore = 0.0
         }
-
-        Log.i("objects size", "${objectStorage.getAll().size}")
     }
 
     fun getObjects() : List<IGameObject> {

@@ -20,6 +20,9 @@ import kotlinx.coroutines.launch
 class GameViewModel(private val application: Application) : AndroidViewModel(application), SensorHandler.SensorCallback {
     val gameObjects: LiveData<List<IGameObject>> get() = _gameObjects
 
+    private val _scoreObservable = MutableLiveData<Int>()
+    val scoreObservable: LiveData<Int> = _scoreObservable
+
     private var isGameLoopRunning = false
 
     private var viewModelJob = Job()
@@ -53,6 +56,7 @@ class GameViewModel(private val application: Application) : AndroidViewModel(app
 
         uiScope.launch {
             while (isGameLoopRunning) {
+                _scoreObservable.value = getScore()
                 val systemTime = System.currentTimeMillis()
 
                 elapsedTime = (systemTime - startTime) / 1000f
@@ -90,8 +94,8 @@ class GameViewModel(private val application: Application) : AndroidViewModel(app
         return objectsManager.objectStorage.getPlayer().top > screen.height
     }
 
-    fun returnScore(): Int {
-        return objectsManager.objectStorage.score.getScore()
+    fun getScore(): Int {
+        return objectsManager.score.getScore()
     }
 
     private fun updateGame(elapsedTime: Float) {

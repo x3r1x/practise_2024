@@ -1,14 +1,13 @@
 package com.example.mygame.logic
 
 import android.content.res.Resources
-import com.example.mygame.`object`.Score
+import com.example.mygame.`object`.Enemy
 import com.example.mygame.`object`.Screen
 import com.example.mygame.`object`.Player
 import com.example.mygame.`object`.Platform
 import com.example.mygame.`interface`.IBonus
 import com.example.mygame.factory.PlayerFactory
 import com.example.mygame.`interface`.IGameObject
-import com.example.mygame.`object`.Enemy
 
 class ObjectStorage(
     resources: Resources,
@@ -16,9 +15,6 @@ class ObjectStorage(
 ) {
     // TODO: враги, бонусы
 
-    val score = Score()
-
-    private val platforms = mutableListOf<Platform>()
     private val bonuses = mutableListOf<IBonus>()
     private val enemies = mutableListOf<Enemy>()
     private var player = PlayerFactory(resources).generatePlayer()
@@ -39,8 +35,6 @@ class ObjectStorage(
         objects.addAll(bonuses as MutableList<IGameObject>)
         objects.addAll(enemies)
         objects.add(player)
-        objects.add(score)
-        // TODO: добавлять бонусы, врагов
 
         return objects
     }
