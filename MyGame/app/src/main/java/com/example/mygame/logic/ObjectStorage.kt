@@ -1,6 +1,7 @@
 package com.example.mygame.logic
 
 import android.content.res.Resources
+import android.util.Log
 import com.example.mygame.`object`.Score
 import com.example.mygame.`object`.Screen
 import com.example.mygame.`object`.Player
@@ -36,6 +37,7 @@ class ObjectStorage(
 
     fun addBullet(bullet: Bullet) {
         bullets.add(bullet)
+        Log.i("", "bullets: ${bullets.size}")
     }
 
     fun getAll() : MutableList<IGameObject> {

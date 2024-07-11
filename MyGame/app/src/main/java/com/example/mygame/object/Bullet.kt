@@ -2,19 +2,19 @@ package com.example.mygame.`object`
 
 import android.graphics.Bitmap
 import android.graphics.Canvas
-import android.graphics.Matrix
+import android.graphics.Paint
+import android.graphics.Color
 import com.example.mygame.`interface`.IDrawable
 import com.example.mygame.`interface`.IMoveable
 import com.example.mygame.`interface`.IGameObject
 import com.example.mygame.`interface`.IVisitor
-import kotlin.math.atan2
-import kotlin.math.cos
-import kotlin.math.sin
 
-class Bullet(private val image: Bitmap) : IMoveable, IDrawable, IGameObject {
+class Bullet(
+    private val image: Bitmap,
+    override var x: Float,
+    override var y: Float
+) : IMoveable, IDrawable, IGameObject {
 
-    override var x = 0f
-    override var y = 0f
     override var isDisappeared = false
 
     override val left: Float
@@ -26,21 +26,10 @@ class Bullet(private val image: Bitmap) : IMoveable, IDrawable, IGameObject {
     override val bottom: Float
         get() = y + HEIGHT / 2
 
-    private var velocityX = 0f
-    private var velocityY = 0f
+    private var speedY = 0f
 
-    fun shoot(startX: Float, startY: Float, targetX: Float, targetY: Float) {
-        setPosition(startX, startY)
-
-        val angle = calculateAngle(startX, startY, targetX, targetY)
-        velocityX = (SPEED * cos(angle)).toFloat()
-        velocityY = (SPEED * sin(angle)).toFloat()
-    }
-
-    private fun calculateAngle(startX: Float, startY: Float, targetX: Float, targetY: Float): Double {
-        val deltaX = targetX - startX
-        val deltaY = targetY - startY
-        return atan2(deltaY.toDouble(), deltaX.toDouble())
+    fun shoot() {
+        speedY = DEFAULT_ACCELERATION
     }
 
     override fun setPosition(startX: Float, startY: Float) {
@@ -48,12 +37,11 @@ class Bullet(private val image: Bitmap) : IMoveable, IDrawable, IGameObject {
         y = startY
     }
 
-    override fun updatePositionX(elapsedTime: Float) {
-        x += velocityX * elapsedTime
+    override fun updatePositionX(newX: Float) {
     }
 
     override fun updatePositionY(elapsedTime: Float) {
-        y += velocityY * elapsedTime
+        y -= speedY * elapsedTime
     }
 
     override fun accept(visitor: IVisitor) {
@@ -61,14 +49,18 @@ class Bullet(private val image: Bitmap) : IMoveable, IDrawable, IGameObject {
     }
 
     override fun draw(canvas: Canvas) {
-        val matrix = Matrix()
-        matrix.postTranslate(left, top)
-        canvas.drawBitmap(image, matrix, null)
+        //val matrix = Matrix()
+        //matrix.postTranslate(left, top)
+        val paint = Paint().apply {
+            color = Color.RED
+        }
+        canvas.drawRect(left, top, right, bottom, paint)
+        //canvas.drawBitmap(image, matrix, null)
     }
 
     companion object {
         private const val WIDTH = 20f
         private const val HEIGHT = 20f
-        private const val SPEED = 500f // Скорость пули в пикселях в секунду
+        private const val DEFAULT_ACCELERATION = -110f // Ускорение по умолчанию
     }
 }

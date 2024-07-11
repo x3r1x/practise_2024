@@ -1,5 +1,6 @@
 package com.example.mygame.visitor
 
+import android.graphics.RectF
 import com.example.mygame.`interface`.IVisitor
 import com.example.mygame.`object`.Bullet
 import com.example.mygame.`object`.Enemy
@@ -20,7 +21,6 @@ class ScreenCollisionVisitor(private val screen: Screen) : IVisitor {
     }
 
     override fun visit(score: Score) {
-
     }
 
     override fun visit(platform: Platform) {
@@ -37,7 +37,13 @@ class ScreenCollisionVisitor(private val screen: Screen) : IVisitor {
     override fun visit(shield: Shield) {}
     override fun visit(jetpack: Jetpack) {}
     override fun visit(enemy: Enemy) {}
+
     override fun visit(bullet: Bullet) {
+        //val screenRect = RectF(screen.left, screen.top, screen.right, screen.bottom)
+        //val bulletRect = RectF(bullet.left, bullet.top, bullet.right, bullet.bottom)
+        if (screen.top > bullet.bottom) {
+            bullet.isDisappeared = true
+        }
     }
 
     private fun isCollidePlayerWithScreen(player: Player) : Boolean {

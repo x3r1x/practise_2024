@@ -50,8 +50,8 @@ class ObjectsManager(
 
     fun createBullet(touchX: Float, touchY: Float): Bullet {
         val player = objectStorage.getPlayer()
-        val bullet = bulletFactory.generateBullet()
-        bullet.shoot(player.top, player.top, touchX, touchY)
+        val bullet = bulletFactory.generateBullet(player.top, player.top)
+        bullet.shoot()
         objectStorage.addBullet(bullet)
         return bullet
     }
