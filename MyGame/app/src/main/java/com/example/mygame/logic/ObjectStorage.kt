@@ -34,7 +34,6 @@ class ObjectStorage(
 
     fun addBullet(bullet: Bullet) {
         bullets.add(bullet)
-        Log.i("", "bullets: ${bullets.size}")
     }
 
     fun getAll() : MutableList<IGameObject> {
