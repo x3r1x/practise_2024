@@ -49,7 +49,7 @@ class ObjectsManager(
     fun createBullet(touchX: Float, touchY: Float): Bullet? {
         val player = objectStorage.getPlayer()
         if (!player.isDead && !player.isWithJetpack) {
-            val bullet = bulletFactory.generateBullet(player.x, player.y)
+            val bullet = bulletFactory.generateBullet(player.x, player.y, touchX, touchY)
             bullet.shoot()
             objectStorage.addBullet(bullet)
             return bullet

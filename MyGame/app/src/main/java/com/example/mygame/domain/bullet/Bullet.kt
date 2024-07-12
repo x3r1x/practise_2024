@@ -14,7 +14,8 @@ import com.example.mygame.domain.IVisitor
 class Bullet(
     private val image: Bitmap,
     override var x: Float,
-    override var y: Float
+    override var y: Float,
+    private val angle: Float
 ) : IMoveable, IDrawable, IGameObject {
 
     override var isDisappeared = false
@@ -44,6 +45,7 @@ class Bullet(
 
     override fun updatePositionY(elapsedTime: Float) {
         y -= speedY * elapsedTime
+        x += angle
     }
 
     override fun accept(visitor: IVisitor) {
@@ -65,7 +67,9 @@ class Bullet(
         matrix.postScale(scaleX, scaleY)
         matrix.postTranslate(left, top)
 
-//        canvas.drawRect(destRect, paint)
+        // Поворачиваем объект вокруг его центра
+        matrix.postRotate(angle, x, y)
+
         canvas.drawBitmap(image, matrix, null)
     }
 
