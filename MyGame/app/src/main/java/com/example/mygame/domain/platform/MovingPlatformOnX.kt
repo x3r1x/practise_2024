@@ -1,6 +1,7 @@
 package com.example.mygame.domain.platform
 
 import android.graphics.Bitmap
+import com.example.mygame.domain.GameConstants
 import com.example.mygame.domain.Platform
 import com.example.mygame.domain.Screen
 
@@ -39,13 +40,9 @@ class MovingPlatformOnX(
 
     override fun updatePositionX(newX: Float) {
         if (directionX == DirectionX.LEFT) {
-            x -= SPEED_ON_X
+            x -= GameConstants.PLATFORM_ON_X_SPEED
         } else {
-            x += SPEED_ON_X
+            x += GameConstants.PLATFORM_ON_X_SPEED
         }
-    }
-
-    companion object {
-        private const val SPEED_ON_X = 2f
     }
 }

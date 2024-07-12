@@ -7,6 +7,7 @@ import com.example.mygame.domain.enemies.factory.NinjaFactory
 import com.example.mygame.domain.enemies.factory.IEnemyFactory
 import com.example.mygame.domain.IGameObject
 import com.example.mygame.domain.Enemy
+import com.example.mygame.domain.GameConstants
 import com.example.mygame.domain.Platform
 import com.example.mygame.domain.Screen
 import kotlin.random.Random
@@ -30,15 +31,15 @@ class EnemyGenerator(
         val random = Random.nextFloat()
         val x = Random.nextFloat() * (screen.width - platform.width) + GAP_X
         when {
-            random < 0.03f -> {
+            random < GameConstants.BULLY_SPAWN_CHANCE -> {
                 val bully = bullyFactory.generateEnemy(x, platform.y)
                 enemy = bully
             }
-            random < 0.05f -> {
+            random < GameConstants.NINJA_SPAWN_CHANCE -> {
                 val ninja = ninjaFactory.generateEnemy(x, platform.y)
                 enemy = ninja
             }
-            random < 0.1f-> {
+            random < GameConstants.FLY_SPAWN_CHANCE -> {
                 val fly = flyFactory.generateEnemy(x, platform.y)
                 enemy = fly
             }

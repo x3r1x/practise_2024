@@ -5,6 +5,7 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.os.CountDownTimer
 import com.example.mygame.UI.IDrawable
+import com.example.mygame.domain.GameConstants
 import com.example.mygame.domain.IGameObject
 import com.example.mygame.domain.IMoveable
 import com.example.mygame.domain.IVisitor
@@ -38,7 +39,7 @@ class Shield(private val initDefaultShield: Bitmap,
 
     //thanks god for ending my suffering
     fun startDisappearingTimer() {
-        val timer = object : CountDownTimer(SHIELD_DURATION, SHIELD_TIMER_TICK) {
+        val timer = object : CountDownTimer(GameConstants.SHIELD_DURATION, SHIELD_TIMER_TICK) {
             override fun onTick(p0: Long) {
                 if (p0 <= WHEN_TO_PULSE) {
                     paint.alpha = if (paint.alpha == PULSE_TRANSPARENCY) {
@@ -98,7 +99,6 @@ class Shield(private val initDefaultShield: Bitmap,
         private const val DEFAULT_SIDE = 100f
         private const val ON_PLAYER_SIDE = 245f
 
-        private const val SHIELD_DURATION : Long = 10000
         private const val SHIELD_TIMER_TICK : Long = 500
         private const val WHEN_TO_PULSE : Long = 3000
 

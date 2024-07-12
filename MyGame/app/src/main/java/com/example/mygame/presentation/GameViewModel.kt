@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.mygame.domain.GameConstants
 import com.example.mygame.domain.IGameObject
 import com.example.mygame.domain.IMoveable
 import com.example.mygame.domain.Physics
@@ -61,7 +62,7 @@ class GameViewModel(private val application: Application) : AndroidViewModel(app
 
                 elapsedTime = (systemTime - startTime) / 1000f
 
-                if (elapsedTime < MAX_FRAME_TIME) {
+                if (elapsedTime < GameConstants.MAX_FRAME_TIME) {
                     delay(1)
                     continue
                 }
@@ -125,9 +126,5 @@ class GameViewModel(private val application: Application) : AndroidViewModel(app
 
     fun onClick(touchX: Float, touchY: Float) {
         objectsManager.createBullet(touchX, touchY)
-    }
-
-    companion object {
-        private const val MAX_FRAME_TIME = 0.016f
     }
 }

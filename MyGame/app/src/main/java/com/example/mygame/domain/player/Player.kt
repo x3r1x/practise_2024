@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Matrix
 import com.example.mygame.UI.IDrawable
+import com.example.mygame.domain.GameConstants
 import com.example.mygame.domain.IGameObject
 import com.example.mygame.domain.IMoveable
 import com.example.mygame.domain.IVisitor
@@ -51,7 +52,7 @@ class Player(private val idleImage: Bitmap,
     override var isDisappeared = false
     var isDead = false
 
-    fun jump(jumpSpeed: Float = JUMP_SPEED) {
+    fun jump(jumpSpeed: Float = GameConstants.PLAYER_JUMP_SPEED) {
         directionY = DirectionY.UP
 
         speedY = jumpSpeed
@@ -68,9 +69,9 @@ class Player(private val idleImage: Bitmap,
     }
 
     private fun changeDirectionX(newX: Float) {
-        if (newX < -DISTANCE_TO_TURN) {
+        if (newX < - GameConstants.PLAYER_DISTANCE_TO_TURN) {
             directionX = DirectionX.LEFT
-        } else if (newX > DISTANCE_TO_TURN) {
+        } else if (newX > GameConstants.PLAYER_DISTANCE_TO_TURN) {
             directionX = DirectionX.RIGHT
         }
     }
@@ -137,7 +138,7 @@ class Player(private val idleImage: Bitmap,
         y += speedY * directionY.value * elapsedTime
 
         if (!isWithJetpack) {
-            speedY += elapsedTime * Physics.GRAVITY * directionY.value
+            speedY += elapsedTime * GameConstants.GRAVITY * directionY.value
 
             if (y >= previousY && directionY == DirectionY.UP) {
                 directionY = DirectionY.DOWN
@@ -146,11 +147,7 @@ class Player(private val idleImage: Bitmap,
     }
 
     companion object {
-        const val SPRING_JUMP_SPEED = 3700f
-
-        private const val DISTANCE_TO_TURN = 1f
         private const val RADIUS = 75f
-        private const val JUMP_SPEED = 1600f
 
         private const val DEAD_WIDTH = 120f
         private const val DEAD_HEIGHT = 190f

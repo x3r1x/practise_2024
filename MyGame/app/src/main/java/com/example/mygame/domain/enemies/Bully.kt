@@ -20,7 +20,5 @@ class Bully(initBitmap: Bitmap,
     companion object {
         private const val WIDTH = 275f
         private const val HEIGHT = 174f
-
-        const val DEATH_OFFSET_X = 60f
     }
 }

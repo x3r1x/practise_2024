@@ -5,6 +5,7 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.os.CountDownTimer
 import com.example.mygame.UI.IDrawable
+import com.example.mygame.domain.GameConstants
 import com.example.mygame.domain.IGameObject
 import com.example.mygame.domain.IMoveable
 import com.example.mygame.domain.IVisitor
@@ -39,11 +40,11 @@ class Jetpack(private val initDefaultJetpack: Bitmap,
 
     fun fly() {
         player?.directionY = Player.DirectionY.UP
-        player?.speedY = PLAYER_SPEED_WITH_JETPACK
+        player?.speedY = GameConstants.PLAYER_SPEED_WITH_JETPACK
     }
 
     fun startDisappearingTimer() {
-        val timer = object : CountDownTimer(JETPACK_DURATION, JETPACK_TIMER_TICK) {
+        val timer = object : CountDownTimer(GameConstants.JETPACK_DURATION, JETPACK_TIMER_TICK) {
             override fun onTick(p0: Long) {
                 if (p0 <= WHEN_TO_PULSE) {
                     paint.alpha = if (paint.alpha == PULSE_TRANSPARENCY) {
@@ -117,13 +118,10 @@ class Jetpack(private val initDefaultJetpack: Bitmap,
         private const val OFFSET_ON_PLAYER_RIGHT = 95f
         private const val OFFSET_ON_PLAYER_LEFT = 127f
 
-        private const val JETPACK_DURATION : Long = 6000
         private const val JETPACK_TIMER_TICK : Long = 500
         private const val WHEN_TO_PULSE : Long = 2000
 
         private const val DEFAULT_TRANSPARENCY = 256
         private const val PULSE_TRANSPARENCY = 128
-
-        private const val PLAYER_SPEED_WITH_JETPACK = 1900f
     }
 }
