@@ -104,9 +104,6 @@ class Jetpack(private val initDefaultJetpack: Bitmap,
         bottom = y + HEIGHT / 2
     }
 
-    override fun updatePositionX(newX: Float) {}
-    override fun updatePositionY(elapsedTime: Float) {}
-
     override fun accept(visitor: IVisitor) {
         visitor.visit(this)
     }

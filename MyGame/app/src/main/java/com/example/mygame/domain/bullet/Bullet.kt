@@ -39,10 +39,7 @@ class Bullet(
         y = startY
     }
 
-    override fun updatePositionX(newX: Float) {
-    }
-
-    override fun updatePositionY(elapsedTime: Float) {
+    override fun updatePosition(elapsedTime: Float) {
         y -= speedY * elapsedTime
     }
 

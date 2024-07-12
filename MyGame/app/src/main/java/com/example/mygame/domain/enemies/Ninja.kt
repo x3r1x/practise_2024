@@ -76,11 +76,11 @@ class Ninja(initBimap: Bitmap,
         }
     }
 
-    override fun updatePositionX(newX: Float) {
+    override fun updatePosition(elapsedTime: Float) {
         if (directionX == DirectionX.LEFT) {
-            x -= speedX
+            x -= speedX * elapsedTime
         } else {
-            x += speedX
+            x += speedX * elapsedTime
         }
 
         updateStats()

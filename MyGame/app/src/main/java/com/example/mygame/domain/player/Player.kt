@@ -126,13 +126,12 @@ class Player(private val idleImage: Bitmap,
         y = startY
     }
 
-    override fun updatePositionX(newX: Float) {
-        x += newX
-        changeDirectionX(newX)
-    }
+//    override fun updatePositionX(newX: Float) {
+//        x += newX
+//        changeDirectionX(newX)
+//    }
 
-    override fun updatePositionY(elapsedTime: Float) {
-
+    override fun updatePosition(elapsedTime: Float) {
         val previousY = y
 
         y += speedY * directionY.value * elapsedTime

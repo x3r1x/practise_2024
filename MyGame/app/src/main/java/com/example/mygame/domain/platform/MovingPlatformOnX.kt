@@ -38,11 +38,11 @@ class MovingPlatformOnX(
         }
     }
 
-    override fun updatePositionX(newX: Float) {
+    override fun updatePosition(elapsedTime: Float) {
         if (directionX == DirectionX.LEFT) {
-            x -= GameConstants.PLATFORM_ON_X_SPEED
+            x -= GameConstants.PLATFORM_ON_X_SPEED * elapsedTime
         } else {
-            x += GameConstants.PLATFORM_ON_X_SPEED
+            x += GameConstants.PLATFORM_ON_X_SPEED * elapsedTime
         }
     }
 }

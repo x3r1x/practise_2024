@@ -76,9 +76,6 @@ open class Enemy(createdX: Float, createdY: Float) : IDrawable, IMoveable, IGame
         canvas.drawBitmap(imageToDraw, matrix, null)
     }
 
-    override fun updatePositionX(newX: Float) {}
-    override fun updatePositionY(elapsedTime: Float) {}
-
     override fun setPosition(startX: Float, startY: Float) {
         x = startX
         y = startY
