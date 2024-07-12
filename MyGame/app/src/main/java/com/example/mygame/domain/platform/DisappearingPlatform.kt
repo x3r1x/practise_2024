@@ -6,6 +6,7 @@ import android.animation.ValueAnimator
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.Paint
+import android.util.Log
 import com.example.mygame.domain.Platform
 
 class DisappearingPlatform(
@@ -20,7 +21,7 @@ class DisappearingPlatform(
     var isRunDestroying = false
 
     private var platformColor = Paint().apply {
-        color = bitmap.getPixel(bitmap.width / 2, bitmap.height / 2) //Color.YELLOW
+        color = Color.YELLOW
     }
 
     fun animatePlatformColor() {

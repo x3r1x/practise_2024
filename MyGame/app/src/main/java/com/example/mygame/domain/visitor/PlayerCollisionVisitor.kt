@@ -38,9 +38,6 @@ class PlayerCollisionVisitor(
     override fun visit(player: Player) {
     }
 
-    override fun visit(score: Score) {
-    }
-
     override fun visit(jetpack: Jetpack) {
         if (doesPlayerCollideWithCollectable(jetpack) && !player.isWithJetpack && !player.isDead) {
             jetpack.initPlayer(player)

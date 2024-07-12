@@ -9,7 +9,6 @@ import com.example.mygame.domain.player.Player
 interface IVisitor {
     fun visit(platform: Platform)
     fun visit(player: Player)
-    fun visit(score: Score)
     fun visit(spring: Spring)
     fun visit(shield: Shield)
     fun visit(jetpack: Jetpack)

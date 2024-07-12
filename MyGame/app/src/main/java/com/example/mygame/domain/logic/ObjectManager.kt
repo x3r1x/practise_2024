@@ -32,8 +32,6 @@ class ObjectsManager(
     }
 
     fun updateObjects(delta: Float) {
-        objectStorage.setObjects(removeObjectsOutOfBounds())
-
         score.increase(delta)
 
         tempScore += abs(delta)
@@ -45,7 +43,7 @@ class ObjectsManager(
     }
 
     fun getObjects() : List<IGameObject> {
-        return objectStorage.getAll()
+        return getUpdatedObjectsList()
     }
 
     fun createBullet(touchX: Float, touchY: Float): Bullet? {
@@ -65,7 +63,7 @@ class ObjectsManager(
         objectStorage.addAll(levelGenerator.generateNewPack(lastPlatform.top))
     }
 
-    private fun removeObjectsOutOfBounds() : MutableList<IGameObject> {
+    private fun getUpdatedObjectsList() : MutableList<IGameObject> {
         val objects = objectStorage.getAll()
         objects.retainAll(objects.filterNot {
             it !is Player && it.isDisappeared

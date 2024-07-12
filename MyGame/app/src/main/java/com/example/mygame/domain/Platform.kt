@@ -6,7 +6,7 @@ import android.graphics.Paint
 import com.example.mygame.UI.IDrawable
 
 open class Platform(createdX: Float, createdY: Float) : IDrawable, IMoveable, IGameObject {
-    val width = 220f
+    val width = 175f
     val height = 45f
 
     protected lateinit var bitmap: Bitmap

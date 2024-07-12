@@ -21,10 +21,6 @@ class BulletCollisionVisitor(private val bullet: Bullet) : IVisitor {
         // Реализация для игрока
     }
 
-    override fun visit(score: Score) {
-        // Реализация для очков
-    }
-
     override fun visit(spring: Spring) {
         // Реализация для пружины
     }

@@ -19,9 +19,6 @@ class ScreenCollisionVisitor(private val screen: Screen) : IVisitor {
         }
     }
 
-    override fun visit(score: Score) {
-    }
-
     override fun visit(platform: Platform) {
         if (platform is MovingPlatformOnX && isCollidePlatformWithBoundsOfScreen(platform)) {
             platform.changeDirectionX(screen)
