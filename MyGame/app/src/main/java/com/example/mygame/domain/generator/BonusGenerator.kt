@@ -2,6 +2,7 @@ package com.example.mygame.domain.generator
 
 import kotlin.random.Random
 import android.content.res.Resources
+import com.example.mygame.domain.GameConstants
 import com.example.mygame.domain.bonuses.factory.IBonusFactory
 import com.example.mygame.domain.bonuses.factory.ShieldFactory
 import com.example.mygame.domain.bonuses.factory.SpringFactory
@@ -29,15 +30,15 @@ class BonusGenerator(resources: Resources) {
         var bonus: IBonus? = null
         val random = Random.nextFloat()
         when {
-            random < 0.02f -> {
+            random < GameConstants.JETPACK_SPAWN_CHANCE -> {
                 val jetpack = jetpackFactory.generateBonus(platform)
                 bonus = jetpack
             }
-            random < 0.08f -> {
+            random < GameConstants.SHIELD_SPAWN_CHANCE -> {
                 val shield = shieldFactory.generateBonus(platform)
                 bonus = shield
             }
-            random < 0.25f -> {
+            random < GameConstants.SPRING_SPAWN_CHANCE -> {
                 val spring = springFactory.generateBonus(platform)
                 bonus = spring
             }

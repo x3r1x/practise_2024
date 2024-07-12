@@ -5,6 +5,7 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorManager
 import android.hardware.SensorEventListener
+import com.example.mygame.domain.GameConstants
 
 class SensorHandler(context: Context, private val callback: SensorCallback) : SensorEventListener {
 
@@ -33,16 +34,12 @@ class SensorHandler(context: Context, private val callback: SensorCallback) : Se
     override fun onSensorChanged(event: SensorEvent?) {
         event?.let {
             if (it.sensor.type == Sensor.TYPE_ACCELEROMETER) {
-                val deltaX = -it.values[0] * MULTIPLIER
+                val deltaX = -it.values[0] * GameConstants.SENSOR_MULTIPLIER
                 callback.onSensorDataChanged(deltaX)
             }
         }
     }
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
-    }
-
-    companion object {
-        const val MULTIPLIER = 3f
     }
 }

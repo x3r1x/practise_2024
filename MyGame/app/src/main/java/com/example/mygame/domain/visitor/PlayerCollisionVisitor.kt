@@ -6,6 +6,7 @@ import com.example.mygame.domain.Platform
 import com.example.mygame.domain.IVisitor
 import com.example.mygame.domain.bullet.Bullet
 import com.example.mygame.domain.Enemy
+import com.example.mygame.domain.GameConstants
 import com.example.mygame.domain.player.Player.DirectionX
 import com.example.mygame.domain.player.Player.DirectionY
 import com.example.mygame.domain.bonuses.Jetpack
@@ -58,7 +59,7 @@ class PlayerCollisionVisitor(
     override fun visit(spring: Spring) {
         if (doesPlayerCollideWithSolid(spring) && !player.isDead) {
             spring.runStretchAnimation()
-            player.jump(Player.SPRING_JUMP_SPEED)
+            player.jump(GameConstants.PLAYER_SPRING_JUMP_SPEED)
         }
     }
 
@@ -97,7 +98,8 @@ class PlayerCollisionVisitor(
                     && (player.left < other.right && player.right > other.left))
         } else {
             (player.top < other.bottom && player.bottom >= other.top
-                    && (player.left < other.right - Bully.DEATH_OFFSET_X && player.right > other.left + Bully.DEATH_OFFSET_X))
+                    && (player.left < other.right - GameConstants.BULLY_DEATH_OFFSET_X
+                    && player.right > other.left + GameConstants.BULLY_DEATH_OFFSET_X))
         }
     }
 }

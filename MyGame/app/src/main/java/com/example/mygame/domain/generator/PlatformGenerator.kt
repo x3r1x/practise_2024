@@ -3,6 +3,7 @@ package com.example.mygame.domain.generator
 import kotlin.math.abs
 import kotlin.random.Random
 import android.content.res.Resources
+import com.example.mygame.domain.GameConstants
 import com.example.mygame.domain.Screen
 import com.example.mygame.domain.Platform
 import com.example.mygame.domain.platform.factory.IPlatformFactory
@@ -43,7 +44,7 @@ class PlatformGenerator(
 
         val platforms: MutableList<Platform> = mutableListOf()
         while (newY >= -newPackageHeight) {
-            val x = Random.nextFloat() * (screen.width - platform.width) + 100f
+            val x = Random.nextFloat() * (screen.width - platform.width) + GameConstants.PLATFORM_SPAWN_ADDITIONAL_X
             val newPlatform = staticPlatformFactory.generatePlatform(x, newY)
             platforms.add(newPlatform)
             newY -= platform.height + platformGap
@@ -70,7 +71,7 @@ class PlatformGenerator(
                 var x: Float
 
                 do {
-                    x = Random.nextFloat() * (screen.width - platform.width) + 100f
+                    x = Random.nextFloat() * (screen.width - platform.width) + GameConstants.PLATFORM_SPAWN_ADDITIONAL_X
                     yGap = platformGap + Random.nextFloat() * (maxVerticalGap - platformGap)
                     newPlatform = factory.generatePlatform(x, newY - yGap)
                 } while (isOverlapping(platformsPack, newPlatform))
@@ -88,7 +89,7 @@ class PlatformGenerator(
 
     fun generatePlatform(from: Float): Platform {
         val factory = getRandomFactory()
-        val x = Random.nextFloat() * (screen.width - platform.width) + 100f
+        val x = Random.nextFloat() * (screen.width - platform.width) + GameConstants.PLATFORM_SPAWN_ADDITIONAL_X
         val y = from - Random.nextFloat() * (maxVerticalGap) - platformGap
 
         return factory.generatePlatform(x, y)

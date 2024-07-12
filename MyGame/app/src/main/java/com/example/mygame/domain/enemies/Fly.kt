@@ -2,6 +2,7 @@ package com.example.mygame.domain.enemies
 
 import android.graphics.Bitmap
 import com.example.mygame.domain.Enemy
+import com.example.mygame.domain.GameConstants
 import com.example.mygame.domain.Screen
 
 class Fly(initBitmap: Bitmap,
@@ -45,9 +46,9 @@ class Fly(initBitmap: Bitmap,
 
     override fun updatePositionX(newX: Float) {
         if (directionX == DirectionX.LEFT) {
-            x -= MOVE_SPEED
+            x -= GameConstants.FLY_MOVE_SPEED
         } else {
-            x += MOVE_SPEED
+            x += GameConstants.FLY_MOVE_SPEED
         }
 
         changeDirectionX()
@@ -56,7 +57,5 @@ class Fly(initBitmap: Bitmap,
     companion object {
         private const val WIDTH = 162f
         private const val HEIGHT = 151f
-
-        private const val MOVE_SPEED = 4f
     }
 }

@@ -10,8 +10,4 @@ class Physics {
     fun moveOffset(player: Player, line: Float) : Float {
         return player.top - line
     }
-
-    companion object {
-        const val GRAVITY = 2200f
-    }
 }

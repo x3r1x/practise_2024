@@ -1,6 +1,7 @@
 package com.example.mygame.domain.platform
 
 import android.graphics.Bitmap
+import com.example.mygame.domain.GameConstants
 import com.example.mygame.domain.Platform
 
 class MovingPlatformOnY(
@@ -13,8 +14,8 @@ class MovingPlatformOnY(
 
     init {
         this.bitmap = initBitmap
-        minY = createdY - RANGE
-        maxY = createdY + RANGE
+        minY = createdY - GameConstants.PLATFORM_ON_Y_RANGE
+        maxY = createdY + GameConstants.PLATFORM_ON_Y_RANGE
     }
 
     enum class DirectionY(val value: Int) {
@@ -56,14 +57,9 @@ class MovingPlatformOnY(
         updateDirection()
 
         if (directionY == DirectionY.UP) {
-            y -= SPEED_ON_Y
+            y -= GameConstants.PLATFORM_ON_Y_SPEED
         } else if (directionY == DirectionY.DOWN) {
-            y += SPEED_ON_Y
+            y += GameConstants.PLATFORM_ON_Y_SPEED
         }
-    }
-
-    companion object {
-        const val SPEED_ON_Y = 2f
-        const val RANGE = 400f
     }
 }

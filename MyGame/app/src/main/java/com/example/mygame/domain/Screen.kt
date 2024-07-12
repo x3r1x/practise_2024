@@ -6,9 +6,5 @@ class Screen(val width: Float, val height: Float) {
     val top = 0f
     val bottom = height
 
-    val maxPlayerHeight = height - MOVE_OBJECTS_LINE
-
-    companion object {
-        const val MOVE_OBJECTS_LINE = 900f
-    }
+    val maxPlayerHeight = height - GameConstants.MOVE_OBJECTS_LINE
 }
