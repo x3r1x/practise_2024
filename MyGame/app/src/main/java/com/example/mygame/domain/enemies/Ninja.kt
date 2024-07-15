@@ -60,9 +60,19 @@ class Ninja(initBimap: Bitmap,
 
     private fun getRandomConvergence(): Float {
         if (directionX == DirectionX.LEFT && left < GameConstants.NINJA_MAX_CONVERGENCE) {
-            return (GameConstants.NINJA_MIN_CONVERGENCE.toInt() .. left.toInt()).random().toFloat()
+            if (left < GameConstants.NINJA_MIN_CONVERGENCE) {
+                changeDirectionX()
+            } else {
+                return (GameConstants.NINJA_MIN_CONVERGENCE.toInt()..left.toInt()).random()
+                    .toFloat()
+            }
         } else if (directionX == DirectionX.RIGHT && screen.right - right < GameConstants.NINJA_MAX_CONVERGENCE) {
-            return (GameConstants.NINJA_MIN_CONVERGENCE.toInt() .. (screen.right - right).toInt()).random().toFloat()
+            if (screen.right - right < GameConstants.NINJA_MIN_CONVERGENCE) {
+                changeDirectionX()
+            } else {
+                return (GameConstants.NINJA_MIN_CONVERGENCE.toInt()..(screen.right - right).toInt()).random()
+                    .toFloat()
+            }
         }
 
         return (GameConstants.NINJA_MIN_CONVERGENCE.toInt() .. GameConstants.NINJA_MAX_CONVERGENCE.toInt()).random().toFloat()
