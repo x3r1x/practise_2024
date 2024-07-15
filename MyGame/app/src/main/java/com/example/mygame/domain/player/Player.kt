@@ -1,20 +1,22 @@
 package com.example.mygame.domain.player
 
-import android.graphics.RectF
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Matrix
+import android.graphics.RectF
+import android.os.Handler
+import android.os.Looper
 import com.example.mygame.UI.IDrawable
 import com.example.mygame.domain.GameConstants
 import com.example.mygame.domain.IGameObject
 import com.example.mygame.domain.IMoveable
 import com.example.mygame.domain.IVisitor
-import com.example.mygame.domain.Physics
 import com.example.mygame.domain.Screen
 
 class Player(private val idleImage: Bitmap,
-             private val jumpImage: Bitmap,
-             private val deadImage: Bitmap
+            private val jumpImage: Bitmap,
+            private val deadImage: Bitmap,
+            private val shootImage: Bitmap
 ) : IDrawable, IMoveable, IGameObject {
     enum class DirectionY(val value: Int) {
         UP(-1),
@@ -49,6 +51,10 @@ class Player(private val idleImage: Bitmap,
 
     var speedY = 0f
 
+    private var isShooting = false
+    private var shootingRunnable: Runnable? = null
+    private val shootingHandler = Handler(Looper.getMainLooper())
+
     override var isDisappeared = false
     var isDead = false
 
@@ -66,6 +72,23 @@ class Player(private val idleImage: Bitmap,
         if (x > screen.right) {
             x = 0f + RADIUS
         }
+    }
+
+    fun isShooting() : Boolean {
+        return isShooting
+    }
+
+    fun shoot() {
+        isShooting = true
+
+        shootingRunnable?.let {
+            shootingHandler.removeCallbacks(it)
+        }
+
+        shootingRunnable = Runnable {
+            isShooting = false
+        }
+        shootingHandler.postDelayed(shootingRunnable!!, 300)
     }
 
     private fun changeDirectionX(newX: Float) {
@@ -92,6 +115,8 @@ class Player(private val idleImage: Bitmap,
     private fun selectImage(): Bitmap {
         return if (isDead) {
             deadImage
+        } else if (isShooting) {
+            shootImage
         } else if (directionY == DirectionY.UP) {
             jumpImage
         } else {
@@ -102,6 +127,8 @@ class Player(private val idleImage: Bitmap,
     private fun applyRect() : RectF {
         return if (isDead) {
             RectF(x - DEAD_WIDTH / 2, y - DEAD_HEIGHT / 2, x + DEAD_WIDTH / 2, y + DEAD_HEIGHT / 2)
+        } else if (isShooting) {
+            RectF(x - SHOOTING_WIDTH / 2, y - SHOOTING_HEIGHT / 2, x + SHOOTING_WIDTH / 2, y + SHOOTING_HEIGHT / 2)
         } else {
             RectF(left, top, right, bottom)
         }
@@ -147,6 +174,9 @@ class Player(private val idleImage: Bitmap,
     }
 
     companion object {
+        const val SHOOTING_WIDTH = 105f
+        const val SHOOTING_HEIGHT = 200f
+
         private const val RADIUS = 75f
 
         private const val DEAD_WIDTH = 120f

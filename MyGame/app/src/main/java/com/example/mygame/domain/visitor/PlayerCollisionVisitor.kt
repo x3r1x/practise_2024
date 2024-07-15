@@ -1,21 +1,20 @@
 package com.example.mygame.domain.visitor
 
-import com.example.mygame.domain.IGameObject
-import com.example.mygame.domain.player.Player
-import com.example.mygame.domain.Platform
-import com.example.mygame.domain.IVisitor
-import com.example.mygame.domain.bullet.Bullet
 import com.example.mygame.domain.Enemy
 import com.example.mygame.domain.GameConstants
-import com.example.mygame.domain.player.Player.DirectionX
-import com.example.mygame.domain.player.Player.DirectionY
+import com.example.mygame.domain.IGameObject
+import com.example.mygame.domain.IVisitor
+import com.example.mygame.domain.Platform
 import com.example.mygame.domain.bonuses.Jetpack
 import com.example.mygame.domain.bonuses.Shield
 import com.example.mygame.domain.bonuses.Spring
-import com.example.mygame.domain.Score
+import com.example.mygame.domain.bullet.Bullet
 import com.example.mygame.domain.enemies.Bully
 import com.example.mygame.domain.platform.BreakingPlatform
 import com.example.mygame.domain.platform.DisappearingPlatform
+import com.example.mygame.domain.player.Player
+import com.example.mygame.domain.player.Player.DirectionX
+import com.example.mygame.domain.player.Player.DirectionY
 
 class PlayerCollisionVisitor(
     private val player: Player,
@@ -75,7 +74,11 @@ class PlayerCollisionVisitor(
     }
 
     private fun doesPlayerCollideWithSolid(other: IGameObject) : Boolean {
-        return if (player.directionX == DirectionX.RIGHT) {
+        return if (player.isShooting()) {
+            (player.y + Player.SHOOTING_HEIGHT / 2 < other.bottom  && player.y + Player.SHOOTING_HEIGHT / 2 >= other.top
+                    && (player.x - Player.SHOOTING_WIDTH / 2 + 16f < other.right && player.x + Player.SHOOTING_WIDTH / 2 - 16f > other.left)
+                    && player.directionY == DirectionY.DOWN  )
+        } else if (player.directionX == DirectionX.RIGHT) {
             (player.bottom < other.bottom && player.bottom >= other.top && player.directionY == DirectionY.DOWN
                     && (player.left + 15f < other.right && player.right - 50f > other.left))
         } else {
