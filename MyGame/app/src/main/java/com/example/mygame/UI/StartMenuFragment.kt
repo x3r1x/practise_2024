@@ -21,6 +21,10 @@ class StartMenuFragment : Fragment() {
             Navigation.findNavController(view).navigate(R.id.navigateFromStartFragmentToSinglePlayerFragment)
         }
 
+        view.findViewById<Button>(R.id.multiplayerButton).setOnClickListener {
+            Navigation.findNavController(view).navigate(R.id.navigateFromStartFragmentToEnterNicknameFragment)
+        }
+
         return view
     }
 }

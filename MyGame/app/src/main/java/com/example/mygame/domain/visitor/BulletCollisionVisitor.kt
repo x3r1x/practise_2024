@@ -1,7 +1,6 @@
 package com.example.mygame.domain.visitor
 
 import android.graphics.RectF
-import android.util.Log
 import com.example.mygame.domain.Enemy
 import com.example.mygame.domain.IVisitor
 import com.example.mygame.domain.Platform
@@ -35,7 +34,6 @@ class BulletCollisionVisitor(private val bullet: Bullet) : IVisitor {
 
     override fun visit(enemy: Enemy) {
         // Если пуля сталкивается с врагом, выключаем врага
-        Log.i("enemy coll", "hit")
         if (!bullet.isDisappeared && !enemy.isDisappeared) {
             val bulletRect = RectF(bullet.left, bullet.top, bullet.right, bullet.bottom)
             val enemyRect = RectF(enemy.left, enemy.top, enemy.right, enemy.bottom)

@@ -12,6 +12,9 @@
         <action
             android:id="@+id/navigateFromStartFragmentToSinglePlayerFragment"
             app:destination="@id/gameFragment" />
+        <action
+            android:id="@+id/navigateFromStartFragmentToEnterNicknameFragment"
+            app:destination="@id/enterNicknameFragment" />
     </fragment>
     <fragment
         android:id="@+id/gameFragment"
@@ -42,5 +45,30 @@
             app:destination="@id/startFragment"
             app:popUpTo="@id/gameFragment"
             app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/enterNicknameFragment"
+        android:name="com.example.mygame.UI.EnterNicknameFragment"
+        android:label="EnterNicknameFragment"
+        tools:layout="@layout/fragment_enter_nickname" >
+        <action
+            android:id="@+id/navigateFromEnterNicknameFragmentToStartFragment"
+            app:destination="@id/startFragment"
+            app:popUpTo="@id/enterNicknameFragment"
+            app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/navigateFromEnterNicknameFragmentToLobbyFragment"
+            app:destination="@id/lobbyFragment"
+            app:popUpTo="@id/enterNicknameFragment"
+            app:popUpToInclusive="true"/>
+    </fragment>
+    <fragment
+        android:id="@+id/lobbyFragment"
+        android:name="com.example.mygame.UI.LobbyFragment"
+        android:label="LobbyFragment"
+        tools:layout="@layout/fragment_lobby">
+        <action
+            android:id="@+id/navigateFromLobbyFragmentToStartFragment"
+            app:destination="@id/startFragment" />
     </fragment>
 </navigation>

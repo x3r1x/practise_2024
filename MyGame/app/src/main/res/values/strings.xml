@@ -12,8 +12,12 @@
     <string name="resume">Resume</string>
     <string name="pause">Pause</string>
     <string name="menu">Menu</string>
+    <string name="ready">Ready</string>
     <string name="enter_nickname">Enter nickname:</string>
     <string name="nickname">Nickname</string>
+    <string name="settings">Settings</string>
+    <string name="goToBback">Go to back</string>
+    <string name="waiting">Wait for the start</string>
     <string name="connect">Connect</string>
     <string name="lobby">Lobby</string>
     <!-- TODO: Remove or change this placeholder text -->
