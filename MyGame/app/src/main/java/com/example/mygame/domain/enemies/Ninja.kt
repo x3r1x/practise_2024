@@ -1,6 +1,7 @@
 package com.example.mygame.domain.enemies
 
 import android.graphics.Bitmap
+import android.util.Log
 import com.example.mygame.domain.Enemy
 import com.example.mygame.domain.GameConstants
 import com.example.mygame.domain.Screen
@@ -39,8 +40,8 @@ class Ninja(initBimap: Bitmap,
         }
     }
 
-    private fun updateStats() {
-        convergence -= speedX
+    private fun updateStats(elapsedTime: Float) {
+        convergence -= speedX * elapsedTime
 
         if (convergence <= 0f) {
             changeDirectionX()
@@ -86,14 +87,14 @@ class Ninja(initBimap: Bitmap,
         }
     }
 
-    override fun updatePositionX(newX: Float) {
+    override fun updatePosition(elapsedTime: Float) {
         if (directionX == DirectionX.LEFT) {
-            x -= speedX
+            x -= speedX * elapsedTime
         } else {
-            x += speedX
+            x += speedX * elapsedTime
         }
 
-        updateStats()
+        updateStats(elapsedTime)
     }
 
     companion object {

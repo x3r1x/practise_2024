@@ -40,39 +40,21 @@ class GameViewModel(private val application: Application) : AndroidViewModel(app
     private lateinit var sensorHandler: SensorHandler
     private lateinit var collisionHandler: CollisionHandler
     private lateinit var objectsManager: ObjectsManager
+    private lateinit var positionHandler: PositionHandler
+    private lateinit var physics: Physics
 
     fun initialize(screenWidth: Float, screenHeight: Float) {
         this.screen = Screen(screenWidth, screenHeight)
         sensorHandler = SensorHandler(getApplication(), this)
         collisionHandler = CollisionHandler()
         objectsManager = ObjectsManager(application.resources, screen)
+        positionHandler = PositionHandler()
+        physics = Physics()
 
         objectsManager.initObjects()
     }
 
-    fun gameLoop() {
-        var elapsedTime: Float
 
-        var startTime = System.currentTimeMillis()
-
-        uiScope.launch {
-            while (isGameLoopRunning) {
-                _scoreObservable.value = getScore()
-                val systemTime = System.currentTimeMillis()
-
-                elapsedTime = (systemTime - startTime) / 1000f
-
-                if (elapsedTime < GameConstants.MAX_FRAME_TIME) {
-                    delay(1)
-                    continue
-                }
-
-                startTime = systemTime
-
-                updateGame(elapsedTime)
-            }
-        }
-    }
 
     fun startGameLoop() {
         isGameLoopRunning = true
@@ -98,20 +80,42 @@ class GameViewModel(private val application: Application) : AndroidViewModel(app
     fun getScore(): Int {
         return objectsManager.score.getScore()
     }
+    private fun gameLoop() {
+        var elapsedTime: Float
+
+        var startTime = System.currentTimeMillis()
+
+        uiScope.launch {
+            while (isGameLoopRunning) {
+                _scoreObservable.value = getScore()
+                val systemTime = System.currentTimeMillis()
+
+                elapsedTime = (systemTime - startTime) / 1000f
+
+                if (elapsedTime < GameConstants.MAX_FRAME_TIME) {
+                    delay(1)
+                    continue
+                }
+
+                startTime = systemTime
+
+                updateGame(elapsedTime)
+            }
+        }
+    }
 
     private fun updateGame(elapsedTime: Float) {
         _gameObjects.value = objectsManager.getObjects()
 
-        if (Physics().doWeNeedToMove(objectsManager.objectStorage.getPlayer(), screen.maxPlayerHeight)) {
-            val offsetY = Physics().moveOffset(objectsManager.objectStorage.getPlayer(), screen.maxPlayerHeight)
-            PositionHandler(_gameObjects.value!!.filterIsInstance<IMoveable>())
-                .screenScroll(0f, offsetY)
+        if (physics.doWeNeedToMove(objectsManager.objectStorage.getPlayer(), screen.maxPlayerHeight)) {
+            val offsetY = physics.moveOffset(objectsManager.objectStorage.getPlayer(), screen.maxPlayerHeight)
+            positionHandler.screenScroll(_gameObjects.value!!.filterIsInstance<IMoveable>(),0f, offsetY)
             objectsManager.updateObjects(offsetY)
         }
 
         collisionHandler.checkCollisions(objectsManager.objectStorage.getPlayer(), screen, _gameObjects.value!!)
 
-        PositionHandler(_gameObjects.value!!.filterIsInstance<IMoveable>()).updatePositions(deltaX, elapsedTime)
+        positionHandler.updatePositions(_gameObjects.value!!.filterIsInstance<IMoveable>(), elapsedTime, deltaX)
     }
 
     override fun onCleared() {

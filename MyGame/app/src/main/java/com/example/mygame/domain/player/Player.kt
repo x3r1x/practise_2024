@@ -9,7 +9,6 @@ import com.example.mygame.domain.GameConstants
 import com.example.mygame.domain.IGameObject
 import com.example.mygame.domain.IMoveable
 import com.example.mygame.domain.IVisitor
-import com.example.mygame.domain.Physics
 import com.example.mygame.domain.Screen
 
 class Player(private val idleImage: Bitmap,
@@ -66,6 +65,11 @@ class Player(private val idleImage: Bitmap,
         if (x > screen.right) {
             x = 0f + RADIUS
         }
+    }
+
+    fun updatePositionX(deltaX: Float, elapsedTime: Float) {
+        x += deltaX * elapsedTime
+        changeDirectionX(deltaX)
     }
 
     private fun changeDirectionX(newX: Float) {
@@ -126,13 +130,7 @@ class Player(private val idleImage: Bitmap,
         y = startY
     }
 
-    override fun updatePositionX(newX: Float) {
-        x += newX
-        changeDirectionX(newX)
-    }
-
-    override fun updatePositionY(elapsedTime: Float) {
-
+    override fun updatePosition(elapsedTime: Float) {
         val previousY = y
 
         y += speedY * directionY.value * elapsedTime

@@ -53,7 +53,7 @@ class MovingPlatformOnY(
         y = startY
     }
 
-    override fun updatePositionY(elapsedTime: Float) {
+    override fun updatePosition(elapsedTime: Float) {
         updateDirection()
 
         if (directionY == DirectionY.UP) {

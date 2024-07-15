@@ -88,9 +88,6 @@ class Shield(private val initDefaultShield: Bitmap,
         bottom = y + DEFAULT_SIDE / 2
     }
 
-    override fun updatePositionX(newX: Float) {}
-    override fun updatePositionY(elapsedTime: Float) {}
-
     override fun accept(visitor: IVisitor) {
         visitor.visit(this)
     }

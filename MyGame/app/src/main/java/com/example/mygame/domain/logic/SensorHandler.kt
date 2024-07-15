@@ -32,12 +32,12 @@ class SensorHandler(context: Context, private val callback: SensorCallback) : Se
 
     //Умножать полученные данные на коэфициент какой-то
     override fun onSensorChanged(event: SensorEvent?) {
-        event?.let {
-            if (it.sensor.type == Sensor.TYPE_ACCELEROMETER) {
-                val deltaX = -it.values[0] * GameConstants.SENSOR_MULTIPLIER
-                callback.onSensorDataChanged(deltaX)
-            }
+        if (event == null || event.sensor.type != Sensor.TYPE_ACCELEROMETER) {
+            return
         }
+
+        val deltaX = -event.values[0] * GameConstants.SENSOR_MULTIPLIER
+        callback.onSensorDataChanged(deltaX)
     }
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {

@@ -38,10 +38,4 @@ open class Platform(createdX: Float, createdY: Float) : IDrawable, IMoveable, IG
         x = startX
         y = startY
     }
-
-    override fun updatePositionX(newX: Float) {
-    }
-
-    override fun updatePositionY(elapsedTime: Float) {
-    }
 }
