@@ -1,16 +1,15 @@
 package com.example.mygame.domain.visitor
 
-import com.example.mygame.domain.IVisitor
-import com.example.mygame.domain.bullet.Bullet
 import com.example.mygame.domain.Enemy
+import com.example.mygame.domain.IVisitor
 import com.example.mygame.domain.Platform
-import com.example.mygame.domain.player.Player
-import com.example.mygame.domain.Score
 import com.example.mygame.domain.Screen
 import com.example.mygame.domain.bonuses.Jetpack
 import com.example.mygame.domain.bonuses.Shield
 import com.example.mygame.domain.bonuses.Spring
+import com.example.mygame.domain.bullet.Bullet
 import com.example.mygame.domain.platform.MovingPlatformOnX
+import com.example.mygame.domain.player.Player
 
 class ScreenCollisionVisitor(private val screen: Screen) : IVisitor {
     override fun visit(player: Player) {
@@ -35,7 +34,7 @@ class ScreenCollisionVisitor(private val screen: Screen) : IVisitor {
     override fun visit(enemy: Enemy) {}
 
     override fun visit(bullet: Bullet) {
-        if (screen.top > bullet.top) {
+        if (screen.top > bullet.bottom) {
             bullet.isDisappeared = true
         }
     }

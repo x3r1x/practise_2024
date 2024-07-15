@@ -74,7 +74,11 @@ class PlayerCollisionVisitor(
     }
 
     private fun doesPlayerCollideWithSolid(other: IGameObject) : Boolean {
-        return if (player.directionX == DirectionX.RIGHT) {
+        return if (player.isShooting()) {
+            (player.y + Player.SHOOTING_HEIGHT / 2 < other.bottom  && player.y + Player.SHOOTING_HEIGHT / 2 >= other.top
+                    && (player.x - Player.SHOOTING_WIDTH / 2 + 16f < other.right && player.x + Player.SHOOTING_WIDTH / 2 - 16f > other.left)
+                    && player.directionY == DirectionY.DOWN  )
+        } else if (player.directionX == DirectionX.RIGHT) {
             (player.bottom < other.bottom && player.bottom >= other.top && player.directionY == DirectionY.DOWN
                     && (player.left + 15f < other.right && player.right - 50f > other.left))
         } else {

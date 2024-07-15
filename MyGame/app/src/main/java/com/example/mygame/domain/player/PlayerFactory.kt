@@ -9,8 +9,9 @@ class PlayerFactory(resources: Resources) {
     val idleImage = BitmapFactory.decodeResource(resources, R.drawable.player)
     val jumpImage = BitmapFactory.decodeResource(resources, R.drawable.jump)
     val deadImage = BitmapFactory.decodeResource(resources, R.drawable.dead_doodler)
+    val shootImage = BitmapFactory.decodeResource(resources, R.drawable.player_shooting)
 
     fun generatePlayer() : Player {
-        return Player(idleImage, jumpImage, deadImage)
+        return Player(idleImage, jumpImage, deadImage, shootImage)
     }
 }
