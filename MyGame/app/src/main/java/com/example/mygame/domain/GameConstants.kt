@@ -9,10 +9,10 @@ class GameConstants {
         const val PLAYER_JUMP_SPEED = 1600f
         const val PLAYER_SPRING_JUMP_SPEED = 3700f
         const val PLAYER_SPEED_WITH_JETPACK = 1900f
-        const val PLAYER_DISTANCE_TO_TURN = 0.6f
+        const val PLAYER_DISTANCE_TO_TURN = 1f
 
-        const val PLATFORM_ON_X_SPEED = 2f
-        const val PLATFORM_ON_Y_SPEED = 2f
+        const val PLATFORM_ON_X_SPEED = 200f
+        const val PLATFORM_ON_Y_SPEED = 200f
         const val PLATFORM_ON_Y_RANGE = 400f
 
         const val JETPACK_DURATION : Long = 6000 //обязательно больше 3000
@@ -35,7 +35,7 @@ class GameConstants {
         const val MAX_SPRING_SPAWN_X = 135
 
         const val BULLY_SPAWN_CHANCE = 0.03f
-        const val NINJA_SPAWN_CHANCE = 1f
+        const val NINJA_SPAWN_CHANCE = 0.01f
         const val FLY_SPAWN_CHANCE = 0.1f
 
         const val MAX_FRAME_TIME = 0.016f
