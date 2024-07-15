@@ -57,9 +57,9 @@ class MovingPlatformOnY(
         updateDirection()
 
         if (directionY == DirectionY.UP) {
-            y -= GameConstants.PLATFORM_ON_Y_SPEED
+            y -= GameConstants.PLATFORM_ON_Y_SPEED * elapsedTime
         } else if (directionY == DirectionY.DOWN) {
-            y += GameConstants.PLATFORM_ON_Y_SPEED
+            y += GameConstants.PLATFORM_ON_Y_SPEED * elapsedTime
         }
     }
 }
