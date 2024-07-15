@@ -1,21 +1,20 @@
 package com.example.mygame.domain.visitor
 
-import com.example.mygame.domain.IGameObject
-import com.example.mygame.domain.player.Player
-import com.example.mygame.domain.Platform
-import com.example.mygame.domain.IVisitor
-import com.example.mygame.domain.bullet.Bullet
 import com.example.mygame.domain.Enemy
 import com.example.mygame.domain.GameConstants
-import com.example.mygame.domain.player.Player.DirectionX
-import com.example.mygame.domain.player.Player.DirectionY
+import com.example.mygame.domain.IGameObject
+import com.example.mygame.domain.IVisitor
+import com.example.mygame.domain.Platform
 import com.example.mygame.domain.bonuses.Jetpack
 import com.example.mygame.domain.bonuses.Shield
 import com.example.mygame.domain.bonuses.Spring
-import com.example.mygame.domain.Score
+import com.example.mygame.domain.bullet.Bullet
 import com.example.mygame.domain.enemies.Bully
 import com.example.mygame.domain.platform.BreakingPlatform
 import com.example.mygame.domain.platform.DisappearingPlatform
+import com.example.mygame.domain.player.Player
+import com.example.mygame.domain.player.Player.DirectionX
+import com.example.mygame.domain.player.Player.DirectionY
 
 class PlayerCollisionVisitor(
     private val player: Player,

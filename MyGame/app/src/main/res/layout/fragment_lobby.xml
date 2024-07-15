@@ -17,17 +17,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageButton
-        android:id="@+id/settingButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/rounded_26dp"
-        android:src="@drawable/settings"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/group"
         android:layout_width="wrap_content"
@@ -46,7 +35,8 @@
             android:textColor="@color/white"
             android:textSize="50sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/lobbyGroup"
@@ -54,6 +44,9 @@
             android:layout_height="480sp"
             android:background="@drawable/rounded_26dp"
             android:backgroundTint="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/appName">
 
             <TextView
@@ -70,7 +63,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <Button
-                android:id="@+id/connectButton"
+                android:id="@+id/readyButton"
                 android:layout_width="wrap_content"
                 android:layout_height="50sp"
                 android:layout_marginTop="25dp"
@@ -78,11 +71,12 @@
                 android:background="@drawable/rounded_15dp"
                 android:backgroundTint="@color/green"
                 android:fontFamily="@font/magra"
-                android:text="@string/connect"
+                android:text="@string/ready"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="20sp"
                 android:textStyle="bold"
+                android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/sixthPlayer" />
@@ -91,9 +85,10 @@
                 android:id="@+id/backButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="28dp"
                 android:background="@color/white"
+                android:contentDescription="@string/goToBback"
                 android:src="@drawable/back_button"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -107,8 +102,10 @@
                 android:height="40sp"
                 android:background="@drawable/rounded_15dp"
                 android:backgroundTint="@color/grey"
+                android:fontFamily="@font/magra_regular"
                 android:paddingLeft="20sp"
                 android:paddingTop="10sp"
+                android:paddingRight="20sp"
                 android:textAllCaps="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -123,8 +120,10 @@
                 android:height="40sp"
                 android:background="@drawable/rounded_15dp"
                 android:backgroundTint="@color/grey"
+                android:fontFamily="@font/magra_regular"
                 android:paddingLeft="20sp"
                 android:paddingTop="10sp"
+                android:paddingRight="20sp"
                 android:textAllCaps="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -139,15 +138,17 @@
                 android:height="40sp"
                 android:background="@drawable/rounded_15dp"
                 android:backgroundTint="@color/grey"
+                android:fontFamily="@font/magra_regular"
                 android:paddingLeft="20sp"
                 android:paddingTop="10sp"
+                android:paddingRight="20sp"
                 android:textAllCaps="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/secondPlayer" />
 
             <TextView
-                android:id="@+id/foufthPlayer"
+                android:id="@+id/fourthPlayer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
@@ -155,8 +156,10 @@
                 android:height="40sp"
                 android:background="@drawable/rounded_15dp"
                 android:backgroundTint="@color/grey"
+                android:fontFamily="@font/magra_regular"
                 android:paddingLeft="20sp"
                 android:paddingTop="10sp"
+                android:paddingRight="20sp"
                 android:textAllCaps="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -171,12 +174,14 @@
                 android:height="40sp"
                 android:background="@drawable/rounded_15dp"
                 android:backgroundTint="@color/grey"
+                android:fontFamily="@font/magra_regular"
                 android:paddingLeft="20sp"
                 android:paddingTop="10sp"
+                android:paddingRight="20sp"
                 android:textAllCaps="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/foufthPlayer" />
+                app:layout_constraintTop_toBottomOf="@+id/fourthPlayer" />
 
             <TextView
                 android:id="@+id/sixthPlayer"
@@ -187,24 +192,28 @@
                 android:height="40sp"
                 android:background="@drawable/rounded_15dp"
                 android:backgroundTint="@color/grey"
+                android:fontFamily="@font/magra_regular"
                 android:paddingLeft="20sp"
                 android:paddingTop="10sp"
+                android:paddingRight="20sp"
                 android:textAllCaps="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/fifthPlayer" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    tools:layout_editor_absoluteX="1dp">
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/waitingTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/magra_regular"
+                android:text="@string/waiting"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/sixthPlayer" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

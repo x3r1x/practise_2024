@@ -68,7 +68,7 @@ class GameFragment : Fragment() {
 
         val pauseButton = view.findViewById<ImageButton>(R.id.pauseButton)
         val pauseGroup = view.findViewById<ConstraintLayout>(R.id.pauseGroup)
-        val exitToMenuButton = view.findViewById<Button>(R.id.exitToMenuButton)
+        val exitToMenuButton = view.findViewById<Button>(R.id.multiplayerButton)
         val scoreView = view.findViewById<TextView>(R.id.scoreView)
 
         gameViewModel.scoreObservable.observe(viewLifecycleOwner) { newScore ->
@@ -94,8 +94,6 @@ class GameFragment : Fragment() {
         // Наблюдаем за изменениями в объектах игры
         gameViewModel.gameObjects.observe(viewLifecycleOwner) { gameObjects ->
             gameView.drawGame(gameObjects as List<IDrawable>)
-
-
 
             if (gameViewModel.isGameLost()) {
                 val bundle = Bundle()
