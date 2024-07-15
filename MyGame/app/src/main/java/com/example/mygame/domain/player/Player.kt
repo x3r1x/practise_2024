@@ -68,7 +68,7 @@ class Player(private val idleImage: Bitmap,
     }
 
     fun updatePositionX(deltaX: Float, elapsedTime: Float) {
-        x += deltaX * elapsedTime * GameConstants.MOVING_ON_X_MULTIPLIER
+        x += deltaX * elapsedTime
         changeDirectionX(deltaX)
     }
 

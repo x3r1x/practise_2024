@@ -46,9 +46,9 @@ class Fly(initBitmap: Bitmap,
 
     override fun updatePosition(elapsedTime: Float) {
         if (directionX == DirectionX.LEFT) {
-            x -= GameConstants.FLY_MOVE_SPEED * elapsedTime * GameConstants.MOVING_ON_X_MULTIPLIER
+            x -= GameConstants.FLY_MOVE_SPEED * elapsedTime
         } else {
-            x += GameConstants.FLY_MOVE_SPEED * elapsedTime * GameConstants.MOVING_ON_X_MULTIPLIER
+            x += GameConstants.FLY_MOVE_SPEED * elapsedTime
         }
 
         changeDirectionX()
