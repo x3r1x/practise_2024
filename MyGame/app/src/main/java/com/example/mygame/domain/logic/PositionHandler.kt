@@ -11,9 +11,13 @@ class PositionHandler() {
         }
     }
 
-    fun updatePositions(elements: List<IMoveable>, elapsedTime: Float) {
+    fun updatePositions(elements: List<IMoveable>, elapsedTime: Float, deltaX: Float) {
         elements.forEach {
             it.updatePosition(elapsedTime)
+
+            if (it is Player) {
+                it.updatePositionX(deltaX, elapsedTime)
+            }
         }
     }
 }

@@ -86,6 +86,6 @@ open class Enemy(createdX: Float, createdY: Float) : IDrawable, IMoveable, IGame
     }
 
     companion object {
-        private const val DEATH_OFFSET_PER_FRAME = 2f
+        private const val DEATH_OFFSET_PER_FRAME = 10f
     }
 }

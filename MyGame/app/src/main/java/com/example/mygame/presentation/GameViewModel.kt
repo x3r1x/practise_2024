@@ -115,7 +115,7 @@ class GameViewModel(private val application: Application) : AndroidViewModel(app
 
         collisionHandler.checkCollisions(objectsManager.objectStorage.getPlayer(), screen, _gameObjects.value!!)
 
-        positionHandler.updatePositions(_gameObjects.value!!.filterIsInstance<IMoveable>(), elapsedTime)
+        positionHandler.updatePositions(_gameObjects.value!!.filterIsInstance<IMoveable>(), elapsedTime, deltaX)
     }
 
     override fun onCleared() {

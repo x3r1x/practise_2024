@@ -78,9 +78,9 @@ class Ninja(initBimap: Bitmap,
 
     override fun updatePosition(elapsedTime: Float) {
         if (directionX == DirectionX.LEFT) {
-            x -= speedX * elapsedTime
+            x -= speedX * elapsedTime * GameConstants.MOVING_ON_X_MULTIPLIER
         } else {
-            x += speedX * elapsedTime
+            x += speedX * elapsedTime * GameConstants.MOVING_ON_X_MULTIPLIER
         }
 
         updateStats()

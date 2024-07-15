@@ -5,6 +5,7 @@ class GameConstants {
         const val GRAVITY = 2200f
 
         const val SENSOR_MULTIPLIER = 3f
+        const val MOVING_ON_X_MULTIPLIER = 65f
 
         const val PLAYER_JUMP_SPEED = 1600f
         const val PLAYER_SPRING_JUMP_SPEED = 3700f
@@ -19,7 +20,7 @@ class GameConstants {
         const val SHIELD_DURATION : Long = 10000 //обязательно больше 4000
 
         const val BULLY_DEATH_OFFSET_X = 60f
-        const val FLY_MOVE_SPEED = 4f
+        const val FLY_MOVE_SPEED = 8f
         const val NINJA_START_SPEED_X = 4f
         const val NINJA_MIN_SPEED_X = 2
         const val NINJA_MAX_SPEED_X = 10
@@ -32,7 +33,7 @@ class GameConstants {
         const val SHIELD_SPAWN_CHANCE = 0.08f
         const val SPRING_SPAWN_CHANCE = 0.25f
         const val MIN_SPRING_SPAWN_X = 40
-        const val MAX_SPRING_SPAWN_X = 180
+        const val MAX_SPRING_SPAWN_X = 135
 
         const val BULLY_SPAWN_CHANCE = 0.03f
         const val NINJA_SPAWN_CHANCE = 0.05f
