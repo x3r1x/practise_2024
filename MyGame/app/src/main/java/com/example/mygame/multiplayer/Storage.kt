@@ -15,6 +15,7 @@ class Storage {
 
     private fun parseJson(jsonString: String): GameData {
         val gson = Gson()
-        return gson.fromJson(jsonString, GameData::class.java)
+        val s = gson.fromJson(jsonString, GameData::class.java)
+        return s
     }
 }

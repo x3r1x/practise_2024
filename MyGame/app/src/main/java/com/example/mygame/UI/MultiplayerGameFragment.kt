@@ -53,10 +53,7 @@ class MultiplayerGameFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-    }
-
-    private fun sendSensorData(dx: Float, tap: Boolean) {
-        webSocketManager.sendMessage(dx, tap)
+        webSocketManager.storage.get()?.let { gameView.drawGame(it as List<IDrawable>) }
     }
 
     override fun onResume() {

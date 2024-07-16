@@ -47,7 +47,7 @@ class WebSocketManager(context: Context, serverUri: URI): SensorHandler.SensorCa
         client?.connect()
     }
 
-    fun sendMessage(dx: Float, tap: Boolean = false) {
+    private fun sendMessage(dx: Float, tap: Boolean = false) {
         val message = gson.toJson(ClientMessage(dx, tap))
         if (client?.isOpen == true) {
             client?.send(message)

@@ -4,10 +4,11 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import com.example.mygame.UI.IDrawable
+import com.google.gson.annotations.SerializedName
 
 data class ClientMessage(val dx: Float, val tap: Boolean)
 
-data class Player(var x: Float, var y: Float): IDrawable {
+data class Player(val id: String, var x: Float, var y: Float): IDrawable {
     private val paint = Paint().apply {
         color = Color.RED
     }
@@ -48,9 +49,8 @@ data class Bonus(var x: Float, var y: Float): IDrawable {
 }
 
 data class GameData(
-    val players: List<Player>,
-    val platforms: List<Platform>,
-    val enemies: List<Enemy>,
-    val bonuses: List<Bonus>,
-    val gameStatus: String
+    @SerializedName("plr") val players: List<Player>,
+    @SerializedName("pla") val platforms: List<Platform>,
+    @SerializedName("enm") val enemies: List<Enemy>,
+    @SerializedName("bns") val bonuses: List<Bonus>,
 )
