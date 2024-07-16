@@ -54,8 +54,6 @@ class GameViewModel(private val application: Application) : AndroidViewModel(app
         objectsManager.initObjects()
     }
 
-
-
     fun startGameLoop() {
         isGameLoopRunning = true
         gameLoop()
