@@ -53,7 +53,7 @@ class MultiplayerGameFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        webSocketManager.storage.get()?.let { gameView.drawGame(it as List<IDrawable>) }
+        webSocketManager.storage.getObjects()?.let { gameView.drawGame(it as List<IDrawable>) }
     }
 
     override fun onResume() {
