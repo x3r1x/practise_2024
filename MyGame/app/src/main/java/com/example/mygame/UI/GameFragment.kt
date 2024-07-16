@@ -24,27 +24,43 @@ import com.example.mygame.presentation.GameViewModel
 class GameFragment : Fragment() {
     private val gameViewModel: GameViewModel by viewModels()
 
+    private lateinit var pauseButton: ImageButton
+    private lateinit var pauseGroup: ConstraintLayout
+    private lateinit var exitToMenuButton: Button
+    private lateinit var scoreView: TextView
     private lateinit var gameView: GameView
 
-    private fun setupPauseButtonClickListener(
-        pauseButton: ImageButton,
-        pauseGroup: ConstraintLayout,
-        exitToMenuButton: Button
-    ) {
-        pauseButton.setOnClickListener {
-            gameViewModel.stopGameLoop()
-            pauseGroup.visibility = VISIBLE
+    private fun initViews(view: View) {
+        pauseButton = view.findViewById(R.id.pauseButton)
+        pauseGroup = view.findViewById(R.id.pauseGroup)
+        exitToMenuButton = view.findViewById(R.id.multiplayerButton)
+        gameView = view.findViewById(R.id.gameView)
+        scoreView = view.findViewById(R.id.scoreView)
+    }
 
-            val resumeButton = pauseGroup.findViewById<Button>(R.id.resumeButton)
-            resumeButton.setOnClickListener {
-                pauseGroup.visibility = INVISIBLE
-                gameViewModel.startGameLoop()
-            }
+    private fun pauseGame() {
+        gameViewModel.gameplay.stopGameLoop()
 
-            exitToMenuButton.setOnClickListener {
-                Navigation.findNavController(pauseGroup).navigate(R.id.navigateFromSinglePlayerFragmentToStartFragment)
-            }
+        pauseGroup.visibility = VISIBLE
+
+        val resumeButton = pauseGroup.findViewById<Button>(R.id.resumeButton)
+        resumeButton.setOnClickListener {
+            pauseGroup.visibility = INVISIBLE
+            gameViewModel.gameplay.startGameLoop()
+
         }
+
+        exitToMenuButton.setOnClickListener {
+            Navigation.findNavController(pauseGroup).navigate(R.id.navigateFromSinglePlayerFragmentToStartFragment)
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.R)
+    private fun getScreenSize() : Pair<Float, Float> {
+        val windowMetrics: WindowMetrics = requireActivity().windowManager.currentWindowMetrics
+        val bounds = windowMetrics.bounds
+
+        return Pair(bounds.width().toFloat(), bounds.height().toFloat())
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -54,29 +70,19 @@ class GameFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Получаем размеры экрана
-        val windowMetrics: WindowMetrics = requireActivity().windowManager.currentWindowMetrics
-        val bounds = windowMetrics.bounds
-        val screenWidth = bounds.width().toFloat()
-        val screenHeight = bounds.height().toFloat()
-
-        gameViewModel.initialize(screenWidth, screenHeight)
+        val (screenWidth, screenHeight) = getScreenSize()
 
         val view = inflater.inflate(R.layout.fragment_game, container, false)
+        initViews(view)
 
-        gameView = view.findViewById(R.id.gameView)
-
-        val pauseButton = view.findViewById<ImageButton>(R.id.pauseButton)
-        val pauseGroup = view.findViewById<ConstraintLayout>(R.id.pauseGroup)
-        val exitToMenuButton = view.findViewById<Button>(R.id.multiplayerButton)
-        val scoreView = view.findViewById<TextView>(R.id.scoreView)
-
-        gameViewModel.scoreObservable.observe(viewLifecycleOwner) { newScore ->
+        gameViewModel.initialize(screenWidth, screenHeight)
+        gameViewModel.gameplay.scoreObservable.observe(viewLifecycleOwner) { newScore ->
             scoreView.text = newScore.toString()
         }
 
-        setupPauseButtonClickListener(pauseButton, pauseGroup, exitToMenuButton)
-
+        pauseButton.setOnClickListener {
+            pauseGame()
+        }
 
         gameView.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {
@@ -92,8 +98,8 @@ class GameFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // Наблюдаем за изменениями в объектах игры
-        gameViewModel.gameObjects.observe(viewLifecycleOwner) { gameObjects ->
-            gameView.drawGame(gameObjects as List<IDrawable>)
+        gameViewModel.gameplay.gameState.observe(viewLifecycleOwner) { gameObjects ->
+            gameView.drawGame(gameObjects.objects as List<IDrawable>)
 
             if (gameViewModel.isGameLost()) {
                 val bundle = Bundle()
@@ -102,23 +108,23 @@ class GameFragment : Fragment() {
             }
         }
 
-        // Запускаем игровой цикл через ViewModel
-        gameViewModel.startGameLoop()
+        // Запуск игрового цикла
+        gameViewModel.gameplay.startGameLoop()
     }
 
     override fun onResume() {
         super.onResume()
-        gameViewModel.registerSensorHandler()
+        gameViewModel.gameplay.onResume()
     }
 
     override fun onPause() {
         super.onPause()
-        gameViewModel.unregisterSensorHandler()
+        gameViewModel.gameplay.onPause()
+        pauseGame()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        gameViewModel.stopGameLoop()
+        gameViewModel.gameplay.stopGameLoop()
     }
 }
-
