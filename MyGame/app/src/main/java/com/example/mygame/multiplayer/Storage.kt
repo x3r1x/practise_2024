@@ -1,15 +1,14 @@
 package com.example.mygame.multiplayer
 
+import android.content.res.Resources
 import com.google.gson.Gson
 
-// TODO: Storage должен выдавать GameState какой-то, для отрисовки
-// TODO: Создать класс в котором инициализируются фабрики всех объектов
-// TODO: Он JSON превращает в kotlin классы
-
-class Storage {
+class Storage(resources: Resources) {
     private var gameData: GameData? = null
     private var objects: Objects? = null
     private var state: String? = null
+
+    private val jsonParser = JSONToKotlin(resources)
 
     fun store(json: String) {
         gameData = parseJson(json)

@@ -23,7 +23,7 @@ class LevelGenerator(
         var newY = from
 
         val level = mutableListOf<IGameObject>()
-
+        // TODO: добавить генерацию ломающихся платформ
         while (abs(newY) < abs(newPackageHeight + from)) {
             var bonusSpawned = false
             val pack = mutableListOf<IGameObject>()
