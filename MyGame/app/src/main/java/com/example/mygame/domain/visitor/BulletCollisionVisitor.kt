@@ -33,14 +33,13 @@ class BulletCollisionVisitor(private val bullet: Bullet) : IVisitor {
     }
 
     override fun visit(enemy: Enemy) {
-        // Если пуля сталкивается с врагом, выключаем врага
         if (!bullet.isDisappeared && !enemy.isDisappeared) {
             val bulletRect = RectF(bullet.left, bullet.top, bullet.right, bullet.bottom)
             val enemyRect = RectF(enemy.left, enemy.top, enemy.right, enemy.bottom)
 
             if (bulletRect.intersect(enemyRect)) {
-                bullet.isDisappeared = true
                 enemy.isDisappeared = true
+                bullet.isDisappeared = true
             }
         }
     }

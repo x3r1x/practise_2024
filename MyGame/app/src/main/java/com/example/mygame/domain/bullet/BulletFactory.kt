@@ -3,7 +3,6 @@ package com.example.mygame.domain.bullet
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.util.Log
 import com.example.mygame.R
 
 class BulletFactory(resources: Resources) {
@@ -16,7 +15,7 @@ class BulletFactory(resources: Resources) {
         } else if (angle < -30f) {
             angle = -30f
         }
-        Log.i("shoot angle", "$angle")
+
         return Bullet(image, startX, startY, angle)
     }
 
