@@ -1,7 +1,6 @@
 package com.example.mygame.domain.enemies
 
 import android.graphics.Bitmap
-import com.example.mygame.domain.Enemy
 
 class Bully(initBitmap: Bitmap,
             createdX: Float,
@@ -18,7 +17,7 @@ class Bully(initBitmap: Bitmap,
         get() = HEIGHT
 
     companion object {
-        private const val WIDTH = 275f
+        const val WIDTH = 275f
         private const val HEIGHT = 174f
     }
 }

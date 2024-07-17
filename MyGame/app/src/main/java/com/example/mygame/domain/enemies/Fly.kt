@@ -1,7 +1,6 @@
 package com.example.mygame.domain.enemies
 
 import android.graphics.Bitmap
-import com.example.mygame.domain.Enemy
 import com.example.mygame.domain.GameConstants
 import com.example.mygame.domain.Screen
 

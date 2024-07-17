@@ -35,9 +35,9 @@ class GameConstants {
         const val MIN_SPRING_SPAWN_X = 40
         const val MAX_SPRING_SPAWN_X = 135
 
-        const val BULLY_SPAWN_CHANCE = 0.03f
         const val NINJA_SPAWN_CHANCE = 0.01f
-        const val FLY_SPAWN_CHANCE = 0.1f
+        const val FLY_SPAWN_CHANCE = 0.03f
+        const val BULLY_SPAWN_CHANCE = 0.06f
 
         const val MAX_FRAME_TIME = 0.016f
         const val MOVE_OBJECTS_LINE = 900f

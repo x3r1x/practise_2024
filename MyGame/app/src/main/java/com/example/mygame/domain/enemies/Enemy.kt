@@ -1,4 +1,4 @@
-package com.example.mygame.domain
+package com.example.mygame.domain.enemies
 
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -6,6 +6,9 @@ import android.graphics.Matrix
 import android.graphics.RectF
 import android.os.CountDownTimer
 import com.example.mygame.UI.IDrawable
+import com.example.mygame.domain.IGameObject
+import com.example.mygame.domain.IMoveable
+import com.example.mygame.domain.IVisitor
 import com.example.mygame.domain.player.Player
 
 open class Enemy(createdX: Float, createdY: Float) : IDrawable, IMoveable, IGameObject {
