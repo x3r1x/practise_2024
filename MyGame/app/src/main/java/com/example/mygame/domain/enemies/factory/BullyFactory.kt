@@ -4,7 +4,7 @@ import android.content.res.Resources
 import android.graphics.BitmapFactory
 import com.example.mygame.R
 import com.example.mygame.domain.enemies.factory.IEnemyFactory.Companion.BITMAP_OPTION
-import com.example.mygame.domain.Enemy
+import com.example.mygame.domain.enemies.Enemy
 import com.example.mygame.domain.enemies.Bully
 
 class BullyFactory(resources: Resources) : IEnemyFactory {

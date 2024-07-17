@@ -1,7 +1,7 @@
 package com.example.mygame.domain.enemies.factory
 
 import android.graphics.BitmapFactory
-import com.example.mygame.domain.Enemy
+import com.example.mygame.domain.enemies.Enemy
 
 interface IEnemyFactory {
     fun generateEnemy(createdX: Float, createdY: Float) : Enemy

@@ -1,7 +1,7 @@
 package com.example.mygame.domain.visitor
 
 import android.graphics.RectF
-import com.example.mygame.domain.Enemy
+import com.example.mygame.domain.enemies.Enemy
 import com.example.mygame.domain.IVisitor
 import com.example.mygame.domain.Platform
 import com.example.mygame.domain.bonuses.Jetpack

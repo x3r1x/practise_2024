@@ -4,6 +4,7 @@ import com.example.mygame.domain.bonuses.Jetpack
 import com.example.mygame.domain.bonuses.Shield
 import com.example.mygame.domain.bonuses.Spring
 import com.example.mygame.domain.bullet.Bullet
+import com.example.mygame.domain.enemies.Enemy
 import com.example.mygame.domain.player.Player
 
 interface IVisitor {

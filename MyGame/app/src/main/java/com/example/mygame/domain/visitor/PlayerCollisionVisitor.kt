@@ -1,6 +1,6 @@
 package com.example.mygame.domain.visitor
 
-import com.example.mygame.domain.Enemy
+import com.example.mygame.domain.enemies.Enemy
 import com.example.mygame.domain.GameConstants
 import com.example.mygame.domain.IGameObject
 import com.example.mygame.domain.IVisitor
