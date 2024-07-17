@@ -14,7 +14,7 @@ class LevelGenerator(
     private val enemyGenerator = EnemyGenerator(resources, screen)
     private val bonusGenerator = BonusGenerator(resources)
 
-    private val newPackageHeight = 4500f
+    private val newPackageHeight = 4000f
 
     fun generateInitialPack(): MutableList<IGameObject> {
         return platformGenerator.generateInitialPlatforms().toMutableList()
