@@ -1,15 +1,16 @@
 package com.example.mygame.domain.generator
 
 import android.content.res.Resources
-import com.example.mygame.domain.enemies.factory.BullyFactory
-import com.example.mygame.domain.enemies.factory.FlyFactory
-import com.example.mygame.domain.enemies.factory.NinjaFactory
-import com.example.mygame.domain.enemies.factory.IEnemyFactory
-import com.example.mygame.domain.IGameObject
 import com.example.mygame.domain.Enemy
 import com.example.mygame.domain.GameConstants
+import com.example.mygame.domain.IGameObject
 import com.example.mygame.domain.Platform
 import com.example.mygame.domain.Screen
+import com.example.mygame.domain.enemies.factory.BullyFactory
+import com.example.mygame.domain.enemies.factory.FlyFactory
+import com.example.mygame.domain.enemies.factory.IEnemyFactory
+import com.example.mygame.domain.enemies.factory.NinjaFactory
+import com.example.mygame.domain.platform.BreakingPlatform
 import kotlin.random.Random
 
 class EnemyGenerator(
@@ -27,6 +28,10 @@ class EnemyGenerator(
     )
 
     fun generateEnemy(platform: Platform): IGameObject? {
+        if (platform::class == BreakingPlatform::class) {
+            return null
+        }
+
         var enemy: Enemy? = null
         val random = Random.nextFloat()
         val x = Random.nextFloat() * (screen.width - platform.width) + GAP_X

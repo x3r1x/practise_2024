@@ -1,8 +1,9 @@
 package com.example.mygame.domain.generator
 
 import android.content.res.Resources
-import com.example.mygame.domain.Screen
 import com.example.mygame.domain.IGameObject
+import com.example.mygame.domain.Screen
+import com.example.mygame.domain.platform.BreakingPlatform
 import kotlin.math.abs
 
 class LevelGenerator(
@@ -28,6 +29,11 @@ class LevelGenerator(
             var bonusSpawned = false
             val pack = mutableListOf<IGameObject>()
             val platform = platformGenerator.generatePlatform(newY)
+
+            if (platform is BreakingPlatform) {
+                val postPlatform = platformGenerator.generatePlatform(platform.top, true)
+                pack.add(postPlatform)
+            }
             pack.add(platform)
 
             (bonusGenerator.generateBonus(platform) as IGameObject?)?.let {

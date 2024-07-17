@@ -27,6 +27,8 @@ class GameConstants {
         const val NINJA_MAX_CONVERGENCE = 600f
 
         const val PLATFORM_SPAWN_ADDITIONAL_X = 100f
+        const val MAX_VERTICAL_PLATFORM_GAP = 400f
+        const val MAX_VERTICAL_BREAKING_PLATFORM_GAP = 100f
 
         const val JETPACK_SPAWN_CHANCE = 0.02f
         const val SHIELD_SPAWN_CHANCE = 0.08f
