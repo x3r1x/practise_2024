@@ -1,52 +1,52 @@
 package com.example.mygame.multiplayer
 
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
-import com.example.mygame.UI.IDrawable
 import com.google.gson.annotations.SerializedName
 
-data class ClientMessage(val dx: Float, val tap: Boolean)
+data class ClientMessage(
+    val dx: Float,
+    val tap: Boolean
+)
 
-data class PlayerJSON(val id: String, val x: Float, val y: Float) {}
+data class PlayerJSON(
+    val id: String,
+    val x: Float,
+    val y: Float,
+    val drx: Int,
+    val dry: Int,
+    val stt: String
+)
 
-data class Platform(var x: Float, var y: Float): IDrawable {
-    private val paint = Paint().apply {
-        color = Color.RED
-    }
+data class PlatformJSON(
+    val x: Float,
+    val y: Float,
+    val typ: String,
+    val anm: Int
+)
 
-    override fun draw(canvas: Canvas) {
-        canvas.drawCircle(x, y, 50f, paint)
-    }
-}
+data class EnemyJSON(
+    val x: Float,
+    val y: Float,
+    val typ: String
+)
 
-data class Enemy(var x: Float, var y: Float): IDrawable {
-    private val paint = Paint().apply {
-        color = Color.RED
-    }
+data class BonusJSON(
+    val x: Float,
+    val y: Float,
+    val typ: String,
+    val anm: Int
+)
 
-    override fun draw(canvas: Canvas) {
-        canvas.drawCircle(x, y, 50f, paint)
-    }
-}
-
-data class Bonus(var x: Float, var y: Float): IDrawable {
-    private val paint = Paint().apply {
-        color = Color.RED
-    }
-
-    override fun draw(canvas: Canvas) {
-        canvas.drawCircle(x, y, 50f, paint)
-    }
-}
-
-
+data class BulletJSON(
+    val x: Float,
+    val y: Float
+)
 
 data class Objects(
     @SerializedName("plr") val players: List<PlayerJSON>,
-    @SerializedName("pla") val platforms: List<Platform>,
-    @SerializedName("enm") val enemies: List<Enemy>,
-    @SerializedName("bns") val bonuses: List<Bonus>,
+    @SerializedName("pla") val platforms: List<PlatformJSON>,
+    @SerializedName("enm") val enemies: List<EnemyJSON>,
+    @SerializedName("bns") val bonuses: List<BonusJSON>,
+    @SerializedName("blt") val bullets: List<BulletJSON>
 )
 
 data class GameData(
