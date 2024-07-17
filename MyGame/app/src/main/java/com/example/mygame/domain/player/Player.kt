@@ -92,12 +92,12 @@ class Player(private val idleImage: Bitmap,
     }
 
     fun updatePositionX(deltaX: Float, elapsedTime: Float) {
-        x += deltaX * elapsedTime
+        x += deltaX * elapsedTime * GameConstants.PLAYER_ON_X_MULTIPLIER
         changeDirectionX(deltaX)
     }
 
     private fun changeDirectionX(newX: Float) {
-        if (newX < - GameConstants.PLAYER_DISTANCE_TO_TURN) {
+        if (newX < -GameConstants.PLAYER_DISTANCE_TO_TURN) {
             directionX = DirectionX.LEFT
         } else if (newX > GameConstants.PLAYER_DISTANCE_TO_TURN) {
             directionX = DirectionX.RIGHT
