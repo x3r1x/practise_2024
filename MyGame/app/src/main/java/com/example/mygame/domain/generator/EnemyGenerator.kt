@@ -43,10 +43,10 @@ class EnemyGenerator(
                 enemy = fly
             }
             random < GameConstants.BULLY_SPAWN_CHANCE -> {
-                if (x - Bully.WIDTH < screen.left) {
-                    x = Bully.WIDTH
-                } else if (x + Bully.WIDTH > screen.right) {
-                    x = screen.right - Bully.WIDTH
+                if (x - Bully.WIDTH / 2 < screen.left) {
+                    x = Bully.WIDTH / 2
+                } else if (x + Bully.WIDTH / 2 > screen.right) {
+                    x = screen.right - Bully.WIDTH / 2
                 }
 
                 val bully = bullyFactory.generateEnemy(x, platform.y)
