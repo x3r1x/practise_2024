@@ -8,10 +8,6 @@ import com.example.mygame.multiplayer.factory.PlatformFactory
 import com.example.mygame.multiplayer.factory.PlayerFactory
 import com.google.gson.Gson
 
-// TODO: Storage должен выдавать GameState какой-то, для отрисовки
-// TODO: Создать класс в котором инициализируются фабрики всех объектов
-// TODO: Он JSON превращает в kotlin классы
-
 class JSONToKotlin(resources: Resources) {
     private val playerFactory = PlayerFactory(resources)
     private val enemyFactory = EnemyFactory(resources)
