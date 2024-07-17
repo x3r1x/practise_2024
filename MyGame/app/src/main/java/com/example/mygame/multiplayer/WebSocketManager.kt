@@ -11,7 +11,6 @@ import java.net.URI
 
 class WebSocketManager(context: Context, serverUri: URI): SensorHandler.SensorCallback {
     private val gson = Gson()
-    val storage = Storage()
     private var client: WebSocketClient? = null
 
     private val sensorHandler = SensorHandler(context, this)
@@ -59,7 +58,6 @@ class WebSocketManager(context: Context, serverUri: URI): SensorHandler.SensorCa
     }
 
     private fun handleServerData(data: String) {
-        storage.store(data)
     }
 
     override fun onSensorDataChanged(deltaX: Float) {
