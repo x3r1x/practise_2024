@@ -23,14 +23,14 @@ class Player(private val idleImage: Bitmap,
         DOWN(1),
     }
 
-    enum class DirectionX {
-        LEFT,
-        RIGHT
+    enum class DirectionX(val value: Int) {
+        LEFT(-1),
+        RIGHT(1)
     }
 
     var isWithJetpack = false
-
     var isWithShield = false
+    private var isShooting = false
 
     override var x = 0f
 
@@ -51,7 +51,6 @@ class Player(private val idleImage: Bitmap,
 
     var speedY = 0f
 
-    private var isShooting = false
     private var shootingRunnable: Runnable? = null
     private val shootingHandler = Handler(Looper.getMainLooper())
 

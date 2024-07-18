@@ -14,10 +14,10 @@ class Spring(private val initBitmap: MutableList<Bitmap>,
 ) : IDrawable, IMoveable, IBonus, IGameObject {
     private val animationDuration : Long = 150
 
-    private var currentFrame = 0
+    var currentFrame = 0
     private var bitmap = initBitmap[currentFrame]
     private var isStretchRunning = false
-    private var animator : ValueAnimator? = null
+    var animator : ValueAnimator? = null
 
     override var x = createdX
     override var y = createdY

@@ -48,7 +48,7 @@ class LevelGenerator(
 
             level.addAll(pack)
         }
-
+        // TODO: добавлять ломающиеся платформы в пак после всех
         return level
     }
 }

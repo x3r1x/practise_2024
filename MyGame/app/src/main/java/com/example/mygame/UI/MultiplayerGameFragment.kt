@@ -75,7 +75,7 @@ class MultiplayerGameFragment : Fragment() {
 
         gameView.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {
-                gameViewModel.onClick(event.x, event.y)
+                gameViewModel.onClick(event.x)
             }
             true
         }

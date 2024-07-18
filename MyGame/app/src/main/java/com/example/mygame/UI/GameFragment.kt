@@ -3,6 +3,7 @@ package com.example.mygame.UI
 import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -86,7 +87,7 @@ class GameFragment : Fragment() {
 
         gameView.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {
-                gameViewModel.onClick(event.x, event.y)
+                gameViewModel.onClick(event.x)
             }
             true
         }
@@ -99,7 +100,7 @@ class GameFragment : Fragment() {
 
         // Наблюдаем за изменениями в объектах игры
         gameViewModel.gameplay.gameState.observe(viewLifecycleOwner) { gameObjects ->
-            gameView.drawGame(gameObjects.objects as List<IDrawable>)
+            gameView.drawGame(gameObjects.objects)
 
             if (gameViewModel.isGameLost()) {
                 val bundle = Bundle()

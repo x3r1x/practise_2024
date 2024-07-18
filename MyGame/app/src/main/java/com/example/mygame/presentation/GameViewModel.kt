@@ -3,6 +3,7 @@ package com.example.mygame.presentation
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import com.example.mygame.domain.Screen
+import com.example.mygame.domain.drawable.DrawableManager
 import com.example.mygame.domain.gameplay.Gameplay
 import com.example.mygame.domain.logic.CollisionHandler
 import com.example.mygame.domain.logic.ObjectsManager
@@ -15,6 +16,7 @@ class GameViewModel(private val application: Application) : AndroidViewModel(app
     private lateinit var objectsManager: ObjectsManager
     private lateinit var positionHandler: PositionHandler
     private lateinit var screen: Screen
+    private lateinit var drawableManager: DrawableManager
 
     lateinit var gameplay: Gameplay
 
@@ -24,7 +26,8 @@ class GameViewModel(private val application: Application) : AndroidViewModel(app
         collisionHandler = CollisionHandler()
         objectsManager = ObjectsManager(application.resources, screen)
         positionHandler = PositionHandler()
-        gameplay = Gameplay(objectsManager, sensorHandler, positionHandler, collisionHandler, screen)
+        drawableManager = DrawableManager(application.resources)
+        gameplay = Gameplay(objectsManager, sensorHandler, positionHandler, collisionHandler, drawableManager, screen)
 
         objectsManager.initObjects()
     }
@@ -33,8 +36,8 @@ class GameViewModel(private val application: Application) : AndroidViewModel(app
         gameplay.setDeltaX(deltaX)
     }
 
-    fun onClick(touchX: Float, touchY: Float) {
-        gameplay.onShot(touchX, touchY)
+    fun onClick(touchX: Float) {
+        gameplay.onShot(touchX)
     }
 
     fun isGameLost() : Boolean {

@@ -2,17 +2,17 @@ package com.example.mygame.multiplayer
 
 import android.content.res.Resources
 import com.example.mygame.domain.drawable.ObjectView
-import com.example.mygame.multiplayer.factory.BonusFactory
-import com.example.mygame.multiplayer.factory.EnemyFactory
-import com.example.mygame.multiplayer.factory.PlatformFactory
-import com.example.mygame.multiplayer.factory.PlayerFactory
+import com.example.mygame.domain.drawable.factory.BonusViewFactory
+import com.example.mygame.domain.drawable.factory.EnemyViewFactory
+import com.example.mygame.domain.drawable.factory.PlatformViewFactory
+import com.example.mygame.domain.drawable.factory.PlayerViewFactory
 import com.google.gson.Gson
 
 class JSONToKotlin(resources: Resources) {
-    private val playerFactory = PlayerFactory(resources)
-    private val enemyFactory = EnemyFactory(resources)
-    private val platformFactory = PlatformFactory(resources)
-    private val bonusFactory = BonusFactory(resources)
+    private val playerViewFactory = PlayerViewFactory(resources)
+    private val enemyViewFactory = EnemyViewFactory(resources)
+    private val platformViewFactory = PlatformViewFactory(resources)
+    private val bonusViewFactory = BonusViewFactory(resources)
 
     fun getObjects(jsonString: String) : List<ObjectView> {
         val gameData = parseJSON(jsonString)
@@ -27,16 +27,16 @@ class JSONToKotlin(resources: Resources) {
 
     private fun mapObjects(gameData: GameData) : List<ObjectView> {
         val platforms = gameData.objects.platforms.map { platformJSON ->
-            platformFactory.getPlatformView(platformJSON)
+            platformViewFactory.getPlatformView(platformJSON.x, platformJSON.y, platformJSON.typ, platformJSON.anm)
         }
         val enemies = gameData.objects.enemies.map { enemyJSON ->
-            enemyFactory.getEnemyView(enemyJSON)
+            enemyViewFactory.getEnemyView(enemyJSON.x, enemyJSON.y, enemyJSON.typ)
         }
         val bonuses = gameData.objects.bonuses.map { bonusJSON ->
-            bonusFactory.getBonusView(bonusJSON)
+            bonusViewFactory.getBonusView(bonusJSON.x, bonusJSON.y, bonusJSON.typ, bonusJSON.anm)
         }
         val players = gameData.objects.players.map { playerJSON ->
-            playerFactory.getPlayerView(playerJSON)
+            playerViewFactory.getPlayerView(playerJSON.x, playerJSON.y, playerJSON.stt, playerJSON.drx, playerJSON.dry)
         }
 
         return platforms + enemies + bonuses + players

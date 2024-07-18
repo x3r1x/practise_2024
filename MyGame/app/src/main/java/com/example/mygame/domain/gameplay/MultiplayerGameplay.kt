@@ -70,7 +70,7 @@ class MultiplayerGameplay(resources: Resources, screen: Screen) : IGameplay, Sen
         // TODO: Парсинг из JSON в kotlin классы
     }
 
-    override fun onShot(startX: Float, startY: Float) {
+    override fun onShot(startX: Float) {
         sendMessage(0f, true)
     }
 
