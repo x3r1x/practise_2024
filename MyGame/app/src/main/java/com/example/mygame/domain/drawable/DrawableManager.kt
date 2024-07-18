@@ -33,23 +33,7 @@ class DrawableManager(resources: Resources) {
     private val bulletViewFactory = BulletViewFactory(resources)
 
     fun mapObjects(gameObjects: List<IGameObject>) : List<IDrawable> {
-        val list = mutableListOf<IDrawable>()
-        gameObjects.forEach {
-            if (it is Player) {
-                list.add(playerToView(it))
-            } else if (it is Platform) {
-                list.add(platformToView(it))
-            } else if (it is Enemy) {
-                list.add(enemyToView(it))
-            } else if (it is Bullet) {
-                list.add(bulletToView(it))
-            } else if (it is Spring) {
-                list.add(bonusToView(it))
-            } else if (it is Shield) {
-                list.add(bonusToView(it))
-            }
-        }
-        /*return gameObjects.map { gameObject ->
+        return gameObjects.map { gameObject ->
             when (gameObject) {
                 is Player -> playerToView(gameObject)
                 is Platform -> platformToView(gameObject)
@@ -58,20 +42,11 @@ class DrawableManager(resources: Resources) {
                 is Bullet -> bulletToView(gameObject)
                 else -> throw IllegalArgumentException("Unknown game object type: ${gameObject::class}")
             }
-        }*/
-        return list
+        }
     }
 
     private fun playerToView(player: Player) : ObjectView {
-        var state = ""
-        if (player.isDead) {
-            state = PlayerViewFactory.DEAD
-        } else if (player.isShooting()) {
-            state = PlayerViewFactory.SHOOTING
-        }
-
-        val playerView = playerViewFactory.getPlayerView(player.x, player.y, state, player.directionX.value, player.directionY.value)
-        return playerView
+        return playerViewFactory.getPlayerView(player.x, player.y, player.directionX.value, player.directionY.value, player.isWithShield, player.isShooting(), player.isDead)
     }
 
     private fun platformToView(platform: Platform) : ObjectView {
@@ -114,7 +89,8 @@ class DrawableManager(resources: Resources) {
             if (bonus.isOnPlayer) {
                 another = 1
             }
-            return bonusViewFactory.getBonusView(bonus.x, bonus.y, type, another)
+            val coords = bonus.getCoords()
+            return bonusViewFactory.getBonusView(coords.first, coords.second, type, another)
         } else if (bonus is Spring) {
             type = BonusViewFactory.SPRING
             another = bonus.currentFrame
@@ -124,7 +100,8 @@ class DrawableManager(resources: Resources) {
             if (bonus.state != Jetpack.State.UNUSED) {
                 type = BonusViewFactory.JETPACK_ON_PLAYER
             }
-            return bonusViewFactory.getBonusView(bonus.x, bonus.y, type, another)
+            val coords = bonus.getCoords()
+            return bonusViewFactory.getBonusView(coords.first, coords.second, type, another)
         } else {
             throw IllegalArgumentException("Invalid bonus type")
         }
