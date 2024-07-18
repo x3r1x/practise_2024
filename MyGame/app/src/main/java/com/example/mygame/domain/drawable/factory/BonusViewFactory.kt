@@ -4,10 +4,11 @@ import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
+import android.graphics.RectF
 import com.example.mygame.R
 import com.example.mygame.domain.drawable.ObjectView
 
-class BonusViewFactory(private val resources: Resources) {
+class BonusViewFactory(resources: Resources) {
     private val shieldBitmap = BitmapFactory.decodeResource(resources, R.drawable.shield, BITMAP_OPTIONS)
     private val shieldOnPlayerBitmap = BitmapFactory.decodeResource(resources, R.drawable.shield_on_player, BITMAP_OPTIONS)
     private val springBitmaps = listOf(
@@ -29,8 +30,10 @@ class BonusViewFactory(private val resources: Resources) {
         another: Int
     ) : ObjectView {
         val bitmap = getBitmap(type, another)
+        val rect = getRect(x, y, bitmap)
+        val matrix = getMatrix(rect)
 
-        return ObjectView(x, y, bitmap, Matrix())
+        return ObjectView(x, y, bitmap, matrix)
     }
 
     private fun getBitmap(type: String, animation: Int) : Bitmap {
@@ -57,6 +60,17 @@ class BonusViewFactory(private val resources: Resources) {
                 else -> throw IllegalArgumentException("Invalid spring animation value: $animation")
             }
         }
+    }
+
+    private fun getMatrix(destRect: RectF) : Matrix {
+        val matrix = Matrix()
+        matrix.postTranslate(destRect.left, destRect.top)
+
+        return matrix
+    }
+
+    private fun getRect(x: Float, y: Float, bitmap: Bitmap) : RectF {
+        return RectF(x - bitmap.width / 2, y - bitmap.height / 2, x + bitmap.width / 2, y + bitmap.height / 2)
     }
 
     companion object {

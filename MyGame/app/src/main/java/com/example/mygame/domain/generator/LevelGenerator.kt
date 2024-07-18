@@ -1,8 +1,9 @@
 package com.example.mygame.domain.generator
 
 import android.content.res.Resources
-import com.example.mygame.domain.Screen
 import com.example.mygame.domain.IGameObject
+import com.example.mygame.domain.Screen
+import com.example.mygame.domain.platform.BreakingPlatform
 import kotlin.math.abs
 
 class LevelGenerator(
@@ -13,7 +14,7 @@ class LevelGenerator(
     private val enemyGenerator = EnemyGenerator(resources, screen)
     private val bonusGenerator = BonusGenerator(resources)
 
-    private val newPackageHeight = 4500f
+    private val newPackageHeight = 4000f
 
     fun generateInitialPack(): MutableList<IGameObject> {
         return platformGenerator.generateInitialPlatforms().toMutableList()
@@ -23,20 +24,25 @@ class LevelGenerator(
         var newY = from
 
         val level = mutableListOf<IGameObject>()
-        // TODO: добавить генерацию ломающихся платформ
+
         while (abs(newY) < abs(newPackageHeight + from)) {
             var bonusSpawned = false
             val pack = mutableListOf<IGameObject>()
             val platform = platformGenerator.generatePlatform(newY)
+
+            if (platform is BreakingPlatform) {
+                val postPlatform = platformGenerator.generatePlatform(platform.top, true)
+                pack.add(postPlatform)
+            }
             pack.add(platform)
 
             (bonusGenerator.generateBonus(platform) as IGameObject?)?.let {
-                bonus -> pack.add(bonus)
+                    bonus -> pack.add(bonus)
                 bonusSpawned = true
             }
 
             enemyGenerator.generateEnemy(platform)?.let {
-                enemy ->
+                    enemy ->
                 if (!bonusSpawned) {
                     pack.add(enemy)
                     pack.remove(platform)
@@ -48,7 +54,7 @@ class LevelGenerator(
 
             level.addAll(pack)
         }
-        // TODO: добавлять ломающиеся платформы в пак после всех
+
         return level
     }
 }

@@ -48,6 +48,7 @@ class DisappearingPlatform(
             this.duration = DISAPPEARING_DURATION
             addUpdateListener { animator ->
                 val currentColor = animator.animatedValue as Int
+                platformColor.color = currentColor
                 paint.color = currentColor
             }
             addListener(object : AnimatorListenerAdapter() {

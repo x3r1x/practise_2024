@@ -32,7 +32,7 @@ class Shield(private val initDefaultShield: Bitmap,
 
     override var isDisappeared = false
 
-    private var player: Player? = null
+    var player: Player? = null
 
     fun initPlayer(entity: Player) {
         player = entity
@@ -57,7 +57,6 @@ class Shield(private val initDefaultShield: Bitmap,
                 dispose()
             }
         }
-
         timer.start()
     }
 

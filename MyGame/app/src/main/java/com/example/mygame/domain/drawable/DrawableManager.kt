@@ -1,7 +1,6 @@
 package com.example.mygame.domain.drawable
 
 import android.content.res.Resources
-import android.util.Log
 import com.example.mygame.UI.IDrawable
 import com.example.mygame.domain.Enemy
 import com.example.mygame.domain.IGameObject
@@ -40,6 +39,14 @@ class DrawableManager(resources: Resources) {
                 list.add(playerToView(it))
             } else if (it is Platform) {
                 list.add(platformToView(it))
+            } else if (it is Enemy) {
+                list.add(enemyToView(it))
+            } else if (it is Bullet) {
+                list.add(bulletToView(it))
+            } else if (it is Spring) {
+                list.add(bonusToView(it))
+            } else if (it is Shield) {
+                list.add(bonusToView(it))
             }
         }
         /*return gameObjects.map { gameObject ->
@@ -85,7 +92,7 @@ class DrawableManager(resources: Resources) {
             }
         }
 
-        return platformViewFactory.getPlatformView(platform.left, platform.top, type, another)
+        return platformViewFactory.getPlatformView(platform.x, platform.y, type, another)
     }
 
     private fun enemyToView(enemy: Enemy) : ObjectView {
@@ -100,7 +107,7 @@ class DrawableManager(resources: Resources) {
     }
 
     private fun bonusToView(bonus: IBonus) : ObjectView {
-        var type = ""
+        var type: String
         var another = 0
         if (bonus is Shield) {
             type = BonusViewFactory.SHIELD

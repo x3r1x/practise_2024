@@ -29,7 +29,6 @@ class ObjectsManager(
     }
 
     fun updateObjects(delta: Float) {
-
         tempScore += abs(delta)
 
         if (tempScore >= scoreThreshold) {
