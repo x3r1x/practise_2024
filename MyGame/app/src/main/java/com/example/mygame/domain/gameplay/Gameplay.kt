@@ -137,4 +137,7 @@ class Gameplay(
     override fun onResume() {
         sensorHandler.register()
     }
+
+    override fun onDestroy() {
+    }
 }
