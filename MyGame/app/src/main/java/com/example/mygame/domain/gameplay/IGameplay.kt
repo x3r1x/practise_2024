@@ -17,9 +17,10 @@ data class GameState(
 
 interface IGameplay {
     val gameState: LiveData<GameState>
-
     fun onViewCreated()
+
     fun onShot(startX: Float)
     fun onPause()
     fun onResume()
+    fun onDestroy()
 }

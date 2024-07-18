@@ -76,11 +76,11 @@ class MultiplayerGameplay(resources: Resources, screen: Screen) : IGameplay, Sen
 
     private fun handleServerData(message: String) {
         objects = JSONToKotlin.getObjectsViews(message)
-        _gameState.value = GameState(
+        _gameState.postValue(GameState(
             Type.GAME,
             JSONToKotlin.getObjectsViews(message),
             emptyList()
-        )
+        ))
     }
 
     override fun onShot(startX: Float) {
@@ -95,5 +95,9 @@ class MultiplayerGameplay(resources: Resources, screen: Screen) : IGameplay, Sen
 
     override fun onSensorDataChanged(deltaX: Float) {
         sendMessage(deltaX)
+    }
+
+    override fun onDestroy() {
+        client.close()
     }
 }

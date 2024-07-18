@@ -77,7 +77,13 @@ class MultiplayerGameFragment : Fragment() {
         gameViewModel.gameplay.onPause()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        gameViewModel.gameplay.onDestroy()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
+
     }
 }

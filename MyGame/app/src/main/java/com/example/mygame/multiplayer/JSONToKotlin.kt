@@ -34,35 +34,44 @@ class JSONToKotlin(resources: Resources) {
         var bullets: List<ObjectView> = emptyList()
         var players: List<ObjectView> = emptyList()
 
-        if (!gameData.objects.platforms.isEmpty()) {
+        if (gameData.objects.platforms.isNotEmpty()) {
             platforms = gameData.objects.platforms.map { platformJSON ->
                 platformViewFactory.getPlatformView(platformJSON.x, platformJSON.y, platformJSON.typ, platformJSON.anm)
             }
         }
-        if (!gameData.objects.enemies.isEmpty()) {
+        if (gameData.objects.enemies.isNotEmpty()) {
             enemies = gameData.objects.enemies.map { enemyJSON ->
                 enemyViewFactory.getEnemyView(enemyJSON.x, enemyJSON.y, enemyJSON.typ)
             }
         }
-        if (!gameData.objects.bonuses.isEmpty()) {
+        if (gameData.objects.bonuses.isNotEmpty()) {
             bonuses = gameData.objects.bonuses.map { bonusJSON ->
                 bonusViewFactory.getBonusView(bonusJSON.x, bonusJSON.y, bonusJSON.typ, bonusJSON.anm)
             }
         }
-        if (!gameData.objects.bullets.isEmpty()) {
+        if (gameData.objects.bullets.isNotEmpty()) {
             bullets = gameData.objects.bullets.map { bulletJSON ->
                 bulletViewFactory.getBulletView(bulletJSON.x, bulletJSON.y)
             }
         }
-        if (!gameData.objects.players.isEmpty()) {
+
+        if (gameData.objects.players.isNotEmpty()) {
             players = gameData.objects.players.map { playerJSON ->
                 val isDead = playerJSON.ded
                 val isShot = playerJSON.sht
                 val isWithShield = playerJSON.sld
-                playerViewFactory.getPlayerView(playerJSON.x, playerJSON.y, playerJSON.drx, playerJSON.dry, isWithShield, isShot, isDead)
+                playerViewFactory.getPlayerView(
+                    playerJSON.x,
+                    playerJSON.y,
+                    playerJSON.drx,
+                    playerJSON.dry,
+                    isWithShield,
+                    isShot,
+                    isDead
+                )
             }
         }
-
         return platforms + enemies + bonuses + bullets + players
+        //return players + platforms
     }
 }
