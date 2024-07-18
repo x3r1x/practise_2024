@@ -3,6 +3,7 @@ package com.example.mygame.multiplayer
 import android.content.res.Resources
 import com.example.mygame.domain.drawable.ObjectView
 import com.example.mygame.domain.drawable.factory.BonusViewFactory
+import com.example.mygame.domain.drawable.factory.BulletViewFactory
 import com.example.mygame.domain.drawable.factory.EnemyViewFactory
 import com.example.mygame.domain.drawable.factory.PlatformViewFactory
 import com.example.mygame.domain.drawable.factory.PlayerViewFactory
@@ -13,6 +14,7 @@ class JSONToKotlin(resources: Resources) {
     private val enemyViewFactory = EnemyViewFactory(resources)
     private val platformViewFactory = PlatformViewFactory(resources)
     private val bonusViewFactory = BonusViewFactory(resources)
+    private val bulletViewFactory = BulletViewFactory(resources)
 
     fun getObjects(jsonString: String) : List<ObjectView> {
         val gameData = parseJSON(jsonString)
@@ -35,10 +37,13 @@ class JSONToKotlin(resources: Resources) {
         val bonuses = gameData.objects.bonuses.map { bonusJSON ->
             bonusViewFactory.getBonusView(bonusJSON.x, bonusJSON.y, bonusJSON.typ, bonusJSON.anm)
         }
+        val bullets = gameData.objects.bullets.map { bulletJSON ->
+            bulletViewFactory.getBulletView(bulletJSON.x, bulletJSON.y)
+        }
         val players = gameData.objects.players.map { playerJSON ->
             playerViewFactory.getPlayerView(playerJSON.x, playerJSON.y, playerJSON.stt, playerJSON.drx, playerJSON.dry)
         }
 
-        return platforms + enemies + bonuses + players
+        return platforms + enemies + bonuses + bullets + players
     }
 }
