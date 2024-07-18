@@ -13,7 +13,10 @@ data class PlayerJSON(
     val y: Float,
     val drx: Int,
     val dry: Int,
-    val stt: String
+    val sld: Int,
+    val sht: Int,
+    val ded: Int,
+    val scr: Int
 )
 
 data class PlatformJSON(
@@ -26,7 +29,8 @@ data class PlatformJSON(
 data class EnemyJSON(
     val x: Float,
     val y: Float,
-    val typ: String
+    val typ: String,
+    val anm: Int
 )
 
 data class BonusJSON(
