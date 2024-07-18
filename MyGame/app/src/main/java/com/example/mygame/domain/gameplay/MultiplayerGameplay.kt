@@ -31,11 +31,9 @@ class MultiplayerGameplay(resources: Resources, screen: Screen) : IGameplay, Sen
     init {
         client = object : WebSocketClient(serverUri) {
             override fun onOpen(handshakedata: ServerHandshake?) {
-                Log.d("WebSocket", "Opened")
             }
 
             override fun onMessage(message: String?) {
-                Log.d("WebSocket", "Message received: $message")
                 message?.let {
                     try {
                         handleServerData(message)
