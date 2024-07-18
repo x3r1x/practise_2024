@@ -41,9 +41,14 @@ class JSONToKotlin(resources: Resources) {
             bulletViewFactory.getBulletView(bulletJSON.x, bulletJSON.y)
         }
         val players = gameData.objects.players.map { playerJSON ->
-            playerViewFactory.getPlayerView(playerJSON.x, playerJSON.y, playerJSON.stt, playerJSON.drx, playerJSON.dry)
+            val isDead = playerJSON.ded.toBoolean()
+            val isShot = playerJSON.sht.toBoolean()
+            val isWithShield = playerJSON.sld.toBoolean()
+            playerViewFactory.getPlayerView(playerJSON.x, playerJSON.y, playerJSON.drx, playerJSON.dry, isWithShield, isShot, isDead)
         }
 
         return platforms + enemies + bonuses + bullets + players
     }
+
+    private fun Int.toBoolean() = if (this == 1) true else false
 }

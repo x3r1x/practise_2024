@@ -17,21 +17,23 @@ class PlayerViewFactory(resources: Resources) {
     fun getPlayerView(
         x: Float,
         y: Float,
-        state: String,
         directionX: Int,
-        directionY: Int
+        directionY: Int,
+        isWithShield: Boolean,
+        isShot: Boolean,
+        isDead: Boolean
     ) : ObjectView {
-        val bitmap = getBitmap(state, directionY)
-        val rect = getRect(x, y, state)
+        val bitmap = getBitmap(isDead, isShot, directionY)
+        val rect = getRect(x, y, isDead, isShot)
         val matrix = getMatrix(directionX, rect, bitmap)
 
         return ObjectView(x, y, bitmap, matrix)
     }
 
-    private fun getBitmap(state: String, directionY: Int): Bitmap {
-        return if (state == DEAD) {
+    private fun getBitmap(isDead: Boolean, isShot: Boolean, directionY: Int): Bitmap {
+        return if (isDead) {
             deadPlayerBitmap
-        } else if (state == SHOOTING) {
+        } else if (isShot) {
             shootPlayerBitmap
         } else if (directionY == DIRECTION_Y_UP) {
             jumpPlayerBitmap
@@ -57,10 +59,10 @@ class PlayerViewFactory(resources: Resources) {
         return matrix
     }
 
-    private fun getRect(x: Float, y: Float, state: String) : RectF {
-        return if (state == DEAD) {
+    private fun getRect(x: Float, y: Float, isDead: Boolean, isShot: Boolean) : RectF {
+        return if (isDead) {
             RectF(x - DEAD_WIDTH / 2, y - DEAD_HEIGHT / 2, x + DEAD_WIDTH / 2, y + DEAD_HEIGHT / 2)
-        } else if (state == SHOOTING) {
+        } else if (isShot) {
             RectF(x - SHOOTING_WIDTH / 2, y - SHOOTING_HEIGHT / 2, x + SHOOTING_WIDTH / 2, y + SHOOTING_HEIGHT / 2)
         } else {
             RectF(x - RADIUS, y - RADIUS, x + RADIUS, y + RADIUS)
