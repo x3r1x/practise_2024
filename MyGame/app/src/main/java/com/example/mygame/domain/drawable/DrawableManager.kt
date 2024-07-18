@@ -87,8 +87,9 @@ class DrawableManager(resources: Resources) {
         if (bonus is Shield) {
             type = BonusViewFactory.SHIELD
             if (bonus.isOnPlayer) {
-                another = 1
+                type = BonusViewFactory.SHIELD_ON_PLAYER
             }
+            another = bonus.paint.alpha
             val coords = bonus.getCoords()
             return bonusViewFactory.getBonusView(coords.first, coords.second, type, another)
         } else if (bonus is Spring) {
@@ -96,9 +97,12 @@ class DrawableManager(resources: Resources) {
             another = bonus.currentFrame
             return bonusViewFactory.getBonusView(bonus.x, bonus.y, type, another)
         } else if (bonus is Jetpack) {
-            type = BonusViewFactory.JETPACK
-            if (bonus.state != Jetpack.State.UNUSED) {
-                type = BonusViewFactory.JETPACK_ON_PLAYER
+            if (bonus.state == Jetpack.State.ON_LEFT_OF_PLAYER) {
+                type = BonusViewFactory.JETPACK_ON_PLAYER_LEFT
+            } else if (bonus.state == Jetpack.State.ON_RIGHT_OF_PLAYER) {
+                type = BonusViewFactory.JETPACK_ON_PLAYER_RIGHT
+            } else {
+                type = BonusViewFactory.JETPACK
             }
             val coords = bonus.getCoords()
             return bonusViewFactory.getBonusView(coords.first, coords.second, type, another)

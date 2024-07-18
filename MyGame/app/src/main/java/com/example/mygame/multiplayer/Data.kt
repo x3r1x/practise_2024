@@ -13,9 +13,9 @@ data class PlayerJSON(
     val y: Float,
     val drx: Int,
     val dry: Int,
-    val sld: Int,
-    val sht: Int,
-    val ded: Int,
+    val sld: Boolean,
+    val sht: Boolean,
+    val ded: Boolean,
     val scr: Int
 )
 

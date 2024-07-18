@@ -46,6 +46,19 @@ class Jetpack(private val initDefaultJetpack: Bitmap,
         player?.isWithJetpack = true
     }
 
+    fun getCoords() : Pair<Float, Float> {
+        if (player == null) {
+            return Pair(x, y)
+        } else {
+            if (player!!.directionX == Player.DirectionX.LEFT) {
+                state = State.ON_LEFT_OF_PLAYER
+            } else {
+                state = State.ON_RIGHT_OF_PLAYER
+            }
+            return Pair(player!!.x, player!!.y)
+        }
+    }
+
     fun fly() {
         player?.directionY = Player.DirectionY.UP
         player?.speedY = GameConstants.PLAYER_SPEED_WITH_JETPACK
@@ -121,11 +134,11 @@ class Jetpack(private val initDefaultJetpack: Bitmap,
     }
 
     companion object {
-        private const val WIDTH = 124f
-        private const val HEIGHT = 111f
+        const val WIDTH = 124f
+        const val HEIGHT = 111f
 
-        private const val OFFSET_ON_PLAYER_RIGHT = 95f
-        private const val OFFSET_ON_PLAYER_LEFT = 127f
+        const val OFFSET_ON_PLAYER_RIGHT = 95f
+        const val OFFSET_ON_PLAYER_LEFT = 127f
 
         private const val JETPACK_TIMER_TICK : Long = 500
         private const val WHEN_TO_PULSE : Long = 2000

@@ -19,7 +19,7 @@ class Shield(
 ) : IDrawable, IMoveable, IBonus, IGameObject {
     var isOnPlayer = false
 
-    private var paint = Paint().apply {
+    var paint = Paint().apply {
         alpha = DEFAULT_TRANSPARENCY
     }
 
@@ -33,32 +33,7 @@ class Shield(
 
     override var isDisappeared = false
 
-    private var _player: Player? = null
-    var player: Player?
-        get() = _player
-        set(value) {
-            _player?.removeOnPositionChangedListener(playerPositionChangedListener)
-            _player = value
-            _player?.addOnPositionChangedListener(playerPositionChangedListener)
-            updateShieldPosition()
-        }
-
-    private val playerPositionChangedListener = object : Player.OnPositionChangedListener {
-        override fun onPositionChanged(player: Player) {
-            updateShieldPosition()
-        }
-    }
-
-    private fun updateShieldPosition() {
-        player?.let { p ->
-            x = p.x
-            y = p.y
-            left = x - ON_PLAYER_SIDE / 2
-            right = x + ON_PLAYER_SIDE / 2
-            top = y - ON_PLAYER_SIDE / 2
-            bottom = y + ON_PLAYER_SIDE / 2
-        }
-    }
+    private var player: Player? = null
 
     fun initPlayer(entity: Player) {
         player = entity
@@ -94,6 +69,14 @@ class Shield(
         right = 0f
         top = 0f
         bottom = 0f
+    }
+
+    fun getCoords() : Pair<Float, Float> {
+        if (player == null) {
+            return Pair(x, y)
+        } else {
+            return Pair(player!!.x, player!!.y)
+        }
     }
 
     override fun draw(canvas: Canvas) {
