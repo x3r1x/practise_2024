@@ -16,7 +16,7 @@ class JSONToKotlin(resources: Resources) {
     private val bonusViewFactory = BonusViewFactory(resources)
     private val bulletViewFactory = BulletViewFactory(resources)
 
-    fun getObjects(jsonString: String) : List<ObjectView> {
+    fun getObjectsViews(jsonString: String) : List<ObjectView> {
         val gameData = parseJSON(jsonString)
 
         return mapObjects(gameData)

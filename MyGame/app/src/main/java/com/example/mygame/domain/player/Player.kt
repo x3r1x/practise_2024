@@ -171,6 +171,26 @@ class Player(private val idleImage: Bitmap,
         }
     }
 
+    private val positionChangedListeners = mutableListOf<OnPositionChangedListener>()
+
+    fun addOnPositionChangedListener(listener: OnPositionChangedListener) {
+        positionChangedListeners.add(listener)
+    }
+
+    fun removeOnPositionChangedListener(listener: OnPositionChangedListener) {
+        positionChangedListeners.remove(listener)
+    }
+
+    fun notifyPositionChanged() {
+        positionChangedListeners.forEach { it.onPositionChanged(this) }
+    }
+
+    // Other properties and methods
+
+    interface OnPositionChangedListener {
+        fun onPositionChanged(player: Player)
+    }
+
     companion object {
         const val SHOOTING_WIDTH = 105f
         const val SHOOTING_HEIGHT = 200f

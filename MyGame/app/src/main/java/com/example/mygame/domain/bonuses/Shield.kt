@@ -11,10 +11,11 @@ import com.example.mygame.domain.IMoveable
 import com.example.mygame.domain.IVisitor
 import com.example.mygame.domain.player.Player
 
-class Shield(private val initDefaultShield: Bitmap,
-             private val initTransformedShield: Bitmap,
-             createdX: Float,
-             createdY: Float
+class Shield(
+    private val initDefaultShield: Bitmap,
+    private val initTransformedShield: Bitmap,
+    createdX: Float,
+    createdY: Float
 ) : IDrawable, IMoveable, IBonus, IGameObject {
     var isOnPlayer = false
 
@@ -32,7 +33,32 @@ class Shield(private val initDefaultShield: Bitmap,
 
     override var isDisappeared = false
 
-    var player: Player? = null
+    private var _player: Player? = null
+    var player: Player?
+        get() = _player
+        set(value) {
+            _player?.removeOnPositionChangedListener(playerPositionChangedListener)
+            _player = value
+            _player?.addOnPositionChangedListener(playerPositionChangedListener)
+            updateShieldPosition()
+        }
+
+    private val playerPositionChangedListener = object : Player.OnPositionChangedListener {
+        override fun onPositionChanged(player: Player) {
+            updateShieldPosition()
+        }
+    }
+
+    private fun updateShieldPosition() {
+        player?.let { p ->
+            x = p.x
+            y = p.y
+            left = x - ON_PLAYER_SIDE / 2
+            right = x + ON_PLAYER_SIDE / 2
+            top = y - ON_PLAYER_SIDE / 2
+            bottom = y + ON_PLAYER_SIDE / 2
+        }
+    }
 
     fun initPlayer(entity: Player) {
         player = entity
@@ -63,6 +89,7 @@ class Shield(private val initDefaultShield: Bitmap,
     private fun dispose() {
         player?.isWithShield = false
         isDisappeared = true
+
         left = 0f
         right = 0f
         top = 0f
