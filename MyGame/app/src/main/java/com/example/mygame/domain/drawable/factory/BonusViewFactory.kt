@@ -44,7 +44,7 @@ class BonusViewFactory(resources: Resources) {
                 else -> throw IllegalArgumentException("Invalid shield animation value: $animation")
             }
         } else if (type == JETPACK) {
-            return  jetpackBitmap
+            return jetpackBitmap
         } else if (type == JETPACK_ON_PLAYER) {
             when (animation) {
                 0 -> return jetpackOnPlayerBitmap[0]
