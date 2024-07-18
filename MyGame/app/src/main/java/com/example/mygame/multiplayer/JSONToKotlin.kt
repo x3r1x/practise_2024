@@ -1,6 +1,7 @@
 package com.example.mygame.multiplayer
 
 import android.content.res.Resources
+import com.example.mygame.UI.IDrawable
 import com.example.mygame.domain.drawable.ObjectView
 import com.example.mygame.domain.drawable.factory.BonusViewFactory
 import com.example.mygame.domain.drawable.factory.BulletViewFactory
@@ -28,6 +29,27 @@ class JSONToKotlin(resources: Resources) {
     }
 
     private fun mapObjects(gameData: GameData) : List<ObjectView> {
+        val platforms: List<IDrawable>
+        val enemies: List<IDrawable>
+        val bonuses: List<IDrawable>
+        val bullets: List<IDrawable>
+        val players: List<IDrawable>
+        platforms = gameData.objects.platforms.map { platformJSON ->
+            platformViewFactory.getPlatformView(platformJSON.x, platformJSON.y, platformJSON.typ, platformJSON.anm)
+        }
+        enemies = gameData.objects.enemies.map { enemyJSON ->
+            enemyViewFactory.getEnemyView(enemyJSON.x, enemyJSON.y, enemyJSON.typ)
+        }
+        bonuses = gameData.objects.bonuses.map { bonusJSON ->
+            bonusViewFactory.getBonusView(bonusJSON.x, bonusJSON.y, bonusJSON.typ, bonusJSON.anm)
+        }
+        bullets = gameData.objects.bullets.map { bulletJSON ->
+            bulletViewFactory.getBulletView(bulletJSON.x, bulletJSON.y)
+        }
+        players = gameData.objects.players.map { playerJSON ->
+            val isDead = playerJSON.ded.toBoolean()
+            val isShot = playerJSON.sht.toBoolean()
+            val isWithShield = playerJSON.sld.toBoolean()
 //        val platforms = gameData.objects.platforms.map { platformJSON ->
 //            platformViewFactory.getPlatformView(platformJSON.x, platformJSON.y, platformJSON.typ, platformJSON.anm)
 //        }
