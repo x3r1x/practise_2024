@@ -1,15 +1,14 @@
 package com.example.mygame.UI
 
 import android.annotation.SuppressLint
+import android.app.Application
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
-import com.example.mygame.R
 import android.view.ViewGroup
 import android.view.WindowMetrics
 import android.widget.Button
@@ -18,18 +17,25 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
-import androidx.navigation.Navigation
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.LiveData
+import androidx.navigation.Navigation
+import com.example.mygame.R
+import com.example.mygame.domain.IGameObject
+import com.example.mygame.domain.gameplay.MultiplayerGameplay
+import com.example.mygame.domain.logic.SensorHandler
+import com.example.mygame.multiplayer.WebSocketManager
 import com.example.mygame.presentation.GameViewModel
+import java.net.URI
 
-class GameFragment : Fragment() {
+class MultiplayerGameFragment : Fragment() {
+    private lateinit var gameView: GameView
+    private lateinit var scoreView: TextView
     private val gameViewModel: GameViewModel by viewModels()
 
     private lateinit var pauseButton: ImageButton
     private lateinit var pauseGroup: ConstraintLayout
     private lateinit var exitToMenuButton: Button
-    private lateinit var scoreView: TextView
-    private lateinit var gameView: GameView
 
     private fun initViews(view: View) {
         pauseButton = view.findViewById(R.id.pauseButton)
@@ -39,28 +45,10 @@ class GameFragment : Fragment() {
         scoreView = view.findViewById(R.id.scoreView)
     }
 
-    private fun pauseGame() {
-        gameViewModel.gameplay.stopGameLoop()
-
-        pauseGroup.visibility = VISIBLE
-
-        val resumeButton = pauseGroup.findViewById<Button>(R.id.resumeButton)
-        resumeButton.setOnClickListener {
-            pauseGroup.visibility = INVISIBLE
-            gameViewModel.gameplay.startGameLoop()
-
-        }
-
-        exitToMenuButton.setOnClickListener {
-            Navigation.findNavController(pauseGroup).navigate(R.id.navigateFromSinglePlayerFragmentToStartFragment)
-        }
-    }
-
     @RequiresApi(Build.VERSION_CODES.R)
-    private fun getScreenSize() : Pair<Float, Float> {
+    private fun getScreenSize(): Pair<Float, Float> {
         val windowMetrics: WindowMetrics = requireActivity().windowManager.currentWindowMetrics
         val bounds = windowMetrics.bounds
-
         return Pair(bounds.width().toFloat(), bounds.height().toFloat())
     }
 
@@ -73,7 +61,7 @@ class GameFragment : Fragment() {
     ): View {
         val (screenWidth, screenHeight) = getScreenSize()
 
-        val view = inflater.inflate(R.layout.fragment_game, container, false)
+        val view = inflater.inflate(R.layout.fragment_multiplayer_game, container, false)
         initViews(view)
 
         gameViewModel.initialize(screenWidth, screenHeight)
@@ -97,20 +85,23 @@ class GameFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+    }
 
-        // Наблюдаем за изменениями в объектах игры
-        gameViewModel.gameplay.gameState.observe(viewLifecycleOwner) { gameObjects ->
-            gameView.drawGame(gameObjects.objects)
+    private fun pauseGame() {
+        gameViewModel.gameplay.stopGameLoop()
 
-            if (gameViewModel.isGameLost()) {
-                val bundle = Bundle()
-                bundle.putInt(GameOverFragment.SCORE_ARG, gameViewModel.getScore())
-                Navigation.findNavController(view).navigate(R.id.navigateFromSinglePlayerFragmentToGameOverFragment, bundle)
-            }
+        pauseGroup.visibility = VISIBLE
+
+        val resumeButton = pauseGroup.findViewById<Button>(R.id.resumeButton)
+        resumeButton.setOnClickListener {
+            pauseGroup.visibility = INVISIBLE
+            gameViewModel.gameplay.startGameLoop()
+
         }
 
-        // Запуск игрового цикла
-        gameViewModel.gameplay.startGameLoop()
+        exitToMenuButton.setOnClickListener {
+            Navigation.findNavController(pauseGroup).navigate(R.id.navigateFromSinglePlayerFragmentToStartFragment)
+        }
     }
 
     override fun onResume() {
@@ -121,11 +112,9 @@ class GameFragment : Fragment() {
     override fun onPause() {
         super.onPause()
         gameViewModel.gameplay.onPause()
-        pauseGame()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        gameViewModel.gameplay.stopGameLoop()
     }
 }

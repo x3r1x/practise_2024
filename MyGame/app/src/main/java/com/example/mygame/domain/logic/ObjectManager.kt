@@ -42,10 +42,10 @@ class ObjectsManager(
         return getUpdatedObjectsList()
     }
 
-    fun createBullet(touchX: Float, touchY: Float): Bullet? {
+    fun createBullet(touchX: Float): Bullet? {
         val player = objectStorage.getPlayer()
         if (!player.isDead && !player.isWithJetpack) {
-            val bullet = bulletFactory.generateBullet(player.x, player.top, touchX, touchY)
+            val bullet = bulletFactory.generateBullet(player.x, player.top, touchX)
             player.shoot()
             bullet.shoot()
             objectStorage.addBullet(bullet)

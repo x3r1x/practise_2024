@@ -17,7 +17,7 @@ class Jetpack(private val initDefaultJetpack: Bitmap,
               createdX: Float,
               createdY: Float
 ) : IDrawable, IMoveable, IBonus, IGameObject {
-    private var paint = Paint().apply {
+    var paint = Paint().apply {
         alpha = DEFAULT_TRANSPARENCY
     }
 
@@ -33,6 +33,14 @@ class Jetpack(private val initDefaultJetpack: Bitmap,
 
     private var player: Player? = null
 
+    enum class State(val num: Int) {
+        UNUSED(0),
+        ON_LEFT_OF_PLAYER(1),
+        ON_RIGHT_OF_PLAYER(2)
+    }
+
+    var state = State.UNUSED
+
     fun initPlayer(entity: Player) {
         player = entity
         player?.isWithJetpack = true
@@ -41,6 +49,12 @@ class Jetpack(private val initDefaultJetpack: Bitmap,
     fun fly() {
         player?.directionY = Player.DirectionY.UP
         player?.speedY = GameConstants.PLAYER_SPEED_WITH_JETPACK
+
+        if (player?.directionX == Player.DirectionX.LEFT) {
+            state = State.ON_LEFT_OF_PLAYER
+        } else {
+            state = State.ON_RIGHT_OF_PLAYER
+        }
     }
 
     fun startDisappearingTimer() {
@@ -74,24 +88,22 @@ class Jetpack(private val initDefaultJetpack: Bitmap,
             return
         }
 
-        player?.let {
-            if (it.directionX == Player.DirectionX.LEFT) {
-                canvas.drawBitmap(
-                    initLeftPlayerJetpack,
-                    it.x - WIDTH / 2 + OFFSET_ON_PLAYER_LEFT,
-                    it.y - HEIGHT / 2,
-                    paint
-                )
-            } else {
-                canvas.drawBitmap(
-                    initRightPlayerJetpack,
-                    it.x - WIDTH / 2 - OFFSET_ON_PLAYER_RIGHT,
-                    it.y - HEIGHT / 2,
-                    paint
-                )
-            }
-        } ?: run {
+        if (state == State.UNUSED) {
             canvas.drawBitmap(initDefaultJetpack, left, top, null)
+        } else if (state == State.ON_LEFT_OF_PLAYER) {
+            canvas.drawBitmap(
+                initLeftPlayerJetpack,
+                player!!.x - WIDTH / 2 + OFFSET_ON_PLAYER_LEFT,
+                player!!.y - HEIGHT / 2,
+                paint
+            )
+        } else {
+            canvas.drawBitmap(
+                initRightPlayerJetpack,
+                player!!.x - WIDTH / 2 - OFFSET_ON_PLAYER_RIGHT,
+                player!!.y - HEIGHT / 2,
+                paint
+            )
         }
     }
 

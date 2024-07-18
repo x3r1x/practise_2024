@@ -1,12 +1,15 @@
 package com.example.mygame.domain.gameplay
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.mygame.domain.GameConstants
+import com.example.mygame.domain.IGameObject
 import com.example.mygame.domain.IMoveable
 import com.example.mygame.domain.Physics
 import com.example.mygame.domain.Score
 import com.example.mygame.domain.Screen
+import com.example.mygame.domain.drawable.DrawableManager
 import com.example.mygame.domain.logic.CollisionHandler
 import com.example.mygame.domain.logic.ObjectsManager
 import com.example.mygame.domain.logic.PositionHandler
@@ -22,6 +25,7 @@ class Gameplay(
     private val sensorHandler: SensorHandler,
     private val positionHandler: PositionHandler,
     private val collisionHandler: CollisionHandler,
+    private val drawableManager: DrawableManager,
     private val screen: Screen
 ) : IGameplay {
     private var isGameLoopRunning = false
@@ -33,6 +37,7 @@ class Gameplay(
 
     private val _gameState = MutableLiveData<GameState>()
     override val gameState: LiveData<GameState> = _gameState
+    private val gameObjects = MutableLiveData<List<IGameObject>>()
 
     private val _scoreObservable = MutableLiveData<Int>()
     val scoreObservable: LiveData<Int> = _scoreObservable
@@ -81,9 +86,10 @@ class Gameplay(
     }
 
     private fun updateGameObjects() {
+        gameObjects.value = objectsManager.getObjects()
         _gameState.value = GameState(
             Type.GAME,
-            objectsManager.getObjects(),
+            drawableManager.mapObjects(gameObjects.value!!),
             emptyList()
         )
 
@@ -93,7 +99,7 @@ class Gameplay(
             val offsetY = Physics().moveOffset(player, screen.maxPlayerHeight)
 
             score.increase(offsetY)
-            positionHandler.screenScroll(_gameState.value!!.objects.filterIsInstance<IMoveable>(), 0f, offsetY)
+            positionHandler.screenScroll(gameObjects.value!!.filterIsInstance<IMoveable>(), 0f, offsetY)
             objectsManager.updateObjects(offsetY)
         }
     }
@@ -102,20 +108,20 @@ class Gameplay(
         collisionHandler.checkCollisions(
             objectsManager.objectStorage.getPlayer(),
             screen,
-            _gameState.value!!.objects
+            gameObjects.value!!
         )
     }
 
     private fun updatePositions(elapsedTime: Float) {
         positionHandler.updatePositions(
-            _gameState.value!!.objects.filterIsInstance<IMoveable>(),
+            gameObjects.value!!.filterIsInstance<IMoveable>(),
             elapsedTime,
             deltaX
         )
     }
 
-    override fun onShot(startX: Float, startY: Float) {
-        objectsManager.createBullet(startX, startY)
+    override fun onShot(startX: Float) {
+        objectsManager.createBullet(startX)
     }
 
     override fun onViewCreated() {

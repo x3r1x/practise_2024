@@ -8,7 +8,7 @@ class BreakingPlatform(initBitmaps: MutableList<Bitmap>,
     createdX: Float,
     createdY: Float
 ) : Platform(createdX, createdY) {
-    private var currentFrameIndex = 0
+    var currentFrameIndex = 0
     private var bitmaps = mutableListOf<Bitmap>()
 
     private var isBreakRunning = false

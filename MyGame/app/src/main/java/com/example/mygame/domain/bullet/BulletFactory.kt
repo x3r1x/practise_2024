@@ -8,7 +8,7 @@ import com.example.mygame.R
 class BulletFactory(resources: Resources) {
     private val image: Bitmap = BitmapFactory.decodeResource(resources, R.drawable.bullet)
 
-    fun generateBullet(startX: Float, startY: Float, touchX: Float, touchY: Float): Bullet {
+    fun generateBullet(startX: Float, startY: Float, touchX: Float): Bullet {
         var angle = getAngle(touchX, startX)
         if (angle > 30f) {
             angle = 30f
@@ -30,4 +30,5 @@ class BulletFactory(resources: Resources) {
 
         return angle
     }
+
 }
