@@ -56,15 +56,13 @@ class JSONToKotlin(resources: Resources) {
         }
         if (!gameData.objects.players.isEmpty()) {
             players = gameData.objects.players.map { playerJSON ->
-                val isDead = playerJSON.ded.toBoolean()
-                val isShot = playerJSON.sht.toBoolean()
-                val isWithShield = playerJSON.sld.toBoolean()
+                val isDead = playerJSON.ded
+                val isShot = playerJSON.sht
+                val isWithShield = playerJSON.sld
                 playerViewFactory.getPlayerView(playerJSON.x, playerJSON.y, playerJSON.drx, playerJSON.dry, isWithShield, isShot, isDead)
             }
         }
 
         return platforms + enemies + bonuses + bullets + players
     }
-
-    private fun Int.toBoolean() = if (this == 1) true else false
 }

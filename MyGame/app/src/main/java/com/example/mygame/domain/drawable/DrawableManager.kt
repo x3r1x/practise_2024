@@ -54,7 +54,7 @@ class DrawableManager(resources: Resources) {
         var another = 0
 
         when(platform) {
-            is StaticPlatform -> type = "static"
+            is StaticPlatform -> type = PlatformViewFactory.STATIC
             is MovingPlatformOnX -> type = PlatformViewFactory.MOVING_ON_X
             is MovingPlatformOnY -> type = PlatformViewFactory.MOVING_ON_Y
             is DisappearingPlatform -> {

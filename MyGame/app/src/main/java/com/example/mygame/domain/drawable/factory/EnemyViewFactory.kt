@@ -50,8 +50,8 @@ class EnemyViewFactory(resources: Resources) {
             inScaled = false
         }
 
-        const val BULLY = "bully"
+        const val BULLY = "bul"
         const val FLY = "fly"
-        const val NINJA = "ninja"
+        const val NINJA = "nin"
     }
 }

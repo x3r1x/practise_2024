@@ -74,9 +74,6 @@ class PlayerViewFactory(resources: Resources) {
             inScaled = false
         }
 
-        const val DEAD = "dead"
-        const val SHOOTING = "shooting"
-
         const val DIRECTION_X_LEFT = -1
         const val DIRECTION_X_RIGHT = 1
 

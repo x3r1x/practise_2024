@@ -75,10 +75,10 @@ class PlatformViewFactory(resources: Resources) {
             inScaled = false
         }
 
-        const val STATIC = "static"
-        const val BREAKING = "breaking"
-        const val DISAPPEARING = "disappearing"
-        const val MOVING_ON_X = "movingOnX"
-        const val MOVING_ON_Y = "movingOnY"
+        const val STATIC = "sta"
+        const val BREAKING = "brk"
+        const val DISAPPEARING = "dis"
+        const val MOVING_ON_X = "mox"
+        const val MOVING_ON_Y = "moy"
     }
 }
