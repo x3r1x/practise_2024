@@ -89,8 +89,9 @@ class DrawableManager(resources: Resources) {
             if (bonus.isOnPlayer) {
                 another = 1
             }
-            val coords = bonus.getCoords()
-            return bonusViewFactory.getBonusView(coords.first, coords.second, type, another)
+//            val coords = bonus.getCoords()
+//            return bonusViewFactory.getBonusView(coords.first, coords.second, type, another)
+            return bonusViewFactory.getBonusView(bonus.x, bonus.y, type, another)
         } else if (bonus is Spring) {
             type = BonusViewFactory.SPRING
             another = bonus.currentFrame
@@ -100,8 +101,9 @@ class DrawableManager(resources: Resources) {
             if (bonus.state != Jetpack.State.UNUSED) {
                 type = BonusViewFactory.JETPACK_ON_PLAYER
             }
-            val coords = bonus.getCoords()
-            return bonusViewFactory.getBonusView(coords.first, coords.second, type, another)
+//            val coords = bonus.getCoords()
+//            return bonusViewFactory.getBonusView(coords.first, coords.second, type, another)
+            return bonusViewFactory.getBonusView(bonus.x, bonus.y, type, another)
         } else {
             throw IllegalArgumentException("Invalid bonus type")
         }

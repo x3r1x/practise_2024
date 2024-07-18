@@ -21,7 +21,6 @@ class MultiplayerGameplay(resources: Resources, screen: Screen) : IGameplay, Sen
     private val gson = Gson()
     private val JSONToKotlin = JSONToKotlin(resources)
     private var objects: List<IDrawable> = emptyList()
-    private val drawableManager = DrawableManager(resources)
 
     private val client: WebSocketClient
     private val serverUri = URI("ws://10.250.104.27:8080")
@@ -76,10 +75,10 @@ class MultiplayerGameplay(resources: Resources, screen: Screen) : IGameplay, Sen
     }
 
     private fun handleServerData(message: String) {
-//        objects = JSONToKotlin.getObjects(message)
+        objects = JSONToKotlin.getObjectsViews(message)
         _gameState.value = GameState(
             Type.GAME,
-            JSONToKotlin.getObjects(message),
+            JSONToKotlin.getObjectsViews(message),
             emptyList()
         )
     }

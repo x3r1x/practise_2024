@@ -28,27 +28,26 @@ class JSONToKotlin(resources: Resources) {
     }
 
     private fun mapObjects(gameData: GameData) : List<ObjectView> {
-        val platforms = gameData.objects.platforms.map { platformJSON ->
-            platformViewFactory.getPlatformView(platformJSON.x, platformJSON.y, platformJSON.typ, platformJSON.anm)
-        }
-        val enemies = gameData.objects.enemies.map { enemyJSON ->
-            enemyViewFactory.getEnemyView(enemyJSON.x, enemyJSON.y, enemyJSON.typ)
-        }
-        val bonuses = gameData.objects.bonuses.map { bonusJSON ->
-            bonusViewFactory.getBonusView(bonusJSON.x, bonusJSON.y, bonusJSON.typ, bonusJSON.anm)
-        }
-        val bullets = gameData.objects.bullets.map { bulletJSON ->
-            bulletViewFactory.getBulletView(bulletJSON.x, bulletJSON.y)
-        }
+//        val platforms = gameData.objects.platforms.map { platformJSON ->
+//            platformViewFactory.getPlatformView(platformJSON.x, platformJSON.y, platformJSON.typ, platformJSON.anm)
+//        }
+//        val enemies = gameData.objects.enemies.map { enemyJSON ->
+//            enemyViewFactory.getEnemyView(enemyJSON.x, enemyJSON.y, enemyJSON.typ)
+//        }
+//        val bonuses = gameData.objects.bonuses.map { bonusJSON ->
+//            bonusViewFactory.getBonusView(bonusJSON.x, bonusJSON.y, bonusJSON.typ, bonusJSON.anm)
+//        }
+//        val bullets = gameData.objects.bullets.map { bulletJSON ->
+//            bulletViewFactory.getBulletView(bulletJSON.x, bulletJSON.y)
+//        }
         val players = gameData.objects.players.map { playerJSON ->
-            val isDead = playerJSON.ded.toBoolean()
-            val isShot = playerJSON.sht.toBoolean()
-            val isWithShield = playerJSON.sld.toBoolean()
+            val isDead = playerJSON.ded
+            val isShot = playerJSON.sht
+            val isWithShield = playerJSON.sld
             playerViewFactory.getPlayerView(playerJSON.x, playerJSON.y, playerJSON.drx, playerJSON.dry, isWithShield, isShot, isDead)
         }
 
-        return platforms + enemies + bonuses + bullets + players
+//        return platforms + enemies + bonuses + bullets + players
+        return players
     }
-
-    private fun Int.toBoolean() = if (this == 1) true else false
 }
