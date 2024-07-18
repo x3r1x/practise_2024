@@ -4,7 +4,9 @@ import android.content.res.Resources
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.mygame.UI.IDrawable
 import com.example.mygame.domain.Screen
+import com.example.mygame.domain.drawable.DrawableManager
 import com.example.mygame.domain.logic.SensorHandler
 import com.example.mygame.multiplayer.ClientMessage
 import com.example.mygame.multiplayer.JSONToKotlin
@@ -17,13 +19,17 @@ import java.net.URI
 
 class MultiplayerGameplay(resources: Resources, screen: Screen) : IGameplay, SensorHandler.SensorCallback {
     private val gson = Gson()
-    private lateinit var client: WebSocketClient
-    private val serverUri = URI("10.250.105.20:8080")
+    private val JSONToKotlin = JSONToKotlin(resources)
+    private var objects: List<IDrawable> = emptyList()
+    private val drawableManager = DrawableManager(resources)
+
+    private val client: WebSocketClient
+    private val serverUri = URI("ws://10.250.104.27:8080")
 
     private val _gameState = MutableLiveData<GameState>()
     override val gameState: LiveData<GameState> = _gameState
 
-    override fun onViewCreated() {
+    init {
         client = object : WebSocketClient(serverUri) {
             override fun onOpen(handshakedata: ServerHandshake?) {
                 Log.d("WebSocket", "Opened")
@@ -51,6 +57,9 @@ class MultiplayerGameplay(resources: Resources, screen: Screen) : IGameplay, Sen
         client.connect()
     }
 
+    override fun onViewCreated() {
+    }
+
     private fun sendMessage(dx: Float, tap: Boolean = false) {
         val message = gson.toJson(ClientMessage(dx, tap))
         if (client.isOpen) {
@@ -67,7 +76,12 @@ class MultiplayerGameplay(resources: Resources, screen: Screen) : IGameplay, Sen
     }
 
     private fun handleServerData(message: String) {
-        // TODO: Парсинг из JSON в kotlin классы
+//        objects = JSONToKotlin.getObjects(message)
+        _gameState.value = GameState(
+            Type.GAME,
+            JSONToKotlin.getObjects(message),
+            emptyList()
+        )
     }
 
     override fun onShot(startX: Float) {
@@ -75,11 +89,9 @@ class MultiplayerGameplay(resources: Resources, screen: Screen) : IGameplay, Sen
     }
 
     override fun onPause() {
-        TODO("Not yet implemented")
     }
 
     override fun onResume() {
-        TODO("Not yet implemented")
     }
 
     override fun onSensorDataChanged(deltaX: Float) {

@@ -5,6 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import com.example.mygame.domain.Screen
 import com.example.mygame.domain.drawable.DrawableManager
 import com.example.mygame.domain.gameplay.Gameplay
+import com.example.mygame.domain.gameplay.MultiplayerGameplay
 import com.example.mygame.domain.logic.CollisionHandler
 import com.example.mygame.domain.logic.ObjectsManager
 import com.example.mygame.domain.logic.PositionHandler
@@ -18,7 +19,7 @@ class GameViewModel(private val application: Application) : AndroidViewModel(app
     private lateinit var screen: Screen
     private lateinit var drawableManager: DrawableManager
 
-    lateinit var gameplay: Gameplay
+    lateinit var gameplay: MultiplayerGameplay
 
     fun initialize(screenWidth: Float, screenHeight: Float) {
         screen = Screen(screenWidth, screenHeight)
@@ -27,13 +28,14 @@ class GameViewModel(private val application: Application) : AndroidViewModel(app
         objectsManager = ObjectsManager(application.resources, screen)
         positionHandler = PositionHandler()
         drawableManager = DrawableManager(application.resources)
-        gameplay = Gameplay(objectsManager, sensorHandler, positionHandler, collisionHandler, drawableManager, screen)
-
+//        gameplay = Gameplay(objectsManager, sensorHandler, positionHandler, collisionHandler, drawableManager, screen)
+        gameplay = MultiplayerGameplay(application.resources, screen)
         objectsManager.initObjects()
     }
 
     override fun onSensorDataChanged(deltaX: Float) {
-        gameplay.setDeltaX(deltaX)
+        gameplay.onSensorDataChanged(deltaX)
+//        gameplay.setDeltaX(deltaX)
     }
 
     fun onClick(touchX: Float) {
@@ -45,6 +47,7 @@ class GameViewModel(private val application: Application) : AndroidViewModel(app
     }
 
     fun getScore(): Int {
-        return gameplay.score.getScore()
+//        return gameplay.score.getScore()
+        return 0
     }
 }

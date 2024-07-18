@@ -40,14 +40,14 @@ class GameFragment : Fragment() {
     }
 
     private fun pauseGame() {
-        gameViewModel.gameplay.stopGameLoop()
+//        gameViewModel.gameplay.stopGameLoop()
 
         pauseGroup.visibility = VISIBLE
 
         val resumeButton = pauseGroup.findViewById<Button>(R.id.resumeButton)
         resumeButton.setOnClickListener {
             pauseGroup.visibility = INVISIBLE
-            gameViewModel.gameplay.startGameLoop()
+//            gameViewModel.gameplay.startGameLoop()
 
         }
 
@@ -77,9 +77,9 @@ class GameFragment : Fragment() {
         initViews(view)
 
         gameViewModel.initialize(screenWidth, screenHeight)
-        gameViewModel.gameplay.scoreObservable.observe(viewLifecycleOwner) { newScore ->
-            scoreView.text = newScore.toString()
-        }
+//        gameViewModel.gameplay.scoreObservable.observe(viewLifecycleOwner) { newScore ->
+//            scoreView.text = newScore.toString()
+//        }
 
         pauseButton.setOnClickListener {
             pauseGame()
@@ -110,7 +110,7 @@ class GameFragment : Fragment() {
         }
 
         // Запуск игрового цикла
-        gameViewModel.gameplay.startGameLoop()
+//        gameViewModel.gameplay.startGameLoop()
     }
 
     override fun onResume() {
@@ -126,6 +126,6 @@ class GameFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        gameViewModel.gameplay.stopGameLoop()
+//        gameViewModel.gameplay.stopGameLoop()
     }
 }

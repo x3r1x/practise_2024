@@ -45,22 +45,26 @@ class MultiplayerGameFragment : Fragment() {
         initViews(view)
 
         gameViewModel.initialize(screenWidth, screenHeight)
-        gameViewModel.gameplay.scoreObservable.observe(viewLifecycleOwner) { newScore ->
-            scoreView.text = newScore.toString()
-        }
+//        gameViewModel.gameplay.scoreObservable.observe(viewLifecycleOwner) { newScore ->
+//            scoreView.text = newScore.toString()
+//        }
 
-        gameView.setOnTouchListener { _, event ->
-            if (event.action == MotionEvent.ACTION_DOWN) {
-                gameViewModel.onClick(event.x)
-            }
-            true
-        }
+//        gameView.setOnTouchListener { _, event ->
+//            if (event.action == MotionEvent.ACTION_DOWN) {
+//                gameViewModel.onClick(event.x)
+//            }
+//            true
+//        }
 
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        gameViewModel.gameplay.gameState.observe(viewLifecycleOwner) { gameObjects ->
+            gameView.drawGame(gameObjects.objects)
+        }
     }
 
     override fun onResume() {
