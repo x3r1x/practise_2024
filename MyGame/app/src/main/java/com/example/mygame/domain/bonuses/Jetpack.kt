@@ -1,22 +1,17 @@
 package com.example.mygame.domain.bonuses
 
-import android.graphics.Bitmap
-import android.graphics.Canvas
 import android.graphics.Paint
 import android.os.CountDownTimer
-import com.example.mygame.UI.IDrawable
 import com.example.mygame.domain.GameConstants
 import com.example.mygame.domain.IGameObject
 import com.example.mygame.domain.IMoveable
 import com.example.mygame.domain.IVisitor
 import com.example.mygame.domain.player.Player
 
-class Jetpack(private val initDefaultJetpack: Bitmap,
-              private val initToLeftPlayerJetpack: Bitmap,
-              private val initToRightPlayerJetpack: Bitmap,
+class Jetpack(
               createdX: Float,
               createdY: Float
-) : IDrawable, IMoveable, IBonus, IGameObject {
+) : IMoveable, IBonus, IGameObject {
     override var x = createdX
     override var y = createdY
 
@@ -46,7 +41,7 @@ class Jetpack(private val initDefaultJetpack: Bitmap,
         player?.isWithJetpack = true
     }
 
-    fun getCoords() : Pair<Float, Float> {
+    fun getCoords(): Pair<Float, Float> {
         if (player == null) {
             return Pair(x, y)
         } else {
@@ -90,7 +85,6 @@ class Jetpack(private val initDefaultJetpack: Bitmap,
                 dispose()
             }
         }
-
         timer.start()
     }
 
@@ -98,30 +92,6 @@ class Jetpack(private val initDefaultJetpack: Bitmap,
         player?.isWithJetpack = false
         player?.jump()
         isDisappeared = true
-    }
-
-    override fun draw(canvas: Canvas) {
-        if (isDisappeared) {
-            return
-        }
-
-        if (state == State.UNUSED) {
-            canvas.drawBitmap(initDefaultJetpack, left, top, null)
-        } else if (state == State.ON_LEFT_OF_PLAYER) {
-            canvas.drawBitmap(
-                initToLeftPlayerJetpack,
-                player!!.x - WIDTH / 2 + OFFSET_ON_PLAYER,
-                player!!.y - HEIGHT / 2,
-                paint
-            )
-        } else {
-            canvas.drawBitmap(
-                initToRightPlayerJetpack,
-                player!!.x - WIDTH / 2 - OFFSET_ON_PLAYER,
-                player!!.y - HEIGHT / 2,
-                paint
-            )
-        }
     }
 
     override fun setPosition(startX: Float, startY: Float) {
@@ -143,8 +113,8 @@ class Jetpack(private val initDefaultJetpack: Bitmap,
 
         const val OFFSET_ON_PLAYER = 40f
 
-        private const val JETPACK_TIMER_TICK : Long = 500
-        private const val WHEN_TO_PULSE : Long = 2000
+        private const val JETPACK_TIMER_TICK: Long = 500
+        private const val WHEN_TO_PULSE: Long = 2000
 
         private const val DEFAULT_TRANSPARENCY = 255
         private const val PULSE_TRANSPARENCY = 128

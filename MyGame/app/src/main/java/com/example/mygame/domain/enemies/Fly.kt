@@ -1,18 +1,14 @@
 package com.example.mygame.domain.enemies
 
-import android.graphics.Bitmap
 import com.example.mygame.domain.Enemy
 import com.example.mygame.domain.GameConstants
 import com.example.mygame.domain.Screen
 
-class Fly(initBitmap: Bitmap,
+class Fly(
           createdX: Float,
           createdY: Float,
           private val screen: Screen
 ) : Enemy(createdX, createdY) {
-    init {
-        bitmap = initBitmap
-    }
 
     enum class DirectionX(val value: Int) {
         LEFT(0),

@@ -24,7 +24,7 @@ class GameViewModel(private val application: Application) : AndroidViewModel(app
         screen = Screen(screenWidth, screenHeight)
         sensorHandler = SensorHandler(getApplication(), this)
         collisionHandler = CollisionHandler()
-        objectsManager = ObjectsManager(application.resources, screen)
+        objectsManager = ObjectsManager(screen)
         positionHandler = PositionHandler()
         drawableManager = DrawableManager(application.resources)
         gameplay = Gameplay(objectsManager, sensorHandler, positionHandler, collisionHandler, drawableManager, screen)

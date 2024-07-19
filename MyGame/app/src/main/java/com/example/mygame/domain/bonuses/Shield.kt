@@ -1,10 +1,7 @@
 package com.example.mygame.domain.bonuses
 
-import android.graphics.Bitmap
-import android.graphics.Canvas
 import android.graphics.Paint
 import android.os.CountDownTimer
-import com.example.mygame.UI.IDrawable
 import com.example.mygame.domain.GameConstants
 import com.example.mygame.domain.IGameObject
 import com.example.mygame.domain.IMoveable
@@ -12,11 +9,9 @@ import com.example.mygame.domain.IVisitor
 import com.example.mygame.domain.player.Player
 
 class Shield(
-    private val initDefaultShield: Bitmap,
-    private val initTransformedShield: Bitmap,
     createdX: Float,
     createdY: Float
-) : IDrawable, IMoveable, IBonus, IGameObject {
+) : IMoveable, IBonus, IGameObject {
     var isOnPlayer = false
 
     var paint = Paint().apply {
@@ -79,18 +74,6 @@ class Shield(
         }
     }
 
-    override fun draw(canvas: Canvas) {
-        if (isDisappeared) {
-            return
-        }
-
-        player?.let {
-            canvas.drawBitmap(initTransformedShield, it.x - ON_PLAYER_SIDE / 2, it.y - ON_PLAYER_SIDE / 2, paint)
-        } ?: run {
-            canvas.drawBitmap(initDefaultShield, left, top, null)
-        }
-    }
-
     override fun setPosition(startX: Float, startY: Float) {
         x = startX
         y = startY
@@ -106,7 +89,6 @@ class Shield(
 
     companion object {
         private const val DEFAULT_SIDE = 100f
-        private const val ON_PLAYER_SIDE = 245f
 
         private const val SHIELD_TIMER_TICK : Long = 500
         private const val WHEN_TO_PULSE : Long = 3000

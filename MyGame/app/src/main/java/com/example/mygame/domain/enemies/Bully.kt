@@ -1,15 +1,11 @@
 package com.example.mygame.domain.enemies
 
-import android.graphics.Bitmap
 import com.example.mygame.domain.Enemy
 
-class Bully(initBitmap: Bitmap,
+class Bully(
             createdX: Float,
             createdY: Float
 ) : Enemy(createdX, createdY) {
-    init {
-        bitmap = initBitmap
-    }
 
     override val width: Float
         get() = WIDTH

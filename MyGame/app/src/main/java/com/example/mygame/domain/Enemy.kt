@@ -1,14 +1,9 @@
 package com.example.mygame.domain
 
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.Matrix
-import android.graphics.RectF
 import android.os.CountDownTimer
-import com.example.mygame.UI.IDrawable
 import com.example.mygame.domain.player.Player
 
-open class Enemy(createdX: Float, createdY: Float) : IDrawable, IMoveable, IGameObject {
+open class Enemy(createdX: Float, createdY: Float) : IMoveable, IGameObject {
     open val width = 0f
     open val height = 0f
 
@@ -30,8 +25,6 @@ open class Enemy(createdX: Float, createdY: Float) : IDrawable, IMoveable, IGame
 
     override val top: Float
         get() = y - height / 2
-
-    protected lateinit var bitmap: Bitmap
 
     fun killPlayer(player: Player) {
         if (!isDead) {
@@ -56,24 +49,6 @@ open class Enemy(createdX: Float, createdY: Float) : IDrawable, IMoveable, IGame
         }
 
         timer.start()
-    }
-
-    private fun applyTransformations(matrix: Matrix, destRect: RectF) {
-        val scaleX = destRect.width() / bitmap.width
-        val scaleY = destRect.height() / bitmap.height
-
-        matrix.preScale(scaleX, scaleY)
-        matrix.postTranslate(destRect.left, destRect.top)
-    }
-
-    override fun draw(canvas: Canvas) {
-        val matrix = Matrix()
-        val destRect = RectF(left, top, right, bottom)
-
-        applyTransformations(matrix, destRect)
-
-        val imageToDraw = bitmap
-        canvas.drawBitmap(imageToDraw, matrix, null)
     }
 
     override fun setPosition(startX: Float, startY: Float) {

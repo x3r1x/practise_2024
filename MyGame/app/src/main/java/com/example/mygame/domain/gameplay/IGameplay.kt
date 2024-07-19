@@ -2,7 +2,6 @@ package com.example.mygame.domain.gameplay
 
 import androidx.lifecycle.LiveData
 import com.example.mygame.UI.IDrawable
-import com.example.mygame.domain.IGameObject
 
 enum class Type {
     LOBBY,

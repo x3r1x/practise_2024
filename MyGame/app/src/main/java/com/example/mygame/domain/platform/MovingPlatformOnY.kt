@@ -1,11 +1,9 @@
 package com.example.mygame.domain.platform
 
-import android.graphics.Bitmap
 import com.example.mygame.domain.GameConstants
 import com.example.mygame.domain.Platform
 
 class MovingPlatformOnY(
-    initBitmap: Bitmap,
     createdX: Float,
     createdY: Float
 ) : Platform(createdX, createdY) {
@@ -13,7 +11,6 @@ class MovingPlatformOnY(
     private var maxY = 0f
 
     init {
-        this.bitmap = initBitmap
         minY = createdY - GameConstants.PLATFORM_ON_Y_RANGE
         maxY = createdY + GameConstants.PLATFORM_ON_Y_RANGE
     }

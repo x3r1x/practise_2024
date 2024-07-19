@@ -1,18 +1,16 @@
 package com.example.mygame.domain.generator
 
-import android.content.res.Resources
 import com.example.mygame.domain.IGameObject
 import com.example.mygame.domain.Screen
 import com.example.mygame.domain.platform.BreakingPlatform
 import kotlin.math.abs
 
 class LevelGenerator(
-    resources: Resources,
     screen: Screen
 ) {
-    private val platformGenerator = PlatformGenerator(resources, screen)
-    private val enemyGenerator = EnemyGenerator(resources, screen)
-    private val bonusGenerator = BonusGenerator(resources)
+    private val platformGenerator = PlatformGenerator(screen)
+    private val enemyGenerator = EnemyGenerator(screen)
+    private val bonusGenerator = BonusGenerator()
 
     private val newPackageHeight = 4000f
 
