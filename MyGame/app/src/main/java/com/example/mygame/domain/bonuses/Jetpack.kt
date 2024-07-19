@@ -1,28 +1,23 @@
 package com.example.mygame.domain.bonuses
 
-import android.graphics.Bitmap
-import android.graphics.Canvas
 import android.graphics.Paint
 import android.os.CountDownTimer
-import com.example.mygame.UI.IDrawable
 import com.example.mygame.domain.GameConstants
 import com.example.mygame.domain.IGameObject
 import com.example.mygame.domain.IMoveable
 import com.example.mygame.domain.IVisitor
 import com.example.mygame.domain.player.Player
 
-class Jetpack(private val initDefaultJetpack: Bitmap,
-              private val initLeftPlayerJetpack: Bitmap,
-              private val initRightPlayerJetpack: Bitmap,
+class Jetpack(
               createdX: Float,
               createdY: Float
-) : IDrawable, IMoveable, IBonus, IGameObject {
+) : IMoveable, IBonus, IGameObject {
+    override var x = createdX
+    override var y = createdY
+
     var paint = Paint().apply {
         alpha = DEFAULT_TRANSPARENCY
     }
-
-    override var x = createdX
-    override var y = createdY
 
     override var left = x - WIDTH / 2
     override var top = y - WIDTH / 2
@@ -33,10 +28,10 @@ class Jetpack(private val initDefaultJetpack: Bitmap,
 
     private var player: Player? = null
 
-    enum class State(val num: Int) {
-        UNUSED(0),
-        ON_LEFT_OF_PLAYER(1),
-        ON_RIGHT_OF_PLAYER(2)
+    enum class State {
+        UNUSED,
+        ON_LEFT_OF_PLAYER,
+        ON_RIGHT_OF_PLAYER
     }
 
     var state = State.UNUSED
@@ -44,6 +39,23 @@ class Jetpack(private val initDefaultJetpack: Bitmap,
     fun initPlayer(entity: Player) {
         player = entity
         player?.isWithJetpack = true
+    }
+
+    fun getCoords(): Pair<Float, Float> {
+        if (player == null) {
+            return Pair(x, y)
+        } else {
+            if (player!!.directionX == Player.DirectionX.LEFT) {
+                state = State.ON_RIGHT_OF_PLAYER
+                x = player!!.right + OFFSET_ON_PLAYER
+                y = player!!.y
+            } else {
+                state = State.ON_LEFT_OF_PLAYER
+                x = player!!.left - OFFSET_ON_PLAYER
+                y = player!!.y
+            }
+            return Pair(x, y)
+        }
     }
 
     fun fly() {
@@ -73,7 +85,6 @@ class Jetpack(private val initDefaultJetpack: Bitmap,
                 dispose()
             }
         }
-
         timer.start()
     }
 
@@ -81,30 +92,6 @@ class Jetpack(private val initDefaultJetpack: Bitmap,
         player?.isWithJetpack = false
         player?.jump()
         isDisappeared = true
-    }
-
-    override fun draw(canvas: Canvas) {
-        if (isDisappeared) {
-            return
-        }
-
-        if (state == State.UNUSED) {
-            canvas.drawBitmap(initDefaultJetpack, left, top, null)
-        } else if (state == State.ON_LEFT_OF_PLAYER) {
-            canvas.drawBitmap(
-                initLeftPlayerJetpack,
-                player!!.x - WIDTH / 2 + OFFSET_ON_PLAYER_LEFT,
-                player!!.y - HEIGHT / 2,
-                paint
-            )
-        } else {
-            canvas.drawBitmap(
-                initRightPlayerJetpack,
-                player!!.x - WIDTH / 2 - OFFSET_ON_PLAYER_RIGHT,
-                player!!.y - HEIGHT / 2,
-                paint
-            )
-        }
     }
 
     override fun setPosition(startX: Float, startY: Float) {
@@ -121,16 +108,15 @@ class Jetpack(private val initDefaultJetpack: Bitmap,
     }
 
     companion object {
-        private const val WIDTH = 124f
-        private const val HEIGHT = 111f
+        const val WIDTH = 124f
+        const val HEIGHT = 111f
 
-        private const val OFFSET_ON_PLAYER_RIGHT = 95f
-        private const val OFFSET_ON_PLAYER_LEFT = 127f
+        const val OFFSET_ON_PLAYER = 40f
 
-        private const val JETPACK_TIMER_TICK : Long = 500
-        private const val WHEN_TO_PULSE : Long = 2000
+        private const val JETPACK_TIMER_TICK: Long = 500
+        private const val WHEN_TO_PULSE: Long = 2000
 
-        private const val DEFAULT_TRANSPARENCY = 256
+        private const val DEFAULT_TRANSPARENCY = 255
         private const val PULSE_TRANSPARENCY = 128
     }
 }

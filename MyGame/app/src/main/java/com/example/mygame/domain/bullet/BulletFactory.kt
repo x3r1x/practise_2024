@@ -1,12 +1,6 @@
 package com.example.mygame.domain.bullet
 
-import android.content.res.Resources
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import com.example.mygame.R
-
-class BulletFactory(resources: Resources) {
-    private val image: Bitmap = BitmapFactory.decodeResource(resources, R.drawable.bullet)
+class BulletFactory() {
 
     fun generateBullet(startX: Float, startY: Float, touchX: Float): Bullet {
         var angle = getAngle(touchX, startX)
@@ -16,10 +10,10 @@ class BulletFactory(resources: Resources) {
             angle = -30f
         }
 
-        return Bullet(image, startX, startY, angle)
+        return Bullet(startX, startY, angle)
     }
 
-    private fun getAngle(touchX: Float, startX: Float) : Float {
+    private fun getAngle(touchX: Float, startX: Float): Float {
         val angle = (touchX - startX) / 20f
 
         if (angle > 30f) {
@@ -30,5 +24,4 @@ class BulletFactory(resources: Resources) {
 
         return angle
     }
-
 }

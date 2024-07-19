@@ -1,17 +1,15 @@
 package com.example.mygame.domain.logic
 
-import android.content.res.Resources
 import com.example.mygame.domain.Enemy
-import com.example.mygame.domain.Screen
-import com.example.mygame.domain.player.Player
-import com.example.mygame.domain.Platform
-import com.example.mygame.domain.bonuses.IBonus
-import com.example.mygame.domain.player.PlayerFactory
 import com.example.mygame.domain.IGameObject
+import com.example.mygame.domain.Platform
+import com.example.mygame.domain.Screen
+import com.example.mygame.domain.bonuses.IBonus
 import com.example.mygame.domain.bullet.Bullet
+import com.example.mygame.domain.player.Player
+import com.example.mygame.domain.player.PlayerFactory
 
 class ObjectStorage(
-    resources: Resources,
     screen: Screen
 ) {
     // TODO: враги, бонусы
@@ -20,7 +18,7 @@ class ObjectStorage(
     private val bullets = mutableListOf<Bullet>()
     private val bonuses = mutableListOf<IBonus>()
     private val enemies = mutableListOf<Enemy>()
-    private var player = PlayerFactory(resources).generatePlayer()
+    private var player = PlayerFactory().generatePlayer()
     private val objects = mutableListOf<IGameObject>()
 
     init {

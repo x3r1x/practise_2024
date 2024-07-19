@@ -45,15 +45,23 @@ class DrawableManager(resources: Resources) {
         }
     }
 
-    private fun playerToView(player: Player) : ObjectView {
-        return playerViewFactory.getPlayerView(player.x, player.y, player.directionX.value, player.directionY.value, player.isWithShield, player.isShooting(), player.isDead)
+    private fun playerToView(player: Player): ObjectView {
+        return playerViewFactory.getPlayerView(
+            player.x,
+            player.y,
+            player.directionX.value,
+            player.directionY.value,
+            player.isWithShield,
+            player.isShooting,
+            player.isDead
+        )
     }
 
-    private fun platformToView(platform: Platform) : ObjectView {
+    private fun platformToView(platform: Platform): ObjectView {
         var type = ""
         var another = 0
 
-        when(platform) {
+        when (platform) {
             is StaticPlatform -> type = PlatformViewFactory.STATIC
             is MovingPlatformOnX -> type = PlatformViewFactory.MOVING_ON_X
             is MovingPlatformOnY -> type = PlatformViewFactory.MOVING_ON_Y
@@ -70,9 +78,9 @@ class DrawableManager(resources: Resources) {
         return platformViewFactory.getPlatformView(platform.x, platform.y, type, another)
     }
 
-    private fun enemyToView(enemy: Enemy) : ObjectView {
+    private fun enemyToView(enemy: Enemy): ObjectView {
         var type = ""
-        when(enemy) {
+        when (enemy) {
             is Bully -> type = EnemyViewFactory.BULLY
             is Fly -> type = EnemyViewFactory.FLY
             is Ninja -> type = EnemyViewFactory.NINJA
@@ -81,29 +89,32 @@ class DrawableManager(resources: Resources) {
         return enemyViewFactory.getEnemyView(enemy.x, enemy.y, type)
     }
 
-    private fun bonusToView(bonus: IBonus) : ObjectView {
-        var type: String
-        var another = 0
+    private fun bonusToView(bonus: IBonus): ObjectView {
+        val type: String
+        val another: Int
+
         if (bonus is Shield) {
-            type = BonusViewFactory.SHIELD
-            if (bonus.isOnPlayer) {
-                another = 1
-            }
-//            val coords = bonus.getCoords()
-//            return bonusViewFactory.getBonusView(coords.first, coords.second, type, another)
-            return bonusViewFactory.getBonusView(bonus.x, bonus.y, type, another)
+            type =
+                if (bonus.isOnPlayer) BonusViewFactory.SHIELD_ON_PLAYER else BonusViewFactory.SHIELD
+            another = bonus.paint.alpha
+            val coords = bonus.getCoords()
+
+            return bonusViewFactory.getBonusView(coords.first, coords.second, type, another)
         } else if (bonus is Spring) {
             type = BonusViewFactory.SPRING
             another = bonus.currentFrame
+
             return bonusViewFactory.getBonusView(bonus.x, bonus.y, type, another)
         } else if (bonus is Jetpack) {
-            type = BonusViewFactory.JETPACK
-            if (bonus.state != Jetpack.State.UNUSED) {
-                type = BonusViewFactory.JETPACK_ON_PLAYER
+            when (bonus.state) {
+                Jetpack.State.ON_LEFT_OF_PLAYER -> type = BonusViewFactory.JETPACK_ON_PLAYER_LEFT
+                Jetpack.State.ON_RIGHT_OF_PLAYER -> type = BonusViewFactory.JETPACK_ON_PLAYER_RIGHT
+                else -> type = BonusViewFactory.JETPACK
             }
-//            val coords = bonus.getCoords()
-//            return bonusViewFactory.getBonusView(coords.first, coords.second, type, another)
-            return bonusViewFactory.getBonusView(bonus.x, bonus.y, type, another)
+            another = bonus.paint.alpha
+            val coords = bonus.getCoords()
+
+            return bonusViewFactory.getBonusView(coords.first, coords.second, type, another)
         } else {
             throw IllegalArgumentException("Invalid bonus type")
         }

@@ -52,7 +52,6 @@ android {
 
 dependencies {
     implementation(libs.java.websocket)
-    implementation(libs.gson)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -68,9 +67,9 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.fragment.ktx)
-    implementation("androidx.core:core-splashscreen:1.0.1")
-    implementation("androidx.navigation:navigation-fragment-ktx:2.7.7")
-    implementation ("com.google.code.gson:gson:2.8.5")
+    implementation(libs.androidx.core.splashscreen)
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation (libs.gson)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

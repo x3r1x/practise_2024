@@ -1,28 +1,16 @@
 package com.example.mygame.domain.bonuses.factory
 
-import android.content.res.Resources
-import android.graphics.BitmapFactory
-import com.example.mygame.R
-import com.example.mygame.domain.bonuses.IBonus
-import com.example.mygame.domain.bonuses.factory.IBonusFactory.Companion.BITMAP_OPTION
-import com.example.mygame.domain.bonuses.factory.IBonusFactory.Companion.COLLECTABLE_OFFSET
 import com.example.mygame.domain.Platform
+import com.example.mygame.domain.bonuses.IBonus
 import com.example.mygame.domain.bonuses.Jetpack
+import com.example.mygame.domain.bonuses.factory.IBonusFactory.Companion.COLLECTABLE_OFFSET
 
-class JetpackFactory(resources: Resources) : IBonusFactory {
-    private val defaultBitmap = BitmapFactory.decodeResource(resources, IMAGE, BITMAP_OPTION)
-    private val leftOnPlayerBitmap = BitmapFactory.decodeResource(resources, IMAGE_ON_PLAYER_LEFT, BITMAP_OPTION)
-    private val rightOnPlayerBitmap = BitmapFactory.decodeResource(resources, IMAGE_ON_PLAYER_RIGHT, BITMAP_OPTION)
-
+class JetpackFactory : IBonusFactory {
     override fun generateBonus(staticPlatform: Platform): IBonus {
-        return Jetpack(defaultBitmap, leftOnPlayerBitmap, rightOnPlayerBitmap, staticPlatform.x, staticPlatform.top - HEIGHT / 2 - COLLECTABLE_OFFSET)
+        return Jetpack(staticPlatform.x, staticPlatform.top - HEIGHT / 2 - COLLECTABLE_OFFSET)
     }
 
     companion object {
         private const val HEIGHT = 111f
-
-        private val IMAGE = R.drawable.jetpack
-        private val IMAGE_ON_PLAYER_LEFT = R.drawable.player_jetpack_left
-        private val IMAGE_ON_PLAYER_RIGHT = R.drawable.player_jetpack_right
     }
 }

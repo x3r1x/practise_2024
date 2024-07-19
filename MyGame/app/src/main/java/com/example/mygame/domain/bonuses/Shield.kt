@@ -1,10 +1,7 @@
 package com.example.mygame.domain.bonuses
 
-import android.graphics.Bitmap
-import android.graphics.Canvas
 import android.graphics.Paint
 import android.os.CountDownTimer
-import com.example.mygame.UI.IDrawable
 import com.example.mygame.domain.GameConstants
 import com.example.mygame.domain.IGameObject
 import com.example.mygame.domain.IMoveable
@@ -12,14 +9,12 @@ import com.example.mygame.domain.IVisitor
 import com.example.mygame.domain.player.Player
 
 class Shield(
-    private val initDefaultShield: Bitmap,
-    private val initTransformedShield: Bitmap,
     createdX: Float,
     createdY: Float
-) : IDrawable, IMoveable, IBonus, IGameObject {
+) : IMoveable, IBonus, IGameObject {
     var isOnPlayer = false
 
-    private var paint = Paint().apply {
+    var paint = Paint().apply {
         alpha = DEFAULT_TRANSPARENCY
     }
 
@@ -33,32 +28,7 @@ class Shield(
 
     override var isDisappeared = false
 
-    private var _player: Player? = null
-    var player: Player?
-        get() = _player
-        set(value) {
-            _player?.removeOnPositionChangedListener(playerPositionChangedListener)
-            _player = value
-            _player?.addOnPositionChangedListener(playerPositionChangedListener)
-            updateShieldPosition()
-        }
-
-    private val playerPositionChangedListener = object : Player.OnPositionChangedListener {
-        override fun onPositionChanged(player: Player) {
-            updateShieldPosition()
-        }
-    }
-
-    private fun updateShieldPosition() {
-        player?.let { p ->
-            x = p.x
-            y = p.y
-            left = x - ON_PLAYER_SIDE / 2
-            right = x + ON_PLAYER_SIDE / 2
-            top = y - ON_PLAYER_SIDE / 2
-            bottom = y + ON_PLAYER_SIDE / 2
-        }
-    }
+    private var player: Player? = null
 
     fun initPlayer(entity: Player) {
         player = entity
@@ -96,15 +66,11 @@ class Shield(
         bottom = 0f
     }
 
-    override fun draw(canvas: Canvas) {
-        if (isDisappeared) {
-            return
-        }
-
-        player?.let {
-            canvas.drawBitmap(initTransformedShield, it.x - ON_PLAYER_SIDE / 2, it.y - ON_PLAYER_SIDE / 2, paint)
-        } ?: run {
-            canvas.drawBitmap(initDefaultShield, left, top, null)
+    fun getCoords() : Pair<Float, Float> {
+        if (player == null) {
+            return Pair(x, y)
+        } else {
+            return Pair(player!!.x, player!!.y)
         }
     }
 
@@ -123,7 +89,6 @@ class Shield(
 
     companion object {
         private const val DEFAULT_SIDE = 100f
-        private const val ON_PLAYER_SIDE = 245f
 
         private const val SHIELD_TIMER_TICK : Long = 500
         private const val WHEN_TO_PULSE : Long = 3000

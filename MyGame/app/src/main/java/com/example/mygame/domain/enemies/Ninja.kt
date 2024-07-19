@@ -1,21 +1,15 @@
 package com.example.mygame.domain.enemies
 
-import android.graphics.Bitmap
-import android.util.Log
 import com.example.mygame.domain.Enemy
 import com.example.mygame.domain.GameConstants
 import com.example.mygame.domain.Screen
 import kotlin.random.Random
 
-class Ninja(initBimap: Bitmap,
+class Ninja(
             createdX: Float,
             createdY: Float,
             private val screen: Screen
 ) : Enemy(createdX, createdY) {
-    init {
-        bitmap = initBimap
-    }
-
     enum class DirectionX(val value: Int) {
         LEFT(0),
         RIGHT(1)

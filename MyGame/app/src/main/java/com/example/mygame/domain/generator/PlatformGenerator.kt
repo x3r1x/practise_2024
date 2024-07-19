@@ -1,6 +1,5 @@
 package com.example.mygame.domain.generator
 
-import android.content.res.Resources
 import com.example.mygame.domain.GameConstants
 import com.example.mygame.domain.GameConstants.Companion.MAX_VERTICAL_BREAKING_PLATFORM_GAP
 import com.example.mygame.domain.GameConstants.Companion.MAX_VERTICAL_PLATFORM_GAP
@@ -15,15 +14,13 @@ import com.example.mygame.domain.platform.factory.StaticPlatformFactory
 import kotlin.random.Random
 
 class PlatformGenerator(
-    resources: Resources,
     private val screen: Screen
 ) {
-    private val staticPlatformFactory = StaticPlatformFactory(resources)
-    private val breakingPlatformFactory = BreakingPlatformFactory(resources)
-    private val movingPlatformOnXFactory = MovingPlatformOnXFactory(resources)
-    private val disappearingPlatformFactory = DisappearingPlatformFactory(resources)
-
-    private val movingPlatformOnYFactory = MovingPlatformOnYFactory(resources)
+    private val staticPlatformFactory = StaticPlatformFactory()
+    private val breakingPlatformFactory = BreakingPlatformFactory()
+    private val movingPlatformOnXFactory = MovingPlatformOnXFactory()
+    private val disappearingPlatformFactory = DisappearingPlatformFactory()
+    private val movingPlatformOnYFactory = MovingPlatformOnYFactory()
 
     private val platformGap: Float = 50f
 

@@ -1,21 +1,17 @@
 package com.example.mygame.domain.bonuses
 
 import android.animation.ValueAnimator
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import com.example.mygame.UI.IDrawable
 import com.example.mygame.domain.IGameObject
 import com.example.mygame.domain.IMoveable
 import com.example.mygame.domain.IVisitor
 
-class Spring(private val initBitmap: MutableList<Bitmap>,
+class Spring(
              createdX: Float,
              createdY: Float
-) : IDrawable, IMoveable, IBonus, IGameObject {
+) : IMoveable, IBonus, IGameObject {
     private val animationDuration : Long = 150
 
     var currentFrame = 0
-    private var bitmap = initBitmap[currentFrame]
     private var isStretchRunning = false
     var animator : ValueAnimator? = null
 
@@ -32,20 +28,15 @@ class Spring(private val initBitmap: MutableList<Bitmap>,
     fun runStretchAnimation() {
         if (!isStretchRunning) {
             isStretchRunning = true
-            animator = ValueAnimator.ofInt(0, initBitmap.size - 1).apply {
+            animator = ValueAnimator.ofInt(0, STATE_COUNT - 1).apply {
                 this.duration = animationDuration
                 addUpdateListener { animator ->
                     currentFrame = animator.animatedValue as Int
-                    bitmap = initBitmap[currentFrame]
                     setPosition(x, y - ANIMATION_HEIGHT_VALUE)
                 }
             }
             animator?.start()
         }
-    }
-
-    override fun draw(canvas: Canvas) {
-        canvas.drawBitmap(bitmap, left, top, null)
     }
 
     override fun setPosition(startX: Float, startY: Float) {
@@ -65,5 +56,7 @@ class Spring(private val initBitmap: MutableList<Bitmap>,
         private const val WIDTH = 78f
         private const val HEIGHT = 53f
         private const val ANIMATION_HEIGHT_VALUE = 5f
+
+        private const val STATE_COUNT = 4
     }
 }

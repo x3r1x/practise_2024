@@ -1,6 +1,5 @@
 package com.example.mygame.domain.logic
 
-import android.content.res.Resources
 import com.example.mygame.domain.IGameObject
 import com.example.mygame.domain.Screen
 import com.example.mygame.domain.bullet.Bullet
@@ -10,12 +9,11 @@ import com.example.mygame.domain.player.Player
 import kotlin.math.abs
 
 class ObjectsManager(
-    val resources: Resources,
     private val screen: Screen
 ) {
-    val objectStorage = ObjectStorage(resources, screen)
+    val objectStorage = ObjectStorage(screen)
 
-    private val bulletFactory = BulletFactory(resources)
+    private val bulletFactory = BulletFactory()
 
     private var tempScore = 0.0
 
@@ -24,7 +22,7 @@ class ObjectsManager(
     private lateinit var levelGenerator: LevelGenerator
 
     fun initObjects() {
-        levelGenerator = LevelGenerator(resources, screen)
+        levelGenerator = LevelGenerator(screen)
         objectStorage.addAll(levelGenerator.generateInitialPack())
     }
 
