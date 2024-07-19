@@ -33,18 +33,21 @@ class BonusViewFactory(resources: Resources) {
         type: String,
         another: Int
     ) : ObjectView {
-        var newX = x
-        if (type == JETPACK_ON_PLAYER_LEFT) {
-            newX += OFFSET_ON_PLAYER_LEFT
-        } else if (type == JETPACK_ON_PLAYER_RIGHT) {
-            newX -= OFFSET_ON_PLAYER_LEFT
+        val bitmap = getBitmap(type, another)
+        val rect = getRect(x, y, bitmap)
+        val matrix = getMatrix(rect)
+        val paint = getPaint(type, another)
+
+        return ObjectView(x, y, bitmap, matrix, paint)
+    }
+
+    private fun getPaint(type: String, another: Int) : Paint {
+        val paint = Paint()
+        if (type == SHIELD_ON_PLAYER) {
+            paint.alpha = another
         }
 
-        val bitmap = getBitmap(type, another)
-        val rect = getRect(newX, y, bitmap)
-        val matrix = getMatrix(rect)
-
-        return ObjectView(newX, y, bitmap, matrix)
+        return paint
     }
 
     private fun getBitmap(type: String, animation: Int) : Bitmap {

@@ -52,10 +52,14 @@ class Jetpack(private val initDefaultJetpack: Bitmap,
         } else {
             if (player!!.directionX == Player.DirectionX.LEFT) {
                 state = State.ON_LEFT_OF_PLAYER
+                x = player!!.x + OFFSET_ON_PLAYER_LEFT
+                y = player!!.y
             } else {
                 state = State.ON_RIGHT_OF_PLAYER
+                x = player!!.x - OFFSET_ON_PLAYER_RIGHT
+                y = player!!.y
             }
-            return Pair(player!!.x, player!!.y)
+            return Pair(x, y)
         }
     }
 
