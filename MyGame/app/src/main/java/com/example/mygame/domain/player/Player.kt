@@ -30,7 +30,7 @@ class Player(private val idleImage: Bitmap,
 
     var isWithJetpack = false
     var isWithShield = false
-    private var isShooting = false
+    var isShooting = false
 
     override var x = 0f
 
@@ -71,10 +71,6 @@ class Player(private val idleImage: Bitmap,
         if (x > screen.right) {
             x = 0f + RADIUS
         }
-    }
-
-    fun isShooting() : Boolean {
-        return isShooting
     }
 
     fun shoot() {

@@ -45,15 +45,23 @@ class DrawableManager(resources: Resources) {
         }
     }
 
-    private fun playerToView(player: Player) : ObjectView {
-        return playerViewFactory.getPlayerView(player.x, player.y, player.directionX.value, player.directionY.value, player.isWithShield, player.isShooting(), player.isDead)
+    private fun playerToView(player: Player): ObjectView {
+        return playerViewFactory.getPlayerView(
+            player.x,
+            player.y,
+            player.directionX.value,
+            player.directionY.value,
+            player.isWithShield,
+            player.isShooting,
+            player.isDead
+        )
     }
 
-    private fun platformToView(platform: Platform) : ObjectView {
+    private fun platformToView(platform: Platform): ObjectView {
         var type = ""
         var another = 0
 
-        when(platform) {
+        when (platform) {
             is StaticPlatform -> type = PlatformViewFactory.STATIC
             is MovingPlatformOnX -> type = PlatformViewFactory.MOVING_ON_X
             is MovingPlatformOnY -> type = PlatformViewFactory.MOVING_ON_Y
@@ -70,9 +78,9 @@ class DrawableManager(resources: Resources) {
         return platformViewFactory.getPlatformView(platform.x, platform.y, type, another)
     }
 
-    private fun enemyToView(enemy: Enemy) : ObjectView {
+    private fun enemyToView(enemy: Enemy): ObjectView {
         var type = ""
-        when(enemy) {
+        when (enemy) {
             is Bully -> type = EnemyViewFactory.BULLY
             is Fly -> type = EnemyViewFactory.FLY
             is Ninja -> type = EnemyViewFactory.NINJA
