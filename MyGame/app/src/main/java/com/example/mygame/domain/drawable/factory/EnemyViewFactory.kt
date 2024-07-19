@@ -52,9 +52,5 @@ class EnemyViewFactory(resources: Resources) {
         val BITMAP_OPTIONS = BitmapFactory.Options().apply {
             inScaled = false
         }
-
-        const val BULLY = "bul"
-        const val FLY = "fly"
-        const val NINJA = "nin"
     }
 }

@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowMetrics
@@ -14,7 +13,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.mygame.R
 import com.example.mygame.presentation.GameViewModel
-import org.json.JSONObject
 
 class MultiplayerGameFragment : Fragment() {
     private lateinit var gameView: GameView

@@ -83,11 +83,5 @@ class PlatformViewFactory(resources: Resources) {
         val BITMAP_OPTIONS = BitmapFactory.Options().apply {
             inScaled = false
         }
-
-        const val STATIC = "sta"
-        const val BREAKING = "brk"
-        const val DISAPPEARING = "dis"
-        const val MOVING_ON_X = "mox"
-        const val MOVING_ON_Y = "moy"
     }
 }
