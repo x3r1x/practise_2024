@@ -1,6 +1,7 @@
 package com.example.mygame.domain.drawable
 
 import android.content.res.Resources
+import android.util.Log
 import com.example.mygame.UI.IDrawable
 import com.example.mygame.domain.Enemy
 import com.example.mygame.domain.IGameObject
@@ -89,30 +90,31 @@ class DrawableManager(resources: Resources) {
         return enemyViewFactory.getEnemyView(enemy.x, enemy.y, type)
     }
 
-    private fun bonusToView(bonus: IBonus) : ObjectView {
-        var type: String
-        var another = 0
+    private fun bonusToView(bonus: IBonus): ObjectView {
+        val type: String
+        val another: Int
+
         if (bonus is Shield) {
-            type = BonusViewFactory.SHIELD
-            if (bonus.isOnPlayer) {
-                type = BonusViewFactory.SHIELD_ON_PLAYER
-            }
+            type =
+                if (bonus.isOnPlayer) BonusViewFactory.SHIELD_ON_PLAYER else BonusViewFactory.SHIELD
             another = bonus.paint.alpha
             val coords = bonus.getCoords()
+
             return bonusViewFactory.getBonusView(coords.first, coords.second, type, another)
         } else if (bonus is Spring) {
             type = BonusViewFactory.SPRING
             another = bonus.currentFrame
+
             return bonusViewFactory.getBonusView(bonus.x, bonus.y, type, another)
         } else if (bonus is Jetpack) {
-            if (bonus.state == Jetpack.State.ON_LEFT_OF_PLAYER) {
-                type = BonusViewFactory.JETPACK_ON_PLAYER_LEFT
-            } else if (bonus.state == Jetpack.State.ON_RIGHT_OF_PLAYER) {
-                type = BonusViewFactory.JETPACK_ON_PLAYER_RIGHT
-            } else {
-                type = BonusViewFactory.JETPACK
+            when (bonus.state) {
+                Jetpack.State.ON_LEFT_OF_PLAYER -> type = BonusViewFactory.JETPACK_ON_PLAYER_LEFT
+                Jetpack.State.ON_RIGHT_OF_PLAYER -> type = BonusViewFactory.JETPACK_ON_PLAYER_RIGHT
+                else -> type = BonusViewFactory.JETPACK
             }
+            another = bonus.paint.alpha
             val coords = bonus.getCoords()
+
             return bonusViewFactory.getBonusView(coords.first, coords.second, type, another)
         } else {
             throw IllegalArgumentException("Invalid bonus type")

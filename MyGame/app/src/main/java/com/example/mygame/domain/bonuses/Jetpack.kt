@@ -12,17 +12,17 @@ import com.example.mygame.domain.IVisitor
 import com.example.mygame.domain.player.Player
 
 class Jetpack(private val initDefaultJetpack: Bitmap,
-              private val initLeftPlayerJetpack: Bitmap,
-              private val initRightPlayerJetpack: Bitmap,
+              private val initToLeftPlayerJetpack: Bitmap,
+              private val initToRightPlayerJetpack: Bitmap,
               createdX: Float,
               createdY: Float
 ) : IDrawable, IMoveable, IBonus, IGameObject {
+    override var x = createdX
+    override var y = createdY
+
     var paint = Paint().apply {
         alpha = DEFAULT_TRANSPARENCY
     }
-
-    override var x = createdX
-    override var y = createdY
 
     override var left = x - WIDTH / 2
     override var top = y - WIDTH / 2
@@ -51,12 +51,12 @@ class Jetpack(private val initDefaultJetpack: Bitmap,
             return Pair(x, y)
         } else {
             if (player!!.directionX == Player.DirectionX.LEFT) {
-                state = State.ON_LEFT_OF_PLAYER
-                x = player!!.x + OFFSET_ON_PLAYER_LEFT
+                state = State.ON_RIGHT_OF_PLAYER
+                x = player!!.right + OFFSET_ON_PLAYER
                 y = player!!.y
             } else {
-                state = State.ON_RIGHT_OF_PLAYER
-                x = player!!.x - OFFSET_ON_PLAYER_RIGHT
+                state = State.ON_LEFT_OF_PLAYER
+                x = player!!.left - OFFSET_ON_PLAYER
                 y = player!!.y
             }
             return Pair(x, y)
@@ -109,15 +109,15 @@ class Jetpack(private val initDefaultJetpack: Bitmap,
             canvas.drawBitmap(initDefaultJetpack, left, top, null)
         } else if (state == State.ON_LEFT_OF_PLAYER) {
             canvas.drawBitmap(
-                initLeftPlayerJetpack,
-                player!!.x - WIDTH / 2 + OFFSET_ON_PLAYER_LEFT,
+                initToLeftPlayerJetpack,
+                player!!.x - WIDTH / 2 + OFFSET_ON_PLAYER,
                 player!!.y - HEIGHT / 2,
                 paint
             )
         } else {
             canvas.drawBitmap(
-                initRightPlayerJetpack,
-                player!!.x - WIDTH / 2 - OFFSET_ON_PLAYER_RIGHT,
+                initToRightPlayerJetpack,
+                player!!.x - WIDTH / 2 - OFFSET_ON_PLAYER,
                 player!!.y - HEIGHT / 2,
                 paint
             )
@@ -141,13 +141,12 @@ class Jetpack(private val initDefaultJetpack: Bitmap,
         const val WIDTH = 124f
         const val HEIGHT = 111f
 
-        const val OFFSET_ON_PLAYER_RIGHT = 95f
-        const val OFFSET_ON_PLAYER_LEFT = 127f
+        const val OFFSET_ON_PLAYER = 40f
 
         private const val JETPACK_TIMER_TICK : Long = 500
         private const val WHEN_TO_PULSE : Long = 2000
 
-        private const val DEFAULT_TRANSPARENCY = 256
+        private const val DEFAULT_TRANSPARENCY = 255
         private const val PULSE_TRANSPARENCY = 128
     }
 }
