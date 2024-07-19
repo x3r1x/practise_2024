@@ -1,7 +1,6 @@
 package com.example.mygame.domain.drawable
 
 import android.content.res.Resources
-import android.util.Log
 import com.example.mygame.UI.IDrawable
 import com.example.mygame.domain.Enemy
 import com.example.mygame.domain.IGameObject

@@ -33,10 +33,10 @@ class Jetpack(private val initDefaultJetpack: Bitmap,
 
     private var player: Player? = null
 
-    enum class State(val num: Int) {
-        UNUSED(0),
-        ON_LEFT_OF_PLAYER(1),
-        ON_RIGHT_OF_PLAYER(2)
+    enum class State {
+        UNUSED,
+        ON_LEFT_OF_PLAYER,
+        ON_RIGHT_OF_PLAYER
     }
 
     var state = State.UNUSED
