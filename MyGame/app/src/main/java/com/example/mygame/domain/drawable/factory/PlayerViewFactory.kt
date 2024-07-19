@@ -6,28 +6,48 @@ import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.graphics.RectF
 import com.example.mygame.R
-import com.example.mygame.domain.drawable.ObjectView
+import com.example.mygame.domain.drawable.view.ObjectView
+import com.example.mygame.domain.drawable.view.PlayerView
 
 class PlayerViewFactory(resources: Resources) {
-    private val idlePlayerBitmap = BitmapFactory.decodeResource(resources, R.drawable.player, BITMAP_OPTIONS)
-    private val jumpPlayerBitmap = BitmapFactory.decodeResource(resources, R.drawable.jump, BITMAP_OPTIONS)
-    private val deadPlayerBitmap = BitmapFactory.decodeResource(resources, R.drawable.dead_doodler, BITMAP_OPTIONS)
-    private val shootPlayerBitmap = BitmapFactory.decodeResource(resources, R.drawable.player_shooting, BITMAP_OPTIONS)
+    private val idlePlayerBitmap =
+        BitmapFactory.decodeResource(resources, R.drawable.player, BITMAP_OPTIONS)
+    private val jumpPlayerBitmap =
+        BitmapFactory.decodeResource(resources, R.drawable.jump, BITMAP_OPTIONS)
+    private val deadPlayerBitmap =
+        BitmapFactory.decodeResource(resources, R.drawable.dead_doodler, BITMAP_OPTIONS)
+    private val shootPlayerBitmap =
+        BitmapFactory.decodeResource(resources, R.drawable.player_shooting, BITMAP_OPTIONS)
+
+    private val selectedBonusViewFactory = SelectedBonusViewFactory(resources)
 
     fun getPlayerView(
         x: Float,
         y: Float,
+        speedX: Float,
+        speedY: Float,
         directionX: Int,
         directionY: Int,
         isWithShield: Boolean,
         isShot: Boolean,
-        isDead: Boolean
-    ) : ObjectView {
+        isDead: Boolean,
+        isWithJetpack: Boolean = false
+    ): ObjectView {
         val bitmap = getBitmap(isDead, isShot, directionY)
         val rect = getRect(x, y, isDead, isShot)
         val matrix = getMatrix(directionX, rect, bitmap)
 
-        return ObjectView(x, y, bitmap, matrix)
+        var selectedShield: SelectedBonusView? = null
+        var selectedJetpack: SelectedBonusView? = null
+
+        if (isWithShield) {
+            selectedShield = selectedBonusViewFactory.getShieldView(x, y, directionX)
+        }
+        if (isWithJetpack) {
+            selectedJetpack = selectedBonusViewFactory.getJetpackView(x, y, directionX)
+        }
+
+        return PlayerView(x, y, bitmap, matrix, selectedShield, selectedJetpack)
     }
 
     private fun getBitmap(isDead: Boolean, isShot: Boolean, directionY: Int): Bitmap {
@@ -42,7 +62,7 @@ class PlayerViewFactory(resources: Resources) {
         }
     }
 
-    private fun getMatrix(directionX: Int, destRect: RectF, bitmap: Bitmap) : Matrix {
+    private fun getMatrix(directionX: Int, destRect: RectF, bitmap: Bitmap): Matrix {
         val scaleX = destRect.width() / bitmap.width
         val scaleY = destRect.height() / bitmap.height
 
@@ -59,14 +79,23 @@ class PlayerViewFactory(resources: Resources) {
         return matrix
     }
 
-    private fun getRect(x: Float, y: Float, isDead: Boolean, isShot: Boolean) : RectF {
+    private fun getRect(x: Float, y: Float, isDead: Boolean, isShot: Boolean): RectF {
         return if (isDead) {
             RectF(x - DEAD_WIDTH / 2, y - DEAD_HEIGHT / 2, x + DEAD_WIDTH / 2, y + DEAD_HEIGHT / 2)
         } else if (isShot) {
-            RectF(x - SHOOTING_WIDTH / 2, y - SHOOTING_HEIGHT / 2, x + SHOOTING_WIDTH / 2, y + SHOOTING_HEIGHT / 2)
+            RectF(
+                x - SHOOTING_WIDTH / 2,
+                y - SHOOTING_HEIGHT / 2,
+                x + SHOOTING_WIDTH / 2,
+                y + SHOOTING_HEIGHT / 2
+            )
         } else {
             RectF(x - RADIUS, y - RADIUS, x + RADIUS, y + RADIUS)
         }
+    }
+
+    private fun getSelectedShieldView(x: Float, y: Float, directionX: Int) {
+
     }
 
     companion object {

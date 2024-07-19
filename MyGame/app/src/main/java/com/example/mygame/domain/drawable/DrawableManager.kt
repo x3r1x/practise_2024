@@ -15,6 +15,7 @@ import com.example.mygame.domain.drawable.factory.BulletViewFactory
 import com.example.mygame.domain.drawable.factory.EnemyViewFactory
 import com.example.mygame.domain.drawable.factory.PlatformViewFactory
 import com.example.mygame.domain.drawable.factory.PlayerViewFactory
+import com.example.mygame.domain.drawable.view.ObjectView
 import com.example.mygame.domain.enemies.Bully
 import com.example.mygame.domain.enemies.Fly
 import com.example.mygame.domain.enemies.Ninja
@@ -32,7 +33,7 @@ class DrawableManager(resources: Resources) {
     private val bonusViewFactory = BonusViewFactory(resources)
     private val bulletViewFactory = BulletViewFactory(resources)
 
-    fun mapObjects(gameObjects: List<IGameObject>) : List<IDrawable> {
+    fun mapObjects(gameObjects: List<IGameObject>): List<IDrawable> {
         return gameObjects.map { gameObject ->
             when (gameObject) {
                 is Player -> playerToView(gameObject)
@@ -49,78 +50,76 @@ class DrawableManager(resources: Resources) {
         return playerViewFactory.getPlayerView(
             player.x,
             player.y,
+            0f,
+            0f,
             player.directionX.value,
             player.directionY.value,
             player.isWithShield,
             player.isShooting,
-            player.isDead
+            player.isDead,
+            player.isWithJetpack
         )
     }
 
     private fun platformToView(platform: Platform): ObjectView {
-        var type = ""
+        var type = 0
         var another = 0
 
         when (platform) {
-            is StaticPlatform -> type = PlatformViewFactory.STATIC
-            is MovingPlatformOnX -> type = PlatformViewFactory.MOVING_ON_X
-            is MovingPlatformOnY -> type = PlatformViewFactory.MOVING_ON_Y
+            is StaticPlatform -> type = ObjectType.STATIC_PLATFORM_TYPE
+            is MovingPlatformOnX -> type = ObjectType.MOVING_PLATFORM_ON_X_TYPE
+            is MovingPlatformOnY -> type = ObjectType.MOVING_PLATFORM_ON_Y_TYPE
             is DisappearingPlatform -> {
-                type = PlatformViewFactory.DISAPPEARING
+                type = ObjectType.DISAPPEARING_PLATFORM_TYPE
                 another = platform.platformColor.color
             }
+
             is BreakingPlatform -> {
-                type = PlatformViewFactory.BREAKING
+                type = ObjectType.DISAPPEARING_PLATFORM_TYPE
                 another = platform.currentFrameIndex
             }
         }
 
-        return platformViewFactory.getPlatformView(platform.x, platform.y, type, another)
+        return platformViewFactory.getPlatformView(platform.x, platform.y, 0f, 0f, type, another)
     }
 
     private fun enemyToView(enemy: Enemy): ObjectView {
-        var type = ""
+        var type = 0
         when (enemy) {
-            is Bully -> type = EnemyViewFactory.BULLY
-            is Fly -> type = EnemyViewFactory.FLY
-            is Ninja -> type = EnemyViewFactory.NINJA
+            is Bully -> type = ObjectType.BULLY_TYPE
+            is Fly -> type = ObjectType.FLY_TYPE
+            is Ninja -> type = ObjectType.NINJA_TYPE
         }
 
-        return enemyViewFactory.getEnemyView(enemy.x, enemy.y, type)
+        return enemyViewFactory.getEnemyView(enemy.x, enemy.y, 0f, 0f, type)
     }
 
     private fun bonusToView(bonus: IBonus): ObjectView {
-        val type: String
-        val another: Int
+        val type: Int
+        var another = 0
 
-        if (bonus is Shield) {
-            type =
-                if (bonus.isOnPlayer) BonusViewFactory.SHIELD_ON_PLAYER else BonusViewFactory.SHIELD
-            another = bonus.paint.alpha
-            val coords = bonus.getCoords()
-
-            return bonusViewFactory.getBonusView(coords.first, coords.second, type, another)
-        } else if (bonus is Spring) {
-            type = BonusViewFactory.SPRING
-            another = bonus.currentFrame
-
-            return bonusViewFactory.getBonusView(bonus.x, bonus.y, type, another)
-        } else if (bonus is Jetpack) {
-            when (bonus.state) {
-                Jetpack.State.ON_LEFT_OF_PLAYER -> type = BonusViewFactory.JETPACK_ON_PLAYER_LEFT
-                Jetpack.State.ON_RIGHT_OF_PLAYER -> type = BonusViewFactory.JETPACK_ON_PLAYER_RIGHT
-                else -> type = BonusViewFactory.JETPACK
+        when (bonus) {
+            is Shield -> {
+                type = ObjectType.SHIELD_TYPE
+                return bonusViewFactory.getBonusView(bonus.x, bonus.y, 0f, 0f, type, another)
             }
-            another = bonus.paint.alpha
-            val coords = bonus.getCoords()
 
-            return bonusViewFactory.getBonusView(coords.first, coords.second, type, another)
-        } else {
-            throw IllegalArgumentException("Invalid bonus type")
+            is Spring -> {
+                type = ObjectType.SPRING_TYPE
+                another = bonus.currentFrame
+                return bonusViewFactory.getBonusView(bonus.x, bonus.y, 0f, 0f, type, another)
+            }
+
+            is Jetpack -> {
+                type = ObjectType.JETPACK_TYPE
+                return bonusViewFactory.getBonusView(bonus.x, bonus.y, 0f, 0f, type, another)
+            }
+
+            else -> throw IllegalArgumentException("Invalid bonus type")
         }
     }
 
-    private fun bulletToView(bullet: Bullet) : ObjectView {
-        return bulletViewFactory.getBulletView(bullet.x, bullet.y)
+    private fun bulletToView(bullet: Bullet): ObjectView {
+        return bulletViewFactory.getBulletView(bullet.x, bullet.y, 0f, 0f)
     }
 }

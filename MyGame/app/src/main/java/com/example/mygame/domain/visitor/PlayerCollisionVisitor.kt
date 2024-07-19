@@ -39,16 +39,13 @@ class PlayerCollisionVisitor(
 
     override fun visit(jetpack: Jetpack) {
         if (doesPlayerCollideWithCollectable(jetpack) && !player.isWithJetpack && !player.isDead) {
-            jetpack.initPlayer(player)
-            jetpack.startDisappearingTimer()
-            jetpack.fly()
+            jetpack.select(player)
         }
     }
 
     override fun visit(shield: Shield) {
         if (doesPlayerCollideWithCollectable(shield) && !player.isWithShield && !player.isDead) {
-            shield.initPlayer(player)
-            shield.startDisappearingTimer()
+            shield.select(player)
         }
     }
 
@@ -73,11 +70,11 @@ class PlayerCollisionVisitor(
     override fun visit(bullet: Bullet) {
     }
 
-    private fun doesPlayerCollideWithSolid(other: IGameObject) : Boolean {
+    private fun doesPlayerCollideWithSolid(other: IGameObject): Boolean {
         return if (player.isShooting) {
-            (player.y + Player.SHOOTING_HEIGHT / 2 < other.bottom  && player.y + Player.SHOOTING_HEIGHT / 2 >= other.top
+            (player.y + Player.SHOOTING_HEIGHT / 2 < other.bottom && player.y + Player.SHOOTING_HEIGHT / 2 >= other.top
                     && (player.x - Player.SHOOTING_WIDTH / 2 + 16f < other.right && player.x + Player.SHOOTING_WIDTH / 2 - 16f > other.left)
-                    && player.directionY == DirectionY.DOWN  )
+                    && player.directionY == DirectionY.DOWN)
         } else if (player.directionX == DirectionX.RIGHT) {
             (player.bottom < other.bottom && player.bottom >= other.top && player.directionY == DirectionY.DOWN
                     && (player.left + 15f < other.right && player.right - 50f > other.left))
@@ -87,12 +84,12 @@ class PlayerCollisionVisitor(
         }
     }
 
-    private fun doesPlayerCollideWithCollectable(other: IGameObject) : Boolean {
+    private fun doesPlayerCollideWithCollectable(other: IGameObject): Boolean {
         return (player.top < other.bottom && player.bottom >= other.top
-                    && (player.left < other.right && player.right > other.left))
+                && (player.left < other.right && player.right > other.left))
     }
 
-    private fun checkCollisionWithEnemy(other: IGameObject) : Boolean {
+    private fun checkCollisionWithEnemy(other: IGameObject): Boolean {
         return if (other !is Bully) {
             (player.top < other.bottom && player.bottom >= other.top
                     && (player.left < other.right && player.right > other.left))

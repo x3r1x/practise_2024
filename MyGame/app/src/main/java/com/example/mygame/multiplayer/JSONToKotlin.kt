@@ -1,7 +1,7 @@
 package com.example.mygame.multiplayer
 
 import android.content.res.Resources
-import com.example.mygame.domain.drawable.ObjectView
+import com.example.mygame.domain.drawable.view.ObjectView
 import com.example.mygame.domain.drawable.factory.BonusViewFactory
 import com.example.mygame.domain.drawable.factory.BulletViewFactory
 import com.example.mygame.domain.drawable.factory.EnemyViewFactory
@@ -27,41 +27,36 @@ class JSONToKotlin(resources: Resources) {
         return gson.fromJson(jsonString, GameData::class.java)
     }
 
-    private fun mapObjects(gameData: GameData): List<ObjectView> {
+    private fun mapObjects(gameData: GameData) : List<ObjectView> {
         val objectsViews = mutableListOf<ObjectView>()
 
-        objectsViews.addAll(gameData.objects.platforms.map { platformJSON ->
-            platformViewFactory.getPlatformView(
-                platformJSON.x,
-                platformJSON.y,
-                platformJSON.typ,
-                platformJSON.anm
-            )
-        })
-
-        objectsViews.addAll(gameData.objects.enemies.map { enemyJSON ->
-            enemyViewFactory.getEnemyView(enemyJSON.x, enemyJSON.y, enemyJSON.typ)
-        })
-
-        objectsViews.addAll(gameData.objects.bonuses.map { bonusJSON ->
-            bonusViewFactory.getBonusView(bonusJSON.x, bonusJSON.y, bonusJSON.typ, bonusJSON.anm)
-        })
-
-        objectsViews.addAll(gameData.objects.bullets.map { bulletJSON ->
-            bulletViewFactory.getBulletView(bulletJSON.x, bulletJSON.y)
-        })
-
-        objectsViews.addAll(gameData.objects.players.map { playerJSON ->
-            playerViewFactory.getPlayerView(
-                playerJSON.x,
-                playerJSON.y,
-                playerJSON.drx,
-                playerJSON.dry,
-                playerJSON.sld,
-                playerJSON.sht,
-                playerJSON.ded
-            )
-        })
+        gameData.objects.data.forEach {
+            when(it) {
+                is PlayerJSON -> objectsViews.add(playerViewFactory.getPlayerView(
+                    it.posX,
+                    it.posY,
+                    it.speedX,
+                    it.speedY,
+                    it.directionX,
+                    it.directionY,
+                    it.isWithShield,
+                    it.isShooting,
+                    it.isDead
+                ))
+                is PlatformJSON -> objectsViews.add(platformViewFactory.getPlatformView(
+                    it.posX, it.posY, it.speedX, it.speedY, it.type, it.animationTime
+                ))
+                is EnemyJSON -> objectsViews.add(enemyViewFactory.getEnemyView(
+                    it.posX, it.posY, it.speedX, it.speedY, it.type
+                ))
+                is BonusJSON -> objectsViews.add(bonusViewFactory.getBonusView(
+                    it.posX, it.posY, it.speedX, it.speedY, it.type, it.animationTime
+                ))
+                is BulletJSON -> objectsViews.add(bulletViewFactory.getBulletView(
+                    it.posX, it.posY, it.speedX, it.speedY
+                ))
+            }
+        }
 
         return objectsViews
     }

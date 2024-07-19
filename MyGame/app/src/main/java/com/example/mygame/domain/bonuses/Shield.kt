@@ -1,8 +1,5 @@
 package com.example.mygame.domain.bonuses
 
-import android.graphics.Paint
-import android.os.CountDownTimer
-import com.example.mygame.domain.GameConstants
 import com.example.mygame.domain.IGameObject
 import com.example.mygame.domain.IMoveable
 import com.example.mygame.domain.IVisitor
@@ -12,12 +9,6 @@ class Shield(
     createdX: Float,
     createdY: Float
 ) : IMoveable, IBonus, IGameObject {
-    var isOnPlayer = false
-
-    var paint = Paint().apply {
-        alpha = DEFAULT_TRANSPARENCY
-    }
-
     override var x: Float = createdX
     override var y: Float = createdY
 
@@ -28,50 +19,9 @@ class Shield(
 
     override var isDisappeared = false
 
-    private var player: Player? = null
-
-    fun initPlayer(entity: Player) {
-        player = entity
-        player?.isWithShield = true
-        isOnPlayer = true
-    }
-
-    //thanks God for ending my suffering
-    fun startDisappearingTimer() {
-        val timer = object : CountDownTimer(GameConstants.SHIELD_DURATION, SHIELD_TIMER_TICK) {
-            override fun onTick(p0: Long) {
-                if (p0 <= WHEN_TO_PULSE) {
-                    paint.alpha = if (paint.alpha == PULSE_TRANSPARENCY) {
-                        DEFAULT_TRANSPARENCY
-                    } else {
-                        PULSE_TRANSPARENCY
-                    }
-                }
-            }
-
-            override fun onFinish() {
-                dispose()
-            }
-        }
-        timer.start()
-    }
-
-    private fun dispose() {
-        player?.isWithShield = false
+    fun select(entity: Player) {
+        entity.bonuses.selectShield()
         isDisappeared = true
-
-        left = 0f
-        right = 0f
-        top = 0f
-        bottom = 0f
-    }
-
-    fun getCoords() : Pair<Float, Float> {
-        if (player == null) {
-            return Pair(x, y)
-        } else {
-            return Pair(player!!.x, player!!.y)
-        }
     }
 
     override fun setPosition(startX: Float, startY: Float) {
@@ -89,11 +39,5 @@ class Shield(
 
     companion object {
         private const val DEFAULT_SIDE = 100f
-
-        private const val SHIELD_TIMER_TICK : Long = 500
-        private const val WHEN_TO_PULSE : Long = 3000
-
-        private const val DEFAULT_TRANSPARENCY = 128
-        private const val PULSE_TRANSPARENCY = 64
     }
 }

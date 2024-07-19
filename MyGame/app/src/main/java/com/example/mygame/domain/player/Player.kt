@@ -19,6 +19,7 @@ class Player : IMoveable, IGameObject {
         RIGHT(1)
     }
 
+    var bonuses = PlayerSelectedBonuses(this)
 
     var isWithJetpack = false
     var isWithShield = false
@@ -115,7 +116,6 @@ class Player : IMoveable, IGameObject {
     }
 
     companion object {
-
         const val SHOOTING_WIDTH = 105f
         const val SHOOTING_HEIGHT = 200f
 

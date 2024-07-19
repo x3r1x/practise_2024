@@ -45,7 +45,7 @@ class MultiplayerGameFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_multiplayer_game, container, false)
         initViews(view)
 
-        gameViewModel.initialize(screenWidth, screenHeight)
+        gameViewModel.initialize(screenWidth, screenHeight, GameViewModel.Type.MULTIPLAYER)
 //        gameViewModel.gameplay.scoreObservable.observe(viewLifecycleOwner) { newScore ->
 //            scoreView.text = newScore.toString()
 //        }
@@ -63,28 +63,28 @@ class MultiplayerGameFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        gameViewModel.gameplay.gameState.observe(viewLifecycleOwner) { gameObjects ->
+        gameViewModel.multiplayerGameplay.gameState.observe(viewLifecycleOwner) { gameObjects ->
             gameView.drawGame(gameObjects.objects)
         }
     }
 
     override fun onResume() {
         super.onResume()
-        gameViewModel.gameplay.onResume()
+        gameViewModel.multiplayerGameplay.onResume()
     }
 
     override fun onPause() {
         super.onPause()
-        gameViewModel.gameplay.onPause()
+        gameViewModel.multiplayerGameplay.onPause()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        gameViewModel.gameplay.onDestroy()
+        gameViewModel.multiplayerGameplay.onDestroy()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        gameViewModel.gameplay.onDestroy()
+        gameViewModel.multiplayerGameplay.onDestroy()
     }
 }

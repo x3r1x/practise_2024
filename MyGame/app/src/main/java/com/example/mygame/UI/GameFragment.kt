@@ -3,13 +3,11 @@ package com.example.mygame.UI
 import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
-import com.example.mygame.R
 import android.view.ViewGroup
 import android.view.WindowMetrics
 import android.widget.Button
@@ -18,8 +16,9 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
-import androidx.navigation.Navigation
 import androidx.fragment.app.viewModels
+import androidx.navigation.Navigation
+import com.example.mygame.R
 import com.example.mygame.presentation.GameViewModel
 
 class GameFragment : Fragment() {
@@ -40,14 +39,14 @@ class GameFragment : Fragment() {
     }
 
     private fun pauseGame() {
-//        gameViewModel.gameplay.stopGameLoop()
+        gameViewModel.singleplayerGameplay.stopGameLoop()
 
         pauseGroup.visibility = VISIBLE
 
         val resumeButton = pauseGroup.findViewById<Button>(R.id.resumeButton)
         resumeButton.setOnClickListener {
             pauseGroup.visibility = INVISIBLE
-//            gameViewModel.gameplay.startGameLoop()
+            gameViewModel.singleplayerGameplay.startGameLoop()
 
         }
 
@@ -76,10 +75,10 @@ class GameFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_game, container, false)
         initViews(view)
 
-        gameViewModel.initialize(screenWidth, screenHeight)
-//        gameViewModel.gameplay.scoreObservable.observe(viewLifecycleOwner) { newScore ->
-//            scoreView.text = newScore.toString()
-//        }
+        gameViewModel.initialize(screenWidth, screenHeight, GameViewModel.Type.SINGLEPLAYER)
+        gameViewModel.singleplayerGameplay.scoreObservable.observe(viewLifecycleOwner) { newScore ->
+            scoreView.text = newScore.toString()
+        }
 
         pauseButton.setOnClickListener {
             pauseGame()
@@ -99,7 +98,7 @@ class GameFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // Наблюдаем за изменениями в объектах игры
-        gameViewModel.gameplay.gameState.observe(viewLifecycleOwner) { gameObjects ->
+        gameViewModel.singleplayerGameplay.gameState.observe(viewLifecycleOwner) { gameObjects ->
             gameView.drawGame(gameObjects.objects)
 
             if (gameViewModel.isGameLost()) {
@@ -110,22 +109,22 @@ class GameFragment : Fragment() {
         }
 
         // Запуск игрового цикла
-//        gameViewModel.gameplay.startGameLoop()
+        gameViewModel.singleplayerGameplay.startGameLoop()
     }
 
     override fun onResume() {
         super.onResume()
-        gameViewModel.gameplay.onResume()
+        gameViewModel.singleplayerGameplay.onResume()
     }
 
     override fun onPause() {
         super.onPause()
-        gameViewModel.gameplay.onPause()
+        gameViewModel.singleplayerGameplay.onPause()
         pauseGame()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-//        gameViewModel.gameplay.stopGameLoop()
+        gameViewModel.singleplayerGameplay.stopGameLoop()
     }
 }

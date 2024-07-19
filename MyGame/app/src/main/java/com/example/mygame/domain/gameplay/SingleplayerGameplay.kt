@@ -19,7 +19,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
-class Gameplay(
+class SingleplayerGameplay(
     private val objectsManager: ObjectsManager,
     private val sensorHandler: SensorHandler,
     private val positionHandler: PositionHandler,
@@ -40,10 +40,6 @@ class Gameplay(
 
     private val _scoreObservable = MutableLiveData<Int>()
     val scoreObservable: LiveData<Int> = _scoreObservable
-
-    fun setDeltaX(newX: Float) {
-        deltaX = newX
-    }
 
     fun startGameLoop() {
         isGameLoopRunning = true
@@ -117,6 +113,10 @@ class Gameplay(
             elapsedTime,
             deltaX
         )
+    }
+
+    override fun onSensorDataChanged(newX: Float) {
+        deltaX = newX
     }
 
     override fun onShot(startX: Float) {

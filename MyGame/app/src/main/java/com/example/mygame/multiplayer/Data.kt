@@ -15,53 +15,67 @@ data class Ping(
 
 data class ServerResponse(val type: String)
 
+interface IObjectJSON {
+    val type: Int
+    val posX: Float
+    val posY: Float
+    val speedX: Float
+    val speedY: Float
+}
+
 data class PlayerJSON(
-    val id: String,
-    val x: Float,
-    val y: Float,
-    val drx: Int,
-    val dry: Int,
-    val sld: Boolean,
-    val sht: Boolean,
-    val ded: Boolean,
-    val scr: Int
-)
+    override val type: Int,
+    override val posX: Float,
+    override val posY: Float,
+    override val speedX: Float,
+    override val speedY: Float,
+    val directionX: Int,
+    val directionY: Int,
+    val isWithShield: Boolean,
+    val isShooting: Boolean,
+    val isDead: Boolean,
+    val score: Double
+) : IObjectJSON
 
 data class PlatformJSON(
-    val x: Float,
-    val y: Float,
-    val typ: String,
-    val anm: Int
-)
+    override val type: Int,
+    override val posX: Float,
+    override val posY: Float,
+    override val speedX: Float,
+    override val speedY: Float,
+    val animationTime: Int
+) : IObjectJSON
 
 data class EnemyJSON(
-    val x: Float,
-    val y: Float,
-    val typ: String,
-    val anm: Int
-)
+    override val type: Int,
+    override val posX: Float,
+    override val posY: Float,
+    override val speedX: Float,
+    override val speedY: Float
+) : IObjectJSON
 
 data class BonusJSON(
-    val x: Float,
-    val y: Float,
-    val typ: String,
-    val anm: Int
-)
+    override val type: Int,
+    override val posX: Float,
+    override val posY: Float,
+    override val speedX: Float,
+    override val speedY: Float,
+    val animationTime: Int
+) : IObjectJSON
 
 data class BulletJSON(
-    val x: Float,
-    val y: Float
-)
+    override val type: Int,
+    override val posX: Float,
+    override val posY: Float,
+    override val speedX: Float,
+    override val speedY: Float
+) : IObjectJSON
 
 data class Objects(
-    @SerializedName("plr") val players: List<PlayerJSON>,
-    @SerializedName("pla") val platforms: List<PlatformJSON>,
-    @SerializedName("enm") val enemies: List<EnemyJSON>,
-    @SerializedName("bns") val bonuses: List<BonusJSON>,
-    @SerializedName("blt") val bullets: List<BulletJSON>
+    val data: List<IObjectJSON>
 )
 
 data class GameData(
     @SerializedName("obj") val objects: Objects,
-    @SerializedName("gam") val state: String
+    @SerializedName("s") val state: String
 )

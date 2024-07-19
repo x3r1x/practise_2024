@@ -15,8 +15,19 @@ class GameConstants {
         const val PLATFORM_ON_Y_SPEED = 200f
         const val PLATFORM_ON_Y_RANGE = 400f
 
-        const val JETPACK_DURATION : Long = 6000 //обязательно больше 3000
-        const val SHIELD_DURATION : Long = 10000 //обязательно больше 4000
+        const val SHIELD_DEFAULT_TRANSPARENCY = 128
+        const val SHIELD_PULSE_TRANSPARENCY = 64
+        const val JETPACK_DEFAULT_TRANSPARENCY = 255
+        const val JETPACK_PULSE_TRANSPARENCY = 128
+
+        const val JETPACK_DURATION : Long = 6000 // > 3000
+        const val SHIELD_DURATION : Long = 10000 // > 4000
+
+        const val SHIELD_TIMER_TICK : Long = 500
+        const val JETPACK_TIMER_TICK: Long = 500
+
+        const val WHEN_SHIELD_TO_PULSE : Long = 3000
+        const val WHEN_JETPACK_TO_PULSE: Long = 2000
 
         const val BULLY_DEATH_OFFSET_X = 60f
         const val FLY_MOVE_SPEED = 520f

@@ -6,14 +6,16 @@ import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.graphics.RectF
 import com.example.mygame.R
-import com.example.mygame.domain.drawable.ObjectView
+import com.example.mygame.domain.drawable.view.ObjectView
 
 class BulletViewFactory(resources: Resources) {
     private val bulletBitmap = BitmapFactory.decodeResource(resources, R.drawable.bullet, BITMAP_OPTIONS)
 
     fun getBulletView(
         x: Float,
-        y: Float
+        y: Float,
+        speedX: Float,
+        speedY: Float
     ) : ObjectView {
         val rect = getRect(x, y, bulletBitmap)
         val matrix = getMatrix(rect)

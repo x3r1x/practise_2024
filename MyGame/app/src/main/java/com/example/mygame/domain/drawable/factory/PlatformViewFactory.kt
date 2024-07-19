@@ -9,7 +9,8 @@ import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.graphics.RectF
 import com.example.mygame.R
-import com.example.mygame.domain.drawable.ObjectView
+import com.example.mygame.domain.drawable.ObjectType
+import com.example.mygame.domain.drawable.view.ObjectView
 
 class PlatformViewFactory(resources: Resources) {
     private val staticPlatformBitmap = BitmapFactory.decodeResource(resources, R.drawable.static_platform, BITMAP_OPTIONS)
@@ -27,19 +28,27 @@ class PlatformViewFactory(resources: Resources) {
     fun getPlatformView(
         x: Float,
         y: Float,
-        type: String,
-        another: Int
+        speedX: Float,
+        speedY: Float,
+        type: Int,
+        animationTime: Int
     ) : ObjectView {
-        val bitmap = getBitmap(type, another)
+        val bitmap = getBitmap(type, animationTime)
         val rect = getRect(x, y, bitmap)
         val matrix = getMatrix(rect)
-        val paint = Paint()
-
-        if (type == DISAPPEARING) {
-            paint.colorFilter = PorterDuffColorFilter(another, PorterDuff.Mode.MULTIPLY)
-        }
+        val paint = getPaint(type, animationTime)
 
         return ObjectView(x, y, bitmap, matrix, paint)
+    }
+
+    private fun getPaint(type: Int, animationTime: Int) : Paint {
+        val paint = Paint()
+
+        if (type == ObjectType.DISAPPEARING_PLATFORM_TYPE) {
+            paint.colorFilter = PorterDuffColorFilter(animationTime, PorterDuff.Mode.MULTIPLY)
+        }
+
+        return paint
     }
 
     private fun getMatrix(destRect: RectF) : Matrix {
@@ -53,19 +62,19 @@ class PlatformViewFactory(resources: Resources) {
         return RectF(x - bitmap.width / 2, y - bitmap.height / 2, x + bitmap.width / 2, y + bitmap.height / 2)
     }
 
-    private fun getBitmap(type: String, animation: Int) : Bitmap {
+    private fun getBitmap(type: Int, animationTime: Int) : Bitmap {
         when(type) {
-            STATIC -> return staticPlatformBitmap
-            DISAPPEARING -> return disappearingPlatformBitmap
-            MOVING_ON_X -> return movingOnXPlatformBitmap
-            MOVING_ON_Y -> return movingOnYPlatformBitmap
-            else -> when (animation) {
+            ObjectType.STATIC_PLATFORM_TYPE -> return staticPlatformBitmap
+            ObjectType.DISAPPEARING_PLATFORM_TYPE -> return disappearingPlatformBitmap
+            ObjectType.MOVING_PLATFORM_ON_X_TYPE -> return movingOnXPlatformBitmap
+            ObjectType.MOVING_PLATFORM_ON_Y_TYPE -> return movingOnYPlatformBitmap
+            else -> when (animationTime) {
                 0 -> return breakingPlatformBitmaps[0]
                 1 -> return breakingPlatformBitmaps[1]
                 2 -> return breakingPlatformBitmaps[2]
                 3 -> return breakingPlatformBitmaps[3]
                 4 -> return breakingPlatformBitmaps[4]
-                else -> throw IllegalArgumentException("Invalid animation value: $animation")
+                else -> throw IllegalArgumentException("Invalid animation value: $animationTime")
             }
         }
     }

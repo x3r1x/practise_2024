@@ -6,7 +6,8 @@ import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.graphics.RectF
 import com.example.mygame.R
-import com.example.mygame.domain.drawable.ObjectView
+import com.example.mygame.domain.drawable.ObjectType
+import com.example.mygame.domain.drawable.view.ObjectView
 
 class EnemyViewFactory(resources: Resources) {
     private val bullyBitmap = BitmapFactory.decodeResource(resources, R.drawable.bully, BITMAP_OPTIONS)
@@ -16,7 +17,9 @@ class EnemyViewFactory(resources: Resources) {
     fun getEnemyView(
         x: Float,
         y: Float,
-        type: String
+        speedX: Float,
+        speedY: Float,
+        type: Int
     ) : ObjectView {
         val bitmap = getBitmap(type)
         val rect = getRect(x, y, bitmap)
@@ -25,11 +28,11 @@ class EnemyViewFactory(resources: Resources) {
         return ObjectView(x, y, bitmap, matrix)
     }
 
-    private fun getBitmap(type: String) : Bitmap {
+    private fun getBitmap(type: Int) : Bitmap {
         when (type) {
-            BULLY -> return bullyBitmap
-            FLY -> return flyBitmap
-            NINJA -> return ninjaBitmap
+            ObjectType.BULLY_TYPE -> return bullyBitmap
+            ObjectType.FLY_TYPE -> return flyBitmap
+            ObjectType.NINJA_TYPE -> return ninjaBitmap
             else -> throw IllegalArgumentException("Invalid type value: $type")
         }
     }
