@@ -26,12 +26,12 @@ class PlatformViewFactory(resources: Resources) {
     )
 
     fun getPlatformView(
+        type: Int,
         x: Float,
         y: Float,
         speedX: Float,
         speedY: Float,
-        type: Int,
-        animationTime: Int
+        animationTime: Int = 0
     ) : ObjectView {
         val bitmap = getBitmap(type, animationTime)
         val rect = getRect(x, y, bitmap)
@@ -74,7 +74,7 @@ class PlatformViewFactory(resources: Resources) {
                 2 -> return breakingPlatformBitmaps[2]
                 3 -> return breakingPlatformBitmaps[3]
                 4 -> return breakingPlatformBitmaps[4]
-                else -> throw IllegalArgumentException("Invalid animation value: $animationTime")
+                else -> return breakingPlatformBitmaps[0] // TODO: костыль
             }
         }
     }

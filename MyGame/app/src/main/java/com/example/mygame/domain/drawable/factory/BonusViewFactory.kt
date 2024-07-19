@@ -22,11 +22,11 @@ class BonusViewFactory(resources: Resources) {
         BitmapFactory.decodeResource(resources, R.drawable.jetpack, BITMAP_OPTIONS)
 
     fun getBonusView(
+        type: Int,
         x: Float,
         y: Float,
         speedX: Float,
         speedY: Float,
-        type: Int,
         animationTime: Int
     ): ObjectView {
         val bitmap = getBitmap(type, animationTime)

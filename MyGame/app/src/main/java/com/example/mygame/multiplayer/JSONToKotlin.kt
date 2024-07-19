@@ -1,12 +1,12 @@
 package com.example.mygame.multiplayer
 
 import android.content.res.Resources
-import com.example.mygame.domain.drawable.view.ObjectView
 import com.example.mygame.domain.drawable.factory.BonusViewFactory
 import com.example.mygame.domain.drawable.factory.BulletViewFactory
 import com.example.mygame.domain.drawable.factory.EnemyViewFactory
 import com.example.mygame.domain.drawable.factory.PlatformViewFactory
 import com.example.mygame.domain.drawable.factory.PlayerViewFactory
+import com.example.mygame.domain.drawable.view.ObjectView
 import com.google.gson.Gson
 
 class JSONToKotlin(resources: Resources) {
@@ -30,31 +30,74 @@ class JSONToKotlin(resources: Resources) {
     private fun mapObjects(gameData: GameData) : List<ObjectView> {
         val objectsViews = mutableListOf<ObjectView>()
 
-        gameData.objects.data.forEach {
-            when(it) {
-                is PlayerJSON -> objectsViews.add(playerViewFactory.getPlayerView(
-                    it.posX,
-                    it.posY,
-                    it.speedX,
-                    it.speedY,
-                    it.directionX,
-                    it.directionY,
-                    it.isWithShield,
-                    it.isShooting,
-                    it.isDead
-                ))
-                is PlatformJSON -> objectsViews.add(platformViewFactory.getPlatformView(
-                    it.posX, it.posY, it.speedX, it.speedY, it.type, it.animationTime
-                ))
-                is EnemyJSON -> objectsViews.add(enemyViewFactory.getEnemyView(
-                    it.posX, it.posY, it.speedX, it.speedY, it.type
-                ))
-                is BonusJSON -> objectsViews.add(bonusViewFactory.getBonusView(
-                    it.posX, it.posY, it.speedX, it.speedY, it.type, it.animationTime
-                ))
-                is BulletJSON -> objectsViews.add(bulletViewFactory.getBulletView(
-                    it.posX, it.posY, it.speedX, it.speedY
-                ))
+        gameData.objects.forEach {
+            val obj = it
+            val type = (obj[0] as Double).toInt()
+            when (type) {
+                0 -> {
+                    objectsViews.add(
+                        playerViewFactory.getPlayerView(
+                            (obj[2] as Double).toFloat(),
+                            (obj[3] as Double).toFloat(),
+                            (obj[4] as Double).toFloat(),
+                            (obj[5] as Double).toFloat(),
+                            (obj[6] as Double).toInt(),
+                            (obj[7] as Double).toInt(),
+                            (obj[8] as Double).toInt(),
+                            (obj[9] as Double).toInt(),
+                            (obj[10] as Double).toInt()
+                        )
+                    )
+                }
+
+                in 1..5 -> {
+                    objectsViews.add(
+                        platformViewFactory.getPlatformView(
+                            (obj[0] as Double).toInt(),
+                            (obj[1] as Double).toFloat(),
+                            (obj[2] as Double).toFloat(),
+                            (obj[3] as Double).toFloat(),
+                            (obj[4] as Double).toFloat(),
+                            (obj[5] as Double).toInt()
+                        )
+                    )
+                }
+
+                in 6..7 -> {
+                    objectsViews.add(
+                        bonusViewFactory.getBonusView(
+                            (obj[0] as Double).toInt(),
+                            (obj[1] as Double).toFloat(),
+                            (obj[2] as Double).toFloat(),
+                            (obj[3] as Double).toFloat(),
+                            (obj[4] as Double).toFloat(),
+                            (obj[5] as Double).toInt()
+                        )
+                    )
+                }
+
+                in 8..10 -> {
+                    objectsViews.add(
+                        enemyViewFactory.getEnemyView(
+                            (obj[0] as Double).toInt(),
+                            (obj[1] as Double).toFloat(),
+                            (obj[2] as Double).toFloat(),
+                            (obj[3] as Double).toFloat(),
+                            (obj[4] as Double).toFloat()
+                        )
+                    )
+                }
+
+                11 -> {
+                    objectsViews.add(
+                        bulletViewFactory.getBulletView(
+                            (obj[1] as Double).toFloat(),
+                            (obj[2] as Double).toFloat(),
+                            (obj[3] as Double).toFloat(),
+                            (obj[4] as Double).toFloat()
+                        )
+                    )
+                }
             }
         }
 

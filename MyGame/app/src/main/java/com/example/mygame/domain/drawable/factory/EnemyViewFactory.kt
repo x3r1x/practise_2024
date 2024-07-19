@@ -15,11 +15,11 @@ class EnemyViewFactory(resources: Resources) {
     private val ninjaBitmap = BitmapFactory.decodeResource(resources, R.drawable.ninja, BITMAP_OPTIONS)
 
     fun getEnemyView(
+        type: Int,
         x: Float,
         y: Float,
         speedX: Float,
         speedY: Float,
-        type: Int
     ) : ObjectView {
         val bitmap = getBitmap(type)
         val rect = getRect(x, y, bitmap)

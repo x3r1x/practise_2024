@@ -54,9 +54,9 @@ class DrawableManager(resources: Resources) {
             0f,
             player.directionX.value,
             player.directionY.value,
-            player.isWithShield,
-            player.isShooting,
-            player.isDead,
+            player.isWithShield as Int,
+            player.isShooting as Int,
+            player.isDead as Int,
             player.isWithJetpack
         )
     }
@@ -80,7 +80,7 @@ class DrawableManager(resources: Resources) {
             }
         }
 
-        return platformViewFactory.getPlatformView(platform.x, platform.y, 0f, 0f, type, another)
+        return platformViewFactory.getPlatformView(type, platform.x, platform.y, 0f, 0f, another)
     }
 
     private fun enemyToView(enemy: Enemy): ObjectView {
@@ -91,7 +91,7 @@ class DrawableManager(resources: Resources) {
             is Ninja -> type = ObjectType.NINJA_TYPE
         }
 
-        return enemyViewFactory.getEnemyView(enemy.x, enemy.y, 0f, 0f, type)
+        return enemyViewFactory.getEnemyView(type, enemy.x, enemy.y, 0f, 0f)
     }
 
     private fun bonusToView(bonus: IBonus): ObjectView {
@@ -101,18 +101,18 @@ class DrawableManager(resources: Resources) {
         when (bonus) {
             is Shield -> {
                 type = ObjectType.SHIELD_TYPE
-                return bonusViewFactory.getBonusView(bonus.x, bonus.y, 0f, 0f, type, another)
+                return bonusViewFactory.getBonusView(type, bonus.x, bonus.y, 0f, 0f, another)
             }
 
             is Spring -> {
                 type = ObjectType.SPRING_TYPE
                 another = bonus.currentFrame
-                return bonusViewFactory.getBonusView(bonus.x, bonus.y, 0f, 0f, type, another)
+                return bonusViewFactory.getBonusView(type, bonus.x, bonus.y, 0f, 0f, another)
             }
 
             is Jetpack -> {
                 type = ObjectType.JETPACK_TYPE
-                return bonusViewFactory.getBonusView(bonus.x, bonus.y, 0f, 0f, type, another)
+                return bonusViewFactory.getBonusView(type, bonus.x, bonus.y, 0f, 0f, another)
             }
 
             else -> throw IllegalArgumentException("Invalid bonus type")
