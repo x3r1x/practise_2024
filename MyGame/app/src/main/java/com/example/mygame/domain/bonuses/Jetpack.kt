@@ -1,5 +1,6 @@
 package com.example.mygame.domain.bonuses
 
+import com.example.mygame.domain.GameConstants
 import com.example.mygame.domain.IGameObject
 import com.example.mygame.domain.IMoveable
 import com.example.mygame.domain.IVisitor
@@ -21,6 +22,8 @@ class Jetpack(
 
     fun select(entity: Player) {
         entity.bonuses.selectJetpack()
+        entity.directionY = Player.DirectionY.UP
+        entity.speedY = GameConstants.PLAYER_SPEED_WITH_JETPACK
         isDisappeared = true
     }
 
