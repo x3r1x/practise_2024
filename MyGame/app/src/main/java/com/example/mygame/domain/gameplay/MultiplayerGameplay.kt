@@ -10,17 +10,23 @@ import com.example.mygame.domain.drawable.DrawableManager
 import com.example.mygame.domain.logic.SensorHandler
 import com.example.mygame.multiplayer.ClientMessage
 import com.example.mygame.multiplayer.JSONToKotlin
+import com.example.mygame.multiplayer.Ping
+import com.example.mygame.multiplayer.ServerResponse
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
 import kotlinx.coroutines.delay
 import org.java_websocket.client.WebSocketClient
 import org.java_websocket.handshake.ServerHandshake
 import java.net.URI
+import java.sql.Date
+import java.sql.Time
 
 class MultiplayerGameplay(resources: Resources, screen: Screen) : IGameplay, SensorHandler.SensorCallback {
     private val gson = Gson()
     private val JSONToKotlin = JSONToKotlin(resources)
     private var objects: List<IDrawable> = emptyList()
+
+    private var pingSentTime: Long = 0
 
     private val client: WebSocketClient
     private val serverUri = URI("ws://10.250.104.27:8080")
@@ -31,12 +37,20 @@ class MultiplayerGameplay(resources: Resources, screen: Screen) : IGameplay, Sen
     init {
         client = object : WebSocketClient(serverUri) {
             override fun onOpen(handshakedata: ServerHandshake?) {
+                Log.d("WebSocket", "Connection opened")
             }
 
             override fun onMessage(message: String?) {
                 message?.let {
                     try {
-                        handleServerData(message)
+                        val serverResponse = gson.fromJson(message, ServerResponse::class.java)
+                        if (serverResponse.type == "pong") {
+                            val currentTime = System.currentTimeMillis()
+                            val ping = currentTime - pingSentTime
+                            Log.d("WebSocket", "Ping: $ping ms")
+                        } else {
+                            handleServerData(message)
+                        }
                     } catch (e: JsonSyntaxException) {
                         Log.e("WebSocket", "Failed to parse server message", e)
                     }
@@ -58,7 +72,12 @@ class MultiplayerGameplay(resources: Resources, screen: Screen) : IGameplay, Sen
     }
 
     private fun sendMessage(dx: Float, tap: Boolean = false) {
-        val message = gson.toJson(ClientMessage(dx, tap))
+        val ping = gson.toJson(Ping("ping", 0))
+        if (client.isOpen) {
+            pingSentTime = System.currentTimeMillis()
+            client.send(ping)
+        }
+        val message = gson.toJson(ClientMessage("msg", dx, tap))
         if (client.isOpen) {
             client.send(message)
         }

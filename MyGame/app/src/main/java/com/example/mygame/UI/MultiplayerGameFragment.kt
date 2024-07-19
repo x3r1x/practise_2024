@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.mygame.R
 import com.example.mygame.presentation.GameViewModel
+import org.json.JSONObject
 
 class MultiplayerGameFragment : Fragment() {
     private lateinit var gameView: GameView
@@ -84,6 +85,6 @@ class MultiplayerGameFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-
+        gameViewModel.gameplay.onDestroy()
     }
 }
