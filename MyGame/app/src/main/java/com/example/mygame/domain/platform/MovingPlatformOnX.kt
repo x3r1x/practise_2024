@@ -10,8 +10,6 @@ class MovingPlatformOnX(
     createdX: Float,
     createdY: Float
 ) : Platform(createdX, createdY) {
-    private var directionX = directionXRandom()
-
     init {
         this.bitmap = initBitmap
     }
@@ -20,6 +18,8 @@ class MovingPlatformOnX(
         LEFT(0),
         RIGHT(1)
     }
+
+    private var directionX = directionXRandom()
 
     fun changeDirectionX(screen: Screen) {
         if (right >= screen.width) {
@@ -31,10 +31,11 @@ class MovingPlatformOnX(
 
     private fun directionXRandom() : DirectionX {
         val value = (DirectionX.LEFT.value..DirectionX.RIGHT.value).random()
-        if (value == DirectionX.LEFT.value) {
-            return DirectionX.LEFT
+
+        return if (value == DirectionX.LEFT.value) {
+            DirectionX.LEFT
         } else {
-            return DirectionX.RIGHT
+            DirectionX.RIGHT
         }
     }
 

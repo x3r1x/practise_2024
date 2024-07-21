@@ -14,27 +14,18 @@ import androidx.navigation.Navigation
 import com.example.mygame.R
 
 class LobbyFragment : Fragment() {
-    /*private val textViewsOfPlayers = arrayOf(
-            R.id.firstPlayer,
-            R.id.secondPlayer,
-            R.id.thirdPlayer,
-            R.id.fourthPlayer,
-            R.id.fifthPlayer,
-            R.id.sixthPlayer
-    )*/
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_lobby, container, false)
 
+        val readyButton = view.findViewById<Button>(R.id.readyButton)
+        val waitingTextView = view.findViewById<TextView>(R.id.waitingTextView)
+
         view.findViewById<ImageButton>(R.id.backButton).setOnClickListener {
             Navigation.findNavController(view).navigate(R.id.navigateFromLobbyFragmentToStartFragment)
         }
-
-        val readyButton = view.findViewById<Button>(R.id.readyButton)
-        val waitingTextView = view.findViewById<TextView>(R.id.waitingTextView)
 
         readyButton.setOnClickListener {
             readyButton.visibility = INVISIBLE

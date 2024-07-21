@@ -11,13 +11,16 @@ class GameConstants {
         const val PLAYER_SPEED_WITH_JETPACK = 1900f
         const val PLAYER_ON_X_MULTIPLIER = 1.5f
         const val PLAYER_DISTANCE_TO_TURN = 25f
+        const val PLAYER_LEG_OFFSET_X_WHEN_SHOOT = 16f
+        const val PLAYER_SMALL_LEG_OFFSET = 15f
+        const val PLAYER_BIG_LEG_OFFSET = 50f
 
         const val PLATFORM_ON_X_SPEED = 200f
         const val PLATFORM_ON_Y_SPEED = 200f
         const val PLATFORM_ON_Y_RANGE = 400f
 
-        const val JETPACK_DURATION : Long = 6000 //обязательно больше 3000
-        const val SHIELD_DURATION : Long = 10000 //обязательно больше 4000
+        const val JETPACK_DURATION : Long = 6000
+        const val SHIELD_DURATION : Long = 10000
 
         const val BULLY_DEATH_OFFSET_X = 60f
         const val FLY_MOVE_SPEED = 520f
@@ -26,6 +29,7 @@ class GameConstants {
         const val NINJA_MAX_SPEED_X = 650
         const val NINJA_MIN_CONVERGENCE = 10f
         const val NINJA_MAX_CONVERGENCE = 600f
+        const val NINJA_SPEED_CHANGE_CHANCE = 0.05f
 
         const val PLATFORM_SPAWN_ADDITIONAL_X = 100f
 

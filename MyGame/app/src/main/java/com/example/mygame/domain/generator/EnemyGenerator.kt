@@ -21,17 +21,12 @@ class EnemyGenerator(
     private val bullyFactory = BullyFactory(resources)
     private val ninjaFactory = NinjaFactory(resources, screen)
 
-    private val factories = listOf(
-        flyFactory,
-        bullyFactory,
-        ninjaFactory
-    )
-
     fun generateEnemy(platform: Platform): IGameObject? {
         var enemy: Enemy? = null
-        val random = Random.nextFloat()
 
         var x = Random.nextFloat() * (screen.width - platform.width) + GAP_X
+
+        val random = Random.nextFloat()
 
         when {
             random < GameConstants.NINJA_SPAWN_CHANCE -> {
@@ -56,11 +51,6 @@ class EnemyGenerator(
         }
 
         return enemy
-    }
-
-    private fun getRandomFactory(): IEnemyFactory {
-        // TODO: Сделать шанс генерации на основе score
-        return factories[Random.nextInt(factories.size)]
     }
 
     companion object {

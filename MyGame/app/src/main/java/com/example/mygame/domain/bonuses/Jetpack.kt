@@ -17,6 +17,8 @@ class Jetpack(private val initDefaultJetpack: Bitmap,
               createdX: Float,
               createdY: Float
 ) : IDrawable, IMoveable, IBonus, IGameObject {
+    private var player: Player? = null
+
     private var paint = Paint().apply {
         alpha = DEFAULT_TRANSPARENCY
     }
@@ -30,8 +32,6 @@ class Jetpack(private val initDefaultJetpack: Bitmap,
     override var right = x + WIDTH / 2
 
     override var isDisappeared = false
-
-    private var player: Player? = null
 
     fun initPlayer(entity: Player) {
         player = entity

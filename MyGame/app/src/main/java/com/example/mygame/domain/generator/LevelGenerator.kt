@@ -26,6 +26,7 @@ class LevelGenerator(
 
         while (abs(newY) < abs(newPackageHeight + from)) {
             var bonusSpawned = false
+
             val pack = mutableListOf<IGameObject>()
             val platform = platformGenerator.generatePlatform(newY)
             pack.add(platform)

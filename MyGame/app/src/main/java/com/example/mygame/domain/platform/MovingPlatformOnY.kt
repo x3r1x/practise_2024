@@ -28,10 +28,10 @@ class MovingPlatformOnY(
     private fun randomDirectionY() : DirectionY {
         val value = (DirectionY.UP.value..DirectionY.DOWN.value).random()
 
-        if (value == DirectionY.UP.value) {
-            return DirectionY.UP
+        return if (value == DirectionY.UP.value) {
+            DirectionY.UP
         } else {
-            return DirectionY.DOWN
+            DirectionY.DOWN
         }
     }
 

@@ -16,19 +16,15 @@ class BonusGenerator(resources: Resources) {
     private val springFactory = SpringFactory(resources)
     private val jetpackFactory = JetpackFactory(resources)
 
-    private val factories = listOf(
-        shieldFactory,
-        springFactory,
-        jetpackFactory
-    )
-
     fun generateBonus(platform: Platform): IBonus? {
         if (platform::class != StaticPlatform::class) {
             return null
         }
 
         var bonus: IBonus? = null
+
         val random = Random.nextFloat()
+
         when {
             random < GameConstants.JETPACK_SPAWN_CHANCE -> {
                 val jetpack = jetpackFactory.generateBonus(platform)
@@ -45,10 +41,5 @@ class BonusGenerator(resources: Resources) {
         }
 
         return bonus
-    }
-
-    private fun getRandomFactory(): IBonusFactory {
-        // TODO: Сделать шанс генерации на основе score
-        return factories[Random.nextInt(factories.size)]
     }
 }

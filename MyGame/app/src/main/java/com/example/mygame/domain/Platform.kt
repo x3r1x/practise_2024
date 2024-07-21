@@ -9,7 +9,6 @@ open class Platform(createdX: Float, createdY: Float) : IDrawable, IMoveable, IG
     val width = 175f
     val height = 45f
 
-    protected lateinit var bitmap: Bitmap
     protected var paint = Paint()
 
     override var isDisappeared = false
@@ -25,6 +24,8 @@ open class Platform(createdX: Float, createdY: Float) : IDrawable, IMoveable, IG
         get() = y - height / 2
     override val bottom
         get() = y + height / 2
+
+    protected lateinit var bitmap: Bitmap
 
     override fun accept(visitor: IVisitor) {
         visitor.visit(this)

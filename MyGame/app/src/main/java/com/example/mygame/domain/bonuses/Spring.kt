@@ -12,8 +12,6 @@ class Spring(private val initBitmap: MutableList<Bitmap>,
              createdX: Float,
              createdY: Float
 ) : IDrawable, IMoveable, IBonus, IGameObject {
-    private val animationDuration : Long = 150
-
     private var currentFrame = 0
     private var bitmap = initBitmap[currentFrame]
     private var isStretchRunning = false
@@ -33,7 +31,7 @@ class Spring(private val initBitmap: MutableList<Bitmap>,
         if (!isStretchRunning) {
             isStretchRunning = true
             animator = ValueAnimator.ofInt(0, initBitmap.size - 1).apply {
-                this.duration = animationDuration
+                this.duration = ANIMATION_DURATION
                 addUpdateListener { animator ->
                     currentFrame = animator.animatedValue as Int
                     bitmap = initBitmap[currentFrame]
@@ -64,6 +62,8 @@ class Spring(private val initBitmap: MutableList<Bitmap>,
     companion object {
         private const val WIDTH = 78f
         private const val HEIGHT = 53f
+
         private const val ANIMATION_HEIGHT_VALUE = 5f
+        private const val ANIMATION_DURATION : Long = 150
     }
 }

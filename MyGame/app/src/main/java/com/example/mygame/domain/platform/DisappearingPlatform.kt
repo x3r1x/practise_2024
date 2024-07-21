@@ -18,7 +18,7 @@ class DisappearingPlatform(
         this.bitmap = initBitmap
     }
 
-    var isRunDestroying = false
+    private var isRunDestroying = false
 
     private var platformColor = Paint().apply {
         color = Color.YELLOW
@@ -27,6 +27,7 @@ class DisappearingPlatform(
     fun animatePlatformColor() {
         if (!isRunDestroying) {
             isRunDestroying = true
+
             val colorAnimator = ValueAnimator.ofArgb(platformColor.color, RED_COLOR).apply {
                 this.duration = COLOR_CHANGE_DURATION
                 addUpdateListener { animator ->
@@ -40,6 +41,7 @@ class DisappearingPlatform(
                     }
                 })
             }
+
             colorAnimator.start()
         }
     }
@@ -57,10 +59,10 @@ class DisappearingPlatform(
                 }
             })
         }
+
         platformColorAnimator.start()
     }
 
-    // TODO: вынести  в отдельный файл ?
     private fun changeBitmapColor(bitmap: Bitmap, color: Int): Bitmap {
         val width = bitmap.width
         val height = bitmap.height
@@ -74,21 +76,26 @@ class DisappearingPlatform(
             val green = Color.green(pixels[i])
             val blue = Color.blue(pixels[i])
 
-            val redModified = (red * Color.red(color)) / 255
-            val greenModified = (green * Color.green(color)) / 255
-            val blueModified = (blue * Color.blue(color)) / 255
+            val redModified = (red * Color.red(color)) / RGB_MAX
+            val greenModified = (green * Color.green(color)) / RGB_MAX
+            val blueModified = (blue * Color.blue(color)) / RGB_MAX
 
             pixels[i] = Color.argb(alpha, redModified, greenModified, blueModified)
         }
+
         val modifiedBitmap = Bitmap.createBitmap(width, height, bitmap.config)
+
         modifiedBitmap.setPixels(pixels, 0, width, 0, 0, width, height)
         return modifiedBitmap
     }
 
     companion object {
         private const val COLOR_CHANGE_DURATION: Long = 2000
-        private val DISAPPEARING_DURATION: Long = 500
-        private val TRANSPARENT_COLOR = Color.TRANSPARENT
-        private val RED_COLOR = Color.RED
+        private const val DISAPPEARING_DURATION: Long = 500
+
+        private const val RGB_MAX = 255
+
+        private const val TRANSPARENT_COLOR = Color.TRANSPARENT
+        private const val RED_COLOR = Color.RED
     }
 }

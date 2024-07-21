@@ -8,12 +8,12 @@ import android.hardware.SensorEventListener
 import com.example.mygame.domain.GameConstants
 
 class SensorHandler(context: Context, private val callback: SensorCallback) : SensorEventListener {
-
     interface SensorCallback {
         fun onSensorDataChanged(deltaX: Float)
     }
 
     private val sensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
+
     private var accelerometer: Sensor? = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
 
     init {
@@ -30,7 +30,6 @@ class SensorHandler(context: Context, private val callback: SensorCallback) : Se
         sensorManager.unregisterListener(this)
     }
 
-    //Умножать полученные данные на коэфициент какой-то
     override fun onSensorChanged(event: SensorEvent?) {
         if (event == null || event.sensor.type != Sensor.TYPE_ACCELEROMETER) {
             return
@@ -40,6 +39,5 @@ class SensorHandler(context: Context, private val callback: SensorCallback) : Se
         callback.onSensorDataChanged(deltaX)
     }
 
-    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
-    }
+    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {}
 }

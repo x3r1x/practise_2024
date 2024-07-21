@@ -29,12 +29,24 @@ class Player(private val idleImage: Bitmap,
     }
 
     var isWithJetpack = false
-
     var isWithShield = false
 
-    override var x = 0f
+    var directionX = DirectionX.RIGHT
+    var directionY = DirectionY.DOWN
 
+    var speedY = 0f
+
+    var isDead = false
+
+    private val shootingHandler = Handler(Looper.getMainLooper())
+
+    private var isShooting = false
+    private var shootingRunnable: Runnable? = null
+
+    override var x = 0f
     override var y = 0f
+
+    override var isDisappeared = false
 
     override val left
         get() = x - RADIUS
@@ -44,19 +56,6 @@ class Player(private val idleImage: Bitmap,
         get() = y - RADIUS
     override val bottom
         get() = y + RADIUS
-
-    var directionX = DirectionX.RIGHT
-
-    var directionY = DirectionY.DOWN
-
-    var speedY = 0f
-
-    private var isShooting = false
-    private var shootingRunnable: Runnable? = null
-    private val shootingHandler = Handler(Looper.getMainLooper())
-
-    override var isDisappeared = false
-    var isDead = false
 
     fun jump(jumpSpeed: Float = GameConstants.PLAYER_JUMP_SPEED) {
         directionY = DirectionY.UP

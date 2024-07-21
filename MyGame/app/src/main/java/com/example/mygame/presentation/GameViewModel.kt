@@ -23,6 +23,7 @@ class GameViewModel(private val application: Application) : AndroidViewModel(app
     val gameObjects: LiveData<List<IGameObject>> get() = _gameObjects
 
     private val _scoreObservable = MutableLiveData<Int>()
+
     val scoreObservable: LiveData<Int> = _scoreObservable
 
     private var isGameLoopRunning = false
@@ -36,7 +37,6 @@ class GameViewModel(private val application: Application) : AndroidViewModel(app
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
     private lateinit var screen: Screen
-
     private lateinit var sensorHandler: SensorHandler
     private lateinit var collisionHandler: CollisionHandler
     private lateinit var objectsManager: ObjectsManager
@@ -50,11 +50,8 @@ class GameViewModel(private val application: Application) : AndroidViewModel(app
         objectsManager = ObjectsManager(application.resources, screen)
         positionHandler = PositionHandler()
         physics = Physics()
-
         objectsManager.initObjects()
     }
-
-
 
     fun startGameLoop() {
         isGameLoopRunning = true
@@ -82,7 +79,6 @@ class GameViewModel(private val application: Application) : AndroidViewModel(app
     }
     private fun gameLoop() {
         var elapsedTime: Float
-
         var startTime = System.currentTimeMillis()
 
         uiScope.launch {
@@ -128,7 +124,7 @@ class GameViewModel(private val application: Application) : AndroidViewModel(app
         this.deltaX = deltaX
     }
 
-    fun onClick(touchX: Float, touchY: Float) {
-        objectsManager.createBullet(touchX, touchY)
+    fun onClick(touchX: Float) {
+        objectsManager.createBullet(touchX)
     }
 }

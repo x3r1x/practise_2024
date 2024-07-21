@@ -15,5 +15,4 @@ interface IVisitor {
     fun visit(jetpack: Jetpack)
     fun visit(enemy: Enemy)
     fun visit(bullet: Bullet)
-    //with enemy, with bonus, with player
 }

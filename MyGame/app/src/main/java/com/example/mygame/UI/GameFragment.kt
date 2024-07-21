@@ -54,22 +54,21 @@ class GameFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Получаем размеры экрана
         val windowMetrics: WindowMetrics = requireActivity().windowManager.currentWindowMetrics
         val bounds = windowMetrics.bounds
         val screenWidth = bounds.width().toFloat()
         val screenHeight = bounds.height().toFloat()
 
-        gameViewModel.initialize(screenWidth, screenHeight)
-
         val view = inflater.inflate(R.layout.fragment_game, container, false)
-
-        gameView = view.findViewById(R.id.gameView)
 
         val pauseButton = view.findViewById<ImageButton>(R.id.pauseButton)
         val pauseGroup = view.findViewById<ConstraintLayout>(R.id.pauseGroup)
         val exitToMenuButton = view.findViewById<Button>(R.id.multiplayerButton)
         val scoreView = view.findViewById<TextView>(R.id.scoreView)
+
+        gameViewModel.initialize(screenWidth, screenHeight)
+
+        gameView = view.findViewById(R.id.gameView)
 
         gameViewModel.scoreObservable.observe(viewLifecycleOwner) { newScore ->
             scoreView.text = newScore.toString()
@@ -77,10 +76,9 @@ class GameFragment : Fragment() {
 
         setupPauseButtonClickListener(pauseButton, pauseGroup, exitToMenuButton)
 
-
         gameView.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {
-                gameViewModel.onClick(event.x, event.y)
+                gameViewModel.onClick(event.x)
             }
             true
         }
@@ -91,7 +89,6 @@ class GameFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Наблюдаем за изменениями в объектах игры
         gameViewModel.gameObjects.observe(viewLifecycleOwner) { gameObjects ->
             gameView.drawGame(gameObjects as List<IDrawable>)
 
@@ -102,7 +99,6 @@ class GameFragment : Fragment() {
             }
         }
 
-        // Запускаем игровой цикл через ViewModel
         gameViewModel.startGameLoop()
     }
 

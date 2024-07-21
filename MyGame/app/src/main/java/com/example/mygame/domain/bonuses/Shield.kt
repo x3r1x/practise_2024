@@ -16,6 +16,8 @@ class Shield(private val initDefaultShield: Bitmap,
              createdX: Float,
              createdY: Float
 ) : IDrawable, IMoveable, IBonus, IGameObject {
+    private var player: Player? = null
+
     private var paint = Paint().apply {
         alpha = DEFAULT_TRANSPARENCY
     }
@@ -30,14 +32,11 @@ class Shield(private val initDefaultShield: Bitmap,
 
     override var isDisappeared = false
 
-    private var player: Player? = null
-
     fun initPlayer(entity: Player) {
         player = entity
         player?.isWithShield = true
     }
 
-    //thanks god for ending my suffering
     fun startDisappearingTimer() {
         val timer = object : CountDownTimer(GameConstants.SHIELD_DURATION, SHIELD_TIMER_TICK) {
             override fun onTick(p0: Long) {
