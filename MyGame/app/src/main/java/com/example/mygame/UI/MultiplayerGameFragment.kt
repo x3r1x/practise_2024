@@ -64,6 +64,8 @@ class MultiplayerGameFragment : Fragment() {
         gameViewModel.multiplayerGameplay.gameState.observe(viewLifecycleOwner) { gameObjects ->
             gameView.drawGame(gameObjects.objects)
         }
+
+        //gameViewModel.multiplayerGameplay
     }
 
     override fun onResume() {

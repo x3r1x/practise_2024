@@ -18,6 +18,8 @@ import org.java_websocket.handshake.ServerHandshake
 import java.net.URI
 
 class MultiplayerGameplay(resources: Resources, screen: Screen) : IGameplay, SensorHandler.SensorCallback {
+    private var isNewData = false
+
     private val gson = Gson()
     private val parserJSONToKotlin = JSONToKotlin(resources)
     private var objects: List<IDrawable> = emptyList()
@@ -88,12 +90,29 @@ class MultiplayerGameplay(resources: Resources, screen: Screen) : IGameplay, Sen
     }
 
     private fun handleServerData(message: String) {
+        isNewData = true
+
         objects = parserJSONToKotlin.getObjectsViews(message)
         _gameState.postValue(GameState(
             Type.GAME,
             parserJSONToKotlin.getObjectsViews(message),
             emptyList()
         ))
+
+        updatePositions()
+    }
+
+    private fun updatePositions() {
+        isNewData = false
+
+        while (!isNewData) {
+            _gameState.postValue(GameState(
+                Type.GAME,
+                parserJSONToKotlin.interpolation(),
+                emptyList()
+            ))
+            // При необходимости добавить паузу
+        }
     }
 
     override fun onShot(startX: Float) {

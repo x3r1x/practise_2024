@@ -1,6 +1,7 @@
 package com.example.mygame.multiplayer
 
 import android.content.res.Resources
+import com.example.mygame.domain.drawable.ObjectType
 import com.example.mygame.domain.drawable.factory.BonusViewFactory
 import com.example.mygame.domain.drawable.factory.BulletViewFactory
 import com.example.mygame.domain.drawable.factory.EnemyViewFactory
@@ -16,8 +17,25 @@ class JSONToKotlin(resources: Resources) {
     private val bonusViewFactory = BonusViewFactory(resources)
     private val bulletViewFactory = BulletViewFactory(resources)
 
+    private lateinit var gameData : GameData
+
     fun getObjectsViews(jsonString: String) : List<ObjectView> {
-        val gameData = parseJSON(jsonString)
+        gameData = parseJSON(jsonString)
+
+        return mapObjects(gameData)
+    }
+
+    fun interpolation() : List<ObjectView> {
+        gameData.objects.forEach {
+            val type = (it[0] as Double).toInt()
+            if (type == ObjectType.PLAYER_TYPE) {
+                it[2] = (it[2] as Double) + (it[4] as Double) // posX += speedX
+                it[3] = (it[3] as Double) + (it[5] as Double) // posY += speedY
+            } else {
+                it[1] = (it[1] as Double) + (it[3] as Double)
+                it[2] = (it[2] as Double) + (it[4] as Double)
+            }
+        }
 
         return mapObjects(gameData)
     }
