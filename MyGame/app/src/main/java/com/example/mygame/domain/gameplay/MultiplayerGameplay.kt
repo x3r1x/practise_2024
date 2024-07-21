@@ -6,7 +6,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.mygame.UI.IDrawable
 import com.example.mygame.domain.Screen
-import com.example.mygame.domain.drawable.DrawableManager
 import com.example.mygame.domain.logic.SensorHandler
 import com.example.mygame.multiplayer.ClientMessage
 import com.example.mygame.multiplayer.JSONToKotlin
@@ -14,16 +13,13 @@ import com.example.mygame.multiplayer.Ping
 import com.example.mygame.multiplayer.ServerResponse
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
-import kotlinx.coroutines.delay
 import org.java_websocket.client.WebSocketClient
 import org.java_websocket.handshake.ServerHandshake
 import java.net.URI
-import java.sql.Date
-import java.sql.Time
 
 class MultiplayerGameplay(resources: Resources, screen: Screen) : IGameplay, SensorHandler.SensorCallback {
     private val gson = Gson()
-    private val JSONToKotlin = JSONToKotlin(resources)
+    private val parserJSONToKotlin = JSONToKotlin(resources)
     private var objects: List<IDrawable> = emptyList()
 
     private var pingSentTime: Long = 0
@@ -92,10 +88,10 @@ class MultiplayerGameplay(resources: Resources, screen: Screen) : IGameplay, Sen
     }
 
     private fun handleServerData(message: String) {
-        objects = JSONToKotlin.getObjectsViews(message)
+        objects = parserJSONToKotlin.getObjectsViews(message)
         _gameState.postValue(GameState(
             Type.GAME,
-            JSONToKotlin.getObjectsViews(message),
+            parserJSONToKotlin.getObjectsViews(message),
             emptyList()
         ))
     }

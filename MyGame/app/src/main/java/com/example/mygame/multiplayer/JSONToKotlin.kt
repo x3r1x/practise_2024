@@ -31,21 +31,20 @@ class JSONToKotlin(resources: Resources) {
         val objectsViews = mutableListOf<ObjectView>()
 
         gameData.objects.forEach {
-            val obj = it
-            val type = (obj[0] as Double).toInt()
+            val type = (it[0] as Double).toInt()
             when (type) {
                 0 -> {
                     objectsViews.add(
                         playerViewFactory.getPlayerView(
-                            (obj[2] as Double).toFloat(),
-                            (obj[3] as Double).toFloat(),
-                            (obj[4] as Double).toFloat(),
-                            (obj[5] as Double).toFloat(),
-                            (obj[6] as Double).toInt(),
-                            (obj[7] as Double).toInt(),
-                            (obj[8] as Double).toInt(),
-                            (obj[9] as Double).toInt(),
-                            (obj[10] as Double).toInt()
+                            (it[2] as Double).toFloat(),
+                            (it[3] as Double).toFloat(),
+                            (it[5] as Double).toFloat(),
+                            (it[4] as Double).toFloat(),
+                            (it[6] as Double).toInt(),
+                            (it[7] as Double).toInt(),
+                            (it[8] as Double).toInt(),
+                            (it[9] as Double).toInt(),
+                            (it[10] as Double).toInt()
                         )
                     )
                 }
@@ -53,12 +52,12 @@ class JSONToKotlin(resources: Resources) {
                 in 1..5 -> {
                     objectsViews.add(
                         platformViewFactory.getPlatformView(
-                            (obj[0] as Double).toInt(),
-                            (obj[1] as Double).toFloat(),
-                            (obj[2] as Double).toFloat(),
-                            (obj[3] as Double).toFloat(),
-                            (obj[4] as Double).toFloat(),
-                            (obj[5] as Double).toInt()
+                            (it[0] as Double).toInt(),
+                            (it[1] as Double).toFloat(),
+                            (it[2] as Double).toFloat(),
+                            (it[3] as Double).toFloat(),
+                            (it[4] as Double).toFloat(),
+                            (it[5] as Double).toInt()
                         )
                     )
                 }
@@ -66,12 +65,12 @@ class JSONToKotlin(resources: Resources) {
                 in 6..7 -> {
                     objectsViews.add(
                         bonusViewFactory.getBonusView(
-                            (obj[0] as Double).toInt(),
-                            (obj[1] as Double).toFloat(),
-                            (obj[2] as Double).toFloat(),
-                            (obj[3] as Double).toFloat(),
-                            (obj[4] as Double).toFloat(),
-                            (obj[5] as Double).toInt()
+                            (it[0] as Double).toInt(),
+                            (it[1] as Double).toFloat(),
+                            (it[2] as Double).toFloat(),
+                            (it[3] as Double).toFloat(),
+                            (it[4] as Double).toFloat(),
+                            (it[5] as Double).toInt()
                         )
                     )
                 }
@@ -79,11 +78,11 @@ class JSONToKotlin(resources: Resources) {
                 in 8..10 -> {
                     objectsViews.add(
                         enemyViewFactory.getEnemyView(
-                            (obj[0] as Double).toInt(),
-                            (obj[1] as Double).toFloat(),
-                            (obj[2] as Double).toFloat(),
-                            (obj[3] as Double).toFloat(),
-                            (obj[4] as Double).toFloat()
+                            (it[0] as Double).toInt(),
+                            (it[1] as Double).toFloat(),
+                            (it[2] as Double).toFloat(),
+                            (it[3] as Double).toFloat(),
+                            (it[4] as Double).toFloat()
                         )
                     )
                 }
@@ -91,10 +90,10 @@ class JSONToKotlin(resources: Resources) {
                 11 -> {
                     objectsViews.add(
                         bulletViewFactory.getBulletView(
-                            (obj[1] as Double).toFloat(),
-                            (obj[2] as Double).toFloat(),
-                            (obj[3] as Double).toFloat(),
-                            (obj[4] as Double).toFloat()
+                            (it[1] as Double).toFloat(),
+                            (it[2] as Double).toFloat(),
+                            (it[3] as Double).toFloat(),
+                            (it[4] as Double).toFloat()
                         )
                     )
                 }

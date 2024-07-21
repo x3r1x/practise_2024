@@ -22,5 +22,5 @@ interface IGameplay {
     fun onPause()
     fun onResume()
     fun onDestroy()
-    fun onSensorDataChanged(newX: Float)
+    fun onSensorDataChanged(deltaX: Float)
 }

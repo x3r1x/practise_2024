@@ -26,7 +26,6 @@ class Player : IMoveable, IGameObject {
     var isShooting = false
 
     override var x = 0f
-
     override var y = 0f
 
     override val left
@@ -39,7 +38,6 @@ class Player : IMoveable, IGameObject {
         get() = y + RADIUS
 
     var directionX = DirectionX.RIGHT
-
     var directionY = DirectionY.DOWN
 
     var speedY = 0f

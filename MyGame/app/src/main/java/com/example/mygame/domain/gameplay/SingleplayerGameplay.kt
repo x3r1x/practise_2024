@@ -115,8 +115,8 @@ class SingleplayerGameplay(
         )
     }
 
-    override fun onSensorDataChanged(newX: Float) {
-        deltaX = newX
+    override fun onSensorDataChanged(deltaX: Float) {
+        this.deltaX = deltaX
     }
 
     override fun onShot(startX: Float) {
