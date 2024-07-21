@@ -54,9 +54,9 @@ class DrawableManager(resources: Resources) {
             0f,
             player.directionX.value,
             player.directionY.value,
-            player.isWithShield as Int,
-            player.isShooting as Int,
-            player.isDead as Int,
+            player.isWithShield.toInt(),
+            player.isShooting.toInt(),
+            player.isDead.toInt(),
             player.isWithJetpack
         )
     }
@@ -122,4 +122,6 @@ class DrawableManager(resources: Resources) {
     private fun bulletToView(bullet: Bullet): ObjectView {
         return bulletViewFactory.getBulletView(bullet.x, bullet.y, 0f, 0f)
     }
+
+    private fun Boolean.toInt() = if (this) 1 else 0
 }
