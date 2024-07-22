@@ -17,7 +17,7 @@ class GameConstants {
 
         const val PLATFORM_ON_X_SPEED = 200f
         const val PLATFORM_ON_Y_SPEED = 200f
-        const val PLATFORM_ON_Y_RANGE = 400f
+        const val PLATFORM_ON_Y_RANGE = 700f
 
         const val SHIELD_DEFAULT_TRANSPARENCY = 128
         const val SHIELD_PULSE_TRANSPARENCY = 64

@@ -84,8 +84,6 @@ class SingleplayerGameFragment : Fragment() {
             pauseGame()
         }
 
-        setupPauseButtonClickListener(pauseButton, pauseGroup, exitToMenuButton)
-
         gameView.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {
                 gameViewModel.onClick(event.x)

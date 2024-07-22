@@ -12,7 +12,7 @@ class MovingPlatformOnY(
 
     init {
         minY = createdY - GameConstants.PLATFORM_ON_Y_RANGE
-        maxY = createdY + GameConstants.PLATFORM_ON_Y_RANGE
+        maxY = createdY // + GameConstants.PLATFORM_ON_Y_RANGE
     }
 
     enum class DirectionY(val value: Int) {
@@ -20,7 +20,7 @@ class MovingPlatformOnY(
         DOWN(1),
     }
 
-    private var directionY = randomDirectionY()
+    private var directionY = DirectionY.UP //randomDirectionY()
 
     private fun randomDirectionY() : DirectionY {
         val value = (DirectionY.UP.value..DirectionY.DOWN.value).random()

@@ -9,8 +9,8 @@ class Spring(
              createdX: Float,
              createdY: Float
 ) : IMoveable, IBonus, IGameObject {
-    private var currentFrame = 0
-    private var bitmap = initBitmap[currentFrame]
+    var currentFrame = 0
+
     private var isStretchRunning = false
     private var animator : ValueAnimator? = null
 
@@ -28,7 +28,7 @@ class Spring(
         if (!isStretchRunning) {
             isStretchRunning = true
             animator = ValueAnimator.ofInt(0, STATE_COUNT - 1).apply {
-                this.duration = animationDuration
+                this.duration = ANIMATION_DURATION
                 addUpdateListener { animator ->
                     currentFrame = animator.animatedValue as Int
                     setPosition(x, y - ANIMATION_HEIGHT_VALUE)
@@ -58,5 +58,7 @@ class Spring(
         private const val ANIMATION_HEIGHT_VALUE = 5f
 
         private const val STATE_COUNT = 4
+
+        private const val ANIMATION_DURATION : Long = 150
     }
 }

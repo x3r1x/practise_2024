@@ -14,9 +14,9 @@ class Player : IMoveable, IGameObject {
         DOWN(1),
     }
 
-    enum class DirectionX {
-        LEFT,
-        RIGHT
+    enum class DirectionX(val value: Int) {
+        LEFT(-1),
+        RIGHT(1),
     }
 
     var bonuses = PlayerSelectedBonuses(this)

@@ -18,7 +18,7 @@ class ObjectStorage(
     private val enemies = mutableListOf<Enemy>()
     private val objects = mutableListOf<IGameObject>()
 
-    private var player = PlayerFactory(resources).generatePlayer()
+    private var player = PlayerFactory().generatePlayer()
 
     init {
         player.setPosition(screen.width / 2f, screen.height - 800)
