@@ -1,15 +1,11 @@
 package com.example.mygame.domain
 
-import android.graphics.Bitmap
-import android.graphics.Canvas
 import android.graphics.Paint
-import com.example.mygame.UI.IDrawable
 
-open class Platform(createdX: Float, createdY: Float) : IDrawable, IMoveable, IGameObject {
+open class Platform(createdX: Float, createdY: Float) : IMoveable, IGameObject {
     val width = 175f
     val height = 45f
 
-    protected lateinit var bitmap: Bitmap
     protected var paint = Paint()
 
     override var isDisappeared = false
@@ -28,10 +24,6 @@ open class Platform(createdX: Float, createdY: Float) : IDrawable, IMoveable, IG
 
     override fun accept(visitor: IVisitor) {
         visitor.visit(this)
-    }
-
-    override fun draw(canvas: Canvas) {
-        canvas.drawBitmap(bitmap, left, top, paint)
     }
 
     override fun setPosition(startX: Float, startY: Float) {

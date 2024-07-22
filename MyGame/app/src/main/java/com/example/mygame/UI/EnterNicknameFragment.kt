@@ -47,13 +47,17 @@ class EnterNicknameFragment : Fragment() {
         val nicknameView = view.findViewById<TextView>(R.id.nickname)
         val connectButton = view.findViewById<Button>(R.id.connectButton)
 
+        view.findViewById<ImageButton>(R.id.backButton).setOnClickListener {
+            Navigation.findNavController(view).navigate(R.id.navigateFromEnterNicknameFragmentToStartFragment)
+        }
+
         nicknameView.addTextChangedListener {
             if (nicknameView.text.isEmpty()) {
                 connectButton.isEnabled = false
-                connectButton.setBackgroundTintList(ColorStateList.valueOf(COLOR_GREY))
+                connectButton.backgroundTintList = ColorStateList.valueOf(COLOR_GREY)
             } else {
                 connectButton.isEnabled = true
-                connectButton.setBackgroundTintList(ColorStateList.valueOf(COLOR_GREEN))
+                connectButton.backgroundTintList = ColorStateList.valueOf(COLOR_GREEN)
             }
         }
 

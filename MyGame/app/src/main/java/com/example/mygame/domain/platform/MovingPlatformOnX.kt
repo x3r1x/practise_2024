@@ -1,20 +1,14 @@
 package com.example.mygame.domain.platform
 
-import android.graphics.Bitmap
 import com.example.mygame.domain.GameConstants
 import com.example.mygame.domain.Platform
 import com.example.mygame.domain.Screen
 
 class MovingPlatformOnX(
-    initBitmap: Bitmap,
     createdX: Float,
     createdY: Float
 ) : Platform(createdX, createdY) {
     private var directionX = directionXRandom()
-
-    init {
-        this.bitmap = initBitmap
-    }
 
     enum class DirectionX(val value: Int) {
         LEFT(0),
@@ -31,10 +25,11 @@ class MovingPlatformOnX(
 
     private fun directionXRandom() : DirectionX {
         val value = (DirectionX.LEFT.value..DirectionX.RIGHT.value).random()
-        if (value == DirectionX.LEFT.value) {
-            return DirectionX.LEFT
+
+        return if (value == DirectionX.LEFT.value) {
+            DirectionX.LEFT
         } else {
-            return DirectionX.RIGHT
+            DirectionX.RIGHT
         }
     }
 

@@ -1,12 +1,12 @@
 package com.example.mygame.domain.visitor
 
-import com.example.mygame.domain.enemies.Enemy
+import com.example.mygame.domain.Enemy
 import com.example.mygame.domain.IVisitor
 import com.example.mygame.domain.Platform
 import com.example.mygame.domain.Screen
-import com.example.mygame.domain.bonuses.Jetpack
-import com.example.mygame.domain.bonuses.Shield
-import com.example.mygame.domain.bonuses.Spring
+import com.example.mygame.domain.bonus.Jetpack
+import com.example.mygame.domain.bonus.Shield
+import com.example.mygame.domain.bonus.Spring
 import com.example.mygame.domain.bullet.Bullet
 import com.example.mygame.domain.platform.MovingPlatformOnX
 import com.example.mygame.domain.player.Player

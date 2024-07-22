@@ -18,15 +18,6 @@ import androidx.navigation.Navigation
 import com.example.mygame.R
 
 class LobbyFragment : Fragment() {
-    /*private val textViewsOfPlayers = arrayOf(
-            R.id.firstPlayer,
-            R.id.secondPlayer,
-            R.id.thirdPlayer,
-            R.id.fourthPlayer,
-            R.id.fifthPlayer,
-            R.id.sixthPlayer
-    )*/
-
     private lateinit var audioPlayer: ExoPlayer
 
     private fun playMusic() {
@@ -55,6 +46,10 @@ class LobbyFragment : Fragment() {
 
         val readyButton = view.findViewById<Button>(R.id.readyButton)
         val waitingTextView = view.findViewById<TextView>(R.id.waitingTextView)
+
+        view.findViewById<ImageButton>(R.id.backButton).setOnClickListener {
+            Navigation.findNavController(view).navigate(R.id.navigateFromLobbyFragmentToStartFragment)
+        }
 
         readyButton.setOnClickListener {
             readyButton.visibility = INVISIBLE

@@ -1,40 +1,43 @@
 package com.example.mygame.domain.player
 
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.Matrix
-import android.graphics.RectF
 import android.os.Handler
 import android.os.Looper
-import com.example.mygame.UI.IDrawable
 import com.example.mygame.domain.GameConstants
 import com.example.mygame.domain.IGameObject
 import com.example.mygame.domain.IMoveable
 import com.example.mygame.domain.IVisitor
 import com.example.mygame.domain.Screen
 
-class Player(private val idleImage: Bitmap,
-            private val jumpImage: Bitmap,
-            private val deadImage: Bitmap,
-            private val shootImage: Bitmap
-) : IDrawable, IMoveable, IGameObject {
+class Player : IMoveable, IGameObject {
     enum class DirectionY(val value: Int) {
         UP(-1),
         DOWN(1),
     }
 
-    enum class DirectionX {
-        LEFT,
-        RIGHT
+    enum class DirectionX(val value: Int) {
+        LEFT(-1),
+        RIGHT(1),
     }
 
-    var isWithJetpack = false
+    var bonuses = PlayerSelectedBonuses(this)
 
+    var isWithJetpack = false
     var isWithShield = false
+    var isDead = false
+    var isShooting = false
+
+    var directionX = DirectionX.RIGHT
+    var directionY = DirectionY.DOWN
+
+    var speedY = 0f
+
+    private var shootingRunnable: Runnable? = null
+    private val shootingHandler = Handler(Looper.getMainLooper())
 
     override var x = 0f
-
     override var y = 0f
+
+    override var isDisappeared = false
 
     override val left
         get() = x - RADIUS
@@ -44,19 +47,6 @@ class Player(private val idleImage: Bitmap,
         get() = y - RADIUS
     override val bottom
         get() = y + RADIUS
-
-    var directionX = DirectionX.RIGHT
-
-    var directionY = DirectionY.DOWN
-
-    var speedY = 0f
-
-    private var isShooting = false
-    private var shootingRunnable: Runnable? = null
-    private val shootingHandler = Handler(Looper.getMainLooper())
-
-    override var isDisappeared = false
-    var isDead = false
 
     fun jump(jumpSpeed: Float = GameConstants.PLAYER_JUMP_SPEED) {
         directionY = DirectionY.UP
@@ -72,10 +62,6 @@ class Player(private val idleImage: Bitmap,
         if (x > screen.right) {
             x = 0f + RADIUS
         }
-    }
-
-    fun isShooting() : Boolean {
-        return isShooting
     }
 
     fun shoot() {
@@ -104,53 +90,8 @@ class Player(private val idleImage: Bitmap,
         }
     }
 
-    private fun applyTransformations(matrix: Matrix, destRect: RectF, image: Bitmap) {
-        val scaleX = destRect.width() / image.width
-        val scaleY = destRect.height() / image.height
-
-        if (directionX == DirectionX.LEFT) {
-            matrix.preScale(-scaleX, scaleY)
-            matrix.postTranslate(destRect.right, destRect.top)
-        } else {
-            matrix.postScale(scaleX, scaleY)
-            matrix.postTranslate(destRect.left, destRect.top)
-        }
-    }
-
-    private fun selectImage(): Bitmap {
-        return if (isDead) {
-            deadImage
-        } else if (isShooting) {
-            shootImage
-        } else if (directionY == DirectionY.UP) {
-            jumpImage
-        } else {
-            idleImage
-        }
-    }
-
-    private fun applyRect() : RectF {
-        return if (isDead) {
-            RectF(x - DEAD_WIDTH / 2, y - DEAD_HEIGHT / 2, x + DEAD_WIDTH / 2, y + DEAD_HEIGHT / 2)
-        } else if (isShooting) {
-            RectF(x - SHOOTING_WIDTH / 2, y - SHOOTING_HEIGHT / 2, x + SHOOTING_WIDTH / 2, y + SHOOTING_HEIGHT / 2)
-        } else {
-            RectF(left, top, right, bottom)
-        }
-    }
-
     override fun accept(visitor: IVisitor) {
         visitor.visit(this)
-    }
-
-    override fun draw(canvas: Canvas) {
-        val matrix = Matrix()
-        val destRect = applyRect()
-        val imageToDraw = selectImage()
-
-        applyTransformations(matrix, destRect, imageToDraw)
-
-        canvas.drawBitmap(imageToDraw, matrix, null)
     }
 
     override fun setPosition(startX: Float, startY: Float) {
@@ -177,8 +118,5 @@ class Player(private val idleImage: Bitmap,
         const val SHOOTING_HEIGHT = 200f
 
         private const val RADIUS = 75f
-
-        private const val DEAD_WIDTH = 120f
-        private const val DEAD_HEIGHT = 190f
     }
 }

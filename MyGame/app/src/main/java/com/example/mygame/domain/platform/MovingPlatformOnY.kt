@@ -1,11 +1,9 @@
 package com.example.mygame.domain.platform
 
-import android.graphics.Bitmap
 import com.example.mygame.domain.GameConstants
 import com.example.mygame.domain.Platform
 
 class MovingPlatformOnY(
-    initBitmap: Bitmap,
     createdX: Float,
     createdY: Float
 ) : Platform(createdX, createdY) {
@@ -13,9 +11,8 @@ class MovingPlatformOnY(
     private var maxY = 0f
 
     init {
-        this.bitmap = initBitmap
         minY = createdY - GameConstants.PLATFORM_ON_Y_RANGE
-        maxY = createdY + GameConstants.PLATFORM_ON_Y_RANGE
+        maxY = createdY
     }
 
     enum class DirectionY(val value: Int) {
@@ -23,17 +20,7 @@ class MovingPlatformOnY(
         DOWN(1),
     }
 
-    private var directionY = randomDirectionY()
-
-    private fun randomDirectionY() : DirectionY {
-        val value = (DirectionY.UP.value..DirectionY.DOWN.value).random()
-
-        if (value == DirectionY.UP.value) {
-            return DirectionY.UP
-        } else {
-            return DirectionY.DOWN
-        }
-    }
+    private var directionY = DirectionY.UP
 
     private fun updateDirection() {
         if (y <= minY) {

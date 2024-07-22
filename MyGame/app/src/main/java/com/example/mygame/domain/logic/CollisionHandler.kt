@@ -18,6 +18,7 @@ class CollisionHandler {
 
     private fun checkBulletCollision(objects: List<IGameObject>, audioPlayer: GameSoundsPlayer) {
         val bullet = objects.firstOrNull() { it::class == Bullet::class } as Bullet?
+
         if (bullet == null) {
             return
         }

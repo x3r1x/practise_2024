@@ -13,12 +13,15 @@
             android:id="@+id/navigateFromStartFragmentToSinglePlayerFragment"
             app:destination="@id/gameFragment" />
         <action
+            android:id="@+id/navigateFromStartMenuFragmentToMultiplayerFragment"
+            app:destination="@id/multiplayerGameFragment" />
+        <!--<action
             android:id="@+id/navigateFromStartFragmentToEnterNicknameFragment"
-            app:destination="@id/enterNicknameFragment" />
+            app:destination="@id/enterNicknameFragment" /> -->
     </fragment>
     <fragment
         android:id="@+id/gameFragment"
-        android:name="com.example.mygame.UI.GameFragment"
+        android:name="com.example.mygame.UI.SingleplayerGameFragment"
         android:label="fragment_game"
         tools:layout="@layout/fragment_game" >
         <action
@@ -70,5 +73,16 @@
         <action
             android:id="@+id/navigateFromLobbyFragmentToStartFragment"
             app:destination="@id/startFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/multiplayerGameFragment"
+        android:name="com.example.mygame.UI.MultiplayerGameFragment"
+        android:label="MultiplayerGameFragment"
+        tools:layout="@layout/fragment_multiplayer_game">
+        <action
+            android:id="@+id/action_multiplayerGameFragment_to_startFragment"
+            app:destination="@id/startFragment"
+            app:popUpTo="@layout/fragment_multiplayer_game"
+            app:popUpToInclusive="true"/>
     </fragment>
 </navigation>
