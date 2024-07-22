@@ -120,7 +120,7 @@ class PlayerCollisionVisitor(
     }
 
     private fun getPlayerFootCollisionRect(player: Player) : RectF {
-        if (player.isShooting()) {
+        if (player.isShooting) {
             return RectF(
                 player.x + Player.SHOOTING_WIDTH / 2 - GameConstants.PLAYER_LEG_OFFSET_X_WHEN_SHOOT,
                 player.y + Player.SHOOTING_HEIGHT / 2,
