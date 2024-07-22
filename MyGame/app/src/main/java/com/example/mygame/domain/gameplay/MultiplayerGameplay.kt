@@ -76,14 +76,11 @@ class MultiplayerGameplay(resources: Resources, screen: Screen) : IGameplay, Sen
         client.connect()
     }
 
-    override fun onViewCreated() {
-    }
+    override fun onViewCreated() {}
 
-    override fun startGameLoop() {
-    }
+    override fun startGameLoop() {}
 
-    override fun stopGameLoop() {
-    }
+    override fun stopGameLoop() {}
 
     private fun sendMessage(dx: Float, tap: Boolean = false) {
         val ping = gson.toJson(Ping("ping", 0))
@@ -118,6 +115,7 @@ class MultiplayerGameplay(resources: Resources, screen: Screen) : IGameplay, Sen
             parserJSONToKotlin.setGameState(message)
         }
 
+            //updatePositions()
     }
 
     private fun updatePositions() {
@@ -127,14 +125,12 @@ class MultiplayerGameplay(resources: Resources, screen: Screen) : IGameplay, Sen
                 val currentTime = System.currentTimeMillis()
                 val deltaTime = (currentTime - previousTime) / 1000f // Конвертируем в секунды
                 previousTime = currentTime
-                
+
                 _gameState.postValue(GameState(
                     Type.GAME,
                     parserJSONToKotlin.interpolation(deltaTime.toDouble()),
                     emptyList()
                 ))
-
-                // При необходимости добавить паузу
             }
         }
     }
