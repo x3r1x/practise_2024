@@ -1,5 +1,6 @@
 package com.example.mygame.domain.visitor
 
+import com.example.mygame.UI.GameSoundsPlayer
 import com.example.mygame.domain.enemies.Enemy
 import com.example.mygame.domain.GameConstants
 import com.example.mygame.domain.IGameObject
@@ -18,9 +19,9 @@ import com.example.mygame.domain.player.Player.DirectionY
 
 class PlayerCollisionVisitor(
     private val player: Player,
-    private val screenHeight: Float
+    private val screenHeight: Float,
+    private val audioPlayer: GameSoundsPlayer
 ) : IVisitor {
-
     override fun visit(platform: Platform) {
         if (doesPlayerCollideWithSolid(platform) && !player.isDead) {
             if (platform is BreakingPlatform) {
@@ -29,6 +30,15 @@ class PlayerCollisionVisitor(
             } else if (platform is DisappearingPlatform) {
                 platform.animatePlatformColor()
             }
+
+            audioPlayer.player.play(
+                audioPlayer.jumpSound,
+                GameSoundsPlayer.JUMP_VOLUME,
+                GameSoundsPlayer.JUMP_VOLUME,
+                GameSoundsPlayer.BASE_PRIORITY,
+                GameSoundsPlayer.NO_LOOP,
+                GameSoundsPlayer.BASE_SPEED_RATE
+            )
 
             player.jump()
         }
@@ -40,7 +50,7 @@ class PlayerCollisionVisitor(
     override fun visit(jetpack: Jetpack) {
         if (doesPlayerCollideWithCollectable(jetpack) && !player.isWithJetpack && !player.isDead) {
             jetpack.initPlayer(player)
-            jetpack.startDisappearingTimer()
+            jetpack.startDisappearingTimer(audioPlayer)
             jetpack.fly()
         }
     }
@@ -48,12 +58,21 @@ class PlayerCollisionVisitor(
     override fun visit(shield: Shield) {
         if (doesPlayerCollideWithCollectable(shield) && !player.isWithShield && !player.isDead) {
             shield.initPlayer(player)
-            shield.startDisappearingTimer()
+            shield.startDisappearingTimer(audioPlayer)
         }
     }
 
     override fun visit(spring: Spring) {
         if (doesPlayerCollideWithSolid(spring) && !player.isDead) {
+            audioPlayer.player.play(
+                audioPlayer.springSound,
+                GameSoundsPlayer.MAX_VOLUME,
+                GameSoundsPlayer.MAX_VOLUME,
+                GameSoundsPlayer.BASE_PRIORITY,
+                GameSoundsPlayer.NO_LOOP,
+                GameSoundsPlayer.BASE_SPEED_RATE
+            )
+
             spring.runStretchAnimation()
             player.jump(GameConstants.PLAYER_SPRING_JUMP_SPEED)
         }
@@ -62,8 +81,26 @@ class PlayerCollisionVisitor(
     override fun visit(enemy: Enemy) {
         if (checkCollisionWithEnemy(enemy) && !player.isDead) {
             if (player.directionY == DirectionY.UP && !player.isWithShield && !player.isWithJetpack) {
+                audioPlayer.player.play(
+                    audioPlayer.playerKilledSound,
+                    GameSoundsPlayer.MAX_VOLUME,
+                    GameSoundsPlayer.MAX_VOLUME,
+                    GameSoundsPlayer.BASE_PRIORITY,
+                    GameSoundsPlayer.NO_LOOP,
+                    GameSoundsPlayer.BASE_SPEED_RATE
+                )
+
                 enemy.killPlayer(player)
             } else {
+                audioPlayer.player.play(
+                    audioPlayer.enemySlainSound,
+                    GameSoundsPlayer.MAX_VOLUME,
+                    GameSoundsPlayer.MAX_VOLUME,
+                    GameSoundsPlayer.BASE_PRIORITY,
+                    GameSoundsPlayer.NO_LOOP,
+                    GameSoundsPlayer.BASE_SPEED_RATE
+                )
+
                 enemy.killEnemy()
                 player.jump()
             }

@@ -1,6 +1,7 @@
 package com.example.mygame.domain.visitor
 
 import android.graphics.RectF
+import com.example.mygame.UI.GameSoundsPlayer
 import com.example.mygame.domain.enemies.Enemy
 import com.example.mygame.domain.IVisitor
 import com.example.mygame.domain.Platform
@@ -10,7 +11,7 @@ import com.example.mygame.domain.bonuses.Spring
 import com.example.mygame.domain.bullet.Bullet
 import com.example.mygame.domain.player.Player
 
-class BulletCollisionVisitor(private val bullet: Bullet) : IVisitor {
+class BulletCollisionVisitor(private val bullet: Bullet, private val audioPlayer: GameSoundsPlayer) : IVisitor {
 
     override fun visit(platform: Platform) {
         // Реализация для платформ
@@ -39,6 +40,15 @@ class BulletCollisionVisitor(private val bullet: Bullet) : IVisitor {
             val enemyRect = RectF(enemy.left, enemy.top, enemy.right, enemy.bottom)
 
             if (bulletRect.intersect(enemyRect)) {
+                audioPlayer.player.play(
+                    audioPlayer.enemyShotSound,
+                    GameSoundsPlayer.MAX_VOLUME,
+                    GameSoundsPlayer.MAX_VOLUME,
+                    GameSoundsPlayer.BASE_PRIORITY,
+                    GameSoundsPlayer.NO_LOOP,
+                    GameSoundsPlayer.BASE_SPEED_RATE
+                )
+
                 bullet.isDisappeared = true
                 enemy.isDisappeared = true
             }

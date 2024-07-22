@@ -1,5 +1,6 @@
 package com.example.mygame.domain.logic
 
+import com.example.mygame.UI.GameSoundsPlayer
 import com.example.mygame.domain.IGameObject
 import com.example.mygame.domain.bullet.Bullet
 import com.example.mygame.domain.player.Player
@@ -9,20 +10,19 @@ import com.example.mygame.domain.visitor.PlayerCollisionVisitor
 import com.example.mygame.domain.visitor.ScreenCollisionVisitor
 
 class CollisionHandler {
-
-    fun checkCollisions(player: Player, screen: Screen, objects: List<IGameObject>) {
+    fun checkCollisions(player: Player, screen: Screen, objects: List<IGameObject>, audioPlayer: GameSoundsPlayer) {
         checkScreenCollision(screen, objects)
-        checkPlayerCollision(player, screen, objects)
-        checkBulletCollision(objects)
+        checkPlayerCollision(player, screen, objects, audioPlayer)
+        checkBulletCollision(objects, audioPlayer)
     }
 
-    private fun checkBulletCollision(objects: List<IGameObject>) {
+    private fun checkBulletCollision(objects: List<IGameObject>, audioPlayer: GameSoundsPlayer) {
         val bullet = objects.firstOrNull() { it::class == Bullet::class } as Bullet?
         if (bullet == null) {
             return
         }
 
-        val bulletCollisionVisitor = BulletCollisionVisitor(bullet)
+        val bulletCollisionVisitor = BulletCollisionVisitor(bullet, audioPlayer)
 
         objects.forEach {
             it.accept(bulletCollisionVisitor)
@@ -37,8 +37,8 @@ class CollisionHandler {
         }
     }
 
-    private fun checkPlayerCollision(player: Player, screen: Screen, objects: List<IGameObject>) {
-        val playerCollisionVisitor = PlayerCollisionVisitor(player, screen.height)
+    private fun checkPlayerCollision(player: Player, screen: Screen, objects: List<IGameObject>, audioPlayer: GameSoundsPlayer) {
+        val playerCollisionVisitor = PlayerCollisionVisitor(player, screen.height, audioPlayer)
 
         objects.forEach {
             if (it !is Player) {

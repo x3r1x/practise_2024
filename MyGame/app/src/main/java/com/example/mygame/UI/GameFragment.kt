@@ -1,6 +1,8 @@
 package com.example.mygame.UI
 
 import android.annotation.SuppressLint
+import android.media.AudioAttributes
+import android.media.SoundPool
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -33,6 +35,8 @@ class GameFragment : Fragment() {
     private lateinit var gameMusic : ExoPlayer
     private lateinit var pauseMusic: ExoPlayer
 
+    private lateinit var gameSounds: GameSoundsPlayer
+
     private lateinit var gameView: GameView
 
     private lateinit var pauseGroup: ConstraintLayout
@@ -61,6 +65,7 @@ class GameFragment : Fragment() {
 
             gameMusic.stop()
             pauseMusic.stop()
+            gameSounds.player.release()
         }
     }
 
@@ -97,7 +102,8 @@ class GameFragment : Fragment() {
         initializeAudioPlayers()
         gameMusic.play()
 
-        gameViewModel.initialize(screenWidth, screenHeight)
+        gameSounds = GameSoundsPlayer(requireContext())
+        gameViewModel.initialize(screenWidth, screenHeight, gameSounds)
 
         val view = inflater.inflate(R.layout.fragment_game, container, false)
 
@@ -120,6 +126,14 @@ class GameFragment : Fragment() {
 
         gameView.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_DOWN && !isPaused) {
+                gameSounds.player.play(
+                    gameSounds.shootSound,
+                    GameSoundsPlayer.MAX_VOLUME,
+                    GameSoundsPlayer.MAX_VOLUME,
+                    GameSoundsPlayer.BASE_PRIORITY,
+                    GameSoundsPlayer.NO_LOOP,
+                    GameSoundsPlayer.BASE_SPEED_RATE
+                )
                 gameViewModel.onClick(event.x, event.y)
             }
             true

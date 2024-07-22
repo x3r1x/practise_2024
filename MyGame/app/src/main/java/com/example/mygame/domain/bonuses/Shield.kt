@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.os.CountDownTimer
+import com.example.mygame.UI.GameSoundsPlayer
 import com.example.mygame.UI.IDrawable
 import com.example.mygame.domain.GameConstants
 import com.example.mygame.domain.IGameObject
@@ -38,19 +39,46 @@ class Shield(private val initDefaultShield: Bitmap,
     }
 
     //thanks god for ending my suffering
-    fun startDisappearingTimer() {
+    fun startDisappearingTimer(audioPlayer: GameSoundsPlayer) {
+        audioPlayer.player.play(
+            audioPlayer.shieldPickupSound,
+            GameSoundsPlayer.MAX_VOLUME,
+            GameSoundsPlayer.MAX_VOLUME,
+            GameSoundsPlayer.BASE_PRIORITY,
+            GameSoundsPlayer.NO_LOOP,
+            GameSoundsPlayer.BASE_SPEED_RATE
+        )
+
         val timer = object : CountDownTimer(GameConstants.SHIELD_DURATION, SHIELD_TIMER_TICK) {
             override fun onTick(p0: Long) {
                 if (p0 <= WHEN_TO_PULSE) {
                     paint.alpha = if (paint.alpha == PULSE_TRANSPARENCY) {
                         DEFAULT_TRANSPARENCY
                     } else {
+                        audioPlayer.player.play(
+                            audioPlayer.bonusEndingSoonSound,
+                            GameSoundsPlayer.MAX_VOLUME,
+                            GameSoundsPlayer.MAX_VOLUME,
+                            GameSoundsPlayer.BASE_PRIORITY,
+                            GameSoundsPlayer.NO_LOOP,
+                            GameSoundsPlayer.BASE_SPEED_RATE
+                        )
+
                         PULSE_TRANSPARENCY
                     }
                 }
             }
 
             override fun onFinish() {
+                audioPlayer.player.play(
+                    audioPlayer.shieldDestroySound,
+                    GameSoundsPlayer.MAX_VOLUME,
+                    GameSoundsPlayer.MAX_VOLUME,
+                    GameSoundsPlayer.BASE_PRIORITY,
+                    GameSoundsPlayer.NO_LOOP,
+                    GameSoundsPlayer.BASE_SPEED_RATE
+                )
+
                 dispose()
             }
         }

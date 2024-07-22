@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.mygame.UI.GameSoundsPlayer
 import com.example.mygame.domain.GameConstants
 import com.example.mygame.domain.IGameObject
 import com.example.mygame.domain.IMoveable
@@ -43,7 +44,9 @@ class GameViewModel(private val application: Application) : AndroidViewModel(app
     private lateinit var positionHandler: PositionHandler
     private lateinit var physics: Physics
 
-    fun initialize(screenWidth: Float, screenHeight: Float) {
+    private lateinit var soundPlayer: GameSoundsPlayer
+
+    fun initialize(screenWidth: Float, screenHeight: Float, audioPlayer: GameSoundsPlayer) {
         this.screen = Screen(screenWidth, screenHeight)
         sensorHandler = SensorHandler(getApplication(), this)
         collisionHandler = CollisionHandler()
@@ -51,10 +54,10 @@ class GameViewModel(private val application: Application) : AndroidViewModel(app
         positionHandler = PositionHandler()
         physics = Physics()
 
+        soundPlayer = audioPlayer
+
         objectsManager.initObjects()
     }
-
-
 
     fun startGameLoop() {
         isGameLoopRunning = true
@@ -113,7 +116,7 @@ class GameViewModel(private val application: Application) : AndroidViewModel(app
             objectsManager.updateObjects(offsetY)
         }
 
-        collisionHandler.checkCollisions(objectsManager.objectStorage.getPlayer(), screen, _gameObjects.value!!)
+        collisionHandler.checkCollisions(objectsManager.objectStorage.getPlayer(), screen, _gameObjects.value!!, soundPlayer)
 
         positionHandler.updatePositions(_gameObjects.value!!.filterIsInstance<IMoveable>(), elapsedTime, deltaX)
     }
