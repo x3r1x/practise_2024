@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import com.example.mygame.domain.Screen
 import com.example.mygame.domain.drawable.DrawableManager
+import com.example.mygame.domain.gameplay.IGameplay
 import com.example.mygame.domain.gameplay.SingleplayerGameplay
 import com.example.mygame.domain.gameplay.MultiplayerGameplay
 import com.example.mygame.domain.logic.CollisionHandler
@@ -25,9 +26,7 @@ class GameViewModel(
         SINGLEPLAYER,
         MULTIPLAYER
     }
-    lateinit var singleplayerGameplay: SingleplayerGameplay
-    lateinit var multiplayerGameplay: MultiplayerGameplay
-    lateinit var type: Type
+    lateinit var gameplay: IGameplay
 
     fun initialize(screenWidth: Float, screenHeight: Float, initType: Type) {
         screen = Screen(screenWidth, screenHeight)
@@ -37,29 +36,20 @@ class GameViewModel(
         positionHandler = PositionHandler()
         drawableManager = DrawableManager(application.resources)
 
-        type = initType
-
-        if (type == Type.SINGLEPLAYER) {
-            singleplayerGameplay = SingleplayerGameplay(objectsManager, sensorHandler, positionHandler, collisionHandler, drawableManager, screen)
-
+        if (initType == Type.SINGLEPLAYER) {
+            gameplay = SingleplayerGameplay(objectsManager, sensorHandler, positionHandler, collisionHandler, drawableManager, screen)
             objectsManager.initObjects()
-        } else if (type == Type.MULTIPLAYER) {
-            multiplayerGameplay = MultiplayerGameplay(application.resources, screen)
+        } else  {
+            gameplay = MultiplayerGameplay(application.resources, screen)
         }
     }
 
     override fun onSensorDataChanged(deltaX: Float) {
-        when (type) {
-            Type.SINGLEPLAYER -> singleplayerGameplay.onSensorDataChanged(deltaX)
-            Type.MULTIPLAYER -> multiplayerGameplay.onSensorDataChanged(deltaX)
-        }
+        gameplay.onSensorDataChanged(deltaX)
     }
 
     fun onClick(touchX: Float) {
-        when (type) {
-            Type.SINGLEPLAYER -> singleplayerGameplay.onShot(touchX)
-            Type.MULTIPLAYER -> multiplayerGameplay.onShot(touchX)
-        }
+        gameplay.onShot(touchX)
     }
 
     fun isGameLost() : Boolean {
@@ -67,9 +57,6 @@ class GameViewModel(
     }
 
     fun getScore(): Int {
-        if (type == Type.SINGLEPLAYER) {
-            return singleplayerGameplay.score.getScore()
-        }
-        return 0
+        return gameplay.score.getScore()
     }
 }

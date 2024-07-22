@@ -4,6 +4,7 @@ import android.content.res.Resources
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.mygame.domain.Score
 import com.example.mygame.domain.Screen
 import com.example.mygame.domain.logic.SensorHandler
 import com.example.mygame.multiplayer.ClientMessage
@@ -34,6 +35,11 @@ class MultiplayerGameplay(resources: Resources, screen: Screen) : IGameplay, Sen
 
     private val _gameState = MutableLiveData<GameState>()
     override val gameState: LiveData<GameState> = _gameState
+
+    override val score = Score()
+
+    private val _scoreObservable = MutableLiveData<Int>()
+    override val scoreObservable: LiveData<Int> = _scoreObservable
 
     init {
         client = object : WebSocketClient(serverUri) {
@@ -71,6 +77,12 @@ class MultiplayerGameplay(resources: Resources, screen: Screen) : IGameplay, Sen
     }
 
     override fun onViewCreated() {
+    }
+
+    override fun startGameLoop() {
+    }
+
+    override fun stopGameLoop() {
     }
 
     private fun sendMessage(dx: Float, tap: Boolean = false) {

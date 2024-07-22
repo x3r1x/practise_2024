@@ -1,7 +1,9 @@
 package com.example.mygame.domain.gameplay
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.example.mygame.UI.IDrawable
+import com.example.mygame.domain.Score
 
 enum class Type {
     LOBBY,
@@ -16,7 +18,13 @@ data class GameState(
 
 interface IGameplay {
     val gameState: LiveData<GameState>
+    val score: Score
+    val scoreObservable: LiveData<Int>
+
     fun onViewCreated()
+
+    fun startGameLoop()
+    fun stopGameLoop()
 
     fun onShot(startX: Float)
     fun onPause()

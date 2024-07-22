@@ -39,14 +39,14 @@ class SingleplayerGameFragment : Fragment() {
     }
 
     private fun pauseGame() {
-        gameViewModel.singleplayerGameplay.stopGameLoop()
+        gameViewModel.gameplay.stopGameLoop()
 
         pauseGroup.visibility = VISIBLE
 
         val resumeButton = pauseGroup.findViewById<Button>(R.id.resumeButton)
         resumeButton.setOnClickListener {
             pauseGroup.visibility = INVISIBLE
-            gameViewModel.singleplayerGameplay.startGameLoop()
+            gameViewModel.gameplay.startGameLoop()
 
         }
 
@@ -76,7 +76,7 @@ class SingleplayerGameFragment : Fragment() {
         initViews(view)
 
         gameViewModel.initialize(screenWidth, screenHeight, GameViewModel.Type.SINGLEPLAYER)
-        gameViewModel.singleplayerGameplay.scoreObservable.observe(viewLifecycleOwner) { newScore ->
+        gameViewModel.gameplay.scoreObservable.observe(viewLifecycleOwner) { newScore ->
             scoreView.text = newScore.toString()
         }
 
@@ -97,7 +97,7 @@ class SingleplayerGameFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        gameViewModel.singleplayerGameplay.gameState.observe(viewLifecycleOwner) { gameObjects ->
+        gameViewModel.gameplay.gameState.observe(viewLifecycleOwner) { gameObjects ->
             gameView.drawGame(gameObjects.objects)
 
             if (gameViewModel.isGameLost()) {
@@ -107,22 +107,22 @@ class SingleplayerGameFragment : Fragment() {
             }
         }
 
-        gameViewModel.singleplayerGameplay.startGameLoop()
+        gameViewModel.gameplay.startGameLoop()
     }
 
     override fun onResume() {
         super.onResume()
-        gameViewModel.singleplayerGameplay.onResume()
+        gameViewModel.gameplay.onResume()
     }
 
     override fun onPause() {
         super.onPause()
-        gameViewModel.singleplayerGameplay.onPause()
+        gameViewModel.gameplay.onPause()
         pauseGame()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        gameViewModel.singleplayerGameplay.stopGameLoop()
+        gameViewModel.gameplay.stopGameLoop()
     }
 }

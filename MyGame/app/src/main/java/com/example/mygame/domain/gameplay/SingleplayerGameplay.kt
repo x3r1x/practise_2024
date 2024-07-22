@@ -30,7 +30,7 @@ class SingleplayerGameplay(
     private var isGameLoopRunning = false
 
     private var deltaX = 0f
-    val score = Score()
+    override val score = Score()
 
     private val uiScope = CoroutineScope(Dispatchers.Main)
 
@@ -39,14 +39,14 @@ class SingleplayerGameplay(
     private val gameObjects = MutableLiveData<List<IGameObject>>()
 
     private val _scoreObservable = MutableLiveData<Int>()
-    val scoreObservable: LiveData<Int> = _scoreObservable
+    override val scoreObservable: LiveData<Int> = _scoreObservable
 
-    fun startGameLoop() {
+    override fun startGameLoop() {
         isGameLoopRunning = true
         gameLoop()
     }
 
-    fun stopGameLoop() {
+    override fun stopGameLoop() {
         isGameLoopRunning = false
     }
 

@@ -61,7 +61,7 @@ class MultiplayerGameFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        gameViewModel.multiplayerGameplay.gameState.observe(viewLifecycleOwner) { gameObjects ->
+        gameViewModel.gameplay.gameState.observe(viewLifecycleOwner) { gameObjects ->
             gameView.drawGame(gameObjects.objects)
         }
 
@@ -70,21 +70,21 @@ class MultiplayerGameFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        gameViewModel.multiplayerGameplay.onResume()
+        gameViewModel.gameplay.onResume()
     }
 
     override fun onPause() {
         super.onPause()
-        gameViewModel.multiplayerGameplay.onPause()
+        gameViewModel.gameplay.onPause()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        gameViewModel.multiplayerGameplay.onDestroy()
+        gameViewModel.gameplay.onDestroy()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        gameViewModel.multiplayerGameplay.onDestroy()
+        gameViewModel.gameplay.onDestroy()
     }
 }
