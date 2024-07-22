@@ -36,10 +36,16 @@ class GameViewModel(
         objectsManager = ObjectsManager(screen)
         positionHandler = PositionHandler()
         drawableManager = DrawableManager(application.resources)
+
         type = initType
-        singleplayerGameplay = SingleplayerGameplay(objectsManager, sensorHandler, positionHandler, collisionHandler, drawableManager, screen)
-        multiplayerGameplay = MultiplayerGameplay(application.resources, screen)
-        objectsManager.initObjects()
+
+        if (type == Type.SINGLEPLAYER) {
+            singleplayerGameplay = SingleplayerGameplay(objectsManager, sensorHandler, positionHandler, collisionHandler, drawableManager, screen)
+
+            objectsManager.initObjects()
+        } else if (type == Type.MULTIPLAYER) {
+            multiplayerGameplay = MultiplayerGameplay(application.resources, screen)
+        }
     }
 
     override fun onSensorDataChanged(deltaX: Float) {
