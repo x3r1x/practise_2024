@@ -27,7 +27,7 @@ class MultiplayerGameplay(resources: Resources, screen: Screen) : IGameplay, Sen
     private var pingSentTime: Long = 0
 
     private val client: WebSocketClient
-    private val serverUri = URI("ws://10.250.104.27:8080")
+    private val serverUri = URI("ws://10.250.104.162:8080")
 
     private val _gameState = MutableLiveData<GameState>()
     override val gameState: LiveData<GameState> = _gameState
