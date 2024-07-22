@@ -18,16 +18,20 @@ class JSONToKotlin(resources: Resources) {
 
     private lateinit var gameData : GameData
 
-    fun getObjectsViews(jsonString: String) : List<ObjectView> {
+    fun setGameState(jsonString: String) {
         gameData = parseJSON(jsonString)
+    }
+
+    fun getObjectsViews(jsonString: String) : List<ObjectView> {
+        setGameState(jsonString)
 
         return mapObjects(gameData)
     }
 
-    fun interpolation() : List<ObjectView> {
+    fun interpolation(delta: Double) : List<ObjectView> {
         gameData.objects.forEach {
-            it[1] = (it[1] as Double) + (it[3] as Double)
-            it[2] = (it[2] as Double) + (it[4] as Double)
+            it[1] = (it[1] as Double) + (it[3] as Double) * delta
+            it[2] = (it[2] as Double) + (it[4] as Double) * delta
         }
 
         return mapObjects(gameData)

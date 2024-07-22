@@ -15,6 +15,7 @@ import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.java_websocket.client.WebSocketClient
 import org.java_websocket.handshake.ServerHandshake
@@ -23,7 +24,7 @@ import java.net.URI
 class MultiplayerGameplay(resources: Resources, screen: Screen) : IGameplay, SensorHandler.SensorCallback {
     private val uiScope = CoroutineScope(Dispatchers.Main)
 
-    private var isNewData = false
+    private var isInitData = true
 
     private val gson = Gson()
     private val parserJSONToKotlin = JSONToKotlin(resources)
@@ -56,7 +57,6 @@ class MultiplayerGameplay(resources: Resources, screen: Screen) : IGameplay, Sen
                             val ping = currentTime - pingSentTime
                             Log.d("WebSocket", "Ping: $ping ms")
                         } else {
-                            isNewData = true
                             handleServerData(message)
                         }
                     } catch (e: JsonSyntaxException) {
@@ -106,25 +106,34 @@ class MultiplayerGameplay(resources: Resources, screen: Screen) : IGameplay, Sen
     }
 
     private fun handleServerData(message: String) {
-        _gameState.postValue(GameState(
-            Type.GAME,
-            parserJSONToKotlin.getObjectsViews(message),
-            emptyList()
-        ))
+        if (isInitData) {
+            _gameState.postValue(GameState(
+                Type.GAME,
+                parserJSONToKotlin.getObjectsViews(message),
+                emptyList()
+            ))
+            isInitData = false
+            updatePositions()
+        } else {
+            parserJSONToKotlin.setGameState(message)
+        }
 
-            //updatePositions()
     }
 
     private fun updatePositions() {
-        isNewData = false
-
+        var previousTime = System.nanoTime()
         uiScope.launch {
-            while (!isNewData) {
+            while (true) {
+                val currentTime = System.nanoTime()
+                val deltaTime = (currentTime - previousTime) / 1_000_000_000f // Конвертируем в секунды
+                previousTime = currentTime
+                
                 _gameState.postValue(GameState(
                     Type.GAME,
-                    parserJSONToKotlin.interpolation(),
+                    parserJSONToKotlin.interpolation(deltaTime.toDouble()),
                     emptyList()
                 ))
+                delay(25)
                 // При необходимости добавить паузу
             }
         }
