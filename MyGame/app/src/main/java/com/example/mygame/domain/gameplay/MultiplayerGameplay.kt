@@ -4,7 +4,6 @@ import android.content.res.Resources
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.mygame.UI.IDrawable
 import com.example.mygame.domain.Screen
 import com.example.mygame.domain.logic.SensorHandler
 import com.example.mygame.multiplayer.ClientMessage
@@ -13,21 +12,25 @@ import com.example.mygame.multiplayer.Ping
 import com.example.mygame.multiplayer.ServerResponse
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.java_websocket.client.WebSocketClient
 import org.java_websocket.handshake.ServerHandshake
 import java.net.URI
 
 class MultiplayerGameplay(resources: Resources, screen: Screen) : IGameplay, SensorHandler.SensorCallback {
+    private val uiScope = CoroutineScope(Dispatchers.Main)
+
     private var isNewData = false
 
     private val gson = Gson()
     private val parserJSONToKotlin = JSONToKotlin(resources)
-    private var objects: List<IDrawable> = emptyList()
 
     private var pingSentTime: Long = 0
 
     private val client: WebSocketClient
-    private val serverUri = URI("ws://10.250.104.27:8080")
+    private val serverUri = URI("ws://10.250.104.162:8080")
 
     private val _gameState = MutableLiveData<GameState>()
     override val gameState: LiveData<GameState> = _gameState
@@ -47,6 +50,7 @@ class MultiplayerGameplay(resources: Resources, screen: Screen) : IGameplay, Sen
                             val ping = currentTime - pingSentTime
                             Log.d("WebSocket", "Ping: $ping ms")
                         } else {
+                            isNewData = true
                             handleServerData(message)
                         }
                     } catch (e: JsonSyntaxException) {
@@ -90,9 +94,6 @@ class MultiplayerGameplay(resources: Resources, screen: Screen) : IGameplay, Sen
     }
 
     private fun handleServerData(message: String) {
-        isNewData = true
-
-        objects = parserJSONToKotlin.getObjectsViews(message)
         _gameState.postValue(GameState(
             Type.GAME,
             parserJSONToKotlin.getObjectsViews(message),
@@ -105,13 +106,15 @@ class MultiplayerGameplay(resources: Resources, screen: Screen) : IGameplay, Sen
     private fun updatePositions() {
         isNewData = false
 
-        while (!isNewData) {
-            _gameState.postValue(GameState(
-                Type.GAME,
-                parserJSONToKotlin.interpolation(),
-                emptyList()
-            ))
-            // При необходимости добавить паузу
+        uiScope.launch {
+            while (!isNewData) {
+                _gameState.postValue(GameState(
+                    Type.GAME,
+                    parserJSONToKotlin.interpolation(),
+                    emptyList()
+                ))
+                // При необходимости добавить паузу
+            }
         }
     }
 
