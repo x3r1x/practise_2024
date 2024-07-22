@@ -2,6 +2,7 @@ package com.example.mygame.domain.visitor
 
 import com.example.mygame.UI.GameSoundsPlayer
 import com.example.mygame.domain.Enemy
+import android.graphics.RectF
 import com.example.mygame.domain.GameConstants
 import com.example.mygame.domain.IGameObject
 import com.example.mygame.domain.IVisitor
@@ -14,7 +15,6 @@ import com.example.mygame.domain.enemy.Bully
 import com.example.mygame.domain.platform.BreakingPlatform
 import com.example.mygame.domain.platform.DisappearingPlatform
 import com.example.mygame.domain.player.Player
-import com.example.mygame.domain.player.Player.DirectionX
 import com.example.mygame.domain.player.Player.DirectionY
 
 class PlayerCollisionVisitor(
@@ -78,35 +78,71 @@ class PlayerCollisionVisitor(
     override fun visit(bullet: Bullet) {}
 
     private fun doesPlayerCollideWithSolid(other: IGameObject) : Boolean {
-        return if (player.isShooting) {
-            (player.y + Player.SHOOTING_HEIGHT / 2 < other.bottom  && player.y + Player.SHOOTING_HEIGHT / 2 >= other.top
-                    && (player.x - Player.SHOOTING_WIDTH / 2 + GameConstants.PLAYER_LEG_OFFSET_X_WHEN_SHOOT < other.right
-                    && player.x + Player.SHOOTING_WIDTH / 2 - GameConstants.PLAYER_LEG_OFFSET_X_WHEN_SHOOT > other.left)
-                    && player.directionY == DirectionY.DOWN)
-        } else if (player.directionX == DirectionX.RIGHT) {
-            (player.bottom < other.bottom && player.bottom >= other.top && player.directionY == DirectionY.DOWN
-                    && (player.left + GameConstants.PLAYER_SMALL_LEG_OFFSET < other.right
-                    && player.right - GameConstants.PLAYER_BIG_LEG_OFFSET > other.left))
-        } else {
-            (player.bottom < other.bottom && player.bottom >= other.top && player.directionY == DirectionY.DOWN
-                    && (player.left + GameConstants.PLAYER_BIG_LEG_OFFSET < other.right
-                    && player.right - GameConstants.PLAYER_SMALL_LEG_OFFSET > other.left))
-        }
+        val playerFootRect = getPlayerFootCollisionRect(player)
+
+        val otherRect = RectF(
+            other.left,
+            other.top,
+            other.right,
+            other.bottom
+        )
+
+        return (player.directionY == DirectionY.DOWN && playerFootRect.intersect(otherRect))
     }
 
     private fun doesPlayerCollideWithCollectable(other: IGameObject) : Boolean {
-        return (player.top < other.bottom && player.bottom >= other.top
-                    && (player.left < other.right && player.right > other.left))
+        val playerRect = getObjectRect(player)
+        val otherRect = getObjectRect(other)
+
+        return playerRect.intersect(otherRect)
     }
 
     private fun checkCollisionWithEnemy(other: IGameObject) : Boolean {
-        return if (other !is Bully) {
-            (player.top < other.bottom && player.bottom >= other.top
-                    && (player.left < other.right && player.right > other.left))
+        val playerRect = getObjectRect(player)
+        val otherRect: RectF
+
+        if (other is Bully) {
+            otherRect = RectF(
+                other.left + GameConstants.BULLY_DEATH_OFFSET_X,
+                other.top,
+                other.right - GameConstants.BULLY_DEATH_OFFSET_X,
+                other.bottom
+            )
         } else {
-            (player.top < other.bottom && player.bottom >= other.top
-                    && (player.left < other.right - GameConstants.BULLY_DEATH_OFFSET_X
-                    && player.right > other.left + GameConstants.BULLY_DEATH_OFFSET_X))
+            otherRect = getObjectRect(other)
+        }
+
+        return playerRect.intersect(otherRect)
+    }
+
+    private fun getObjectRect(obj: IGameObject) : RectF {
+        return RectF(obj.left, obj.top, obj.right, obj.bottom)
+    }
+
+    private fun getPlayerFootCollisionRect(player: Player) : RectF {
+        if (player.isShooting()) {
+            return RectF(
+                player.x + Player.SHOOTING_WIDTH / 2 - GameConstants.PLAYER_LEG_OFFSET_X_WHEN_SHOOT,
+                player.y + Player.SHOOTING_HEIGHT / 2,
+                player.x - Player.SHOOTING_WIDTH / 2 + GameConstants.PLAYER_LEG_OFFSET_X_WHEN_SHOOT,
+                player.y + Player.SHOOTING_HEIGHT / 2
+            )
+        } else {
+            when (player.directionX) {
+                Player.DirectionX.RIGHT -> return RectF(
+                    player.left + GameConstants.PLAYER_SMALL_LEG_OFFSET,
+                    player.bottom,
+                    player.right - GameConstants.PLAYER_BIG_LEG_OFFSET,
+                    player.bottom
+                )
+
+                else -> return RectF(
+                    player.left + GameConstants.PLAYER_BIG_LEG_OFFSET,
+                    player.bottom,
+                    player.right - GameConstants.PLAYER_SMALL_LEG_OFFSET,
+                    player.bottom
+                )
+            }
         }
     }
 }
