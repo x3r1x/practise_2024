@@ -2,10 +2,10 @@ package com.example.mygame.domain.generator
 
 import com.example.mygame.domain.GameConstants
 import com.example.mygame.domain.Platform
-import com.example.mygame.domain.bonuses.IBonus
-import com.example.mygame.domain.bonuses.factory.JetpackFactory
-import com.example.mygame.domain.bonuses.factory.ShieldFactory
-import com.example.mygame.domain.bonuses.factory.SpringFactory
+import com.example.mygame.domain.bonus.IBonus
+import com.example.mygame.domain.bonus.factory.JetpackFactory
+import com.example.mygame.domain.bonus.factory.ShieldFactory
+import com.example.mygame.domain.bonus.factory.SpringFactory
 import com.example.mygame.domain.platform.StaticPlatform
 import kotlin.random.Random
 

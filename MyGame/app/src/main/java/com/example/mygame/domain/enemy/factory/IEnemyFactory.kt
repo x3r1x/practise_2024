@@ -1,4 +1,4 @@
-package com.example.mygame.domain.enemies.factory
+package com.example.mygame.domain.enemy.factory
 
 import android.graphics.BitmapFactory
 import com.example.mygame.domain.Enemy

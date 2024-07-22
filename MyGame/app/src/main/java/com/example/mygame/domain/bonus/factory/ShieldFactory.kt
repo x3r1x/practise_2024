@@ -1,9 +1,9 @@
-package com.example.mygame.domain.bonuses.factory
+package com.example.mygame.domain.bonus.factory
 
 import com.example.mygame.domain.Platform
-import com.example.mygame.domain.bonuses.IBonus
-import com.example.mygame.domain.bonuses.Shield
-import com.example.mygame.domain.bonuses.factory.IBonusFactory.Companion.COLLECTABLE_OFFSET
+import com.example.mygame.domain.bonus.IBonus
+import com.example.mygame.domain.bonus.Shield
+import com.example.mygame.domain.bonus.factory.IBonusFactory.Companion.COLLECTABLE_OFFSET
 
 class ShieldFactory : IBonusFactory {
     override fun generateBonus(staticPlatform: Platform): IBonus {

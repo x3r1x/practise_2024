@@ -5,9 +5,9 @@ import com.example.mygame.domain.GameConstants
 import com.example.mygame.domain.IGameObject
 import com.example.mygame.domain.Platform
 import com.example.mygame.domain.Screen
-import com.example.mygame.domain.enemies.factory.BullyFactory
-import com.example.mygame.domain.enemies.factory.FlyFactory
-import com.example.mygame.domain.enemies.factory.NinjaFactory
+import com.example.mygame.domain.enemy.factory.BullyFactory
+import com.example.mygame.domain.enemy.factory.FlyFactory
+import com.example.mygame.domain.enemy.factory.NinjaFactory
 import kotlin.random.Random
 
 class EnemyGenerator(

@@ -1,4 +1,4 @@
-package com.example.mygame.domain.bonuses
+package com.example.mygame.domain.bonus
 
 import com.example.mygame.domain.GameConstants
 import com.example.mygame.domain.IGameObject

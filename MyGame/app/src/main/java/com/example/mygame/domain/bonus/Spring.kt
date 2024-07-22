@@ -1,4 +1,4 @@
-package com.example.mygame.domain.bonuses
+package com.example.mygame.domain.bonus
 
 import android.animation.ValueAnimator
 import com.example.mygame.domain.IGameObject

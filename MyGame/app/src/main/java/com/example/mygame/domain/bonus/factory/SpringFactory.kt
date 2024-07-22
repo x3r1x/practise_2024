@@ -1,9 +1,9 @@
-package com.example.mygame.domain.bonuses.factory
+package com.example.mygame.domain.bonus.factory
 
 import com.example.mygame.domain.GameConstants
 import com.example.mygame.domain.Platform
-import com.example.mygame.domain.bonuses.IBonus
-import com.example.mygame.domain.bonuses.Spring
+import com.example.mygame.domain.bonus.IBonus
+import com.example.mygame.domain.bonus.Spring
 
 class SpringFactory : IBonusFactory {
 

@@ -5,11 +5,11 @@ import com.example.mygame.domain.GameConstants
 import com.example.mygame.domain.IGameObject
 import com.example.mygame.domain.IVisitor
 import com.example.mygame.domain.Platform
-import com.example.mygame.domain.bonuses.Jetpack
-import com.example.mygame.domain.bonuses.Shield
-import com.example.mygame.domain.bonuses.Spring
+import com.example.mygame.domain.bonus.Jetpack
+import com.example.mygame.domain.bonus.Shield
+import com.example.mygame.domain.bonus.Spring
 import com.example.mygame.domain.bullet.Bullet
-import com.example.mygame.domain.enemies.Bully
+import com.example.mygame.domain.enemy.Bully
 import com.example.mygame.domain.platform.BreakingPlatform
 import com.example.mygame.domain.platform.DisappearingPlatform
 import com.example.mygame.domain.player.Player

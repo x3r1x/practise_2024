@@ -1,4 +1,4 @@
-package com.example.mygame.domain.enemies
+package com.example.mygame.domain.enemy
 
 import com.example.mygame.domain.Enemy
 import com.example.mygame.domain.GameConstants
