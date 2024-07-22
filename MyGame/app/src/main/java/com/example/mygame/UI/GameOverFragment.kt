@@ -25,7 +25,6 @@ class GameOverFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         val view = inflater.inflate(R.layout.fragment_game_over, container, false)
 
         view.findViewById<Button>(R.id.playAgainButton).setOnClickListener {

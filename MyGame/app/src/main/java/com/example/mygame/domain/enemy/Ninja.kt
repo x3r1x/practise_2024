@@ -76,7 +76,7 @@ class Ninja(
     private fun setRandomSpeed() {
         val random = Random.nextFloat()
 
-        if (random < 0.05f) {
+        if (random < GameConstants.NINJA_SPEED_CHANGE_CHANCE) {
             speedX = (GameConstants.NINJA_MIN_SPEED_X .. GameConstants.NINJA_MAX_SPEED_X).random().toFloat()
         }
     }

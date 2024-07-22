@@ -9,7 +9,11 @@ class GameConstants {
         const val PLAYER_JUMP_SPEED = 1600f
         const val PLAYER_SPRING_JUMP_SPEED = 3700f
         const val PLAYER_SPEED_WITH_JETPACK = 1900f
-        const val PLAYER_DISTANCE_TO_TURN = 1.5f
+        const val PLAYER_ON_X_MULTIPLIER = 1.5f
+        const val PLAYER_DISTANCE_TO_TURN = 25f
+        const val PLAYER_LEG_OFFSET_X_WHEN_SHOOT = 16f
+        const val PLAYER_SMALL_LEG_OFFSET = 15f
+        const val PLAYER_BIG_LEG_OFFSET = 50f
 
         const val PLATFORM_ON_X_SPEED = 200f
         const val PLATFORM_ON_Y_SPEED = 200f
@@ -36,20 +40,21 @@ class GameConstants {
         const val NINJA_MAX_SPEED_X = 650
         const val NINJA_MIN_CONVERGENCE = 10f
         const val NINJA_MAX_CONVERGENCE = 600f
+        const val NINJA_SPEED_CHANGE_CHANCE = 0.05f
 
         const val PLATFORM_SPAWN_ADDITIONAL_X = 100f
         const val MAX_VERTICAL_PLATFORM_GAP = 400f
         const val MAX_VERTICAL_BREAKING_PLATFORM_GAP = 50f
 
-        const val JETPACK_SPAWN_CHANCE = 0.02f //0.02f
+        const val JETPACK_SPAWN_CHANCE = 0.02f
         const val SHIELD_SPAWN_CHANCE = 0.08f
         const val SPRING_SPAWN_CHANCE = 0.25f
         const val MIN_SPRING_SPAWN_X = 40
         const val MAX_SPRING_SPAWN_X = 135
 
-        const val BULLY_SPAWN_CHANCE = 0.03f
         const val NINJA_SPAWN_CHANCE = 0.01f
-        const val FLY_SPAWN_CHANCE = 0.1f
+        const val FLY_SPAWN_CHANCE = 0.03f
+        const val BULLY_SPAWN_CHANCE = 0.06f
 
         const val MAX_FRAME_TIME = 0.016f
         const val MOVE_OBJECTS_LINE = 900f

@@ -14,7 +14,7 @@ class Bully(
         get() = HEIGHT
 
     companion object {
-        private const val WIDTH = 275f
+        const val WIDTH = 275f
         private const val HEIGHT = 174f
     }
 }

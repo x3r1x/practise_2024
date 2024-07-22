@@ -22,6 +22,8 @@ open class Platform(createdX: Float, createdY: Float) : IMoveable, IGameObject {
     override val bottom
         get() = y + height / 2
 
+    protected lateinit var bitmap: Bitmap
+
     override fun accept(visitor: IVisitor) {
         visitor.visit(this)
     }

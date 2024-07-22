@@ -14,28 +14,17 @@ class Player : IMoveable, IGameObject {
         DOWN(1),
     }
 
-    enum class DirectionX(val value: Int) {
-        LEFT(-1),
-        RIGHT(1)
+    enum class DirectionX {
+        LEFT,
+        RIGHT
     }
 
     var bonuses = PlayerSelectedBonuses(this)
 
     var isWithJetpack = false
     var isWithShield = false
+    var isDead = false
     var isShooting = false
-
-    override var x = 0f
-    override var y = 0f
-
-    override val left
-        get() = x - RADIUS
-    override val right
-        get() = x + RADIUS
-    override val top
-        get() = y - RADIUS
-    override val bottom
-        get() = y + RADIUS
 
     var directionX = DirectionX.RIGHT
     var directionY = DirectionY.DOWN
@@ -45,8 +34,19 @@ class Player : IMoveable, IGameObject {
     private var shootingRunnable: Runnable? = null
     private val shootingHandler = Handler(Looper.getMainLooper())
 
+    override var x = 0f
+    override var y = 0f
+
     override var isDisappeared = false
-    var isDead = false
+
+    override val left
+        get() = x - RADIUS
+    override val right
+        get() = x + RADIUS
+    override val top
+        get() = y - RADIUS
+    override val bottom
+        get() = y + RADIUS
 
     fun jump(jumpSpeed: Float = GameConstants.PLAYER_JUMP_SPEED) {
         directionY = DirectionY.UP
@@ -78,7 +78,7 @@ class Player : IMoveable, IGameObject {
     }
 
     fun updatePositionX(deltaX: Float, elapsedTime: Float) {
-        x += deltaX * elapsedTime
+        x += deltaX * elapsedTime * GameConstants.PLAYER_ON_X_MULTIPLIER
         changeDirectionX(deltaX)
     }
 

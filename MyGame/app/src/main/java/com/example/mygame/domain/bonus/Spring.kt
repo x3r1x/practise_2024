@@ -9,11 +9,10 @@ class Spring(
              createdX: Float,
              createdY: Float
 ) : IMoveable, IBonus, IGameObject {
-    private val animationDuration : Long = 150
-
-    var currentFrame = 0
+    private var currentFrame = 0
+    private var bitmap = initBitmap[currentFrame]
     private var isStretchRunning = false
-    var animator : ValueAnimator? = null
+    private var animator : ValueAnimator? = null
 
     override var x = createdX
     override var y = createdY
@@ -55,6 +54,7 @@ class Spring(
     companion object {
         private const val WIDTH = 78f
         private const val HEIGHT = 53f
+
         private const val ANIMATION_HEIGHT_VALUE = 5f
 
         private const val STATE_COUNT = 4

@@ -19,13 +19,12 @@ class EnemyGenerator(
 
     fun generateEnemy(platform: Platform): IGameObject? {
         var enemy: Enemy? = null
+
+        var x = Random.nextFloat() * (screen.width - platform.width) + GAP_X
+
         val random = Random.nextFloat()
-        val x = Random.nextFloat() * (screen.width - platform.width) + GAP_X
+
         when {
-            random < GameConstants.BULLY_SPAWN_CHANCE -> {
-                val bully = bullyFactory.generateEnemy(x, platform.y)
-                enemy = bully
-            }
             random < GameConstants.NINJA_SPAWN_CHANCE -> {
                 val ninja = ninjaFactory.generateEnemy(x, platform.y)
                 enemy = ninja
@@ -33,6 +32,17 @@ class EnemyGenerator(
             random < GameConstants.FLY_SPAWN_CHANCE -> {
                 val fly = flyFactory.generateEnemy(x, platform.y)
                 enemy = fly
+            }
+            random < GameConstants.BULLY_SPAWN_CHANCE -> {
+                if (x - Bully.WIDTH / 2 < screen.left) {
+                    x = Bully.WIDTH / 2
+                } else if (x + Bully.WIDTH / 2 > screen.right) {
+                    x = screen.right - Bully.WIDTH / 2
+                }
+
+                val bully = bullyFactory.generateEnemy(x, platform.y)
+
+                enemy = bully
             }
         }
 

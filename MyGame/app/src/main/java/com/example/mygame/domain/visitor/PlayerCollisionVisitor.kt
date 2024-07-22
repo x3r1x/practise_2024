@@ -1,6 +1,6 @@
 package com.example.mygame.domain.visitor
 
-import com.example.mygame.domain.Enemy
+import com.example.mygame.domain.enemy.Enemy
 import com.example.mygame.domain.GameConstants
 import com.example.mygame.domain.IGameObject
 import com.example.mygame.domain.IVisitor
@@ -20,7 +20,6 @@ class PlayerCollisionVisitor(
     private val player: Player,
     private val screenHeight: Float
 ) : IVisitor {
-
     override fun visit(platform: Platform) {
         if (doesPlayerCollideWithSolid(platform) && !player.isDead) {
             if (platform is BreakingPlatform) {
@@ -34,8 +33,7 @@ class PlayerCollisionVisitor(
         }
     }
 
-    override fun visit(player: Player) {
-    }
+    override fun visit(player: Player) {}
 
     override fun visit(jetpack: Jetpack) {
         if (doesPlayerCollideWithCollectable(jetpack) && !player.isWithJetpack && !player.isDead) {
@@ -67,29 +65,31 @@ class PlayerCollisionVisitor(
         }
     }
 
-    override fun visit(bullet: Bullet) {
-    }
+    override fun visit(bullet: Bullet) {}
 
-    private fun doesPlayerCollideWithSolid(other: IGameObject): Boolean {
+    private fun doesPlayerCollideWithSolid(other: IGameObject) : Boolean {
         return if (player.isShooting) {
-            (player.y + Player.SHOOTING_HEIGHT / 2 < other.bottom && player.y + Player.SHOOTING_HEIGHT / 2 >= other.top
-                    && (player.x - Player.SHOOTING_WIDTH / 2 + 16f < other.right && player.x + Player.SHOOTING_WIDTH / 2 - 16f > other.left)
+            (player.y + Player.SHOOTING_HEIGHT / 2 < other.bottom  && player.y + Player.SHOOTING_HEIGHT / 2 >= other.top
+                    && (player.x - Player.SHOOTING_WIDTH / 2 + GameConstants.PLAYER_LEG_OFFSET_X_WHEN_SHOOT < other.right
+                    && player.x + Player.SHOOTING_WIDTH / 2 - GameConstants.PLAYER_LEG_OFFSET_X_WHEN_SHOOT > other.left)
                     && player.directionY == DirectionY.DOWN)
         } else if (player.directionX == DirectionX.RIGHT) {
             (player.bottom < other.bottom && player.bottom >= other.top && player.directionY == DirectionY.DOWN
-                    && (player.left + 15f < other.right && player.right - 50f > other.left))
+                    && (player.left + GameConstants.PLAYER_SMALL_LEG_OFFSET < other.right
+                    && player.right - GameConstants.PLAYER_BIG_LEG_OFFSET > other.left))
         } else {
             (player.bottom < other.bottom && player.bottom >= other.top && player.directionY == DirectionY.DOWN
-                    && (player.left + 50f < other.right && player.right - 15f > other.left))
+                    && (player.left + GameConstants.PLAYER_BIG_LEG_OFFSET < other.right
+                    && player.right - GameConstants.PLAYER_SMALL_LEG_OFFSET > other.left))
         }
     }
 
-    private fun doesPlayerCollideWithCollectable(other: IGameObject): Boolean {
+    private fun doesPlayerCollideWithCollectable(other: IGameObject) : Boolean {
         return (player.top < other.bottom && player.bottom >= other.top
-                && (player.left < other.right && player.right > other.left))
+                    && (player.left < other.right && player.right > other.left))
     }
 
-    private fun checkCollisionWithEnemy(other: IGameObject): Boolean {
+    private fun checkCollisionWithEnemy(other: IGameObject) : Boolean {
         return if (other !is Bully) {
             (player.top < other.bottom && player.bottom >= other.top
                     && (player.left < other.right && player.right > other.left))

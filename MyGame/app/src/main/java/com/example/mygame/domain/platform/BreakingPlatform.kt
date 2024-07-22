@@ -20,6 +20,7 @@ class BreakingPlatform(
                     currentFrameIndex = animator.animatedValue as Int
                 }
             }
+
             animator?.start()
             runFallingAnimation(screenHeight)
         }
@@ -27,14 +28,15 @@ class BreakingPlatform(
 
     private fun runFallingAnimation(screenHeight: Float) {
         val startY = y
-        val endY = screenHeight
-        val animator = ValueAnimator.ofFloat(startY, endY).apply {
-            duration = FALLING_DURATION // Длительность анимации в миллисекундах
+
+        val animator = ValueAnimator.ofFloat(startY, screenHeight).apply {
+            duration = FALLING_DURATION
             addUpdateListener { animation ->
                 val currentY = animation.animatedValue as Float
                 setPosition(x, currentY)
             }
         }
+
         animator.start()
     }
 

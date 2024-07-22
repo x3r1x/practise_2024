@@ -9,7 +9,6 @@ import com.example.mygame.domain.visitor.PlayerCollisionVisitor
 import com.example.mygame.domain.visitor.ScreenCollisionVisitor
 
 class CollisionHandler {
-
     fun checkCollisions(player: Player, screen: Screen, objects: List<IGameObject>) {
         checkScreenCollision(screen, objects)
         checkPlayerCollision(player, screen, objects)
@@ -18,6 +17,7 @@ class CollisionHandler {
 
     private fun checkBulletCollision(objects: List<IGameObject>) {
         val bullet = objects.firstOrNull() { it::class == Bullet::class } as Bullet?
+
         if (bullet == null) {
             return
         }

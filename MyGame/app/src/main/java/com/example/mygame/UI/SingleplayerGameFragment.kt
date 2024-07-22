@@ -84,6 +84,8 @@ class SingleplayerGameFragment : Fragment() {
             pauseGame()
         }
 
+        setupPauseButtonClickListener(pauseButton, pauseGroup, exitToMenuButton)
+
         gameView.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {
                 gameViewModel.onClick(event.x)
@@ -97,7 +99,6 @@ class SingleplayerGameFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Наблюдаем за изменениями в объектах игры
         gameViewModel.singleplayerGameplay.gameState.observe(viewLifecycleOwner) { gameObjects ->
             gameView.drawGame(gameObjects.objects)
 
@@ -108,7 +109,6 @@ class SingleplayerGameFragment : Fragment() {
             }
         }
 
-        // Запуск игрового цикла
         gameViewModel.singleplayerGameplay.startGameLoop()
     }
 

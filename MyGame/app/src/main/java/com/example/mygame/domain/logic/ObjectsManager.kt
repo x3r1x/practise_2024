@@ -16,7 +16,6 @@ class ObjectsManager(
     private val bulletFactory = BulletFactory()
 
     private var tempScore = 0.0
-
     private val scoreThreshold = 4500.0
 
     private lateinit var levelGenerator: LevelGenerator
@@ -41,6 +40,7 @@ class ObjectsManager(
 
     fun createBullet(touchX: Float): Bullet? {
         val player = objectStorage.getPlayer()
+
         if (!player.isDead && !player.isWithJetpack) {
             val bullet = bulletFactory.generateBullet(player.x, player.top, touchX)
             player.shoot()
@@ -59,9 +59,11 @@ class ObjectsManager(
 
     private fun getUpdatedObjectsList() : MutableList<IGameObject> {
         val objects = objectStorage.getAll()
+
         objects.retainAll(objects.filterNot {
             it !is Player && it.isDisappeared
         }.toList())
+
         return objects
     }
 }
