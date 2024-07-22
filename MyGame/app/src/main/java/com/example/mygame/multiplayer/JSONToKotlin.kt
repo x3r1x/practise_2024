@@ -51,9 +51,9 @@ class JSONToKotlin(resources: Resources) {
                 0 -> {
                     objectsViews.add(
                         playerViewFactory.getPlayerView(
+                            (it[1] as Double).toFloat(),
                             (it[2] as Double).toFloat(),
                             (it[3] as Double).toFloat(),
-                            (it[5] as Double).toFloat(),
                             (it[4] as Double).toFloat(),
                             (it[6] as Double).toInt(),
                             (it[7] as Double).toInt(),
