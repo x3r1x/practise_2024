@@ -1,11 +1,11 @@
-package com.example.mygame.domain.enemies.factory
+package com.example.mygame.domain.enemy.factory
 
 import android.content.res.Resources
 import android.graphics.BitmapFactory
 import com.example.mygame.R
-import com.example.mygame.domain.enemies.factory.IEnemyFactory.Companion.BITMAP_OPTION
-import com.example.mygame.domain.enemies.Enemy
-import com.example.mygame.domain.enemies.Bully
+import com.example.mygame.domain.enemy.factory.IEnemyFactory.Companion.BITMAP_OPTION
+import com.example.mygame.domain.enemy.Enemy
+import com.example.mygame.domain.enemy.Bully
 
 class BullyFactory(resources: Resources) : IEnemyFactory {
     private val bitmap = BitmapFactory.decodeResource(resources, IMAGE, BITMAP_OPTION)

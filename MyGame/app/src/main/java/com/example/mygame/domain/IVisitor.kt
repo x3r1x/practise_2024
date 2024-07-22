@@ -1,10 +1,10 @@
 package com.example.mygame.domain
 
-import com.example.mygame.domain.bonuses.Jetpack
-import com.example.mygame.domain.bonuses.Shield
-import com.example.mygame.domain.bonuses.Spring
+import com.example.mygame.domain.bonus.Jetpack
+import com.example.mygame.domain.bonus.Shield
+import com.example.mygame.domain.bonus.Spring
 import com.example.mygame.domain.bullet.Bullet
-import com.example.mygame.domain.enemies.Enemy
+import com.example.mygame.domain.enemy.Enemy
 import com.example.mygame.domain.player.Player
 
 interface IVisitor {

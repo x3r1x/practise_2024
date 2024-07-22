@@ -1,13 +1,13 @@
-package com.example.mygame.domain.bonuses.factory
+package com.example.mygame.domain.bonus.factory
 
 import android.content.res.Resources
 import android.graphics.BitmapFactory
 import com.example.mygame.R
-import com.example.mygame.domain.bonuses.IBonus
-import com.example.mygame.domain.bonuses.factory.IBonusFactory.Companion.BITMAP_OPTION
-import com.example.mygame.domain.bonuses.factory.IBonusFactory.Companion.COLLECTABLE_OFFSET
+import com.example.mygame.domain.bonus.IBonus
+import com.example.mygame.domain.bonus.factory.IBonusFactory.Companion.BITMAP_OPTION
+import com.example.mygame.domain.bonus.factory.IBonusFactory.Companion.COLLECTABLE_OFFSET
 import com.example.mygame.domain.Platform
-import com.example.mygame.domain.bonuses.Shield
+import com.example.mygame.domain.bonus.Shield
 
 class ShieldFactory(resources: Resources) : IBonusFactory {
     private val defaultBitmap = BitmapFactory.decodeResource(resources, IMAGE, BITMAP_OPTION)

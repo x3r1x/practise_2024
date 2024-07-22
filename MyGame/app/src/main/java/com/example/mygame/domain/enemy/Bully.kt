@@ -1,4 +1,4 @@
-package com.example.mygame.domain.enemies
+package com.example.mygame.domain.enemy
 
 import android.graphics.Bitmap
 

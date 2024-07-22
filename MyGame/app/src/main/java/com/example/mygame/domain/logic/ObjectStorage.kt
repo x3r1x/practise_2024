@@ -1,11 +1,11 @@
 package com.example.mygame.domain.logic
 
 import android.content.res.Resources
-import com.example.mygame.domain.enemies.Enemy
+import com.example.mygame.domain.enemy.Enemy
 import com.example.mygame.domain.Screen
 import com.example.mygame.domain.player.Player
 import com.example.mygame.domain.Platform
-import com.example.mygame.domain.bonuses.IBonus
+import com.example.mygame.domain.bonus.IBonus
 import com.example.mygame.domain.player.PlayerFactory
 import com.example.mygame.domain.IGameObject
 import com.example.mygame.domain.bullet.Bullet

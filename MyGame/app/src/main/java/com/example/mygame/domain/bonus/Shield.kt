@@ -1,4 +1,4 @@
-package com.example.mygame.domain.bonuses
+package com.example.mygame.domain.bonus
 
 import android.graphics.Bitmap
 import android.graphics.Canvas
