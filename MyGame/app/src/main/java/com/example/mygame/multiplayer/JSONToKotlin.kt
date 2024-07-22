@@ -28,10 +28,10 @@ class JSONToKotlin(resources: Resources) {
         return mapObjects(gameData)
     }
 
-    fun interpolation(delta: Double) : List<ObjectView> {
+    fun interpolation() : List<ObjectView> {
         gameData.objects.forEach {
-            it[1] = (it[1] as Double) + (it[3] as Double) * delta
-            it[2] = (it[2] as Double) + (it[4] as Double) * delta
+            it[1] = (it[1] as Double) + (it[3] as Double)
+            it[2] = (it[2] as Double) + (it[4] as Double)
         }
 
         return mapObjects(gameData)

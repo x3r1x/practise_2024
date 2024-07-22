@@ -15,7 +15,6 @@ import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.java_websocket.client.WebSocketClient
 import org.java_websocket.handshake.ServerHandshake
@@ -24,7 +23,7 @@ import java.net.URI
 class MultiplayerGameplay(resources: Resources, screen: Screen) : IGameplay, SensorHandler.SensorCallback {
     private val uiScope = CoroutineScope(Dispatchers.Main)
 
-    private var isInitData = true
+    private var isNewData = false
 
     private val gson = Gson()
     private val parserJSONToKotlin = JSONToKotlin(resources)
@@ -52,13 +51,14 @@ class MultiplayerGameplay(resources: Resources, screen: Screen) : IGameplay, Sen
                 message?.let {
                     try {
                         val serverResponse = gson.fromJson(message, ServerResponse::class.java)
-                        if (serverResponse.type == "pong") {
-                            val currentTime = System.currentTimeMillis()
-                            val ping = currentTime - pingSentTime
-                            Log.d("WebSocket", "Ping: $ping ms")
-                        } else {
-                            handleServerData(message)
-                        }
+//                        if (serverResponse.type == "pong") {
+//                            val currentTime = System.currentTimeMillis()
+//                            val ping = currentTime - pingSentTime
+//                            Log.d("WebSocket", "Ping: $ping ms")
+//                        } else {
+//                        }
+                        isNewData = true
+                        handleServerData(message)
                     } catch (e: JsonSyntaxException) {
                         Log.e("WebSocket", "Failed to parse server message", e)
                     }
@@ -84,53 +84,37 @@ class MultiplayerGameplay(resources: Resources, screen: Screen) : IGameplay, Sen
 
     private fun sendMessage(dx: Float, tap: Boolean = false) {
         val ping = gson.toJson(Ping("ping", 0))
-        if (client.isOpen) {
-            pingSentTime = System.currentTimeMillis()
-            client.send(ping)
-        }
+//        if (client.isOpen) {
+//            pingSentTime = System.currentTimeMillis()
+//            client.send(ping)
+//        }
         val message = gson.toJson(ClientMessage("msg", dx, tap))
         if (client.isOpen) {
             client.send(message)
         }
     }
 
-    fun connect() {
-        client.connect()
-    }
-
-    fun close() {
-        client.close()
-    }
-
     private fun handleServerData(message: String) {
-        if (isInitData) {
-            _gameState.postValue(GameState(
-                Type.GAME,
-                parserJSONToKotlin.getObjectsViews(message),
-                emptyList()
-            ))
-            isInitData = false
-            updatePositions()
-        } else {
-            parserJSONToKotlin.setGameState(message)
-        }
+        _gameState.postValue(GameState(
+            Type.GAME,
+            parserJSONToKotlin.getObjectsViews(message),
+            emptyList()
+        ))
 
-            //updatePositions()
+//        updatePositions()
     }
 
     private fun updatePositions() {
-        var previousTime = System.currentTimeMillis()
-        uiScope.launch {
-            while (true) {
-                val currentTime = System.currentTimeMillis()
-                val deltaTime = (currentTime - previousTime) / 1000f // Конвертируем в секунды
-                previousTime = currentTime
+        isNewData = false
 
+        uiScope.launch {
+            while (!isNewData) {
                 _gameState.postValue(GameState(
                     Type.GAME,
-                    parserJSONToKotlin.interpolation(deltaTime.toDouble()),
+                    parserJSONToKotlin.interpolation(),
                     emptyList()
                 ))
+                // При необходимости добавить паузу
             }
         }
     }
