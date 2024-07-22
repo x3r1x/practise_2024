@@ -99,7 +99,7 @@ class MultiplayerGameplay(resources: Resources, screen: Screen) : IGameplay, Sen
             emptyList()
         ))
 
-        updatePositions()
+            //updatePositions()
     }
 
     private fun updatePositions() {
