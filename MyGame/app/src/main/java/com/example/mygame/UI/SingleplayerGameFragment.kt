@@ -69,6 +69,8 @@ class SingleplayerGameFragment : Fragment() {
     }
 
     private fun pauseGame() {
+        isPaused = true
+
         gameViewModel.gameplay.stopGameLoop()
 
         pauseGroup.visibility = VISIBLE
