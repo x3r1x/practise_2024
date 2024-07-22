@@ -45,14 +45,7 @@ class Jetpack(private val initDefaultJetpack: Bitmap,
     }
 
     fun startDisappearingTimer(audioPlayer: GameSoundsPlayer) {
-        val jetpackAudio = audioPlayer.player.play(
-            audioPlayer.jetpackSound,
-            GameSoundsPlayer.MAX_VOLUME,
-            GameSoundsPlayer.MAX_VOLUME,
-            GameSoundsPlayer.BASE_PRIORITY,
-            GameSoundsPlayer.LOOP,
-            GameSoundsPlayer.BASE_SPEED_RATE
-        )
+        val jetpackAudio = audioPlayer.playJetpackSound()
 
         val timer = object : CountDownTimer(GameConstants.JETPACK_DURATION, JETPACK_TIMER_TICK) {
             override fun onTick(p0: Long) {
@@ -60,14 +53,7 @@ class Jetpack(private val initDefaultJetpack: Bitmap,
                     paint.alpha = if (paint.alpha == PULSE_TRANSPARENCY) {
                         DEFAULT_TRANSPARENCY
                     } else {
-                        audioPlayer.player.play(
-                            audioPlayer.bonusEndingSoonSound,
-                            GameSoundsPlayer.MAX_VOLUME,
-                            GameSoundsPlayer.MAX_VOLUME,
-                            GameSoundsPlayer.BASE_PRIORITY,
-                            GameSoundsPlayer.NO_LOOP,
-                            GameSoundsPlayer.BASE_SPEED_RATE
-                        )
+                        audioPlayer.playBonusEndingSoonSound()
 
                         PULSE_TRANSPARENCY
                     }
@@ -75,14 +61,7 @@ class Jetpack(private val initDefaultJetpack: Bitmap,
             }
 
             override fun onFinish() {
-                audioPlayer.player.play(
-                    audioPlayer.jetpackDestroySound,
-                    GameSoundsPlayer.MAX_VOLUME,
-                    GameSoundsPlayer.MAX_VOLUME,
-                    GameSoundsPlayer.BASE_PRIORITY,
-                    GameSoundsPlayer.NO_LOOP,
-                    GameSoundsPlayer.BASE_SPEED_RATE
-                )
+                audioPlayer.playJetpackDestroySound()
                 audioPlayer.player.stop(jetpackAudio)
 
                 dispose()

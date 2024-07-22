@@ -40,14 +40,7 @@ class BulletCollisionVisitor(private val bullet: Bullet, private val audioPlayer
             val enemyRect = RectF(enemy.left, enemy.top, enemy.right, enemy.bottom)
 
             if (bulletRect.intersect(enemyRect)) {
-                audioPlayer.player.play(
-                    audioPlayer.enemyShotSound,
-                    GameSoundsPlayer.MAX_VOLUME,
-                    GameSoundsPlayer.MAX_VOLUME,
-                    GameSoundsPlayer.BASE_PRIORITY,
-                    GameSoundsPlayer.NO_LOOP,
-                    GameSoundsPlayer.BASE_SPEED_RATE
-                )
+                audioPlayer.playEnemyShotSound()
 
                 bullet.isDisappeared = true
                 enemy.isDisappeared = true

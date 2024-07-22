@@ -126,14 +126,7 @@ class GameFragment : Fragment() {
 
         gameView.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_DOWN && !isPaused) {
-                gameSounds.player.play(
-                    gameSounds.shootSound,
-                    GameSoundsPlayer.MAX_VOLUME,
-                    GameSoundsPlayer.MAX_VOLUME,
-                    GameSoundsPlayer.BASE_PRIORITY,
-                    GameSoundsPlayer.NO_LOOP,
-                    GameSoundsPlayer.BASE_SPEED_RATE
-                )
+                gameSounds.playShootSound()
                 gameViewModel.onClick(event.x, event.y)
             }
             true
@@ -188,7 +181,7 @@ class GameFragment : Fragment() {
         private val GAME_MUSIC_URI = "android.resource://com.example.mygame/" + R.raw.game_music
         private val PAUSE_MUSIC_URI = "android.resource://com.example.mygame/" + R.raw.enter_nickname
 
-        private const val GAME_MUSIC_VOLUME = 0.3f
+        private const val GAME_MUSIC_VOLUME = 0.4f
         private const val PAUSE_MUSIC_VOLUME = 1f
     }
 }

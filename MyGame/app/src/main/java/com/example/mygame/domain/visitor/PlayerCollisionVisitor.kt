@@ -31,14 +31,7 @@ class PlayerCollisionVisitor(
                 platform.animatePlatformColor()
             }
 
-            audioPlayer.player.play(
-                audioPlayer.jumpSound,
-                GameSoundsPlayer.JUMP_VOLUME,
-                GameSoundsPlayer.JUMP_VOLUME,
-                GameSoundsPlayer.BASE_PRIORITY,
-                GameSoundsPlayer.NO_LOOP,
-                GameSoundsPlayer.BASE_SPEED_RATE
-            )
+            audioPlayer.playJumpSound()
 
             player.jump()
         }
@@ -64,14 +57,7 @@ class PlayerCollisionVisitor(
 
     override fun visit(spring: Spring) {
         if (doesPlayerCollideWithSolid(spring) && !player.isDead) {
-            audioPlayer.player.play(
-                audioPlayer.springSound,
-                GameSoundsPlayer.MAX_VOLUME,
-                GameSoundsPlayer.MAX_VOLUME,
-                GameSoundsPlayer.BASE_PRIORITY,
-                GameSoundsPlayer.NO_LOOP,
-                GameSoundsPlayer.BASE_SPEED_RATE
-            )
+            audioPlayer.playSpringSound()
 
             spring.runStretchAnimation()
             player.jump(GameConstants.PLAYER_SPRING_JUMP_SPEED)
@@ -81,25 +67,11 @@ class PlayerCollisionVisitor(
     override fun visit(enemy: Enemy) {
         if (checkCollisionWithEnemy(enemy) && !player.isDead) {
             if (player.directionY == DirectionY.UP && !player.isWithShield && !player.isWithJetpack) {
-                audioPlayer.player.play(
-                    audioPlayer.playerKilledSound,
-                    GameSoundsPlayer.MAX_VOLUME,
-                    GameSoundsPlayer.MAX_VOLUME,
-                    GameSoundsPlayer.BASE_PRIORITY,
-                    GameSoundsPlayer.NO_LOOP,
-                    GameSoundsPlayer.BASE_SPEED_RATE
-                )
+                audioPlayer.playPlayerKilledSound()
 
                 enemy.killPlayer(player)
             } else {
-                audioPlayer.player.play(
-                    audioPlayer.enemySlainSound,
-                    GameSoundsPlayer.MAX_VOLUME,
-                    GameSoundsPlayer.MAX_VOLUME,
-                    GameSoundsPlayer.BASE_PRIORITY,
-                    GameSoundsPlayer.NO_LOOP,
-                    GameSoundsPlayer.BASE_SPEED_RATE
-                )
+                audioPlayer.playEnemySlainSound()
 
                 enemy.killEnemy()
                 player.jump()

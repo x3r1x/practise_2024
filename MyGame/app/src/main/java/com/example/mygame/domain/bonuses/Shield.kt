@@ -40,14 +40,7 @@ class Shield(private val initDefaultShield: Bitmap,
 
     //thanks god for ending my suffering
     fun startDisappearingTimer(audioPlayer: GameSoundsPlayer) {
-        audioPlayer.player.play(
-            audioPlayer.shieldPickupSound,
-            GameSoundsPlayer.MAX_VOLUME,
-            GameSoundsPlayer.MAX_VOLUME,
-            GameSoundsPlayer.BASE_PRIORITY,
-            GameSoundsPlayer.NO_LOOP,
-            GameSoundsPlayer.BASE_SPEED_RATE
-        )
+        audioPlayer.playShieldPickupSound()
 
         val timer = object : CountDownTimer(GameConstants.SHIELD_DURATION, SHIELD_TIMER_TICK) {
             override fun onTick(p0: Long) {
@@ -55,14 +48,7 @@ class Shield(private val initDefaultShield: Bitmap,
                     paint.alpha = if (paint.alpha == PULSE_TRANSPARENCY) {
                         DEFAULT_TRANSPARENCY
                     } else {
-                        audioPlayer.player.play(
-                            audioPlayer.bonusEndingSoonSound,
-                            GameSoundsPlayer.MAX_VOLUME,
-                            GameSoundsPlayer.MAX_VOLUME,
-                            GameSoundsPlayer.BASE_PRIORITY,
-                            GameSoundsPlayer.NO_LOOP,
-                            GameSoundsPlayer.BASE_SPEED_RATE
-                        )
+                        audioPlayer.playBonusEndingSoonSound()
 
                         PULSE_TRANSPARENCY
                     }
@@ -70,14 +56,7 @@ class Shield(private val initDefaultShield: Bitmap,
             }
 
             override fun onFinish() {
-                audioPlayer.player.play(
-                    audioPlayer.shieldDestroySound,
-                    GameSoundsPlayer.MAX_VOLUME,
-                    GameSoundsPlayer.MAX_VOLUME,
-                    GameSoundsPlayer.BASE_PRIORITY,
-                    GameSoundsPlayer.NO_LOOP,
-                    GameSoundsPlayer.BASE_SPEED_RATE
-                )
+                audioPlayer.playShieldDestroySound()
 
                 dispose()
             }
