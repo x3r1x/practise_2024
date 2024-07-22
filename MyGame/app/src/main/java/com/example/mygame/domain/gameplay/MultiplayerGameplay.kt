@@ -121,11 +121,11 @@ class MultiplayerGameplay(resources: Resources, screen: Screen) : IGameplay, Sen
     }
 
     private fun updatePositions() {
-        var previousTime = System.nanoTime()
+        var previousTime = System.currentTimeMillis()
         uiScope.launch {
             while (true) {
-                val currentTime = System.nanoTime()
-                val deltaTime = (currentTime - previousTime) / 1_000_000_000f // Конвертируем в секунды
+                val currentTime = System.currentTimeMillis()
+                val deltaTime = (currentTime - previousTime) / 1000f // Конвертируем в секунды
                 previousTime = currentTime
                 
                 _gameState.postValue(GameState(
@@ -133,7 +133,7 @@ class MultiplayerGameplay(resources: Resources, screen: Screen) : IGameplay, Sen
                     parserJSONToKotlin.interpolation(deltaTime.toDouble()),
                     emptyList()
                 ))
-                delay(25)
+
                 // При необходимости добавить паузу
             }
         }
