@@ -76,14 +76,11 @@ class MultiplayerGameplay(resources: Resources, screen: Screen) : IGameplay, Sen
         client.connect()
     }
 
-    override fun onViewCreated() {
-    }
+    override fun onViewCreated() {}
 
-    override fun startGameLoop() {
-    }
+    override fun startGameLoop() {}
 
-    override fun stopGameLoop() {
-    }
+    override fun stopGameLoop() {}
 
     private fun sendMessage(dx: Float, tap: Boolean = false) {
         val ping = gson.toJson(Ping("ping", 0))
@@ -97,14 +94,6 @@ class MultiplayerGameplay(resources: Resources, screen: Screen) : IGameplay, Sen
         }
     }
 
-    fun connect() {
-        client.connect()
-    }
-
-    fun close() {
-        client.close()
-    }
-
     private fun handleServerData(message: String) {
         _gameState.postValue(GameState(
             Type.GAME,
@@ -112,7 +101,7 @@ class MultiplayerGameplay(resources: Resources, screen: Screen) : IGameplay, Sen
             emptyList()
         ))
 
-            //updatePositions()
+        updatePositions()
     }
 
     private fun updatePositions() {
