@@ -25,10 +25,11 @@ class MovingPlatformOnX(
 
     private fun directionXRandom() : DirectionX {
         val value = (DirectionX.LEFT.value..DirectionX.RIGHT.value).random()
-        if (value == DirectionX.LEFT.value) {
-            return DirectionX.LEFT
+
+        return if (value == DirectionX.LEFT.value) {
+            DirectionX.LEFT
         } else {
-            return DirectionX.RIGHT
+            DirectionX.RIGHT
         }
     }
 

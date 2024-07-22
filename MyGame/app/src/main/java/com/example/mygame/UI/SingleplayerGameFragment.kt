@@ -97,7 +97,6 @@ class SingleplayerGameFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Наблюдаем за изменениями в объектах игры
         gameViewModel.singleplayerGameplay.gameState.observe(viewLifecycleOwner) { gameObjects ->
             gameView.drawGame(gameObjects.objects)
 
@@ -108,7 +107,6 @@ class SingleplayerGameFragment : Fragment() {
             }
         }
 
-        // Запуск игрового цикла
         gameViewModel.singleplayerGameplay.startGameLoop()
     }
 

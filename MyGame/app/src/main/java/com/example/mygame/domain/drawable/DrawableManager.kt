@@ -73,9 +73,8 @@ class DrawableManager(resources: Resources) {
                 type = ObjectType.DISAPPEARING_PLATFORM_TYPE
                 another = platform.platformColor.color
             }
-
             is BreakingPlatform -> {
-                type = ObjectType.DISAPPEARING_PLATFORM_TYPE
+                type = ObjectType.BREAKING_PLATFORM_TYPE
                 another = platform.currentFrameIndex
             }
         }

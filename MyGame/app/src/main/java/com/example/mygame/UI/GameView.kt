@@ -9,7 +9,6 @@ import android.util.AttributeSet
 import android.graphics.BitmapFactory
 
 class GameView(context: Context, attributeSet: AttributeSet?): View(context, attributeSet) {
-
     private var gameElements: List<IDrawable> = emptyList()
     private var backgroundImage: Bitmap? = null
 

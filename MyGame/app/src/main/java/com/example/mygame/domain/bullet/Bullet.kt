@@ -9,6 +9,7 @@ class Bullet(
     override var y: Float,
     private val angle: Float
 ) : IMoveable, IGameObject {
+    private var speedY = 0f
 
     override var isDisappeared = false
 
@@ -21,7 +22,7 @@ class Bullet(
     override val bottom: Float
         get() = y + RADIUS / 2
 
-    private var speedY = 0f
+
 
     fun shoot() {
         speedY = DEFAULT_ACCELERATION
@@ -43,6 +44,6 @@ class Bullet(
 
     companion object {
         private const val RADIUS = 50f
-        private const val DEFAULT_ACCELERATION = 2200f // Ускорение по умолчанию
+        private const val DEFAULT_ACCELERATION = 2200f
     }
 }

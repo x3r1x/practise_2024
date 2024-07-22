@@ -12,7 +12,7 @@ class DisappearingPlatform(
     createdY: Float
 ) : Platform(createdX, createdY) {
 
-    var isRunDestroying = false
+    private var isRunDestroying = false
 
     var platformColor = Paint().apply {
         color = Color.YELLOW
@@ -21,6 +21,7 @@ class DisappearingPlatform(
     fun animatePlatformColor() {
         if (!isRunDestroying) {
             isRunDestroying = true
+
             val colorAnimator = ValueAnimator.ofArgb(platformColor.color, RED_COLOR).apply {
                 this.duration = COLOR_CHANGE_DURATION
                 addUpdateListener { animator ->
@@ -33,6 +34,7 @@ class DisappearingPlatform(
                     }
                 })
             }
+
             colorAnimator.start()
         }
     }
@@ -51,6 +53,7 @@ class DisappearingPlatform(
                 }
             })
         }
+
         platformColorAnimator.start()
     }
 

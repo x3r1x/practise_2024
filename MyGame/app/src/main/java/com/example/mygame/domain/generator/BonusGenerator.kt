@@ -20,7 +20,9 @@ class BonusGenerator() {
         }
 
         var bonus: IBonus? = null
+
         val random = Random.nextFloat()
+
         when {
             random < GameConstants.JETPACK_SPAWN_CHANCE -> {
                 val jetpack = jetpackFactory.generateBonus(platform)
