@@ -21,7 +21,7 @@ import androidx.navigation.Navigation
 import com.example.mygame.R
 import com.example.mygame.presentation.GameViewModel
 
-class GameFragment : Fragment() {
+class SingleplayerGameFragment : Fragment() {
     private val gameViewModel: GameViewModel by viewModels()
 
     private lateinit var pauseButton: ImageButton
