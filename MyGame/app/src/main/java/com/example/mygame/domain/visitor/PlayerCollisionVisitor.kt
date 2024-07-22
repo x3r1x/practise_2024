@@ -41,13 +41,13 @@ class PlayerCollisionVisitor(
 
     override fun visit(jetpack: Jetpack) {
         if (doesPlayerCollideWithCollectable(jetpack) && !player.isWithJetpack && !player.isDead) {
-            jetpack.select(player)
+            jetpack.select(player, audioPlayer)
         }
     }
 
     override fun visit(shield: Shield) {
         if (doesPlayerCollideWithCollectable(shield) && !player.isWithShield && !player.isDead) {
-            shield.select(player)
+            shield.select(player, audioPlayer)
         }
     }
 

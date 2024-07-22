@@ -43,6 +43,23 @@ class SingleplayerGameFragment : Fragment() {
     private lateinit var scoreView: TextView
     private lateinit var gameView: GameView
 
+    private fun initMusics() {
+        gameMusic = ExoPlayer.Builder(requireContext()).build()
+        pauseMusic = ExoPlayer.Builder(requireContext()).build()
+
+        gameMusic.setMediaItem(MediaItem.fromUri(GAME_MUSIC_URI))
+        pauseMusic.setMediaItem(MediaItem.fromUri(PAUSE_MUSIC_URI))
+
+        gameMusic.volume = GAME_MUSIC_VOLUME
+        pauseMusic.volume = PAUSE_MUSIC_VOLUME
+
+        gameMusic.repeatMode = Player.REPEAT_MODE_ONE
+        pauseMusic.repeatMode = Player.REPEAT_MODE_ONE
+
+        gameMusic.prepare()
+        pauseMusic.prepare()
+    }
+
     private fun initViews(view: View) {
         pauseButton = view.findViewById(R.id.pauseButton)
         pauseGroup = view.findViewById(R.id.pauseGroup)
@@ -95,7 +112,12 @@ class SingleplayerGameFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_game, container, false)
         initViews(view)
 
-        gameViewModel.initialize(screenWidth, screenHeight, GameViewModel.Type.SINGLEPLAYER)
+        initMusics()
+        gameMusic.play()
+
+        gameSounds = GameSoundsPlayer(requireContext())
+
+        gameViewModel.initialize(screenWidth, screenHeight, GameViewModel.Type.SINGLEPLAYER, gameSounds)
         gameViewModel.gameplay.scoreObservable.observe(viewLifecycleOwner) { newScore ->
             scoreView.text = newScore.toString()
         }
@@ -146,7 +168,6 @@ class SingleplayerGameFragment : Fragment() {
         gameViewModel.gameplay.onPause()
         pauseGame()
         isPaused = true
-        pause()
 
         pauseMusic.pause()
     }

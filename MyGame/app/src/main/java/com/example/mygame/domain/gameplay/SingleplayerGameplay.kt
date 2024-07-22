@@ -2,6 +2,7 @@ package com.example.mygame.domain.gameplay
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.mygame.UI.GameSoundsPlayer
 import com.example.mygame.domain.GameConstants
 import com.example.mygame.domain.IGameObject
 import com.example.mygame.domain.IMoveable
@@ -25,7 +26,8 @@ class SingleplayerGameplay(
     private val positionHandler: PositionHandler,
     private val collisionHandler: CollisionHandler,
     private val drawableManager: DrawableManager,
-    private val screen: Screen
+    private val screen: Screen,
+    private val audioPlayer: GameSoundsPlayer
 ) : IGameplay {
     private var isGameLoopRunning = false
 
@@ -103,7 +105,8 @@ class SingleplayerGameplay(
         collisionHandler.checkCollisions(
             objectsManager.objectStorage.getPlayer(),
             screen,
-            gameObjects.value!!
+            gameObjects.value!!,
+            audioPlayer
         )
     }
 

@@ -17,6 +17,7 @@ import com.example.mygame.presentation.GameViewModel
 class MultiplayerGameFragment : Fragment() {
     private lateinit var gameView: GameView
     private lateinit var scoreView: TextView
+    private lateinit var audioPlayer: GameSoundsPlayer
     private val gameViewModel: GameViewModel by viewModels()
 
     private fun initViews(view: View) {
@@ -43,7 +44,9 @@ class MultiplayerGameFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_multiplayer_game, container, false)
         initViews(view)
 
-        gameViewModel.initialize(screenWidth, screenHeight, GameViewModel.Type.MULTIPLAYER)
+        audioPlayer = GameSoundsPlayer(requireContext())
+
+        gameViewModel.initialize(screenWidth, screenHeight, GameViewModel.Type.MULTIPLAYER, audioPlayer)
 //        gameViewModel.gameplay.scoreObservable.observe(viewLifecycleOwner) { newScore ->
 //            scoreView.text = newScore.toString()
 //        }

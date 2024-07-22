@@ -22,6 +22,7 @@ class GameViewModel(
     private lateinit var positionHandler: PositionHandler
     private lateinit var screen: Screen
     private lateinit var drawableManager: DrawableManager
+    private lateinit var audioPlayer: GameSoundsPlayer
 
     enum class Type {
         SINGLEPLAYER,
@@ -29,16 +30,17 @@ class GameViewModel(
     }
     lateinit var gameplay: IGameplay
 
-    fun initialize(screenWidth: Float, screenHeight: Float, initType: Type) {
+    fun initialize(screenWidth: Float, screenHeight: Float, initType: Type, mediaPlayer: GameSoundsPlayer) {
         screen = Screen(screenWidth, screenHeight)
         sensorHandler = SensorHandler(getApplication(), this)
         collisionHandler = CollisionHandler()
         objectsManager = ObjectsManager(screen)
         positionHandler = PositionHandler()
         drawableManager = DrawableManager(application.resources)
+        audioPlayer = mediaPlayer
 
         if (initType == Type.SINGLEPLAYER) {
-            gameplay = SingleplayerGameplay(objectsManager, sensorHandler, positionHandler, collisionHandler, drawableManager, screen)
+            gameplay = SingleplayerGameplay(objectsManager, sensorHandler, positionHandler, collisionHandler, drawableManager, screen, audioPlayer)
             objectsManager.initObjects()
         } else  {
             gameplay = MultiplayerGameplay(application.resources, screen)
