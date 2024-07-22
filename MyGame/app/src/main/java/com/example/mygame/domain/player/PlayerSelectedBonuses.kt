@@ -61,7 +61,7 @@ class PlayerSelectedBonuses(private val player: Player) {
 
             override fun onFinish() {
                 audioPlayer.playJetpackDestroySound()
-                audioPlayer.player.stop(jetpackSound)
+                audioPlayer.stopPlayingSound(jetpackSound)
 
                 player.isWithJetpack = false
             }

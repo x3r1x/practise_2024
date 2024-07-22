@@ -11,7 +11,7 @@ class GameSoundsPlayer(context: Context) {
         .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
         .build()
 
-    val player: SoundPool = SoundPool.Builder()
+    private val player: SoundPool = SoundPool.Builder()
         .setAudioAttributes(attributes)
         .setMaxStreams(MAX_STREAMS)
         .build()
@@ -70,6 +70,10 @@ class GameSoundsPlayer(context: Context) {
 
     fun playPlayerKilledSound() {
         player.play(playerKilledSound, MAX_VOLUME, MAX_VOLUME, BASE_PRIORITY, NO_LOOP, BASE_SPEED_RATE)
+    }
+
+    fun stopPlayingSound(sound: Int) {
+        player.stop(sound)
     }
 
     companion object {
