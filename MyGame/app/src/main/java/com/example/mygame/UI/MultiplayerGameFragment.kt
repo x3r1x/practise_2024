@@ -11,13 +11,13 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.example.mygame.R
 import com.example.mygame.presentation.GameViewModel
 
 class MultiplayerGameFragment : Fragment() {
     private lateinit var gameView: GameView
     private lateinit var scoreView: TextView
-    private lateinit var audioPlayer: GameSoundsPlayer
     private val gameViewModel: GameViewModel by viewModels()
 
     private fun initViews(view: View) {
@@ -44,9 +44,7 @@ class MultiplayerGameFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_multiplayer_game, container, false)
         initViews(view)
 
-        audioPlayer = GameSoundsPlayer(requireContext())
-
-        gameViewModel.initialize(screenWidth, screenHeight, GameViewModel.Type.MULTIPLAYER, audioPlayer)
+        gameViewModel.initialize(screenWidth, screenHeight, GameViewModel.Type.MULTIPLAYER, requireContext(), lifecycleScope)
 //        gameViewModel.gameplay.scoreObservable.observe(viewLifecycleOwner) { newScore ->
 //            scoreView.text = newScore.toString()
 //        }

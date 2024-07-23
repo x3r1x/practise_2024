@@ -21,6 +21,7 @@ import androidx.compose.material3.MediumTopAppBar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.exoplayer.ExoPlayer
@@ -35,8 +36,6 @@ class SingleplayerGameFragment : Fragment() {
 
     private lateinit var gameMusic : ExoPlayer
     private lateinit var pauseMusic: ExoPlayer
-
-    private lateinit var gameSounds: GameSoundsPlayer
 
     private lateinit var pauseButton: ImageButton
     private lateinit var pauseGroup: ConstraintLayout
@@ -135,9 +134,7 @@ class SingleplayerGameFragment : Fragment() {
         initMusics()
         gameMusic.play()
 
-        gameSounds = GameSoundsPlayer(requireContext())
-
-        gameViewModel.initialize(screenWidth, screenHeight, GameViewModel.Type.SINGLEPLAYER, gameSounds)
+        gameViewModel.initialize(screenWidth, screenHeight, GameViewModel.Type.SINGLEPLAYER, requireContext(), lifecycleScope)
         gameViewModel.gameplay.scoreObservable.observe(viewLifecycleOwner) { newScore ->
             scoreView.text = newScore.toString()
         }
@@ -148,7 +145,6 @@ class SingleplayerGameFragment : Fragment() {
 
         gameView.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_DOWN && !isPaused) {
-                gameSounds.playShootSound()
                 gameViewModel.onClick(event.x)
             }
             true
