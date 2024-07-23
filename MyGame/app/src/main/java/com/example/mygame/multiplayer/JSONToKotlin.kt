@@ -1,6 +1,7 @@
 package com.example.mygame.multiplayer
 
 import android.content.res.Resources
+import com.example.mygame.domain.drawable.ObjectType
 import com.example.mygame.domain.drawable.factory.BonusViewFactory
 import com.example.mygame.domain.drawable.factory.BulletViewFactory
 import com.example.mygame.domain.drawable.factory.EnemyViewFactory
@@ -17,24 +18,25 @@ class JSONToKotlin(resources: Resources) {
     private val bulletViewFactory = BulletViewFactory(resources)
 
     private lateinit var gameData : GameData
+    var objectsJSON = mutableListOf<IGameObjectJSON>()
+    lateinit var playerJSON : PlayerJSON
 
     fun setGameState(jsonString: String) {
         gameData = parseJSON(jsonString)
+        objectsJSON = mapObjectsFromJSON()
     }
 
-    fun getObjectsViews(jsonString: String) : List<ObjectView> {
-        setGameState(jsonString)
-
-        return mapObjects(gameData)
+    fun getObjectsViews() : List<ObjectView> {
+        return mapObjectsViews()
     }
 
     fun interpolation() : List<ObjectView> {
-        gameData.objects.forEach {
-            it[1] = (it[1] as Double) + (it[3] as Double)
-            it[2] = (it[2] as Double) + (it[4] as Double)
+        objectsJSON.forEach {
+            it.x += it.speedX
+            it.y += it.speedY
         }
 
-        return mapObjects(gameData)
+        return mapObjectsViews()
     }
 
     private fun parseJSON(jsonString: String) : GameData {
@@ -42,76 +44,44 @@ class JSONToKotlin(resources: Resources) {
         return gson.fromJson(jsonString, GameData::class.java)
     }
 
-    private fun mapObjects(gameData: GameData) : List<ObjectView> {
-        val objectsViews = mutableListOf<ObjectView>()
+    private fun mapObjectsFromJSON() : MutableList<IGameObjectJSON> {
+        val objects = mutableListOf<IGameObjectJSON>()
 
+        val objectsFactory = JSONObjectFactory()
         gameData.objects.forEach {
             val type = (it[0] as Double).toInt()
             when (type) {
-                0 -> {
-                    objectsViews.add(
-                        playerViewFactory.getPlayerView(
-                            (it[1] as Double).toFloat(),
-                            (it[2] as Double).toFloat(),
-                            (it[3] as Double).toFloat(),
-                            (it[4] as Double).toFloat(),
-                            (it[6] as Double).toInt(),
-                            (it[7] as Double).toInt(),
-                            (it[8] as Double).toInt(),
-                            (it[9] as Double).toInt(),
-                            (it[10] as Double).toInt()
-                        )
-                    )
-                }
+                ObjectType.PLAYER_TYPE -> objects.add(objectsFactory.getPlayerFromJSON(it))
+                in ObjectType.MULTIPLAYER_PLATFORMS -> objects.add(objectsFactory.getPlatformFromJSON(it))
+                in ObjectType.MULTIPLAYER_BONUSES -> objects.add(objectsFactory.getBonusFromJSON(it))
+                in ObjectType.MULTIPLAYER_ENEMIES -> objects.add(objectsFactory.getEnemyFromJSON(it))
+                ObjectType.BULLET_TYPE -> objects.add(objectsFactory.getBulletFromJSON(it))
+            }
+        }
 
-                in 1..5 -> {
-                    objectsViews.add(
-                        platformViewFactory.getPlatformView(
-                            (it[0] as Double).toInt(),
-                            (it[1] as Double).toFloat(),
-                            (it[2] as Double).toFloat(),
-                            (it[3] as Double).toFloat(),
-                            (it[4] as Double).toFloat(),
-                            (it[5] as Double).toInt()
-                        )
-                    )
-                }
+        return objects
+    }
 
-                in 6..7 -> {
-                    objectsViews.add(
-                        bonusViewFactory.getBonusView(
-                            (it[0] as Double).toInt(),
-                            (it[1] as Double).toFloat(),
-                            (it[2] as Double).toFloat(),
-                            (it[3] as Double).toFloat(),
-                            (it[4] as Double).toFloat(),
-                            (it[5] as Double).toInt()
-                        )
-                    )
-                }
+    private fun mapObjectsViews() : List<ObjectView> {
+        val objectsViews = mutableListOf<ObjectView>()
 
-                in 8..10 -> {
-                    objectsViews.add(
-                        enemyViewFactory.getEnemyView(
-                            (it[0] as Double).toInt(),
-                            (it[1] as Double).toFloat(),
-                            (it[2] as Double).toFloat(),
-                            (it[3] as Double).toFloat(),
-                            (it[4] as Double).toFloat()
-                        )
-                    )
-                }
-
-                11 -> {
-                    objectsViews.add(
-                        bulletViewFactory.getBulletView(
-                            (it[1] as Double).toFloat(),
-                            (it[2] as Double).toFloat(),
-                            (it[3] as Double).toFloat(),
-                            (it[4] as Double).toFloat()
-                        )
-                    )
-                }
+        objectsJSON.forEach {
+            when(it) {
+                is PlayerJSON -> objectsViews.add(playerViewFactory.getPlayerView(
+                    it.x, it.y, it.directionX, it.directionY, it.isWithShield, it.isShot, it.isDead
+                ))
+                is PlatformJSON -> objectsViews.add(platformViewFactory.getPlatformView(
+                    it.type, it.x, it.y, it.animationTime
+                ))
+                is EnemyJSON -> objectsViews.add(enemyViewFactory.getEnemyView(
+                    it.type, it.x, it.y
+                ))
+                is BonusJSON -> objectsViews.add(bonusViewFactory.getBonusView(
+                    it.type, it.x, it.y, it.animationTime
+                ))
+                is BulletJSON -> objectsViews.add(bulletViewFactory.getBulletView(
+                    it.x, it.y
+                ))
             }
         }
 
