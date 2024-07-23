@@ -58,5 +58,7 @@ class GameConstants {
 
         const val MAX_FRAME_TIME = 0.016f
         const val MOVE_OBJECTS_LINE = 900f
+
+        const val SCREEN_SCROLLING_DOWN_LINE = 100f
     }
 }
