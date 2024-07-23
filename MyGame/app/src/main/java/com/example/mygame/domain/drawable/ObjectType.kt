@@ -17,6 +17,9 @@ class ObjectType {
         const val JETPACK_TYPE = 12
 
         const val TRUE = 1
-        const val FALSE = 0
+
+        val MULTIPLAYER_PLATFORMS = IntRange(BREAKING_PLATFORM_TYPE, STATIC_PLATFORM_TYPE)
+        val MULTIPLAYER_BONUSES = IntRange(SHIELD_TYPE, SPRING_TYPE)
+        val MULTIPLAYER_ENEMIES = IntRange(BULLY_TYPE, NINJA_TYPE)
     }
 }
