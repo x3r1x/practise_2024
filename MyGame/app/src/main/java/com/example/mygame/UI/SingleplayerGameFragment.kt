@@ -15,6 +15,7 @@ import android.view.WindowMetrics
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
 import androidx.compose.material3.MediumTopAppBar
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -80,18 +81,34 @@ class SingleplayerGameFragment : Fragment() {
 
         val resumeButton = pauseGroup.findViewById<Button>(R.id.resumeButton)
         resumeButton.setOnClickListener {
-            isPaused = false
-
-            pauseMusic.pause()
-            gameMusic.play()
-
-            pauseGroup.visibility = INVISIBLE
-            gameViewModel.gameplay.startGameLoop()
+            resumeGame()
         }
 
         exitToMenuButton.setOnClickListener {
             Navigation.findNavController(pauseGroup).navigate(R.id.navigateFromSinglePlayerFragmentToStartFragment)
         }
+    }
+
+    private fun resumeGame() {
+        isPaused = false
+
+        pauseMusic.pause()
+        gameMusic.play()
+
+        pauseGroup.visibility = INVISIBLE
+        gameViewModel.gameplay.startGameLoop()
+    }
+
+    private fun addOnBackPressed() {
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (isPaused) {
+                    resumeGame()
+                } else {
+                    pauseGame()
+                }
+            }
+        })
     }
 
     @RequiresApi(Build.VERSION_CODES.R)
@@ -113,6 +130,7 @@ class SingleplayerGameFragment : Fragment() {
 
         val view = inflater.inflate(R.layout.fragment_game, container, false)
         initViews(view)
+        addOnBackPressed()
 
         initMusics()
         gameMusic.play()
