@@ -60,7 +60,7 @@ class MultiplayerGameplay(
             override fun onMessage(message: String?) {
                 message?.let {
                     try {
-                        val serverResponse = gson.fromJson(message, ServerResponse::class.java)
+//                        val serverResponse = gson.fromJson(message, ServerResponse::class.java)
 //                        if (serverResponse.type == "pong") {
 //                            val currentTime = System.currentTimeMillis()
 //                            val ping = currentTime - pingSentTime
@@ -93,7 +93,7 @@ class MultiplayerGameplay(
     override fun stopGameLoop() {}
 
     private fun sendMessage(dx: Float, tap: Boolean = false) {
-        val ping = gson.toJson(Ping("ping", 0))
+//        val ping = gson.toJson(Ping("ping", 0))
 //        if (client.isOpen) {
 //            pingSentTime = System.currentTimeMillis()
 //            client.send(ping)
@@ -122,7 +122,7 @@ class MultiplayerGameplay(
 
                 _gameState.postValue(GameState(
                     Type.GAME,
-                    parserJSONToKotlin.interpolation(elapsedTime),
+                    parserJSONToKotlin.getObjectsViews(),
                     emptyList()
                 ))
             }
