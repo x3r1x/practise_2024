@@ -86,6 +86,6 @@ data class BulletJSON(
 ) : IGameObjectJSON
 
 data class GameData(
-    @SerializedName("obj") val objects: Array<Array<Any>>,
+    @SerializedName("obj") val objects: Array<Array<Double>>,
     @SerializedName("s") val state: String
 )
