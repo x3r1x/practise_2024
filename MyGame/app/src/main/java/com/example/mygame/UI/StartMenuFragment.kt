@@ -30,7 +30,7 @@ class StartMenuFragment : Fragment() {
     private fun addOnBackPressed() {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                requireActivity().finish()
+                requireActivity().finishAffinity()
             }
         })
     }
