@@ -45,7 +45,7 @@ class GameConstants {
         const val NINJA_SPEED_CHANGE_CHANCE = 0.05f
 
         const val PLATFORM_SPAWN_ADDITIONAL_X = 100f
-        const val MAX_VERTICAL_PLATFORM_GAP = 250f
+        const val MAX_VERTICAL_PLATFORM_GAP = 300f
         const val MAX_VERTICAL_BREAKING_PLATFORM_GAP = 50f
 
         const val BONUSES_IN_INITIAL_PACK = 3

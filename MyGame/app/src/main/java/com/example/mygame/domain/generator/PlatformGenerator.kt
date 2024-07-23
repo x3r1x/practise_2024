@@ -3,7 +3,7 @@ package com.example.mygame.domain.generator
 import com.example.mygame.domain.GameConstants
 import com.example.mygame.domain.GameConstants.Companion.MAX_VERTICAL_BREAKING_PLATFORM_GAP
 import com.example.mygame.domain.GameConstants.Companion.MAX_VERTICAL_PLATFORM_GAP
-import com.example.mygame.domain.Platform
+import com.example.mygame.domain.platform.Platform
 import com.example.mygame.domain.Screen
 import com.example.mygame.domain.platform.factory.BreakingPlatformFactory
 import com.example.mygame.domain.platform.factory.DisappearingPlatformFactory

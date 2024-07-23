@@ -1,6 +1,9 @@
-package com.example.mygame.domain
+package com.example.mygame.domain.platform
 
 import android.graphics.Paint
+import com.example.mygame.domain.IGameObject
+import com.example.mygame.domain.IMoveable
+import com.example.mygame.domain.IVisitor
 
 open class Platform(createdX: Float, createdY: Float) : IMoveable, IGameObject {
     val width = 175f

@@ -7,7 +7,11 @@ import com.example.mygame.domain.player.Player
 class PositionHandler {
     fun screenScroll(elements: List<IMoveable>, offsetX: Float, offsetY: Float) {
         elements.forEach {
-            it.setPosition(it.x - offsetX, it.y - offsetY)
+            if (it !is BreakingPlatform) {
+                it.setPosition(it.x - offsetX, it.y - offsetY)
+            } else if (!it.isBreakRunning) {
+                it.setPosition(it.x - offsetX, it.y - offsetY)
+            }
         }
     }
 
@@ -18,6 +22,7 @@ class PositionHandler {
             } else if (!it.isBreakRunning) {
                 it.updatePosition(elapsedTime)
             }
+
             if (it is Player) {
                 it.updatePositionX(deltaX, elapsedTime)
             }

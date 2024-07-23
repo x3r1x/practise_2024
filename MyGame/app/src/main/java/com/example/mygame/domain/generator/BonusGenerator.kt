@@ -1,8 +1,7 @@
 package com.example.mygame.domain.generator
 
 import com.example.mygame.domain.GameConstants
-import com.example.mygame.domain.IGameObject
-import com.example.mygame.domain.Platform
+import com.example.mygame.domain.platform.Platform
 import com.example.mygame.domain.bonus.IBonus
 import com.example.mygame.domain.bonus.factory.JetpackFactory
 import com.example.mygame.domain.bonus.factory.ShieldFactory

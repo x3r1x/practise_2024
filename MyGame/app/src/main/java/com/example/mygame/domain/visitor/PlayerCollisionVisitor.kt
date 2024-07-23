@@ -6,7 +6,7 @@ import android.graphics.RectF
 import com.example.mygame.domain.GameConstants
 import com.example.mygame.domain.IGameObject
 import com.example.mygame.domain.IVisitor
-import com.example.mygame.domain.Platform
+import com.example.mygame.domain.platform.Platform
 import com.example.mygame.domain.bonus.Jetpack
 import com.example.mygame.domain.bonus.Shield
 import com.example.mygame.domain.bonus.Spring

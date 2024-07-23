@@ -1,7 +1,6 @@
 package com.example.mygame.domain.platform
 
 import android.animation.ValueAnimator
-import com.example.mygame.domain.Platform
 
 class BreakingPlatform(
     createdX: Float,

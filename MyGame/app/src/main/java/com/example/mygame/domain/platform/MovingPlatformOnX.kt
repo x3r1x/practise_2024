@@ -1,7 +1,6 @@
 package com.example.mygame.domain.platform
 
 import com.example.mygame.domain.GameConstants
-import com.example.mygame.domain.Platform
 import com.example.mygame.domain.Screen
 
 class MovingPlatformOnX(

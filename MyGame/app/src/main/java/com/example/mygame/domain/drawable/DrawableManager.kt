@@ -4,7 +4,7 @@ import android.content.res.Resources
 import com.example.mygame.UI.IDrawable
 import com.example.mygame.domain.Enemy
 import com.example.mygame.domain.IGameObject
-import com.example.mygame.domain.Platform
+import com.example.mygame.domain.platform.Platform
 import com.example.mygame.domain.bonus.IBonus
 import com.example.mygame.domain.bonus.Jetpack
 import com.example.mygame.domain.bonus.Shield
