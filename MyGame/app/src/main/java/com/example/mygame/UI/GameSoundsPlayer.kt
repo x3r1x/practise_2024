@@ -3,9 +3,12 @@ package com.example.mygame.UI
 import android.content.Context
 import android.media.AudioAttributes
 import android.media.SoundPool
+import androidx.lifecycle.LifecycleCoroutineScope
 import com.example.mygame.R
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
-class GameSoundsPlayer(context: Context) {
+class GameSoundsPlayer(context: Context, private val coroutineScope: LifecycleCoroutineScope) {
     private val attributes = AudioAttributes.Builder()
         .setUsage(AudioAttributes.USAGE_GAME)
         .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
@@ -29,27 +32,74 @@ class GameSoundsPlayer(context: Context) {
     private val playerKilledSound = player.load(context, R.raw.death_from_enemy_sound, BASE_PRIORITY)
 
     fun playShootSound() {
-        player.play(shootSound, MAX_VOLUME, MAX_VOLUME, BASE_PRIORITY, NO_LOOP, BASE_SPEED_RATE)
+        coroutineScope.launch(Dispatchers.IO) {
+            player.play(shootSound, MAX_VOLUME, MAX_VOLUME, BASE_PRIORITY, NO_LOOP, BASE_SPEED_RATE)
+        }
     }
 
     fun playJumpSound() {
-        player.play(jumpSound, JUMP_VOLUME, JUMP_VOLUME, BASE_PRIORITY, NO_LOOP, BASE_SPEED_RATE)
+        coroutineScope.launch(Dispatchers.IO) {
+            player.play(
+                jumpSound,
+                JUMP_VOLUME,
+                JUMP_VOLUME,
+                BASE_PRIORITY,
+                NO_LOOP,
+                BASE_SPEED_RATE
+            )
+        }
     }
 
     fun playSpringSound() {
-        player.play(springSound, MAX_VOLUME, MAX_VOLUME, BASE_PRIORITY, NO_LOOP, BASE_SPEED_RATE)
+        coroutineScope.launch(Dispatchers.IO) {
+            player.play(
+                springSound,
+                MAX_VOLUME,
+                MAX_VOLUME,
+                BASE_PRIORITY,
+                NO_LOOP,
+                BASE_SPEED_RATE
+            )
+        }
     }
 
     fun playEnemyShotSound() {
-        player.play(enemyShotSound, MAX_VOLUME, MAX_VOLUME, BASE_PRIORITY, NO_LOOP, BASE_SPEED_RATE)
+        coroutineScope.launch(Dispatchers.IO) {
+            player.play(
+                enemyShotSound,
+                MAX_VOLUME,
+                MAX_VOLUME,
+                BASE_PRIORITY,
+                NO_LOOP,
+                BASE_SPEED_RATE
+            )
+        }
     }
 
     fun playShieldPickupSound() {
-        player.play(shieldPickupSound, MAX_VOLUME, MAX_VOLUME, BASE_PRIORITY, NO_LOOP, BASE_SPEED_RATE)
+        coroutineScope.launch(Dispatchers.IO) {
+            player.play(
+                shieldPickupSound,
+                MAX_VOLUME,
+                MAX_VOLUME,
+                BASE_PRIORITY,
+                NO_LOOP,
+                BASE_SPEED_RATE
+            )
+        }
     }
 
     fun playShieldDestroySound() {
-        player.play(shieldDestroySound, MAX_VOLUME, MAX_VOLUME, BASE_PRIORITY, NO_LOOP, BASE_SPEED_RATE)
+        coroutineScope.launch(Dispatchers.IO) {
+            player.play(
+                shieldDestroySound,
+                MAX_VOLUME,
+                MAX_VOLUME,
+                BASE_PRIORITY,
+                NO_LOOP,
+                BASE_SPEED_RATE
+            )
+        }
     }
 
     fun playJetpackSound() : Int {
@@ -57,23 +107,61 @@ class GameSoundsPlayer(context: Context) {
     }
 
     fun playJetpackDestroySound() {
-        player.play(jetpackDestroySound, MAX_VOLUME, MAX_VOLUME, BASE_PRIORITY, NO_LOOP, BASE_SPEED_RATE)
+        coroutineScope.launch(Dispatchers.IO) {
+            player.play(
+                jetpackDestroySound,
+                MAX_VOLUME,
+                MAX_VOLUME,
+                BASE_PRIORITY,
+                NO_LOOP,
+                BASE_SPEED_RATE
+            )
+        }
     }
 
     fun playBonusEndingSoonSound() {
-        player.play(bonusEndingSoonSound, MAX_VOLUME, MAX_VOLUME, BASE_PRIORITY, NO_LOOP, BASE_SPEED_RATE)
+        coroutineScope.launch(Dispatchers.IO) {
+            player.play(
+                bonusEndingSoonSound,
+                MAX_VOLUME,
+                MAX_VOLUME,
+                BASE_PRIORITY,
+                NO_LOOP,
+                BASE_SPEED_RATE
+            )
+        }
     }
 
     fun playEnemySlainSound() {
-        player.play(enemySlainSound, MAX_VOLUME, MAX_VOLUME, BASE_PRIORITY, NO_LOOP, BASE_SPEED_RATE)
+        coroutineScope.launch(Dispatchers.IO) {
+            player.play(
+                enemySlainSound,
+                MAX_VOLUME,
+                MAX_VOLUME,
+                BASE_PRIORITY,
+                NO_LOOP,
+                BASE_SPEED_RATE
+            )
+        }
     }
 
     fun playPlayerKilledSound() {
-        player.play(playerKilledSound, MAX_VOLUME, MAX_VOLUME, BASE_PRIORITY, NO_LOOP, BASE_SPEED_RATE)
+        coroutineScope.launch(Dispatchers.IO) {
+            player.play(
+                playerKilledSound,
+                MAX_VOLUME,
+                MAX_VOLUME,
+                BASE_PRIORITY,
+                NO_LOOP,
+                BASE_SPEED_RATE
+            )
+        }
     }
 
     fun stopPlayingSound(sound: Int) {
-        player.stop(sound)
+        coroutineScope.launch(Dispatchers.IO) {
+            player.stop(sound)
+        }
     }
 
     companion object {

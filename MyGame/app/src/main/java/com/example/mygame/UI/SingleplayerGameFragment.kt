@@ -20,6 +20,7 @@ import androidx.compose.material3.MediumTopAppBar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.exoplayer.ExoPlayer
@@ -117,7 +118,7 @@ class SingleplayerGameFragment : Fragment() {
         initMusics()
         gameMusic.play()
 
-        gameSounds = GameSoundsPlayer(requireContext())
+        gameSounds = GameSoundsPlayer(requireContext(), lifecycleScope)
 
         gameViewModel.initialize(screenWidth, screenHeight, GameViewModel.Type.SINGLEPLAYER, gameSounds)
         gameViewModel.gameplay.scoreObservable.observe(viewLifecycleOwner) { newScore ->
