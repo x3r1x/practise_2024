@@ -17,6 +17,7 @@ import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.java_websocket.client.WebSocketClient
 import org.java_websocket.handshake.ServerHandshake
@@ -112,13 +113,18 @@ class MultiplayerGameplay(
     private fun updatePositions() {
         isNewData = false
 
+        val startTime = System.currentTimeMillis()
+
         uiScope.launch {
-            while (!isNewData) {_gameState.postValue(GameState(
+            while (!isNewData) {
+                val currentTime = System.currentTimeMillis()
+                val elapsedTime = (currentTime - startTime) / 1000f
+
+                _gameState.postValue(GameState(
                     Type.GAME,
-                    parserJSONToKotlin.interpolation(0.05f),
+                    parserJSONToKotlin.interpolation(elapsedTime),
                     emptyList()
                 ))
-                //camera.updatePositions(player, parserJSONToKotlin.objectsJSON)
             }
         }
     }

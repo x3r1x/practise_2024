@@ -77,6 +77,7 @@ class JSONToKotlin(
             when (type) {
                 ObjectType.PLAYER_TYPE -> {
                     playerJSON = objectsFactory.getPlayerFromJSON(it, scr)
+                    println("${playerJSON.x} ${playerJSON.y} ${playerJSON.speedX} ${playerJSON.speedY}")
                     objects.add(playerJSON)
                 }
                 in ObjectType.MULTIPLAYER_PLATFORMS -> objects.add(objectsFactory.getPlatformFromJSON(it, scr))

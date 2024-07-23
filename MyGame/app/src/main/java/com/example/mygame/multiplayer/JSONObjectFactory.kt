@@ -26,7 +26,6 @@ class JSONObjectFactory {
         val posX = (data[1] as Double).toFloat()
         val posY = (data[2] as Double).toFloat() + score
 
-
         val speedX = (data[3] as Double).toFloat()
         val speedY = (data[4] as Double).toFloat()
 
