@@ -1,9 +1,9 @@
 package com.example.mygame.multiplayer
 
 class JSONObjectFactory {
-    fun getPlayerFromJSON(data: Array<Any>) : PlayerJSON {
+    fun getPlayerFromJSON(data: Array<Any>, score: Int) : PlayerJSON {
         val posX = (data[1] as Double).toFloat()
-        val posY = (data[2] as Double).toFloat()
+        val posY = (data[2] as Double).toFloat() + score.toFloat()
 
         val speedX = (data[3] as Double).toFloat()
         val speedY = (data[4] as Double).toFloat()
@@ -18,11 +18,11 @@ class JSONObjectFactory {
         return PlayerJSON(posX, posY, speedX, speedY, directionX, directionY, isWithShield, isShooting, isDead)
     }
 
-    fun getPlatformFromJSON(data: Array<Any>) : PlatformJSON {
+    fun getPlatformFromJSON(data: Array<Any>, score: Int) : PlatformJSON {
         val type = (data[0] as Double).toInt()
 
         val posX = (data[1] as Double).toFloat()
-        val posY = (data[2] as Double).toFloat()
+        val posY = (data[2] as Double).toFloat() + score.toFloat()
 
         val speedX = (data[3] as Double).toFloat()
         val speedY = (data[4] as Double).toFloat()
@@ -32,11 +32,11 @@ class JSONObjectFactory {
         return PlatformJSON(posX, posY, speedX, speedY, type, animationTime)
     }
 
-    fun getEnemyFromJSON(data: Array<Any>) : EnemyJSON {
+    fun getEnemyFromJSON(data: Array<Any>, score: Int) : EnemyJSON {
         val type = (data[0] as Double).toInt()
 
         val posX = (data[1] as Double).toFloat()
-        val posY = (data[2] as Double).toFloat()
+        val posY = (data[2] as Double).toFloat() + score.toFloat()
 
         val speedX = (data[3] as Double).toFloat()
         val speedY = (data[4] as Double).toFloat()
@@ -44,11 +44,11 @@ class JSONObjectFactory {
         return EnemyJSON(posX, posY, speedX, speedY, type)
     }
 
-    fun getBonusFromJSON(data: Array<Any>) : BonusJSON {
+    fun getBonusFromJSON(data: Array<Any>, score: Int) : BonusJSON {
         val type = (data[0] as Double).toInt()
 
         val posX = (data[1] as Double).toFloat()
-        val posY = (data[2] as Double).toFloat()
+        val posY = (data[2] as Double).toFloat() + score.toFloat()
 
         val speedX = (data[3] as Double).toFloat()
         val speedY = (data[4] as Double).toFloat()
@@ -58,9 +58,9 @@ class JSONObjectFactory {
         return BonusJSON(posX, posY, speedX, speedY, type, animationTime)
     }
 
-    fun getBulletFromJSON(data: Array<Any>) : BulletJSON {
+    fun getBulletFromJSON(data: Array<Any>, score: Int) : BulletJSON {
         val posX = (data[1] as Double).toFloat()
-        val posY = (data[2] as Double).toFloat()
+        val posY = (data[2] as Double).toFloat() + score.toFloat()
 
         val speedX = (data[3] as Double).toFloat()
         val speedY = (data[4] as Double).toFloat()

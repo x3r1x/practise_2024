@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.mygame.domain.Score
 import com.example.mygame.domain.Screen
 import com.example.mygame.domain.logic.SensorHandler
+import com.example.mygame.multiplayer.Camera
 import com.example.mygame.multiplayer.ClientMessage
 import com.example.mygame.multiplayer.JSONToKotlin
 import com.example.mygame.multiplayer.Ping
@@ -20,13 +21,15 @@ import org.java_websocket.client.WebSocketClient
 import org.java_websocket.handshake.ServerHandshake
 import java.net.URI
 
-class MultiplayerGameplay(resources: Resources, screen: Screen) : IGameplay, SensorHandler.SensorCallback {
+class MultiplayerGameplay(
+    resources: Resources,
+    screen: Screen
+) : IGameplay, SensorHandler.SensorCallback {
     private val uiScope = CoroutineScope(Dispatchers.Main)
 
     private var isNewData = false
 
     private val gson = Gson()
-    private val parserJSONToKotlin = JSONToKotlin(resources)
 
     private var pingSentTime: Long = 0
 
@@ -37,6 +40,9 @@ class MultiplayerGameplay(resources: Resources, screen: Screen) : IGameplay, Sen
     override val gameState: LiveData<GameState> = _gameState
 
     override val score = Score()
+
+    private val camera = Camera(screen, score)
+    private val parserJSONToKotlin = JSONToKotlin(resources, score)
 
     private val _scoreObservable = MutableLiveData<Int>()
     override val scoreObservable: LiveData<Int> = _scoreObservable
@@ -95,26 +101,29 @@ class MultiplayerGameplay(resources: Resources, screen: Screen) : IGameplay, Sen
     }
 
     private fun handleServerData(message: String) {
-        _gameState.postValue(GameState(
-            Type.GAME,
-            parserJSONToKotlin.getObjectsViews(message),
-            emptyList()
-        ))
+        parserJSONToKotlin.setGameState(message)
 
-//        updatePositions()
+        updatePositions()
     }
 
     private fun updatePositions() {
         isNewData = false
+        val player = parserJSONToKotlin.playerJSON
 
         uiScope.launch {
             while (!isNewData) {
                 _gameState.postValue(GameState(
                     Type.GAME,
-                    parserJSONToKotlin.interpolation(),
+                    parserJSONToKotlin.getObjectsViews(),
                     emptyList()
                 ))
-                // При необходимости добавить паузу
+                if (camera.isNeedScrollDown(player)) {
+                    val offsetY = camera.getDownOffsetY(player.y)
+                    //camera.screenScroll(parserJSONToKotlin.objectsJSON, offsetY)
+                } else if (camera.isNeedScrollUp(player.y)) {
+                    val offsetY = camera.getUpOffsetY(player.y)
+                    camera.screenScroll(parserJSONToKotlin.objectsJSON, offsetY)
+                }
             }
         }
     }

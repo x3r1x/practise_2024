@@ -1,6 +1,7 @@
 package com.example.mygame.multiplayer
 
 import android.content.res.Resources
+import com.example.mygame.domain.Score
 import com.example.mygame.domain.drawable.ObjectType
 import com.example.mygame.domain.drawable.factory.BonusViewFactory
 import com.example.mygame.domain.drawable.factory.BulletViewFactory
@@ -10,7 +11,10 @@ import com.example.mygame.domain.drawable.factory.PlayerViewFactory
 import com.example.mygame.domain.drawable.view.ObjectView
 import com.google.gson.Gson
 
-class JSONToKotlin(resources: Resources) {
+class JSONToKotlin(
+    resources: Resources,
+    private val score: Score
+) {
     private val playerViewFactory = PlayerViewFactory(resources)
     private val enemyViewFactory = EnemyViewFactory(resources)
     private val platformViewFactory = PlatformViewFactory(resources)
@@ -46,16 +50,20 @@ class JSONToKotlin(resources: Resources) {
 
     private fun mapObjectsFromJSON() : MutableList<IGameObjectJSON> {
         val objects = mutableListOf<IGameObjectJSON>()
+        val scr = score.getScore()
 
         val objectsFactory = JSONObjectFactory()
         gameData.objects.forEach {
             val type = (it[0] as Double).toInt()
             when (type) {
-                ObjectType.PLAYER_TYPE -> objects.add(objectsFactory.getPlayerFromJSON(it))
-                in ObjectType.MULTIPLAYER_PLATFORMS -> objects.add(objectsFactory.getPlatformFromJSON(it))
-                in ObjectType.MULTIPLAYER_BONUSES -> objects.add(objectsFactory.getBonusFromJSON(it))
-                in ObjectType.MULTIPLAYER_ENEMIES -> objects.add(objectsFactory.getEnemyFromJSON(it))
-                ObjectType.BULLET_TYPE -> objects.add(objectsFactory.getBulletFromJSON(it))
+                ObjectType.PLAYER_TYPE -> {
+                    playerJSON = objectsFactory.getPlayerFromJSON(it, scr)
+                    objects.add(playerJSON)
+                }
+                in ObjectType.MULTIPLAYER_PLATFORMS -> objects.add(objectsFactory.getPlatformFromJSON(it, scr))
+                in ObjectType.MULTIPLAYER_BONUSES -> objects.add(objectsFactory.getBonusFromJSON(it, scr))
+                in ObjectType.MULTIPLAYER_ENEMIES -> objects.add(objectsFactory.getEnemyFromJSON(it, scr))
+                ObjectType.BULLET_TYPE -> objects.add(objectsFactory.getBulletFromJSON(it, scr))
             }
         }
 
