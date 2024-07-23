@@ -19,6 +19,8 @@ class GameConstants {
         const val PLATFORM_ON_Y_SPEED = 200f
         const val PLATFORM_ON_Y_RANGE = 700f
 
+        const val STATIC_PLATFORM_COUNT_PER_LEVEL = 3
+
         const val SHIELD_DEFAULT_TRANSPARENCY = 128
         const val SHIELD_PULSE_TRANSPARENCY = 64
         const val JETPACK_DEFAULT_TRANSPARENCY = 255
@@ -43,8 +45,17 @@ class GameConstants {
         const val NINJA_SPEED_CHANGE_CHANCE = 0.05f
 
         const val PLATFORM_SPAWN_ADDITIONAL_X = 100f
-        const val MAX_VERTICAL_PLATFORM_GAP = 400f
+        const val MAX_VERTICAL_PLATFORM_GAP = 250f
         const val MAX_VERTICAL_BREAKING_PLATFORM_GAP = 50f
+
+        const val BONUSES_IN_INITIAL_PACK = 3
+        const val ENEMIES_IN_INITIAL_PACK = 2
+
+        const val INITIAL_JETPACK_SPAWN_CHANCE = 0.05f
+        const val INITIAL_SHIELD_SPAWN_CHANCE = 0.2f
+
+        const val INITIAL_NINJA_SPAWN_CHANCE = 0.05f
+        const val INITIAL_FLY_SPAWN_CHANCE = 0.4f
 
         const val JETPACK_SPAWN_CHANCE = 0.02f
         const val SHIELD_SPAWN_CHANCE = 0.08f
