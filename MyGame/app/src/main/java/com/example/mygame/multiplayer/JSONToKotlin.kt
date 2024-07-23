@@ -18,10 +18,6 @@ class JSONToKotlin(resources: Resources) {
 
     private lateinit var gameData : GameData
 
-    fun setGameState(jsonString: String) {
-        gameData = parseJSON(jsonString)
-    }
-
     fun getObjectsViews(jsonString: String) : List<ObjectView> {
         setGameState(jsonString)
 
@@ -35,6 +31,10 @@ class JSONToKotlin(resources: Resources) {
         }
 
         return mapObjects(gameData)
+    }
+
+    private fun setGameState(jsonString: String) {
+        gameData = parseJSON(jsonString)
     }
 
     private fun parseJSON(jsonString: String) : GameData {
