@@ -50,8 +50,6 @@ class DrawableManager(resources: Resources) {
         return playerViewFactory.getPlayerView(
             player.x,
             player.y,
-            0f,
-            0f,
             player.directionX.value,
             player.directionY.value,
             player.isWithShield.toInt(),
@@ -79,7 +77,7 @@ class DrawableManager(resources: Resources) {
             }
         }
 
-        return platformViewFactory.getPlatformView(type, platform.x, platform.y, 0f, 0f, another)
+        return platformViewFactory.getPlatformView(type, platform.x, platform.y, another)
     }
 
     private fun enemyToView(enemy: Enemy): ObjectView {
@@ -90,7 +88,7 @@ class DrawableManager(resources: Resources) {
             is Ninja -> type = ObjectType.NINJA_TYPE
         }
 
-        return enemyViewFactory.getEnemyView(type, enemy.x, enemy.y, 0f, 0f)
+        return enemyViewFactory.getEnemyView(type, enemy.x, enemy.y)
     }
 
     private fun bonusToView(bonus: IBonus): ObjectView {
@@ -100,18 +98,18 @@ class DrawableManager(resources: Resources) {
         when (bonus) {
             is Shield -> {
                 type = ObjectType.SHIELD_TYPE
-                return bonusViewFactory.getBonusView(type, bonus.x, bonus.y, 0f, 0f, another)
+                return bonusViewFactory.getBonusView(type, bonus.x, bonus.y, another)
             }
 
             is Spring -> {
                 type = ObjectType.SPRING_TYPE
                 another = bonus.currentFrame
-                return bonusViewFactory.getBonusView(type, bonus.x, bonus.y, 0f, 0f, another)
+                return bonusViewFactory.getBonusView(type, bonus.x, bonus.y, another)
             }
 
             is Jetpack -> {
                 type = ObjectType.JETPACK_TYPE
-                return bonusViewFactory.getBonusView(type, bonus.x, bonus.y, 0f, 0f, another)
+                return bonusViewFactory.getBonusView(type, bonus.x, bonus.y, another)
             }
 
             else -> throw IllegalArgumentException("Invalid bonus type")
@@ -119,7 +117,7 @@ class DrawableManager(resources: Resources) {
     }
 
     private fun bulletToView(bullet: Bullet): ObjectView {
-        return bulletViewFactory.getBulletView(bullet.x, bullet.y, 0f, 0f)
+        return bulletViewFactory.getBulletView(bullet.x, bullet.y)
     }
 
     private fun Boolean.toInt() = if (this) 1 else 0
