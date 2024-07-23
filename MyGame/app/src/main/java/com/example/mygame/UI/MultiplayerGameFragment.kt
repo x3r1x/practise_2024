@@ -11,6 +11,7 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.example.mygame.R
 import com.example.mygame.presentation.GameViewModel
 
@@ -44,7 +45,7 @@ class MultiplayerGameFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_multiplayer_game, container, false)
         initViews(view)
 
-        audioPlayer = GameSoundsPlayer(requireContext())
+        audioPlayer = GameSoundsPlayer(requireContext(), lifecycleScope)
 
         gameViewModel.initialize(screenWidth, screenHeight, GameViewModel.Type.MULTIPLAYER, audioPlayer)
 //        gameViewModel.gameplay.scoreObservable.observe(viewLifecycleOwner) { newScore ->
