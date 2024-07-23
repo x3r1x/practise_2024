@@ -42,7 +42,7 @@ class MultiplayerGameplay(
     override val score = Score()
 
     private val camera = Camera(screen, score)
-    private val parserJSONToKotlin = JSONToKotlin(resources, score)
+    private val parserJSONToKotlin = JSONToKotlin(gson, resources, score)
 
     private val _scoreObservable = MutableLiveData<Int>()
     override val scoreObservable: LiveData<Int> = _scoreObservable
@@ -110,20 +110,18 @@ class MultiplayerGameplay(
         isNewData = false
         val player = parserJSONToKotlin.playerJSON
 
+        val previousTime = System.currentTimeMillis()
+
         uiScope.launch {
             while (!isNewData) {
+                val currentTime = System.currentTimeMillis()
+
                 _gameState.postValue(GameState(
                     Type.GAME,
                     parserJSONToKotlin.getObjectsViews(),
                     emptyList()
                 ))
-                if (camera.isNeedScrollDown(player)) {
-                    val offsetY = camera.getDownOffsetY(player.y)
-                    //camera.screenScroll(parserJSONToKotlin.objectsJSON, offsetY)
-                } else if (camera.isNeedScrollUp(player.y)) {
-                    val offsetY = camera.getUpOffsetY(player.y)
-                    camera.screenScroll(parserJSONToKotlin.objectsJSON, offsetY)
-                }
+                //camera.updatePositions(player, parserJSONToKotlin.objectsJSON)
             }
         }
     }

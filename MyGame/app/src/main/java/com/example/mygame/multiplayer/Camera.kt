@@ -10,28 +10,38 @@ class Camera(
     private val score: Score
 ) {
     private val scrollingDownLine = screen.height - GameConstants.SCREEN_SCROLLING_DOWN_LINE
-    private val scrollingUpLine = screen.height - GameConstants.MOVE_OBJECTS_LINE
+    private val scrollingUpLine = screen.height / 2
 
-    fun screenScroll(elements: List<IGameObjectJSON>, offsetY: Float) {
-        score.increase(offsetY)
+    fun updatePositions(player: PlayerJSON, elements: List<IGameObjectJSON>) {
+        if (isNeedScrollUp(player.y)) {
+            val offsetY = getUpOffsetY(player.y)
+//            /screenScroll(elements, sc)
+            //score.increase(offsetY)
+        } //else if (isNeedScrollDown(player)) {
+          //  val offsetY = getDownOffsetY(player.y)
+          //  screenScroll(elements, offsetY)
+        //}
+    }
+
+    private fun screenScroll(elements: List<IGameObjectJSON>, offsetY: Float) {
         elements.forEach {
             it.y += score.getScore()
         }
     }
 
-    fun isNeedScrollDown(player: PlayerJSON) : Boolean {
+    private fun isNeedScrollDown(player: PlayerJSON) : Boolean {
         return player.directionY == PlayerViewFactory.DIRECTION_Y_DOWN && player.y >= scrollingDownLine
     }
 
-    fun isNeedScrollUp(playerY: Float) : Boolean {
+    private fun isNeedScrollUp(playerY: Float) : Boolean {
         return playerY < scrollingUpLine
     }
 
-    fun getDownOffsetY(playerY: Float) : Float {
+    private fun getDownOffsetY(playerY: Float) : Float {
         return playerY - scrollingDownLine
     }
 
-    fun getUpOffsetY(playerY: Float) : Float {
+    private fun getUpOffsetY(playerY: Float) : Float {
         return playerY - scrollingUpLine
     }
 }

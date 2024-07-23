@@ -12,6 +12,7 @@ import com.example.mygame.domain.drawable.view.ObjectView
 import com.google.gson.Gson
 
 class JSONToKotlin(
+    private val gson: Gson,
     resources: Resources,
     private val score: Score
 ) {
@@ -21,36 +22,51 @@ class JSONToKotlin(
     private val bonusViewFactory = BonusViewFactory(resources)
     private val bulletViewFactory = BulletViewFactory(resources)
 
-    private lateinit var gameData : GameData
     var objectsJSON = mutableListOf<IGameObjectJSON>()
     lateinit var playerJSON : PlayerJSON
 
     fun setGameState(jsonString: String) {
-        gameData = parseJSON(jsonString)
-        objectsJSON = mapObjectsFromJSON()
+        val gameData = parseJSON(jsonString)
+
+        if (objectsJSON.isNotEmpty()) {
+            val newObjectsJSON = mapObjectsFromJSON(gameData)
+            newObjectsJSON.forEach { newObject ->
+                // Проверяем, существует ли объект с таким же идентификатором
+                if (newObject is PlayerJSON) {
+                    val existingObject = objectsJSON.find { it is PlayerJSON &&  it.id == newObject.id }
+
+                    if (existingObject == null) {
+                        objectsJSON.add(newObject)
+                    } else {
+                        objectsJSON.set(objectsJSON.indexOf(existingObject), newObject)
+                    }
+                }
+            }
+        } else {
+            objectsJSON = mapObjectsFromJSON(gameData)
+        }
     }
 
     fun getObjectsViews() : List<ObjectView> {
         return mapObjectsViews()
     }
 
-    fun interpolation() : List<ObjectView> {
+    fun interpolation(elapsedTime: Float) : List<ObjectView> {
         objectsJSON.forEach {
-            it.x += it.speedX
-            it.y += it.speedY
+            it.x += it.speedX * elapsedTime
+            it.y += it.speedY * elapsedTime
         }
 
         return mapObjectsViews()
     }
 
     private fun parseJSON(jsonString: String) : GameData {
-        val gson = Gson()
         return gson.fromJson(jsonString, GameData::class.java)
     }
 
-    private fun mapObjectsFromJSON() : MutableList<IGameObjectJSON> {
+    private fun mapObjectsFromJSON(gameData: GameData) : MutableList<IGameObjectJSON> {
         val objects = mutableListOf<IGameObjectJSON>()
-        val scr = score.getScore()
+        val scr = score.getScore().toFloat()
 
         val objectsFactory = JSONObjectFactory()
         gameData.objects.forEach {

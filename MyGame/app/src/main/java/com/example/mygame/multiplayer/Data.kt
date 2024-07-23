@@ -31,7 +31,8 @@ data class PlayerJSON(
     var directionY: Int,
     var isWithShield: Int,
     var isShot: Int,
-    var isDead: Int
+    var isDead: Int,
+    var id: Int
 ) : IGameObjectJSON
 
 data class PlatformJSON(
