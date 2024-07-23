@@ -9,7 +9,7 @@ class BreakingPlatform(
 ) : Platform(createdX, createdY) {
     var currentFrameIndex = 0
 
-    private var isBreakRunning = false
+    var isBreakRunning = false
 
     fun runDestructionAnimation(screenHeight: Float) {
         if (!isBreakRunning) {
