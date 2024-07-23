@@ -25,8 +25,6 @@ class PlayerViewFactory(resources: Resources) {
     fun getPlayerView(
         x: Float,
         y: Float,
-        speedX: Float,
-        speedY: Float,
         directionX: Int,
         directionY: Int,
         isWithShield: Int,

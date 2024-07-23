@@ -13,9 +13,7 @@ class BulletViewFactory(resources: Resources) {
 
     fun getBulletView(
         x: Float,
-        y: Float,
-        speedX: Float,
-        speedY: Float
+        y: Float
     ) : ObjectView {
         val rect = getRect(x, y, bulletBitmap)
         val matrix = getMatrix(rect)

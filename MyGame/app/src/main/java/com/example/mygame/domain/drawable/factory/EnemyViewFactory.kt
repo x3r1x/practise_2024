@@ -17,9 +17,7 @@ class EnemyViewFactory(resources: Resources) {
     fun getEnemyView(
         type: Int,
         x: Float,
-        y: Float,
-        speedX: Float,
-        speedY: Float,
+        y: Float
     ) : ObjectView {
         val bitmap = getBitmap(type)
         val rect = getRect(x, y, bitmap)

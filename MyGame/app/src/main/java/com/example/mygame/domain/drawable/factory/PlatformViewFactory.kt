@@ -29,8 +29,6 @@ class PlatformViewFactory(resources: Resources) {
         type: Int,
         x: Float,
         y: Float,
-        speedX: Float,
-        speedY: Float,
         animationTime: Int = 0
     ) : ObjectView {
         val bitmap = getBitmap(type, animationTime)
