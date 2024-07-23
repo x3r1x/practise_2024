@@ -9,6 +9,7 @@ import com.example.mygame.domain.Screen
 import com.example.mygame.domain.logic.SensorHandler
 import com.example.mygame.multiplayer.Camera
 import com.example.mygame.multiplayer.ClientMessage
+import com.example.mygame.multiplayer.IGameObjectJSON
 import com.example.mygame.multiplayer.JSONToKotlin
 import com.example.mygame.multiplayer.Ping
 import com.example.mygame.multiplayer.ServerResponse
@@ -41,8 +42,10 @@ class MultiplayerGameplay(
 
     override val score = Score()
 
+    private val objects = mutableListOf<IGameObjectJSON>()
+
     private val camera = Camera(screen, score)
-    private val parserJSONToKotlin = JSONToKotlin(gson, resources, score)
+    private val parserJSONToKotlin = JSONToKotlin(gson, resources, score, objects)
 
     private val _scoreObservable = MutableLiveData<Int>()
     override val scoreObservable: LiveData<Int> = _scoreObservable
@@ -108,17 +111,11 @@ class MultiplayerGameplay(
 
     private fun updatePositions() {
         isNewData = false
-        val player = parserJSONToKotlin.playerJSON
-
-        val previousTime = System.currentTimeMillis()
 
         uiScope.launch {
-            while (!isNewData) {
-                val currentTime = System.currentTimeMillis()
-
-                _gameState.postValue(GameState(
+            while (!isNewData) {_gameState.postValue(GameState(
                     Type.GAME,
-                    parserJSONToKotlin.getObjectsViews(),
+                    parserJSONToKotlin.interpolation(0.05f),
                     emptyList()
                 ))
                 //camera.updatePositions(player, parserJSONToKotlin.objectsJSON)

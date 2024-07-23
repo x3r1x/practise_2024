@@ -14,7 +14,8 @@ import com.google.gson.Gson
 class JSONToKotlin(
     private val gson: Gson,
     resources: Resources,
-    private val score: Score
+    private val score: Score,
+    private val objectsJSON: MutableList<IGameObjectJSON>
 ) {
     private val playerViewFactory = PlayerViewFactory(resources)
     private val enemyViewFactory = EnemyViewFactory(resources)
@@ -22,29 +23,11 @@ class JSONToKotlin(
     private val bonusViewFactory = BonusViewFactory(resources)
     private val bulletViewFactory = BulletViewFactory(resources)
 
-    var objectsJSON = mutableListOf<IGameObjectJSON>()
     lateinit var playerJSON : PlayerJSON
 
     fun setGameState(jsonString: String) {
         val gameData = parseJSON(jsonString)
-
-        if (objectsJSON.isNotEmpty()) {
-            val newObjectsJSON = mapObjectsFromJSON(gameData)
-            newObjectsJSON.forEach { newObject ->
-                // Проверяем, существует ли объект с таким же идентификатором
-                if (newObject is PlayerJSON) {
-                    val existingObject = objectsJSON.find { it is PlayerJSON &&  it.id == newObject.id }
-
-                    if (existingObject == null) {
-                        objectsJSON.add(newObject)
-                    } else {
-                        objectsJSON.set(objectsJSON.indexOf(existingObject), newObject)
-                    }
-                }
-            }
-        } else {
-            objectsJSON = mapObjectsFromJSON(gameData)
-        }
+        updateObjects(gameData)
     }
 
     fun getObjectsViews() : List<ObjectView> {
@@ -58,6 +41,26 @@ class JSONToKotlin(
         }
 
         return mapObjectsViews()
+    }
+
+    private fun updateObjects(gameData: GameData) {
+        if (objectsJSON.isNotEmpty()) {
+            val newObjectsJSON = mapObjectsFromJSON(gameData)
+            newObjectsJSON.forEach { newObject ->
+                // Проверяем, существует ли объект с таким же идентификатором
+                if (newObject is PlayerJSON) {
+                    val existingObject = objectsJSON.find { it.id == newObject.id }
+
+                    if (existingObject == null) {
+                        objectsJSON.add(newObject)
+                    } else {
+                        objectsJSON.set(objectsJSON.indexOf(existingObject), newObject)
+                    }
+                }
+            }
+        } else {
+            objectsJSON.addAll(mapObjectsFromJSON(gameData))
+        }
     }
 
     private fun parseJSON(jsonString: String) : GameData {

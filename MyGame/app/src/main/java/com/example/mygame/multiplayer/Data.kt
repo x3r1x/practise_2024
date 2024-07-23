@@ -16,6 +16,7 @@ data class Ping(
 data class ServerResponse(val type: String)
 
 interface IGameObjectJSON {
+    var id: Int
     var x: Float
     var y: Float
     var speedX: Float
@@ -23,6 +24,7 @@ interface IGameObjectJSON {
 }
 
 data class PlayerJSON(
+    override var id: Int,
     override var x: Float,
     override var y: Float,
     override var speedX: Float,
@@ -31,11 +33,11 @@ data class PlayerJSON(
     var directionY: Int,
     var isWithShield: Int,
     var isShot: Int,
-    var isDead: Int,
-    var id: Int
+    var isDead: Int
 ) : IGameObjectJSON
 
 data class PlatformJSON(
+    override var id: Int,
     override var x: Float,
     override var y: Float,
     override var speedX: Float,
@@ -45,6 +47,7 @@ data class PlatformJSON(
 ) : IGameObjectJSON
 
 data class EnemyJSON(
+    override var id: Int,
     override var x: Float,
     override var y: Float,
     override var speedX: Float,
@@ -53,6 +56,7 @@ data class EnemyJSON(
 ) : IGameObjectJSON
 
 data class BonusJSON(
+    override var id: Int,
     override var x: Float,
     override var y: Float,
     override var speedX: Float,
@@ -62,6 +66,7 @@ data class BonusJSON(
 ) : IGameObjectJSON
 
 data class BulletJSON(
+    override var id: Int,
     override var x: Float,
     override var y: Float,
     override var speedX: Float,
