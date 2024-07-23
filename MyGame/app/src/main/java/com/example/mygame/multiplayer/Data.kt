@@ -21,6 +21,8 @@ interface IGameObjectJSON {
     var y: Float
     var speedX: Float
     var speedY: Float
+    var prevX: Float
+    var prevY: Float
 }
 
 data class PlayerJSON(
@@ -33,7 +35,9 @@ data class PlayerJSON(
     var directionY: Int,
     var isWithShield: Int,
     var isShot: Int,
-    var isDead: Int
+    var isDead: Int,
+    override var prevX: Float = 0f,
+    override var prevY: Float = 0f,
 ) : IGameObjectJSON
 
 data class PlatformJSON(
@@ -43,7 +47,9 @@ data class PlatformJSON(
     override var speedX: Float,
     override var speedY: Float,
     val type: Int,
-    val animationTime: Int
+    val animationTime: Int,
+    override var prevX: Float = 0f,
+    override var prevY: Float = 0f,
 ) : IGameObjectJSON
 
 data class EnemyJSON(
@@ -52,7 +58,9 @@ data class EnemyJSON(
     override var y: Float,
     override var speedX: Float,
     override var speedY: Float,
-    val type: Int
+    val type: Int,
+    override var prevX: Float = 0f,
+    override var prevY: Float = 0f,
 ) : IGameObjectJSON
 
 data class BonusJSON(
@@ -62,7 +70,9 @@ data class BonusJSON(
     override var speedX: Float,
     override var speedY: Float,
     val type: Int,
-    val animationTime: Int
+    val animationTime: Int,
+    override var prevX: Float = 0f,
+    override var prevY: Float = 0f,
 ) : IGameObjectJSON
 
 data class BulletJSON(
@@ -70,7 +80,9 @@ data class BulletJSON(
     override var x: Float,
     override var y: Float,
     override var speedX: Float,
-    override var speedY: Float
+    override var speedY: Float,
+    override var prevX: Float = 0f,
+    override var prevY: Float = 0f,
 ) : IGameObjectJSON
 
 data class GameData(

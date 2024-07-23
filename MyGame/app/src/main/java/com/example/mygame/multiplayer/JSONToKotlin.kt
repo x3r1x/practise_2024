@@ -23,6 +23,8 @@ class JSONToKotlin(
     private val bonusViewFactory = BonusViewFactory(resources)
     private val bulletViewFactory = BulletViewFactory(resources)
 
+    private val objectsFactory = JSONObjectFactory()
+
     lateinit var playerJSON : PlayerJSON
 
     fun setGameState(jsonString: String) {
@@ -36,8 +38,11 @@ class JSONToKotlin(
 
     fun interpolation(elapsedTime: Float) : List<ObjectView> {
         objectsJSON.forEach {
-            it.x += it.speedX * elapsedTime
-            it.y += it.speedY * elapsedTime
+            val deltaX = it.x - it.prevX
+            val deltaY = it.y - it.prevY
+
+            it.x += deltaX * elapsedTime
+            it.y += deltaY * elapsedTime
         }
 
         return mapObjectsViews()
@@ -47,15 +52,13 @@ class JSONToKotlin(
         if (objectsJSON.isNotEmpty()) {
             val newObjectsJSON = mapObjectsFromJSON(gameData)
             newObjectsJSON.forEach { newObject ->
-                // Проверяем, существует ли объект с таким же идентификатором
-                if (newObject is PlayerJSON) {
-                    val existingObject = objectsJSON.find { it.id == newObject.id }
+                val existingObject = objectsJSON.find { it.id == newObject.id }
 
-                    if (existingObject == null) {
-                        objectsJSON.add(newObject)
-                    } else {
-                        objectsJSON.set(objectsJSON.indexOf(existingObject), newObject)
-                    }
+                if (existingObject == null) {
+                    objectsJSON.add(newObject)
+                } else {
+                    val index = objectsJSON.indexOf(existingObject)
+                    objectsJSON.set(index, objectsFactory.updateObject(existingObject, newObject))
                 }
             }
         } else {
@@ -71,7 +74,6 @@ class JSONToKotlin(
         val objects = mutableListOf<IGameObjectJSON>()
         val scr = score.getScore().toFloat()
 
-        val objectsFactory = JSONObjectFactory()
         gameData.objects.forEach {
             val type = (it[0] as Double).toInt()
             when (type) {

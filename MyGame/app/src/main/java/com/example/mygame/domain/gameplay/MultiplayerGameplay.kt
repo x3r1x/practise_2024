@@ -4,6 +4,7 @@ import android.content.res.Resources
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.mygame.domain.GameConstants
 import com.example.mygame.domain.Score
 import com.example.mygame.domain.Screen
 import com.example.mygame.domain.logic.SensorHandler
@@ -113,21 +114,30 @@ class MultiplayerGameplay(
     private fun updatePositions() {
         isNewData = false
 
-        val startTime = System.currentTimeMillis()
+        var previousTime = System.nanoTime() // Сохраняем начальное время
 
         uiScope.launch {
             while (!isNewData) {
-                val currentTime = System.currentTimeMillis()
-                val elapsedTime = (currentTime - startTime) / 1000f
+                val currentTime = System.nanoTime()
+                val elapsedTime = (currentTime - previousTime) / 1_000_000_000f
+                previousTime = currentTime
 
                 _gameState.postValue(GameState(
                     Type.GAME,
                     parserJSONToKotlin.interpolation(elapsedTime),
                     emptyList()
                 ))
+
+                val delayTime = GameConstants.MAX_FRAME_TIME - elapsedTime // Вычисляем время задержки
+
+                // Если elapsedTime больше времени кадра, не задерживаем
+                if (delayTime > 0) {
+                    delay((delayTime * 1000).toLong()) // Переводим в миллисекунды
+                }
             }
         }
     }
+
 
     override fun onShot(startX: Float) {
         sendMessage(0f, true)
