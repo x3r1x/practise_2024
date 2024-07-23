@@ -78,7 +78,7 @@ class Player : IMoveable, IGameObject {
     }
 
     fun updatePositionX(deltaX: Float, elapsedTime: Float) {
-        x += deltaX * elapsedTime * GameConstants.PLAYER_ON_X_MULTIPLIER
+        x += deltaX * elapsedTime * GameConstants.PLAYER_ON_X
         changeDirectionX(deltaX)
     }
 

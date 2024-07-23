@@ -1,9 +1,9 @@
 package com.example.mygame.multiplayer
 
 class JSONObjectFactory {
-    fun getPlayerFromJSON(data: Array<Double>, score: Float) : PlayerJSON {
+    fun getPlayerFromJSON(data: Array<Double>) : PlayerJSON {
         val posX = data[1].toFloat()
-        val posY = data[2].toFloat() + score
+        val posY = data[2].toFloat()
 
         val prevX = posX
         val prevY = posY
@@ -96,11 +96,8 @@ class JSONObjectFactory {
     }
 
     fun updateObject(prevObject: IGameObjectJSON, updatedObject: IGameObjectJSON) : IGameObjectJSON {
-        val prevX = prevObject.x
-        val prevY = prevObject.y
-
-        updatedObject.prevX = prevX
-        updatedObject.prevY = prevY
+        updatedObject.prevX = prevObject.x
+        updatedObject.prevY = prevObject.y
 
         return updatedObject
     }

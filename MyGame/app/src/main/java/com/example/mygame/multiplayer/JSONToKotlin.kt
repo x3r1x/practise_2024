@@ -1,6 +1,7 @@
 package com.example.mygame.multiplayer
 
 import android.content.res.Resources
+import com.example.mygame.domain.GameConstants
 import com.example.mygame.domain.Score
 import com.example.mygame.domain.drawable.ObjectType
 import com.example.mygame.domain.drawable.factory.BonusViewFactory
@@ -29,6 +30,7 @@ class JSONToKotlin(
 
     fun setGameState(jsonString: String) {
         val gameData = parseJSON(jsonString)
+        println("${gameData.objects[0][4]}")
         updateObjects(gameData)
     }
 
@@ -37,12 +39,44 @@ class JSONToKotlin(
     }
 
     fun interpolation(elapsedTime: Float) : List<ObjectView> {
-        objectsJSON.forEach {
+        /*objectsJSON.forEach {
+            val prevY = it.y
+
+            it.x += it.speedX * elapsedTime
+            it.y += it.speedY * elapsedTime
+
+            //println("${prevY}  ${it.y}")
+            /*if (it is PlayerJSON) {
+                println("${it.prevX} ${it.prevY} ${it.x} ${it.y}") //////////
+            }
+
             val deltaX = it.x - it.prevX
             val deltaY = it.y - it.prevY
 
-            it.x += deltaX * elapsedTime
-            it.y += deltaY * elapsedTime
+            it.prevX += deltaX * elapsedTime
+            it.prevY += deltaY * elapsedTime*/
+        }
+
+        */
+
+
+//        objectsJSON.forEach {
+//            if (it is PlayerJSON) {
+//                println("speed ${it.speedY}")
+//            }
+//            it.y += it.speedY * elapsedTime
+//            if (it is PlayerJSON) {
+//                println("pos ${it.y}")
+//            }
+//        }
+        objectsJSON.forEach {
+            if (it is PlayerJSON) {
+                it.y += it.speedY * it.directionY  * elapsedTime
+
+                it.speedY += it.directionY.toFloat() * GameConstants.GRAVITY * elapsedTime
+
+                //println("${it.y} speed ${it.speedY}")
+            }
         }
 
         return mapObjectsViews()
@@ -78,7 +112,7 @@ class JSONToKotlin(
             val type = (it[0] as Double).toInt()
             when (type) {
                 ObjectType.PLAYER_TYPE -> {
-                    playerJSON = objectsFactory.getPlayerFromJSON(it, scr)
+                    playerJSON = objectsFactory.getPlayerFromJSON(it)
                     objects.add(playerJSON)
                 }
                 in ObjectType.MULTIPLAYER_PLATFORMS -> objects.add(objectsFactory.getPlatformFromJSON(it, scr))
@@ -103,13 +137,13 @@ class JSONToKotlin(
                     it.type, it.x, it.y, it.animationTime
                 ))
                 is EnemyJSON -> objectsViews.add(enemyViewFactory.getEnemyView(
-                    it.type, it.x, it.y
+                    it.type, it.prevX, it.prevY
                 ))
                 is BonusJSON -> objectsViews.add(bonusViewFactory.getBonusView(
-                    it.type, it.x, it.y, it.animationTime
+                    it.type, it.prevX, it.prevY, it.animationTime
                 ))
                 is BulletJSON -> objectsViews.add(bulletViewFactory.getBulletView(
-                    it.x, it.y
+                    it.prevX, it.prevY
                 ))
             }
         }

@@ -9,7 +9,7 @@ class GameConstants {
         const val PLAYER_JUMP_SPEED = 1600f
         const val PLAYER_SPRING_JUMP_SPEED = 3700f
         const val PLAYER_SPEED_WITH_JETPACK = 1900f
-        const val PLAYER_ON_X_MULTIPLIER = 1.5f
+        const val PLAYER_ON_X = 1.5f
         const val PLAYER_DISTANCE_TO_TURN = 25f
         const val PLAYER_LEG_OFFSET_X_WHEN_SHOOT = 16f
         const val PLAYER_SMALL_LEG_OFFSET = 15f

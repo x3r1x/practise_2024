@@ -31,6 +31,8 @@ class MultiplayerGameplay(
     private val uiScope = CoroutineScope(Dispatchers.Main)
 
     private var isNewData = false
+    private var isEnd = false
+    private var isInit = true
 
     private val gson = Gson()
 
@@ -46,7 +48,7 @@ class MultiplayerGameplay(
 
     private val objects = mutableListOf<IGameObjectJSON>()
 
-    private val camera = Camera(screen, score)
+    private val camera = Camera(screen, score, objects)
     private val parserJSONToKotlin = JSONToKotlin(gson, resources, score, objects)
 
     private val _scoreObservable = MutableLiveData<Int>()
@@ -108,36 +110,41 @@ class MultiplayerGameplay(
     private fun handleServerData(message: String) {
         parserJSONToKotlin.setGameState(message)
 
-        updatePositions()
-    }
-
-    private fun updatePositions() {
-        isNewData = false
-
-        var previousTime = System.nanoTime() // Сохраняем начальное время
-
-        uiScope.launch {
-            while (!isNewData) {
-                val currentTime = System.nanoTime()
-                val elapsedTime = (currentTime - previousTime) / 1_000_000_000f
-                previousTime = currentTime
-
-                _gameState.postValue(GameState(
-                    Type.GAME,
-                    parserJSONToKotlin.interpolation(elapsedTime),
-                    emptyList()
-                ))
-
-                val delayTime = GameConstants.MAX_FRAME_TIME - elapsedTime // Вычисляем время задержки
-
-                // Если elapsedTime больше времени кадра, не задерживаем
-                if (delayTime > 0) {
-                    delay((delayTime * 1000).toLong()) // Переводим в миллисекунды
-                }
-            }
+        if (isInit) {
+            updatePositions()
+            isInit = false
         }
     }
 
+    private fun updatePositions() {
+        val player = parserJSONToKotlin.playerJSON
+
+        var startTime = System.currentTimeMillis()
+
+        uiScope.launch {
+            while (!isEnd) {
+                val systemTime = System.currentTimeMillis()
+
+                val elapsedTime = (systemTime - startTime) / 1000f
+
+                if (elapsedTime < GameConstants.MAX_FRAME_TIME) {
+                    delay(1) // Переводим в миллисекунды
+                    continue
+                }
+
+                println("elapsed time $elapsedTime")
+                _gameState.postValue(GameState(
+                    Type.GAME,
+                    parserJSONToKotlin.getObjectsViews(),
+                    emptyList()
+                ))
+                parserJSONToKotlin.interpolation(elapsedTime)
+
+                startTime = systemTime
+
+            }
+        }
+    }
 
     override fun onShot(startX: Float) {
         sendMessage(0f, true)
@@ -154,6 +161,7 @@ class MultiplayerGameplay(
     }
 
     override fun onDestroy() {
+        isEnd = true
         client.close()
     }
 }
