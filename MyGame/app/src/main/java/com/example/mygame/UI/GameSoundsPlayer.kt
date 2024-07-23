@@ -164,6 +164,10 @@ class GameSoundsPlayer(context: Context, private val coroutineScope: LifecycleCo
         }
     }
 
+    fun release() {
+        player.release()
+    }
+
     companion object {
         const val BASE_PRIORITY = 0
         const val BASE_SPEED_RATE = 1f

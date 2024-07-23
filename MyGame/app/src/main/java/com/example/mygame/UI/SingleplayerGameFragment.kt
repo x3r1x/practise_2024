@@ -36,8 +36,6 @@ class SingleplayerGameFragment : Fragment() {
     private lateinit var gameMusic : ExoPlayer
     private lateinit var pauseMusic: ExoPlayer
 
-    private lateinit var gameSounds: GameSoundsPlayer
-
     private lateinit var pauseButton: ImageButton
     private lateinit var pauseGroup: ConstraintLayout
     private lateinit var exitToMenuButton: Button
@@ -118,9 +116,7 @@ class SingleplayerGameFragment : Fragment() {
         initMusics()
         gameMusic.play()
 
-        gameSounds = GameSoundsPlayer(requireContext(), lifecycleScope)
-
-        gameViewModel.initialize(screenWidth, screenHeight, GameViewModel.Type.SINGLEPLAYER, gameSounds)
+        gameViewModel.initialize(screenWidth, screenHeight, GameViewModel.Type.SINGLEPLAYER, requireContext(), lifecycleScope)
         gameViewModel.gameplay.scoreObservable.observe(viewLifecycleOwner) { newScore ->
             scoreView.text = newScore.toString()
         }
@@ -131,7 +127,6 @@ class SingleplayerGameFragment : Fragment() {
 
         gameView.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_DOWN && !isPaused) {
-                gameSounds.playShootSound()
                 gameViewModel.onClick(event.x)
             }
             true

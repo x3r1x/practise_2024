@@ -1,7 +1,9 @@
 package com.example.mygame.presentation
 
 import android.app.Application
+import android.content.Context
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LifecycleCoroutineScope
 import com.example.mygame.domain.Screen
 import com.example.mygame.UI.GameSoundsPlayer
 import com.example.mygame.domain.drawable.DrawableManager
@@ -14,7 +16,7 @@ import com.example.mygame.domain.logic.PositionHandler
 import com.example.mygame.domain.logic.SensorHandler
 
 class GameViewModel(
-    private val application: Application
+    private val application: Application,
 ) : AndroidViewModel(application), SensorHandler.SensorCallback {
     private lateinit var sensorHandler: SensorHandler
     private lateinit var collisionHandler: CollisionHandler
@@ -30,14 +32,14 @@ class GameViewModel(
     }
     lateinit var gameplay: IGameplay
 
-    fun initialize(screenWidth: Float, screenHeight: Float, initType: Type, mediaPlayer: GameSoundsPlayer) {
+    fun initialize(screenWidth: Float, screenHeight: Float, initType: Type, context: Context, coroutineScope: LifecycleCoroutineScope) {
         screen = Screen(screenWidth, screenHeight)
         sensorHandler = SensorHandler(getApplication(), this)
         collisionHandler = CollisionHandler()
         objectsManager = ObjectsManager(screen)
         positionHandler = PositionHandler()
         drawableManager = DrawableManager(application.resources)
-        audioPlayer = mediaPlayer
+        audioPlayer = GameSoundsPlayer(context, coroutineScope)
 
         if (initType == Type.SINGLEPLAYER) {
             gameplay = SingleplayerGameplay(objectsManager, sensorHandler, positionHandler, collisionHandler, drawableManager, screen, audioPlayer)
@@ -45,10 +47,6 @@ class GameViewModel(
         } else  {
             gameplay = MultiplayerGameplay(application.resources, screen)
         }
-    }
-
-    override fun onSensorDataChanged(deltaX: Float) {
-        gameplay.onSensorDataChanged(deltaX)
     }
 
     fun onClick(touchX: Float) {
@@ -61,5 +59,14 @@ class GameViewModel(
 
     fun getScore(): Int {
         return gameplay.score.getScore()
+    }
+
+    override fun onSensorDataChanged(deltaX: Float) {
+        gameplay.onSensorDataChanged(deltaX)
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        audioPlayer.release()
     }
 }

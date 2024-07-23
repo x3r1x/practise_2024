@@ -123,6 +123,7 @@ class SingleplayerGameplay(
     }
 
     override fun onShot(startX: Float) {
+        audioPlayer.playShootSound()
         objectsManager.createBullet(startX)
     }
 
