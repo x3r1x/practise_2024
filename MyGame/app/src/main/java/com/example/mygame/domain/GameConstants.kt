@@ -46,6 +46,15 @@ class GameConstants {
         const val MAX_VERTICAL_PLATFORM_GAP = 400f
         const val MAX_VERTICAL_BREAKING_PLATFORM_GAP = 50f
 
+        const val BONUSES_IN_INITIAL_PACK = 3
+        const val ENEMIES_IN_INITIAL_PACK = 2
+
+        const val INITIAL_JETPACK_SPAWN_CHANCE = 0.05f
+        const val INITIAL_SHIELD_SPAWN_CHANCE = 0.2f
+
+        const val INITIAL_NINJA_SPAWN_CHANCE = 0.05f
+        const val INITIAL_FLY_SPAWN_CHANCE = 0.4f
+
         const val JETPACK_SPAWN_CHANCE = 0.02f
         const val SHIELD_SPAWN_CHANCE = 0.08f
         const val SPRING_SPAWN_CHANCE = 0.25f

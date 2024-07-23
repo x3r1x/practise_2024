@@ -22,7 +22,7 @@ class PlatformGenerator(
     private val disappearingPlatformFactory = DisappearingPlatformFactory()
     private val movingPlatformOnYFactory = MovingPlatformOnYFactory()
 
-    private val platformGap: Float = 50f
+    private val platformGap: Float = 100f
 
     private val newPackageHeight = 4500f
 

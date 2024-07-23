@@ -1,5 +1,6 @@
 package com.example.mygame.domain.generator
 
+import com.example.mygame.domain.GameConstants
 import com.example.mygame.domain.IGameObject
 import com.example.mygame.domain.Screen
 import com.example.mygame.domain.platform.BreakingPlatform
@@ -15,7 +16,25 @@ class LevelGenerator(
     private val newPackageHeight = 4000f
 
     fun generateInitialPack(): MutableList<IGameObject> {
-        return platformGenerator.generateInitialPlatforms().toMutableList()
+        val initialPack = mutableListOf<IGameObject>()
+
+        val platforms = platformGenerator.generateInitialPlatforms().toMutableList()
+        val randomPlatformsWithBonuses = platforms.shuffled().take(GameConstants.BONUSES_IN_INITIAL_PACK)
+        val randomPlatformsWithEnemies = platforms.shuffled().take(GameConstants.ENEMIES_IN_INITIAL_PACK)
+
+        platforms.forEach {
+            if (it in randomPlatformsWithBonuses) {
+                initialPack.add(bonusGenerator.generateInitialBonus(it) as IGameObject)
+            }
+
+            if (it in randomPlatformsWithEnemies) {
+                initialPack.add(enemyGenerator.generateInitialEnemy(it))
+            }
+
+            initialPack.add(it)
+        }
+
+        return initialPack.toMutableList()
     }
 
     fun generateNewPack(from: Float): MutableList<IGameObject> {
