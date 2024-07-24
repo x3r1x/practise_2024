@@ -57,10 +57,10 @@ class JSONToKotlin(
                 }
 
                 in ObjectType.MULTIPLAYER_PLATFORMS ->
-                    objectsViewFactory.getPlatformFromJSON(it, offset.getY())
+                    objectsViewFactory.getPlatformFromJSON(it)
 
                 in ObjectType.MULTIPLAYER_BONUSES ->
-                    objectsViewFactory.getBonusFromJSON(it, offset.getY())
+                    objectsViewFactory.getBonusFromJSON(it)
 
                 else -> null
             }
