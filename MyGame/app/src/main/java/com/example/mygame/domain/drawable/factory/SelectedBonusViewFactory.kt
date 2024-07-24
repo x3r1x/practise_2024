@@ -119,8 +119,6 @@ class SelectedBonusViewFactory(resources: Resources) {
     private fun updateShieldTimer(additionalTime: Float) {
         timeWithShield += additionalTime
 
-        println("#Debug: Factory: $timeWithShield")
-
         if (GameConstants.SHIELD_DURATION - timeWithShield <= 0f) {
             shieldPaint.alpha = 0
             isShieldSelected = false

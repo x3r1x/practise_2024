@@ -40,15 +40,15 @@ open class Enemy(createdX: Float, createdY: Float) : IMoveable, IGameObject {
     }
 
     private fun runDeathAnimation() {
-        val timer = object : CountDownTimer(2000, 1) {
+        val animator = object : CountDownTimer(MAX_ANIMATION_LENGTH, ANIMATION_TICK) {
             override fun onTick(p0: Long) {
-                setPosition(x, y + DEATH_OFFSET_PER_FRAME)
+                setPosition(x, y + DEATH_OFFSET)
             }
 
             override fun onFinish() {}
         }
 
-        timer.start()
+        animator.start()
     }
 
     override fun setPosition(startX: Float, startY: Float) {
@@ -61,6 +61,8 @@ open class Enemy(createdX: Float, createdY: Float) : IMoveable, IGameObject {
     }
 
     companion object {
-        private const val DEATH_OFFSET_PER_FRAME = 10f
+        private const val DEATH_OFFSET = 10f
+        private const val MAX_ANIMATION_LENGTH : Long = 2000
+        private const val ANIMATION_TICK : Long = 1
     }
 }

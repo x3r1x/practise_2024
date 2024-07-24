@@ -70,8 +70,6 @@ class PlayerSelectedBonuses(private val player: Player) {
     private fun updateShield(additionalTime: Float, audioPlayer: GameSoundsPlayer) {
         timeWithShield += additionalTime
 
-        println("#Debug: #Real: $timeWithShield")
-
         if (GameConstants.SHIELD_DURATION - timeWithShield <= 0f) {
             audioPlayer.playShieldDestroySound()
 
