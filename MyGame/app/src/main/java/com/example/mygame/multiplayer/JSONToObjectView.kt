@@ -1,11 +1,14 @@
 package com.example.mygame.multiplayer
 
 import android.content.res.Resources
+import android.graphics.Color
+import android.graphics.Paint
 import com.example.mygame.domain.drawable.factory.BonusViewFactory
 import com.example.mygame.domain.drawable.factory.BulletViewFactory
 import com.example.mygame.domain.drawable.factory.EnemyViewFactory
 import com.example.mygame.domain.drawable.factory.PlatformViewFactory
 import com.example.mygame.domain.drawable.factory.PlayerViewFactory
+import com.example.mygame.domain.drawable.view.FinishView
 import com.example.mygame.domain.drawable.view.ObjectView
 
 class JSONToObjectView(resources: Resources) {
@@ -22,10 +25,10 @@ class JSONToObjectView(resources: Resources) {
         val directionY = data[5].toInt()
 
         val isWithShield = data[6].toInt()
-        val isShooting = data[7].toInt()
-        val isDead = data[8].toInt()
+//        val isShooting = data[7].toInt()
+//        val isDead = data[8].toInt()
 
-        return playerViewFactory.getPlayerView(x, y, directionX, directionY, isWithShield, isShooting, isDead, id)
+        return playerViewFactory.getPlayerView(x, y, directionX, directionY, isWithShield, 0, 0, id)
     }
 
     fun getPlatformFromJSON(data: Array<Double>, offset: Float) : ObjectView {
@@ -39,6 +42,19 @@ class JSONToObjectView(resources: Resources) {
         val animationTime = data[4].toInt()
 
         return platformViewFactory.getPlatformView(id, type, posX, posY, animationTime)
+    }
+
+    fun getFinish(data: Array<Double>) : ObjectView {
+        val posX = data[1].toFloat()
+        val posY = data[2].toFloat()// + offset
+
+        return FinishView(
+            posX,
+            posY,
+            Paint().apply {
+                color = Color.RED
+            }
+        )
     }
 
     fun getEnemyFromJSON(data: Array<Double>, offset: Float) : ObjectView {

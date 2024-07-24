@@ -56,6 +56,9 @@ class JSONToKotlin(
                     objectsViewFactory.getPlayerFromJSON(posX + offset.getX(), posY + offset.getY(), it)
                 }
 
+                ObjectType.FINISH_LINE_TYPE ->
+                    objectsViewFactory.getFinish(it)
+
                 in ObjectType.MULTIPLAYER_PLATFORMS ->
                     objectsViewFactory.getPlatformFromJSON(it, offset.getY())
 
