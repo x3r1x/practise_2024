@@ -1,58 +1,27 @@
 package com.example.mygame.multiplayer
 
-import com.example.mygame.domain.GameConstants
-import com.example.mygame.domain.Score
 import com.example.mygame.domain.Screen
-import com.example.mygame.domain.drawable.factory.PlayerViewFactory
 
 class Camera(
-    screen: Screen,
-    private val score: Score,
-    private val objects: MutableList<IGameObjectJSON>
+    screen: Screen
 ) {
-    private val scrollingDownLine = screen.height - GameConstants.SCREEN_SCROLLING_DOWN_LINE
-    private val scrollingUpLine = screen.height / 2
-    //private var lastPlayerY: Float = 0f // Хранит последнюю позицию игрока по Y
+    private val fixedY = screen.height / 3 * 2
+    private val fixedX = screen.width / 2
 
-    fun updatePositions(player: PlayerJSON) {
-        // Проверяем, нужно ли сместить экран вверх
-        if (isNeedScrollUp(player.y)) {
-            val offsetY = getUpOffsetY(player.y)
-            //score.increase(offsetY)
-            screenScroll(objects, offsetY)
-        }
-        // Проверяем, нужно ли сместить экран вниз
-        /*else if (isNeedScrollDown(player)) {
-            val offsetY = getDownOffsetY(player.y)
-            screenScroll(objects, -offsetY) // Смещение вниз
-            score.increase(-offsetY) // Предполагаем, что нужно уменьшить счет при смещении вниз
-        }*/
+    private val bottom  = 60f
 
-        // Обновляем последнюю позицию игрока
-        //lastPlayerY = player.y
+    private var offsetY = 0f
+
+    fun getOffsetY() : Float {
+        return offsetY + 75f
     }
 
-    private fun screenScroll(elements: List<IGameObjectJSON>, offsetY: Float) {
-        elements.forEach {
-            it.y += offsetY
-            //println("coords: ${it.y}")
-            //it.prevY += offsetY
-        }
+    fun getOffsetX(playerX: Float) : Float {
+        return fixedX - playerX
     }
 
-    private fun isNeedScrollDown(player: PlayerJSON): Boolean {
-        return player.directionY == PlayerViewFactory.DIRECTION_Y_DOWN && player.y >= scrollingDownLine //&& player.y > lastPlayerY
+    fun countOffsetY(playerY: Float) {
+        offsetY = fixedY - playerY
     }
 
-    private fun isNeedScrollUp(playerY: Float): Boolean {
-        return playerY < scrollingUpLine //&& playerY < lastPlayerY
-    }
-
-    private fun getDownOffsetY(playerY: Float): Float {
-        return playerY - scrollingDownLine
-    }
-
-    private fun getUpOffsetY(playerY: Float): Float {
-        return playerY - scrollingDownLine
-    }
 }

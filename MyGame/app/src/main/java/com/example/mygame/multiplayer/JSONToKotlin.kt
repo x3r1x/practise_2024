@@ -15,7 +15,8 @@ class JSONToKotlin(
     private val gson: Gson,
     resources: Resources,
     private val score: Score,
-    private val objectsJSON: MutableList<IGameObjectJSON>
+    private val objectsJSON: MutableList<IGameObjectJSON>,
+    private val camera: Camera
 ) {
     private val playerViewFactory = PlayerViewFactory(resources)
     private val enemyViewFactory = EnemyViewFactory(resources)
@@ -26,7 +27,7 @@ class JSONToKotlin(
     lateinit var playerJSON : PlayerJSON
 
     fun setGameState(jsonString: String) {
-        val gameData = parseJSON(jsonString)
+        val gameData = gson.fromJson(jsonString, GameData::class.java)
         updateObjects(gameData)
     }
 
@@ -63,27 +64,27 @@ class JSONToKotlin(
         }
     }
 
-    private fun parseJSON(jsonString: String) : GameData {
-        return gson.fromJson(jsonString, GameData::class.java)
-    }
-
     private fun mapObjectsFromJSON(gameData: GameData) : MutableList<IGameObjectJSON> {
         val objects = mutableListOf<IGameObjectJSON>()
-        val scr = score.getScore().toFloat()
+        var offsetY = 0f
+        //var offsetX = 0f
 
         val objectsFactory = JSONObjectFactory()
         gameData.objects.forEach {
             val type = (it[0] as Double).toInt()
             when (type) {
                 ObjectType.PLAYER_TYPE -> {
-                    playerJSON = objectsFactory.getPlayerFromJSON(it, scr)
-                    println("${playerJSON.x} ${playerJSON.y} ${playerJSON.speedX} ${playerJSON.speedY}")
+                    playerJSON = objectsFactory.getPlayerFromJSON(it)
+                    camera.countOffsetY(playerJSON.y)
+                    offsetY = camera.getOffsetY()
+                    playerJSON.y += offsetY
+                    //println("${playerJSON.x} ${playerJSON.y} ${playerJSON.speedX} ${playerJSON.speedY}")
                     objects.add(playerJSON)
                 }
-                in ObjectType.MULTIPLAYER_PLATFORMS -> objects.add(objectsFactory.getPlatformFromJSON(it, scr))
-                in ObjectType.MULTIPLAYER_BONUSES -> objects.add(objectsFactory.getBonusFromJSON(it, scr))
-                in ObjectType.MULTIPLAYER_ENEMIES -> objects.add(objectsFactory.getEnemyFromJSON(it, scr))
-                ObjectType.BULLET_TYPE -> objects.add(objectsFactory.getBulletFromJSON(it, scr))
+                in ObjectType.MULTIPLAYER_PLATFORMS -> objects.add(objectsFactory.getPlatformFromJSON(it, offsetY))
+                in ObjectType.MULTIPLAYER_BONUSES -> objects.add(objectsFactory.getBonusFromJSON(it, offsetY))
+                in ObjectType.MULTIPLAYER_ENEMIES -> objects.add(objectsFactory.getEnemyFromJSON(it, offsetY))
+                ObjectType.BULLET_TYPE -> objects.add(objectsFactory.getBulletFromJSON(it, offsetY))
             }
         }
 
@@ -92,6 +93,7 @@ class JSONToKotlin(
 
     private fun mapObjectsViews() : List<ObjectView> {
         val objectsViews = mutableListOf<ObjectView>()
+        val offsetY = camera.getOffsetY()
 
         objectsJSON.forEach {
             when(it) {
@@ -99,7 +101,7 @@ class JSONToKotlin(
                     it.x, it.y, it.directionX, it.directionY, it.isWithShield, it.isShot, it.isDead
                 ))
                 is PlatformJSON -> objectsViews.add(platformViewFactory.getPlatformView(
-                    it.type, it.x, it.y, it.animationTime
+                    it.type, it.x, it.y + offsetY, it.animationTime
                 ))
                 is EnemyJSON -> objectsViews.add(enemyViewFactory.getEnemyView(
                     it.type, it.x, it.y

@@ -36,7 +36,7 @@ class MultiplayerGameplay(
     private var pingSentTime: Long = 0
 
     private val client: WebSocketClient
-    private val serverUri = URI("ws://10.250.104.162:8080")
+    private val serverUri = URI("ws://10.10.29.46:8080")
 
     private val _gameState = MutableLiveData<GameState>()
     override val gameState: LiveData<GameState> = _gameState
@@ -45,8 +45,8 @@ class MultiplayerGameplay(
 
     private val objects = mutableListOf<IGameObjectJSON>()
 
-    private val camera = Camera(screen, score, objects)
-    private val parserJSONToKotlin = JSONToKotlin(gson, resources, score, objects)
+    private val camera = Camera(screen)
+    private val parserJSONToKotlin = JSONToKotlin(gson, resources, score, objects, camera)
 
     private val _scoreObservable = MutableLiveData<Int>()
     override val scoreObservable: LiveData<Int> = _scoreObservable
@@ -55,6 +55,7 @@ class MultiplayerGameplay(
         client = object : WebSocketClient(serverUri) {
             override fun onOpen(handshakedata: ServerHandshake?) {
                 sendInitMessage()
+                sendReadyMessage()
                 Log.d("WebSocket", "Connection opened")
             }
 
@@ -131,12 +132,15 @@ class MultiplayerGameplay(
         isNewData = false
 
         val startTime = System.currentTimeMillis()
-        val player = parserJSONToKotlin.playerJSON
 
         uiScope.launch {
             while (!isNewData) {
+
+                val player = parserJSONToKotlin.playerJSON
                 //val currentTime = System.currentTimeMillis()
                 //val elapsedTime = (currentTime - startTime) / 1000f
+
+                //camera.changePositionY(objects, player)
 
                 _gameState.postValue(GameState(
                     Type.GAME,
@@ -144,7 +148,7 @@ class MultiplayerGameplay(
                     emptyList()
                 ))
 
-                camera.updatePositions(player)
+                //camera.updatePositions(player)
             }
         }
     }
