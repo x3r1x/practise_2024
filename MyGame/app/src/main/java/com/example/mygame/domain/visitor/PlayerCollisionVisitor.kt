@@ -71,7 +71,11 @@ class PlayerCollisionVisitor(
 
                 enemy.killPlayer(player)
             } else {
-                audioPlayer.playEnemySlainSound()
+                if (player.isWithShield || player.isWithJetpack) {
+                    audioPlayer.playEnemySlainWithBonusSound()
+                } else {
+                    audioPlayer.playEnemySlainSound()
+                }
 
                 enemy.killEnemy()
                 player.jump()

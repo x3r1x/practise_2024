@@ -28,6 +28,7 @@ class GameSoundsPlayer(context: Context, private val coroutineScope: LifecycleCo
     private val jetpackSound = player.load(context, R.raw.jetpack_sound, BASE_PRIORITY)
     private val jetpackDestroySound = player.load(context, R.raw.jetpack_disappear_sound, BASE_PRIORITY)
     private val bonusEndingSoonSound = player.load(context, R.raw.bonus_is_ending_sound, BASE_PRIORITY)
+    private val enemySlainWithBonusSound = player.load(context, R.raw.enemy_kill_with_bonus_sound, BASE_PRIORITY)
     private val enemySlainSound = player.load(context, R.raw.enemy_kill_sound, BASE_PRIORITY)
     private val playerKilledSound = player.load(context, R.raw.death_from_enemy_sound, BASE_PRIORITY)
     private val breakingPlatformSound = player.load(context, R.raw.breaking_platform_sound, BASE_PRIORITY)
@@ -124,6 +125,19 @@ class GameSoundsPlayer(context: Context, private val coroutineScope: LifecycleCo
         coroutineScope.launch(Dispatchers.IO) {
             player.play(
                 bonusEndingSoonSound,
+                MAX_VOLUME,
+                MAX_VOLUME,
+                BASE_PRIORITY,
+                NO_LOOP,
+                BASE_SPEED_RATE
+            )
+        }
+    }
+
+    fun playEnemySlainWithBonusSound() {
+        coroutineScope.launch(Dispatchers.IO) {
+            player.play(
+                enemySlainWithBonusSound,
                 MAX_VOLUME,
                 MAX_VOLUME,
                 BASE_PRIORITY,
