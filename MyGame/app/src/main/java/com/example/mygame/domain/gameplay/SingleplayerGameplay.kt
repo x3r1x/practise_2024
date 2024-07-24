@@ -31,6 +31,8 @@ class SingleplayerGameplay(
 ) : IGameplay {
     private var isGameLoopRunning = false
 
+    private var shotCooldown = 0f
+
     private var deltaX = 0f
     override val score = Score()
 
@@ -80,6 +82,10 @@ class SingleplayerGameplay(
         updateGameObjects()
         checkCollisions()
         updatePositions(elapsedTime)
+
+        if (shotCooldown > 0f) {
+            shotCooldown -= elapsedTime
+        }
     }
 
     private fun updateGameObjects() {
@@ -124,7 +130,11 @@ class SingleplayerGameplay(
 
     override fun onShot(startX: Float) {
         audioPlayer.playShootSound()
-        objectsManager.createBullet(startX)
+
+        if (shotCooldown <= 0f) {
+            objectsManager.createBullet(startX)
+            shotCooldown = GameConstants.SHOT_COOLDOWN
+        }
     }
 
     override fun onViewCreated() {

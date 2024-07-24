@@ -6,6 +6,8 @@ class GameConstants {
 
         const val SENSOR_MULTIPLIER = 180f
 
+        const val SHOT_COOLDOWN = 0.3f
+
         const val PLAYER_JUMP_SPEED = 1600f
         const val PLAYER_SPRING_JUMP_SPEED = 3700f
         const val PLAYER_SPEED_WITH_JETPACK = 1900f
