@@ -132,9 +132,9 @@ class SingleplayerGameplay(
     }
 
     override fun onShot(startX: Float) {
-        audioPlayer.playShootSound()
-
         if (shotCooldown <= 0f) {
+            audioPlayer.playShootSound()
+
             objectsManager.createBullet(startX)
             shotCooldown = GameConstants.SHOT_COOLDOWN
         }
