@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.compose.material3.NavigationBar
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
@@ -14,8 +15,11 @@ import androidx.media3.exoplayer.ExoPlayer
 import androidx.navigation.Navigation
 import com.example.mygame.R
 import com.example.mygame.UI.StartMenuFragment.Companion
+import com.example.mygame.presentation.LeaderboardViewModel
 
 class LeaderboardFragment : Fragment() {
+
+    private val viewModel by viewModels<LeaderboardViewModel>()
     private lateinit var audioPlayer: ExoPlayer
 
     private fun playMusic() {
@@ -43,6 +47,14 @@ class LeaderboardFragment : Fragment() {
         }
 
         return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        if (savedInstanceState == null) {
+            viewModel.onViewCreated()
+        }
     }
 
     override fun onPause() {
