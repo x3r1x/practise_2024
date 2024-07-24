@@ -35,9 +35,10 @@ class PlatformGenerator(
     private val platform = Platform(0f, 0f)
 
     fun generateInitialPlatforms(): MutableList<Platform> {
-        var newY = screen.height
+        val platforms = mutableListOf<Platform>()
 
-        val platforms: MutableList<Platform> = mutableListOf()
+        var newY = screen.height - OTHER_PLATFORMS_OUT_OF_START
+
         while (newY >= -newPackageHeight) {
             val x = Random.nextFloat() * (screen.width - platform.width) + GameConstants.PLATFORM_SPAWN_ADDITIONAL_X
             val newPlatform = staticPlatformFactory.generatePlatform(x, newY)
@@ -79,6 +80,26 @@ class PlatformGenerator(
         return factory.generatePlatform(coordinates[0], coordinates[1])
     }
 
+    fun generateStartPlatform() : MutableList<Platform> {
+        var initialPlatform = StaticPlatformFactory().generatePlatform(screen.left + platform.width / 2,
+            screen.bottom - platform.height / 2 - START_PLATFORMS_GAP_OF_SCREEN)
+
+        val platforms = mutableListOf<Platform>()
+
+        while (initialPlatform.right < screen.width) {
+            platforms.add(initialPlatform)
+
+            val previousRight = initialPlatform.right
+
+            initialPlatform = StaticPlatformFactory().generatePlatform(previousRight + START_PLATFORM_GAP + platform.width / 2,
+                screen.bottom - platform.height / 2 - START_PLATFORMS_GAP_OF_SCREEN)
+        }
+
+        platforms.add(initialPlatform)
+
+        return platforms
+    }
+
     private fun getRandomCoordinates(from: Float, verticalGap: Float) : Array<Float> {
         val x = Random.nextFloat() * (screen.width - platform.width) + GameConstants.PLATFORM_SPAWN_ADDITIONAL_X
         val y = from - Random.nextFloat() * (verticalGap - platformGap) - platformGap
@@ -86,7 +107,13 @@ class PlatformGenerator(
     }
 
     private fun getRandomFactory(): IPlatformFactory {
-        // TODO: Сделать шанс генерации на основе score
         return factories[Random.nextInt(factories.size)]
+    }
+
+    companion object {
+        private const val START_PLATFORMS_GAP_OF_SCREEN = 200f
+        private const val START_PLATFORM_GAP = 10f
+
+        private const val OTHER_PLATFORMS_OUT_OF_START = 600f
     }
 }

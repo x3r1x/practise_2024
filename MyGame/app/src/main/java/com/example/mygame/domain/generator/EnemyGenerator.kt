@@ -66,7 +66,7 @@ class EnemyGenerator(
     }
 
     companion object {
-        private const val INITIAL_GAP_Y = 35f
+        private const val INITIAL_GAP_Y = 110f
 
         private const val GAP_X = 275f
     }

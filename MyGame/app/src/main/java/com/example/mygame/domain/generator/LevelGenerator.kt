@@ -26,6 +26,8 @@ class LevelGenerator(
         val randomPlatformsWithBonuses = platforms.shuffled().take(GameConstants.BONUSES_IN_INITIAL_PACK)
         val randomPlatformsWithEnemies = platforms.shuffled().take(GameConstants.ENEMIES_IN_INITIAL_PACK)
 
+        platforms.addAll(platformGenerator.generateStartPlatform())
+
         platforms.forEach {
             if (it in randomPlatformsWithBonuses) {
                 initialPack.add(bonusGenerator.generateInitialBonus(it) as IGameObject)

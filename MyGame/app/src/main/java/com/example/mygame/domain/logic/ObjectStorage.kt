@@ -21,7 +21,7 @@ class ObjectStorage(
     private var player = PlayerFactory().generatePlayer()
 
     init {
-        player.setPosition(screen.width / 2f, screen.height - 800)
+        player.setPosition(screen.width / 2f, screen.height - 300)
     }
 
     fun getPlayer() : Player {
