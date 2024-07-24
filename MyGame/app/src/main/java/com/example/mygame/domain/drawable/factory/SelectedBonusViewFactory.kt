@@ -6,7 +6,6 @@ import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.graphics.Paint
 import android.graphics.RectF
-import android.os.CountDownTimer
 import com.example.mygame.R
 import com.example.mygame.domain.GameConstants
 import com.example.mygame.domain.drawable.factory.PlayerViewFactory.Companion.BITMAP_OPTIONS
@@ -27,11 +26,20 @@ class SelectedBonusViewFactory(resources: Resources) {
     private var isShieldSelected = false
     private var isJetpackSelected = false
 
+    private var timeWithShield = 0f
+    private var shieldPulseTime = 0f
+
+    private var timeWithJetpack = 0f
+    private var jetpackPulseTime = 0f
+
     private val shieldPaint = Paint()
     private val jetpackPaint = Paint()
 
     fun getShieldView(x: Float, y: Float, directionX: Int): SelectedBonusView {
-        startShieldDisappearingTimer()
+        if (!isShieldSelected) {
+            selectShield()
+        }
+
         val rect = RectF(
             x - shieldOnPlayerBitmap.width / 2,
             y - shieldOnPlayerBitmap.height / 2,
@@ -44,11 +52,23 @@ class SelectedBonusViewFactory(resources: Resources) {
     }
 
     fun getJetpackView(x: Float, y: Float, directionX: Int): SelectedBonusView {
-        startJetpackDisappearingTimer()
+        if (!isJetpackSelected) {
+            selectJetpack()
+        }
+
         val rect = getJetpackRect(x, y, directionX)
         val matrix = getMatrix(directionX, rect, jetpackOnPlayerBitmap)
 
         return SelectedBonusView(jetpackOnPlayerBitmap, matrix, jetpackPaint)
+    }
+
+    fun updateBonuses(additionalTime: Float) {
+        if (isShieldSelected) {
+            updateShieldTimer(additionalTime)
+        }
+        if (isJetpackSelected) {
+            updateJetpackTimer(additionalTime)
+        }
     }
 
     private fun getMatrix(directionX: Int, destRect: RectF, bitmap: Bitmap): Matrix {
@@ -86,54 +106,65 @@ class SelectedBonusViewFactory(resources: Resources) {
         }
     }
 
-    private fun startShieldDisappearingTimer() {
-        if (!isShieldSelected) {
-            isShieldSelected = true
-            shieldPaint.alpha = GameConstants.SHIELD_DEFAULT_TRANSPARENCY
-            val timer = object :
-                CountDownTimer(GameConstants.SHIELD_DURATION, GameConstants.SHIELD_TIMER_TICK) {
-                override fun onTick(p0: Long) {
-                    if (p0 <= GameConstants.WHEN_SHIELD_TO_PULSE) {
-                        shieldPaint.alpha =
-                            if (shieldPaint.alpha == GameConstants.SHIELD_PULSE_TRANSPARENCY) {
-                                GameConstants.SHIELD_DEFAULT_TRANSPARENCY
-                            } else {
-                                GameConstants.SHIELD_PULSE_TRANSPARENCY
-                            }
-                    }
-                }
+    private fun selectShield() {
+        isShieldSelected = true
+        shieldPaint.alpha = GameConstants.SHIELD_DEFAULT_TRANSPARENCY
+    }
 
-                override fun onFinish() {
-                    shieldPaint.alpha = 0
-                    isShieldSelected = false
-                }
+    private fun selectJetpack() {
+        isJetpackSelected = true
+        jetpackPaint.alpha = GameConstants.JETPACK_DEFAULT_TRANSPARENCY
+    }
+
+    private fun updateShieldTimer(additionalTime: Float) {
+        timeWithShield += additionalTime
+
+        println("#Debug: Factory: $timeWithShield")
+
+        if (GameConstants.SHIELD_DURATION - timeWithShield <= 0f) {
+            shieldPaint.alpha = 0
+            isShieldSelected = false
+
+            timeWithShield = 0f
+            shieldPulseTime = 0f
+        } else if (GameConstants.SHIELD_DURATION - timeWithShield <= GameConstants.WHEN_SHIELD_TO_PULSE) {
+            if (shieldPulseTime == 0f) {
+                shieldPaint.alpha = GameConstants.SHIELD_PULSE_TRANSPARENCY
             }
-            timer.start()
+
+            if (shieldPulseTime >= GameConstants.SHIELD_TIMER_TICK) {
+                shieldPaint.alpha = GameConstants.SHIELD_DEFAULT_TRANSPARENCY
+            }
+
+            shieldPulseTime += additionalTime
+
+            if (shieldPulseTime >= GameConstants.SHIELD_TIMER_TICK * 2) {
+                shieldPulseTime = 0f
+            }
         }
     }
 
-    private fun startJetpackDisappearingTimer() {
-        if (!isJetpackSelected) {
-            isJetpackSelected = true
-            jetpackPaint.alpha = GameConstants.JETPACK_DEFAULT_TRANSPARENCY
-            val timer = object :
-                CountDownTimer(GameConstants.JETPACK_DURATION, GameConstants.JETPACK_TIMER_TICK) {
-                override fun onTick(p0: Long) {
-                    if (p0 <= GameConstants.WHEN_JETPACK_TO_PULSE) {
-                        jetpackPaint.alpha =
-                            if (jetpackPaint.alpha == GameConstants.JETPACK_PULSE_TRANSPARENCY) {
-                                GameConstants.JETPACK_DEFAULT_TRANSPARENCY
-                            } else {
-                                GameConstants.JETPACK_PULSE_TRANSPARENCY
-                            }
-                    }
-                }
+    private fun updateJetpackTimer(additionalTime: Float) {
+        timeWithJetpack += additionalTime
 
-                override fun onFinish() {
-                    isJetpackSelected = false
-                }
+        if (GameConstants.JETPACK_DURATION - timeWithJetpack <= 0f) {
+            isJetpackSelected = false
+
+            timeWithJetpack = 0f
+            jetpackPulseTime = 0f
+        } else if (GameConstants.JETPACK_DURATION - timeWithJetpack <= GameConstants.WHEN_JETPACK_TO_PULSE) {
+            if (jetpackPulseTime == 0f) {
+                jetpackPaint.alpha = GameConstants.JETPACK_PULSE_TRANSPARENCY
             }
-            timer.start()
+            if (jetpackPulseTime >= GameConstants.JETPACK_TIMER_TICK) {
+                jetpackPaint.alpha = GameConstants.JETPACK_DEFAULT_TRANSPARENCY
+            }
+
+            jetpackPulseTime += additionalTime
+
+            if (jetpackPulseTime >= GameConstants.JETPACK_TIMER_TICK * 2) {
+                jetpackPulseTime = 0f
+            }
         }
     }
 

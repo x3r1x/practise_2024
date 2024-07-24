@@ -27,7 +27,7 @@ import com.example.mygame.domain.platform.StaticPlatform
 import com.example.mygame.domain.player.Player
 
 class DrawableManager(resources: Resources) {
-    private val playerViewFactory = PlayerViewFactory(resources)
+    val playerViewFactory = PlayerViewFactory(resources)
     private val platformViewFactory = PlatformViewFactory(resources)
     private val enemyViewFactory = EnemyViewFactory(resources)
     private val bonusViewFactory = BonusViewFactory(resources)
