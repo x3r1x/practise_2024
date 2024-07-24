@@ -41,7 +41,7 @@ class JSONToObjectView(resources: Resources) {
 
         val animationTime = data[4].toInt()
 
-        return platformViewFactory.getPlatformView(type, posX, posY, animationTime)
+        return platformViewFactory.getPlatformView(id, type, posX, posY, animationTime)
     }
 
     fun getEnemyFromJSON(data: Array<Double>, offset: Float) : ObjectView {

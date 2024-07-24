@@ -14,7 +14,9 @@ open class ObjectView(
     open val paint: Paint? = null,
     open val id: Int = 0
 ) : IDrawable {
+
     override fun draw(canvas: Canvas) {
         canvas.drawBitmap(bitmap, matrix, paint)
     }
+
 }

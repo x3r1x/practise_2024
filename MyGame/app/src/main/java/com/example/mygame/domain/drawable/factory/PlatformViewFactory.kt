@@ -26,6 +26,7 @@ class PlatformViewFactory(resources: Resources) {
     )
 
     fun getPlatformView(
+        id: Int,
         type: Int,
         x: Float,
         y: Float,
@@ -36,7 +37,7 @@ class PlatformViewFactory(resources: Resources) {
         val matrix = getMatrix(rect)
         val paint = getPaint(type, animationTime)
 
-        return ObjectView(x, y, bitmap, matrix, paint)
+        return ObjectView(x, y, bitmap, matrix, paint, id = id)
     }
 
     private fun getPaint(type: Int, animationTime: Int) : Paint {

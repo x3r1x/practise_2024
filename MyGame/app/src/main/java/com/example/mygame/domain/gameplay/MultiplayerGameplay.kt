@@ -47,8 +47,7 @@ class MultiplayerGameplay(
     private val objectsViews = mutableListOf<ObjectView>()
 
     private val camera = Camera(screen)
-    private val parserJSONToKotlin = JSONToKotlin(gson, resources, camera, objectsViews)
-
+    private val parserJSONToKotlin = JSONToKotlin(resources, gson, camera, objectsViews)
 
     private val _scoreObservable = MutableLiveData<Int>()
     override val scoreObservable: LiveData<Int> = _scoreObservable

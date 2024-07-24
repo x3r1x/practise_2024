@@ -78,7 +78,7 @@ class DrawableManager(resources: Resources) {
             }
         }
 
-        return platformViewFactory.getPlatformView(type, platform.x, platform.y, another)
+        return platformViewFactory.getPlatformView(0, type, platform.x, platform.y, another)
     }
 
     private fun enemyToView(enemy: Enemy): ObjectView {
