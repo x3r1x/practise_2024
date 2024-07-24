@@ -139,4 +139,8 @@ class SingleplayerGameplay(
 
     override fun onDestroy() {
     }
+
+    override fun sendReadyMessage() {
+        TODO("Not yet implemented")
+    }
 }

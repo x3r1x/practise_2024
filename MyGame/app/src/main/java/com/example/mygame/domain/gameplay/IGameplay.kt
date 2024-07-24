@@ -1,7 +1,6 @@
 package com.example.mygame.domain.gameplay
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.example.mygame.UI.IDrawable
 import com.example.mygame.domain.Score
 
@@ -31,4 +30,6 @@ interface IGameplay {
     fun onResume()
     fun onDestroy()
     fun onSensorDataChanged(deltaX: Float)
+
+    fun sendReadyMessage()
 }

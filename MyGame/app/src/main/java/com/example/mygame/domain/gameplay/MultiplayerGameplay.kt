@@ -8,16 +8,16 @@ import com.example.mygame.domain.Score
 import com.example.mygame.domain.Screen
 import com.example.mygame.domain.logic.SensorHandler
 import com.example.mygame.multiplayer.Camera
-import com.example.mygame.multiplayer.ClientMessage
+import com.example.mygame.multiplayer.FireMessage
 import com.example.mygame.multiplayer.IGameObjectJSON
+import com.example.mygame.multiplayer.InitMessage
 import com.example.mygame.multiplayer.JSONToKotlin
-import com.example.mygame.multiplayer.Ping
-import com.example.mygame.multiplayer.ServerResponse
+import com.example.mygame.multiplayer.MoveMessage
+import com.example.mygame.multiplayer.ReadyMessage
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.java_websocket.client.WebSocketClient
 import org.java_websocket.handshake.ServerHandshake
@@ -25,7 +25,7 @@ import java.net.URI
 
 class MultiplayerGameplay(
     resources: Resources,
-    screen: Screen
+    private val screen: Screen
 ) : IGameplay, SensorHandler.SensorCallback {
     private val uiScope = CoroutineScope(Dispatchers.Main)
 
@@ -45,7 +45,7 @@ class MultiplayerGameplay(
 
     private val objects = mutableListOf<IGameObjectJSON>()
 
-    private val camera = Camera(screen, score)
+    private val camera = Camera(screen, score, objects)
     private val parserJSONToKotlin = JSONToKotlin(gson, resources, score, objects)
 
     private val _scoreObservable = MutableLiveData<Int>()
@@ -54,6 +54,7 @@ class MultiplayerGameplay(
     init {
         client = object : WebSocketClient(serverUri) {
             override fun onOpen(handshakedata: ServerHandshake?) {
+                sendInitMessage()
                 Log.d("WebSocket", "Connection opened")
             }
 
@@ -86,19 +87,35 @@ class MultiplayerGameplay(
         client.connect()
     }
 
+    override fun sendReadyMessage() {
+        val message = gson.toJson(ReadyMessage(1))
+        if (client.isOpen) {
+            client.send(message)
+        }
+    }
+
     override fun onViewCreated() {}
 
     override fun startGameLoop() {}
 
     override fun stopGameLoop() {}
 
-    private fun sendMessage(dx: Float, tap: Boolean = false) {
-//        val ping = gson.toJson(Ping("ping", 0))
-//        if (client.isOpen) {
-//            pingSentTime = System.currentTimeMillis()
-//            client.send(ping)
-//        }
-        val message = gson.toJson(ClientMessage("msg", dx, tap))
+    private fun sendInitMessage() {
+        val message = gson.toJson(InitMessage(screen.width.toInt(), screen.height.toInt()))
+        if (client.isOpen) {
+            client.send(message)
+        }
+    }
+
+    private fun sendMoveMessage(dx: Float) {
+        val message = gson.toJson(MoveMessage(dx))
+        if (client.isOpen) {
+            client.send(message)
+        }
+    }
+
+    private fun sendFireMessage() {
+        val message = gson.toJson(FireMessage(1))
         if (client.isOpen) {
             client.send(message)
         }
@@ -114,23 +131,26 @@ class MultiplayerGameplay(
         isNewData = false
 
         val startTime = System.currentTimeMillis()
+        val player = parserJSONToKotlin.playerJSON
 
         uiScope.launch {
             while (!isNewData) {
-                val currentTime = System.currentTimeMillis()
-                val elapsedTime = (currentTime - startTime) / 1000f
+                //val currentTime = System.currentTimeMillis()
+                //val elapsedTime = (currentTime - startTime) / 1000f
 
                 _gameState.postValue(GameState(
                     Type.GAME,
                     parserJSONToKotlin.getObjectsViews(),
                     emptyList()
                 ))
+
+                camera.updatePositions(player)
             }
         }
     }
 
     override fun onShot(startX: Float) {
-        sendMessage(0f, true)
+        sendFireMessage()
     }
 
     override fun onPause() {
@@ -140,7 +160,7 @@ class MultiplayerGameplay(
     }
 
     override fun onSensorDataChanged(deltaX: Float) {
-        sendMessage(deltaX)
+        sendMoveMessage(deltaX)
     }
 
     override fun onDestroy() {

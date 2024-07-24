@@ -2,11 +2,30 @@ package com.example.mygame.multiplayer
 
 import com.google.gson.annotations.SerializedName
 
-data class ClientMessage(
-    val type: String,
-    val dx: Float,
-    val tap: Boolean
-)
+interface ClientMessage {
+    val T: String
+}
+
+data class InitMessage(
+    val w: Int,
+    val h: Int,
+    override val T: String = "i"
+) : ClientMessage
+
+data class MoveMessage(
+    val x: Float,
+    override val T: String = "m"
+) : ClientMessage
+
+data class FireMessage(
+    val t: Int,
+    override val T: String = "f"
+) : ClientMessage
+
+data class ReadyMessage(
+    val r: Int,
+    override val T: String = "r"
+) : ClientMessage
 
 data class Ping(
     val type: String,

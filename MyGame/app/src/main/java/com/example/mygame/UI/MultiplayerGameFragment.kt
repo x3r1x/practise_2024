@@ -5,8 +5,11 @@ import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.INVISIBLE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.view.WindowMetrics
+import android.widget.Button
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
@@ -18,6 +21,8 @@ class MultiplayerGameFragment : Fragment() {
     private lateinit var gameView: GameView
     private lateinit var scoreView: TextView
     private val gameViewModel: GameViewModel by viewModels()
+
+    private lateinit var readyButton: Button
 
     private fun initViews(view: View) {
         gameView = view.findViewById(R.id.gameView)
@@ -44,16 +49,14 @@ class MultiplayerGameFragment : Fragment() {
         initViews(view)
 
         gameViewModel.initialize(screenWidth, screenHeight, GameViewModel.Type.MULTIPLAYER)
-//        gameViewModel.gameplay.scoreObservable.observe(viewLifecycleOwner) { newScore ->
-//            scoreView.text = newScore.toString()
-//        }
 
-//        gameView.setOnTouchListener { _, event ->
-//            if (event.action == MotionEvent.ACTION_DOWN) {
-//                gameViewModel.onClick(event.x)
-//            }
-//            true
-//        }
+        readyButton = view.findViewById(R.id.readyButton)
+
+        readyButton.setOnClickListener {
+            readyButton.visibility = INVISIBLE
+            gameView.visibility = VISIBLE
+            gameViewModel.gameplay.sendReadyMessage()
+        }
 
         return view
     }
@@ -65,7 +68,6 @@ class MultiplayerGameFragment : Fragment() {
             gameView.drawGame(gameObjects.objects)
         }
 
-        //gameViewModel.multiplayerGameplay
     }
 
     override fun onResume() {
