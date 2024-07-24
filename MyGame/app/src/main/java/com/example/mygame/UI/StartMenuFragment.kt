@@ -55,6 +55,11 @@ class StartMenuFragment : Fragment() {
             Navigation.findNavController(view).navigate(R.id.navigateFromStartMenuFragmentToMultiplayerFragment)
         }
 
+        view.findViewById<Button>(R.id.leaderboardButton).setOnClickListener {
+            audioPlayer.release()
+            Navigation.findNavController(view).navigate(R.id.navigateFromStartFragmentToLeaderboardFragment)
+        }
+
         return view
     }
 
