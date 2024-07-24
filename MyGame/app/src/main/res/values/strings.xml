@@ -24,15 +24,9 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
-    <string name="leaderboard">Leaderboard:</string>
-    <string name="_1">#1:</string>
-    <string name="_2">#2:</string>
-    <string name="_3">#3:</string>
-    <string name="_4">#4:</string>
-    <string name="_5">#5:</string>
-    <string name="_6">#6:</string>
-    <string name="_7">#7:</string>
+    <string name="leaderboard">Leaderboard</string>
     <string name="gotcha">Gotcha!</string>
     <string name="leaderboardText">Leaderboard</string>
     <string name="save_your_result">Save Your Result!</string>
+    <string name="error_load_scoreboard">Sorry. Server is offline :(</string>
 </resources>

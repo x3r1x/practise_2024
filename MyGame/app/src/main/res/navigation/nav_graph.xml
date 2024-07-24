@@ -40,11 +40,7 @@
         android:id="@+id/leaderboardFragment"
         android:name="com.example.mygame.UI.LeaderboardFragment"
         android:label="fragment_game"
-        tools:layout="@layout/fragment_game" >
-        <action
-            android:id="@+id/navigateFromLeaderboardFragmentToStartFragment"
-            app:destination="@id/startFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_game" />
     <fragment
         android:id="@+id/gameOverFragment"
         android:name="com.example.mygame.UI.GameOverFragment"

@@ -3,14 +3,15 @@ package com.example.mygame.presentation
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.mygame.domain.leaderboard.Leaderboard
 import com.example.mygame.multiplayer.Repository
 import kotlinx.coroutines.launch
 
 class LeaderboardViewModel : ViewModel() {
 
     data class State(
-        val leaders: List<Leader>?,
-        val isFailed: Boolean
+        val leaderboard: Leaderboard? = null,
+        val isFailed: Boolean = false
     ) {
 
         data class Leader(
@@ -20,7 +21,7 @@ class LeaderboardViewModel : ViewModel() {
 
     }
 
-    val state = MutableLiveData(State(emptyList(), false))
+    val state = MutableLiveData(State())
 
     private val gateway = Repository()
 
@@ -28,10 +29,10 @@ class LeaderboardViewModel : ViewModel() {
         viewModelScope.launch {
             when (val leaderboard = gateway.getLeaderboard()) {
                 null -> {
-                    state.value = state.value?.copy(leaders = leaderboard)
+                    state.value = state.value?.copy(isFailed = true)
                 }
                 else -> {
-                    state.value = state.value?.copy(isFailed = true)
+                    state.value = state.value?.copy(leaderboard = leaderboard)
                 }
             }
         }
