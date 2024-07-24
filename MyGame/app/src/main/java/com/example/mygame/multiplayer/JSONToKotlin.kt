@@ -34,36 +34,33 @@ class JSONToKotlin(
             }
         }
 
-        objectsViews.forEach { it ->
+        objectsViews.forEach {
             if (it is PlayerView) {
                 return@forEach
             }
-
-            it.y += offset.getY()
-            println("Offset platform to: ${it.y} with offset: ${offset.getY()} ")
+            it.x = it.initialX + offset.getX()
+            it.y = it.initialY + offset.getY()
         }
     }
 
     private fun mapObjectsViewsFromJSON(jsonString: String): List<ObjectView> {
         val gameData = gson.fromJson(jsonString, GameData::class.java)
-        var offsetY = 0f
 
         return gameData.objects.mapNotNull {
             when (it[0].toInt()) {
                 ObjectType.PLAYER_TYPE -> {
                     val posX = it[1].toFloat()
                     val posY = it[2].toFloat()
+                    offset.calcFrom(posX, posY)
 
-                    offsetY = offset.calcFrom(posY)
-
-                    objectsViewFactory.getPlayerFromJSON(posX, posY + offsetY, it)
+                    objectsViewFactory.getPlayerFromJSON(posX + offset.getX(), posY + offset.getY(), it)
                 }
 
                 in ObjectType.MULTIPLAYER_PLATFORMS ->
-                    objectsViewFactory.getPlatformFromJSON(it, offsetY)
+                    objectsViewFactory.getPlatformFromJSON(it, offset.getY())
 
                 in ObjectType.MULTIPLAYER_BONUSES ->
-                    objectsViewFactory.getBonusFromJSON(it, offsetY)
+                    objectsViewFactory.getBonusFromJSON(it, offset.getY())
 
                 else -> null
             }

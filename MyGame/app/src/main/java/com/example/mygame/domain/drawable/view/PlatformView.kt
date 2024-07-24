@@ -15,8 +15,10 @@ class PlatformView(
     override val id: Int,
 ) : ObjectView(x, y, bitmap, matrix, paint) {
 
+    override val initialX = x
+    override val initialY = y
+
     override fun draw(canvas: Canvas) {
-        println("Draw platform at x: $x y: ${y}")
         canvas.drawBitmap(bitmap, x - Platform.WIDTH / 2, y - Platform.HEIGHT / 2, paint)
     }
 

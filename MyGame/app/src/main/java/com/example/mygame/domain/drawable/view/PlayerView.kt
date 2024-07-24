@@ -14,6 +14,8 @@ class PlayerView(
     private val selectedShieldView: SelectedBonusView? = null,
     private val selectedJetpackView: SelectedBonusView? = null
 ) : ObjectView(x, y, bitmap, matrix) {
+    override val initialX = x
+    override val initialY = y
 
     override fun draw(canvas: Canvas) {
         super.draw(canvas)
