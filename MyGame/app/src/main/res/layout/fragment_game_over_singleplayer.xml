@@ -25,6 +25,7 @@
             android:layout_marginBottom="10sp"
             android:fontFamily="@font/macondo_swash_caps"
             android:text="@string/game_over"
+            android:layout_gravity=""
             android:textColor="@color/black"
             android:textSize="40sp"
             android:textStyle="normal" />

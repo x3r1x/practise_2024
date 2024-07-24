@@ -34,4 +34,5 @@
     <string name="_7">#7:</string>
     <string name="gotcha">Gotcha!</string>
     <string name="leaderboardText">Leaderboard</string>
+    <string name="save_your_result">Save Your Result!</string>
 </resources>
