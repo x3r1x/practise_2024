@@ -1,5 +1,6 @@
 package com.example.mygame.UI
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -60,6 +61,7 @@ class LeaderboardFragment : Fragment(R.layout.fragment_leaderboard) {
         audioPlayer.play()
     }
 
+    @SuppressLint("SetTextI18n")
     private fun render(state: LeaderboardViewModel.State) {
         if (state.isFailed) {
             findNavController().popBackStack()

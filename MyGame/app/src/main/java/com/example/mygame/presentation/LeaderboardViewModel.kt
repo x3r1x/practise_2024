@@ -8,18 +8,10 @@ import com.example.mygame.multiplayer.Repository
 import kotlinx.coroutines.launch
 
 class LeaderboardViewModel : ViewModel() {
-
     data class State(
         val leaderboard: Leaderboard? = null,
         val isFailed: Boolean = false
-    ) {
-
-        data class Leader(
-            val name: String,
-            val score: Int
-        )
-
-    }
+    )
 
     val state = MutableLiveData(State())
 

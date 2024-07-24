@@ -7,18 +7,20 @@ import com.google.gson.Strictness
 import com.google.gson.annotations.SerializedName
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.POST
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
 
 class Repository {
-
     private val gson: Gson = GsonBuilder()
         .setStrictness(Strictness.LENIENT)
         .create()
@@ -41,7 +43,6 @@ class Repository {
                             null -> continuation.resume(null)
                             else -> continuation.resume(scoreboard.asModel())
                         }
-
                     }
 
                     override fun onFailure(call: Call<LeaderboardJson>, t: Throwable) {
@@ -51,13 +52,31 @@ class Repository {
             }
         }
 
+    suspend fun sendResult(name: String, score: Int): Boolean =
+        withContext(Dispatchers.IO) {
+            suspendCoroutine { continuation ->
+                val json = LeaderJson(name, score)
+
+                api.sendScore(json).enqueue(object : Callback<EmptyClass> {
+                    override fun onResponse(
+                        call: Call<EmptyClass>,
+                        response: Response<EmptyClass>
+                    ) {
+                        continuation.resume(true)
+                    }
+
+                    override fun onFailure(call: Call<EmptyClass>, t: Throwable) {
+                        continuation.resume(false)
+                    }
+                })
+            }
+        }
 }
 
 data class LeaderboardJson(
     @SerializedName("leaders")
     val leaders: List<LeaderJson>
 ) {
-
     fun asModel() = Leaderboard(
         leaders = leaders.map {
             Leaderboard.Leader(it.name, it.score)
@@ -73,7 +92,11 @@ data class LeaderJson(
     val score: Int
 )
 
+class EmptyClass
+
 interface Api {
     @GET("score/show")
     fun getScoreboard(): Call<LeaderboardJson>
+    @POST("score/save")
+    fun sendScore(@Body json: LeaderJson): Call<EmptyClass>
 }

@@ -8,18 +8,29 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.addCallback
+import androidx.compose.material3.TopAppBar
+import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.example.mygame.R
 import com.example.mygame.UI.EnterNicknameFragment.Companion
+import com.example.mygame.databinding.FragmentGameOverBinding
+import com.example.mygame.presentation.GameOverViewModel
+import com.example.mygame.system.viewBindings
 
 class GameOverFragment : Fragment() {
     private var score = 0
+
+    private val viewModel by viewModels<GameOverViewModel>()
+    private val binding by viewBindings(FragmentGameOverBinding::bind)
 
     private lateinit var audioPlayer: ExoPlayer
 
@@ -75,11 +86,35 @@ class GameOverFragment : Fragment() {
         return view
     }
 
+//    private fun render(state: GameOverViewModel.State) {
+//
+//    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         requireActivity().onBackPressedDispatcher.addCallback(this) {
             audioPlayer.release()
             Navigation.findNavController(view).navigate(R.id.navigateFromGameOverFragmentToMenuFragment)
+        }
+
+        binding.saveResultButton.setOnClickListener {
+            viewModel.onViewCreated(
+                binding.nicknameInput.text.toString(),
+                binding.currentScore.text.toString().toInt()
+            )
+
+            viewModel.state.observe(viewLifecycleOwner, ::render)
+        }
+    }
+
+    private fun render(decline: Boolean) {
+        if (decline) {
+            Toast.makeText(requireContext(), "Sorry, an error occurred :(", Toast.LENGTH_SHORT).show()
+            binding.dataEnteringGroup.isVisible = true
+        } else {
+            binding.dataEnteringGroup.isVisible = false
+            Toast.makeText(requireContext(), "Success!", Toast.LENGTH_SHORT).show()
         }
     }
 
