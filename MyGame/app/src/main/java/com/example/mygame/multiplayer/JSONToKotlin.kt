@@ -47,16 +47,16 @@ class JSONToKotlin(
         if (objectsJSON.isNotEmpty()) {
             val newObjectsJSON = mapObjectsFromJSON(gameData)
             newObjectsJSON.forEach { newObject ->
-                // Проверяем, существует ли объект с таким же идентификатором
-                if (newObject is PlayerJSON) {
-                    val existingObject = objectsJSON.find { it.id == newObject.id }
+                val existingObject = objectsJSON.find { it.id == newObject.id }
 
-                    if (existingObject == null) {
-                        objectsJSON.add(newObject)
-                    } else {
-                        objectsJSON.set(objectsJSON.indexOf(existingObject), newObject)
-                    }
+                if (existingObject == null) {
+                    objectsJSON.add(newObject)
+                } else {
+                    objectsJSON[objectsJSON.indexOf(existingObject)] = newObject
                 }
+            }
+            objectsJSON.removeAll { existingObject ->
+                existingObject is PlayerJSON && newObjectsJSON.none { it.id == existingObject.id }
             }
         } else {
             objectsJSON.addAll(mapObjectsFromJSON(gameData))
