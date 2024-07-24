@@ -19,14 +19,14 @@ class JSONToObjectView(resources: Resources) {
         val posX = data[1].toFloat()
         val posY = data[2].toFloat()
 
-        val id = data[5].toInt()
+        val id = data[3].toInt()
 
-        val directionX = data[6].toInt()
-        val directionY = data[7].toInt()
+        val directionX = data[4].toInt()
+        val directionY = data[5].toInt()
 
-        val isWithShield = data[8].toInt()
-        val isShooting = data[9].toInt()
-        val isDead = data[10].toInt()
+        val isWithShield = data[6].toInt()
+        val isShooting = data[7].toInt()
+        val isDead = data[8].toInt()
 
         return playerViewFactory.getPlayerView(posX, posY, directionX, directionY, isWithShield, isShooting, isDead, id)
     }
@@ -37,9 +37,9 @@ class JSONToObjectView(resources: Resources) {
         val posX = data[1].toFloat()
         val posY = data[2].toFloat()// + offset
 
-        val id = data[5].toInt()
+        val id = data[3].toInt()
 
-        val animationTime = data[6].toInt()
+        val animationTime = data[4].toInt()
 
         return platformViewFactory.getPlatformView(type, posX, posY, animationTime)
     }
@@ -50,7 +50,7 @@ class JSONToObjectView(resources: Resources) {
         val posX = data[1].toFloat()
         val posY = data[2].toFloat() + offset
 
-        val id = data[5].toInt()
+        val id = data[3].toInt()
 
         return enemyViewFactory.getEnemyView(type, posX, posY)
     }
@@ -61,9 +61,9 @@ class JSONToObjectView(resources: Resources) {
         val posX = data[1].toFloat()
         val posY = data[2].toFloat() + offset
 
-        val id = data[5].toInt()
+        val id = data[3].toInt()
 
-        val animationTime = data[6].toInt()
+        val animationTime = data[4].toInt()
 
         return bonusViewFactory.getBonusView(type, posX, posY, animationTime)
     }
@@ -72,7 +72,7 @@ class JSONToObjectView(resources: Resources) {
         val posX = data[1].toFloat()
         val posY = data[2].toFloat() + offset
 
-        val id = data[5].toInt()
+        val id = data[3].toInt()
 
         return bulletViewFactory.getBulletView(posX, posY)
     }
