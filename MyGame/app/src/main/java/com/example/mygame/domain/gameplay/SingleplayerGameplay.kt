@@ -104,6 +104,7 @@ class SingleplayerGameplay(
             val offsetY = Physics().moveOffset(player, screen.maxPlayerHeight)
 
             score.increase(offsetY)
+            objectsManager.levelGenerator.currentScore = score.getScore()
             positionHandler.screenScroll(gameObjects.value!!.filterIsInstance<IMoveable>(), 0f, offsetY)
             objectsManager.updateObjects(offsetY)
         }

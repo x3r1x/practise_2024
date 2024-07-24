@@ -11,11 +11,13 @@ import kotlin.math.abs
 class LevelGenerator(
     screen: Screen
 ) {
+    var currentScore = 0
+
     private val platformGenerator = PlatformGenerator(screen)
     private val enemyGenerator = EnemyGenerator(screen)
     private val bonusGenerator = BonusGenerator()
 
-    private val newPackageHeight = 4000f
+    private val newPackageHeight = 6000f
 
     fun generateInitialPack(): MutableList<IGameObject> {
         val initialPack = mutableListOf<IGameObject>()
@@ -53,10 +55,10 @@ class LevelGenerator(
             val pack = mutableListOf<IGameObject>()
 
             if (nextStaticPlatformsCount == 0) {
-                platform = platformGenerator.generatePlatform(newY)
+                platform = platformGenerator.generatePlatform(newY, currentScore)
 
                 if (platform is BreakingPlatform) {
-                    val postPlatform = platformGenerator.generatePlatform(platform.top, true)
+                    val postPlatform = platformGenerator.generatePlatform(platform.top, currentScore,true)
                     pack.add(postPlatform)
                 }
                 pack.add(platform)
@@ -80,7 +82,7 @@ class LevelGenerator(
                 if (!bonusSpawned) {
                     pack.add(enemy)
                     pack.remove(platform)
-                    pack.add(platformGenerator.generatePlatform(newY))
+                    pack.add(platformGenerator.generatePlatform(newY, currentScore))
                 }
             }
 

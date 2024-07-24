@@ -18,7 +18,7 @@ class ObjectsManager(
     private var tempScore = 0.0
     private val scoreThreshold = 4500.0
 
-    private lateinit var levelGenerator: LevelGenerator
+    lateinit var levelGenerator: LevelGenerator
 
     fun initObjects() {
         levelGenerator = LevelGenerator(screen)

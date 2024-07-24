@@ -1,8 +1,6 @@
 package com.example.mygame.domain.generator
 
 import com.example.mygame.domain.GameConstants
-import com.example.mygame.domain.GameConstants.Companion.MAX_VERTICAL_BREAKING_PLATFORM_GAP
-import com.example.mygame.domain.GameConstants.Companion.MAX_VERTICAL_PLATFORM_GAP
 import com.example.mygame.domain.platform.Platform
 import com.example.mygame.domain.Screen
 import com.example.mygame.domain.platform.factory.BreakingPlatformFactory
@@ -24,7 +22,7 @@ class PlatformGenerator(
 
     private val platformGap: Float = 100f
 
-    private val newPackageHeight = 4500f
+    private val newPackageHeight = 6000f
 
     private val factories = listOf(
         staticPlatformFactory,
@@ -51,21 +49,29 @@ class PlatformGenerator(
     }
 
     fun generateStaticPlatform(from: Float) : Platform {
-        val coordinates = getRandomCoordinates(from, MAX_VERTICAL_PLATFORM_GAP)
+        val coordinates = getRandomCoordinates(from, GameConstants.MAX_VERTICAL_PLATFORM_GAP)
 
         return staticPlatformFactory.generatePlatform(coordinates[0], coordinates[1])
     }
 
-    fun generatePlatform(from: Float, isNotBreaking: Boolean = false): Platform {
+    fun generatePlatform(from: Float, currentScore: Int, isNotBreaking: Boolean = false): Platform {
         var factory = getRandomFactory()
         if (factory is BreakingPlatformFactory && isNotBreaking) {
             while (factory is BreakingPlatformFactory) {
                 factory = getRandomFactory()
             }
         }
-        var verticalPlatformGap = MAX_VERTICAL_PLATFORM_GAP
+
+        var verticalPlatformGap = GameConstants.MIN_VERTICAL_PLATFORM_GAP + currentScore / GameConstants.PLATFORM_GENERATION_RATIO
+
+        if (verticalPlatformGap > GameConstants.MAX_VERTICAL_PLATFORM_GAP) {
+            verticalPlatformGap = GameConstants.MAX_VERTICAL_PLATFORM_GAP
+        }
+
+        println("#Debug: $verticalPlatformGap")
+
         if (isNotBreaking) {
-            verticalPlatformGap = MAX_VERTICAL_BREAKING_PLATFORM_GAP
+            verticalPlatformGap = GameConstants.MAX_VERTICAL_BREAKING_PLATFORM_GAP
         }
 
         val coordinates = getRandomCoordinates(from, verticalPlatformGap)
@@ -75,7 +81,7 @@ class PlatformGenerator(
 
     private fun getRandomCoordinates(from: Float, verticalGap: Float) : Array<Float> {
         val x = Random.nextFloat() * (screen.width - platform.width) + GameConstants.PLATFORM_SPAWN_ADDITIONAL_X
-        val y = from - Random.nextFloat() * (verticalGap) - platformGap
+        val y = from - Random.nextFloat() * (verticalGap - platformGap) - platformGap
         return arrayOf(x, y)
     }
 
