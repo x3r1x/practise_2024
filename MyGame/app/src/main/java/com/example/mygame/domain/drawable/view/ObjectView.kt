@@ -9,8 +9,8 @@ import com.example.mygame.UI.IDrawable
 open class ObjectView(
     var x: Float,
     var y: Float,
-    open val bitmap: Bitmap,
-    open val matrix: Matrix,
+    open val bitmap: Bitmap? = null,
+    open val matrix: Matrix? = null,
     open val paint: Paint? = null,
     open val id: Int = 0
 ) : IDrawable {
@@ -18,7 +18,11 @@ open class ObjectView(
     open val initialY = y
 
     override fun draw(canvas: Canvas) {
-        canvas.drawBitmap(bitmap, matrix, paint)
+        bitmap?.let { bitmap ->
+            matrix?.let { matrix ->
+                canvas.drawBitmap(bitmap, matrix, paint)
+            }
+        }
     }
 
 }

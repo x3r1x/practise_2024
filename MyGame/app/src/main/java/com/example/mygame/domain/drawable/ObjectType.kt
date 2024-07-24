@@ -15,6 +15,7 @@ class ObjectType {
         const val NINJA_TYPE = 10
         const val BULLET_TYPE = 11
         const val JETPACK_TYPE = 12
+        const val FINISH_LINE_TYPE = 8
 
         const val TRUE = 1
 
