@@ -11,6 +11,7 @@ import android.graphics.RectF
 import com.example.mygame.R
 import com.example.mygame.domain.drawable.ObjectType
 import com.example.mygame.domain.drawable.view.ObjectView
+import com.example.mygame.domain.drawable.view.PlatformView
 
 class PlatformViewFactory(resources: Resources) {
     private val staticPlatformBitmap = BitmapFactory.decodeResource(resources, R.drawable.static_platform, BITMAP_OPTIONS)
@@ -37,7 +38,7 @@ class PlatformViewFactory(resources: Resources) {
         val matrix = getMatrix(rect)
         val paint = getPaint(type, animationTime)
 
-        return ObjectView(x, y, bitmap, matrix, paint, id = id)
+        return PlatformView(x, y, bitmap, matrix, paint, id = id)
     }
 
     private fun getPaint(type: Int, animationTime: Int) : Paint {

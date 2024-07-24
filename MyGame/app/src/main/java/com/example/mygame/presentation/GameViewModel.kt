@@ -2,6 +2,7 @@ package com.example.mygame.presentation
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.mygame.domain.Screen
 import com.example.mygame.domain.drawable.DrawableManager
 import com.example.mygame.domain.gameplay.IGameplay
@@ -40,12 +41,16 @@ class GameViewModel(
             gameplay = SingleplayerGameplay(objectsManager, sensorHandler, positionHandler, collisionHandler, drawableManager, screen)
             objectsManager.initObjects()
         } else  {
-            gameplay = MultiplayerGameplay(application.resources, screen)
+            gameplay = MultiplayerGameplay(application.resources, screen, viewModelScope)
         }
     }
 
     override fun onSensorDataChanged(deltaX: Float) {
         gameplay.onSensorDataChanged(deltaX)
+    }
+
+    fun onViewCreated() {
+        gameplay.onViewCreated()
     }
 
     fun onClick(touchX: Float) {

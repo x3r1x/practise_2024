@@ -50,13 +50,13 @@ class MultiplayerGameFragment : Fragment() {
 
         gameViewModel.initialize(screenWidth, screenHeight, GameViewModel.Type.MULTIPLAYER)
 
-        readyButton = view.findViewById(R.id.readyButton)
-
-        readyButton.setOnClickListener {
-            readyButton.visibility = INVISIBLE
-            gameView.visibility = VISIBLE
-            gameViewModel.gameplay.sendReadyMessage()
-        }
+//        readyButton = view.findViewById(R.id.readyButton)
+//
+//        readyButton.setOnClickListener {
+//            readyButton.visibility = INVISIBLE
+//            gameView.visibility = VISIBLE
+//            gameViewModel.gameplay.sendReadyMessage()
+//        }
 
         return view
     }
@@ -64,10 +64,10 @@ class MultiplayerGameFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        gameViewModel.onViewCreated()
         gameViewModel.gameplay.gameState.observe(viewLifecycleOwner) { gameObjects ->
             gameView.drawGame(gameObjects.objects)
         }
-
     }
 
     override fun onResume() {

@@ -20,14 +20,14 @@ interface IGameplay {
     val score: Score
     val scoreObservable: LiveData<Int>
 
-    fun onViewCreated()
+    fun onViewCreated() {}
 
-    fun startGameLoop()
-    fun stopGameLoop()
+    fun startGameLoop() {}
+    fun stopGameLoop() {}
 
     fun onShot(startX: Float)
-    fun onPause()
-    fun onResume()
+    fun onPause() {}
+    fun onResume() {}
     fun onDestroy()
     fun onSensorDataChanged(deltaX: Float)
 

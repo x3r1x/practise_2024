@@ -3,7 +3,7 @@ package com.example.mygame.multiplayer
 import com.example.mygame.domain.Screen
 import com.example.mygame.domain.drawable.view.ObjectView
 
-class Camera(
+class Offset(
     screen: Screen
 ) {
     private val fixedY = screen.height / 3 * 2
@@ -18,7 +18,7 @@ class Camera(
         }
     }
 
-    fun getOffsetY() : Float {
+    fun getY() : Float {
         return offsetY + 75f
     }
 
@@ -26,7 +26,8 @@ class Camera(
         return fixedX - playerX
     }
 
-    fun countOffsetY(playerY: Float) {
-        offsetY = fixedY - playerY
+    fun calcFrom(y: Float): Float {
+        offsetY = fixedY - y
+        return offsetY
     }
 }

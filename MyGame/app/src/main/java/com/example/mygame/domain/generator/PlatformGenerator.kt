@@ -41,10 +41,10 @@ class PlatformGenerator(
 
         val platforms: MutableList<Platform> = mutableListOf()
         while (newY >= -newPackageHeight) {
-            val x = Random.nextFloat() * (screen.width - platform.width) + GameConstants.PLATFORM_SPAWN_ADDITIONAL_X
+            val x = Random.nextFloat() * (screen.width - Platform.WIDTH) + GameConstants.PLATFORM_SPAWN_ADDITIONAL_X
             val newPlatform = staticPlatformFactory.generatePlatform(x, newY)
             platforms.add(newPlatform)
-            newY -= platform.height + platformGap
+            newY -= Platform.HEIGHT + platformGap
         }
 
         return platforms
@@ -62,7 +62,7 @@ class PlatformGenerator(
             verticalPlatformGap = MAX_VERTICAL_BREAKING_PLATFORM_GAP
         }
 
-        val x = Random.nextFloat() * (screen.width - platform.width) + GameConstants.PLATFORM_SPAWN_ADDITIONAL_X
+        val x = Random.nextFloat() * (screen.width - Platform.WIDTH) + GameConstants.PLATFORM_SPAWN_ADDITIONAL_X
         val y = from - Random.nextFloat() * (verticalPlatformGap) - platformGap
 
         return factory.generatePlatform(x, y)

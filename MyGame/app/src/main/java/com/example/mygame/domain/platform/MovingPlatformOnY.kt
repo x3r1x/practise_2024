@@ -25,7 +25,7 @@ class MovingPlatformOnY(
     private fun updateDirection() {
         if (y <= minY) {
             directionY = DirectionY.DOWN
-        } else if (y + height >= maxY) {
+        } else if (y + HEIGHT >= maxY) {
             directionY = DirectionY.UP
         }
     }

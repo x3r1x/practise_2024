@@ -4,11 +4,12 @@ import android.content.res.Resources
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.mygame.domain.GameConstants
 import com.example.mygame.domain.Score
 import com.example.mygame.domain.Screen
 import com.example.mygame.domain.drawable.view.ObjectView
 import com.example.mygame.domain.logic.SensorHandler
-import com.example.mygame.multiplayer.Camera
+import com.example.mygame.multiplayer.Offset
 import com.example.mygame.multiplayer.FireMessage
 import com.example.mygame.multiplayer.InitMessage
 import com.example.mygame.multiplayer.JSONToKotlin
@@ -17,7 +18,7 @@ import com.example.mygame.multiplayer.ReadyMessage
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.java_websocket.client.WebSocketClient
 import org.java_websocket.handshake.ServerHandshake
@@ -25,15 +26,11 @@ import java.net.URI
 
 class MultiplayerGameplay(
     resources: Resources,
-    private val screen: Screen
+    private val screen: Screen,
+    private val scope: CoroutineScope
 ) : IGameplay, SensorHandler.SensorCallback {
-    private val uiScope = CoroutineScope(Dispatchers.Main)
-
-    private var isNewData = false
 
     private val gson = Gson()
-
-    private var pingSentTime: Long = 0
 
     private val client: WebSocketClient
     private val serverUri = URI("ws://10.10.29.46:8080")
@@ -43,11 +40,10 @@ class MultiplayerGameplay(
 
     override val score = Score()
 
-    //private val objects = mutableListOf<IGameObjectJSON>()
     private val objectsViews = mutableListOf<ObjectView>()
 
-    private val camera = Camera(screen)
-    private val parserJSONToKotlin = JSONToKotlin(resources, gson, camera, objectsViews)
+    private val offset = Offset(screen)
+    private val parserJSONToKotlin = JSONToKotlin(resources, gson, offset, objectsViews)
 
     private val _scoreObservable = MutableLiveData<Int>()
     override val scoreObservable: LiveData<Int> = _scoreObservable
@@ -63,14 +59,6 @@ class MultiplayerGameplay(
             override fun onMessage(message: String?) {
                 message?.let {
                     try {
-//                        val serverResponse = gson.fromJson(message, ServerResponse::class.java)
-//                        if (serverResponse.type == "pong") {
-//                            val currentTime = System.currentTimeMillis()
-//                            val ping = currentTime - pingSentTime
-//                            Log.d("WebSocket", "Ping: $ping ms")
-//                        } else {
-//                        }
-                        isNewData = true
                         handleServerData(message)
                     } catch (e: JsonSyntaxException) {
                         Log.e("WebSocket", "Failed to parse server message", e)
@@ -89,18 +77,33 @@ class MultiplayerGameplay(
         client.connect()
     }
 
+    override fun onViewCreated() {
+        var elapsedTime: Float
+        var startTime = System.currentTimeMillis()
+
+        scope.launch {
+            while (true) {
+                val systemTime = System.currentTimeMillis()
+                elapsedTime = (systemTime - startTime) / 1000f
+
+                if (elapsedTime < GameConstants.MAX_FRAME_TIME) {
+                    delay(1)
+                    continue
+                }
+
+                _gameState.value = GameState(Type.GAME, objectsViews, emptyList())
+
+                startTime = systemTime
+            }
+        }
+    }
+
     override fun sendReadyMessage() {
         val message = gson.toJson(ReadyMessage(1))
         if (client.isOpen) {
             client.send(message)
         }
     }
-
-    override fun onViewCreated() {}
-
-    override fun startGameLoop() {}
-
-    override fun stopGameLoop() {}
 
     private fun sendInitMessage() {
         val message = gson.toJson(InitMessage(screen.width.toInt(), screen.height.toInt()))
@@ -125,47 +128,10 @@ class MultiplayerGameplay(
 
     private fun handleServerData(message: String) {
         parserJSONToKotlin.setGameState(message)
-
-        updatePositions()
-    }
-
-    private fun updatePositions() {
-        isNewData = false
-
-        val startTime = System.currentTimeMillis()
-
-        uiScope.launch {
-            while (!isNewData) {
-
-                //val player = parserJSONToKotlin.playerView
-                //val currentTime = System.currentTimeMillis()
-                //val elapsedTime = (currentTime - startTime) / 1000f
-
-                camera.updatePosition(objectsViews)
-                //println("${objectsViews[1].y}")
-
-                //camera.changePositionY(objects, player)
-
-                _gameState.postValue(GameState(
-                    Type.GAME,
-                    //parserJSONToKotlin.getObjectsViews(),
-                    objectsViews,
-                    emptyList()
-                ))
-
-                //camera.updatePositions(player)
-            }
-        }
     }
 
     override fun onShot(startX: Float) {
         sendFireMessage()
-    }
-
-    override fun onPause() {
-    }
-
-    override fun onResume() {
     }
 
     override fun onSensorDataChanged(deltaX: Float) {

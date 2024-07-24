@@ -21,7 +21,7 @@ class EnemyGenerator(
     fun generateEnemy(platform: Platform): IGameObject? {
         var enemy: Enemy? = null
 
-        var x = Random.nextFloat() * (screen.width - platform.width) + GAP_X
+        var x = Random.nextFloat() * (screen.width - Platform.WIDTH) + GAP_X
 
         val random = Random.nextFloat()
 

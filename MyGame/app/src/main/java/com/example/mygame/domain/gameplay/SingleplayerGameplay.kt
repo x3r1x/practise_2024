@@ -123,11 +123,6 @@ class SingleplayerGameplay(
         objectsManager.createBullet(startX)
     }
 
-    override fun onViewCreated() {
-        isGameLoopRunning = true
-        gameLoop()
-    }
-
     override fun onPause() {
         sensorHandler.unregister()
         stopGameLoop()

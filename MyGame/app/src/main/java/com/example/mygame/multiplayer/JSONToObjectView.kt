@@ -15,10 +15,7 @@ class JSONToObjectView(resources: Resources) {
     private val bonusViewFactory = BonusViewFactory(resources)
     private val bulletViewFactory = BulletViewFactory(resources)
 
-    fun getPlayerFromJSON(data: Array<Double>) : ObjectView {
-        val posX = data[1].toFloat()
-        val posY = data[2].toFloat()
-
+    fun getPlayerFromJSON(x: Float, y: Float, data: Array<Double>) : ObjectView {
         val id = data[3].toInt()
 
         val directionX = data[4].toInt()
@@ -28,7 +25,7 @@ class JSONToObjectView(resources: Resources) {
         val isShooting = data[7].toInt()
         val isDead = data[8].toInt()
 
-        return playerViewFactory.getPlayerView(posX, posY, directionX, directionY, isWithShield, isShooting, isDead, id)
+        return playerViewFactory.getPlayerView(x, y, directionX, directionY, isWithShield, isShooting, isDead, id)
     }
 
     fun getPlatformFromJSON(data: Array<Double>, offset: Float) : ObjectView {

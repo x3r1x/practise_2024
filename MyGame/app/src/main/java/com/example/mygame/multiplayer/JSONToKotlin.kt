@@ -3,12 +3,13 @@ package com.example.mygame.multiplayer
 import android.content.res.Resources
 import com.example.mygame.domain.drawable.ObjectType
 import com.example.mygame.domain.drawable.view.ObjectView
+import com.example.mygame.domain.drawable.view.PlayerView
 import com.google.gson.Gson
 
 class JSONToKotlin(
     resources: Resources,
     private val gson: Gson,
-    private val camera: Camera,
+    private val offset: Offset,
     private val objectsViews: MutableList<ObjectView>
 ) {
     private val objectsViewFactory = JSONToObjectView(resources)
@@ -32,6 +33,15 @@ class JSONToKotlin(
                 objectsViews[existingObjectIndex] = newObject
             }
         }
+
+        objectsViews.forEach { it ->
+            if (it is PlayerView) {
+                return@forEach
+            }
+
+            it.y += offset.getY()
+            println("Offset platform to: ${it.y} with offset: ${offset.getY()} ")
+        }
     }
 
     private fun mapObjectsViewsFromJSON(jsonString: String): List<ObjectView> {
@@ -39,16 +49,14 @@ class JSONToKotlin(
         var offsetY = 0f
 
         return gameData.objects.mapNotNull {
-            return@mapNotNull when (it[0].toInt()) {
+            when (it[0].toInt()) {
                 ObjectType.PLAYER_TYPE -> {
-                    val playerView = objectsViewFactory.getPlayerFromJSON(it)
+                    val posX = it[1].toFloat()
+                    val posY = it[2].toFloat()
 
-                    camera.countOffsetY(playerView.y)
-                    offsetY = camera.getOffsetY()
-                    println("offsetY: $offsetY")
-                    playerView.y += offsetY
+                    offsetY = offset.calcFrom(posY)
 
-                    playerView
+                    objectsViewFactory.getPlayerFromJSON(posX, posY + offsetY, it)
                 }
 
                 in ObjectType.MULTIPLAYER_PLATFORMS ->
