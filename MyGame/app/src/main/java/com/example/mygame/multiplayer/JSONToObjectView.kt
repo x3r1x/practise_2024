@@ -24,18 +24,16 @@ class JSONToObjectView(resources: Resources) {
         val directionX = data[4].toInt()
         val directionY = data[5].toInt()
 
-        val isWithShield = data[6].toInt()
-//        val isShooting = data[7].toInt()
-//        val isDead = data[8].toInt()
+        val isWinner = data[6].toInt()
 
-        return playerViewFactory.getPlayerView(x, y, directionX, directionY, isWithShield, 0, 0, id)
+        return playerViewFactory.getPlayerView(id, x, y, directionX, directionY, isWinner)
     }
 
-    fun getPlatformFromJSON(data: Array<Double>, offset: Float) : ObjectView {
+    fun getPlatformFromJSON(data: Array<Double>) : ObjectView {
         val type = data[0].toInt()
 
         val posX = data[1].toFloat()
-        val posY = data[2].toFloat()// + offset
+        val posY = data[2].toFloat()
 
         val id = data[3].toInt()
 
@@ -57,22 +55,22 @@ class JSONToObjectView(resources: Resources) {
         )
     }
 
-    fun getEnemyFromJSON(data: Array<Double>, offset: Float) : ObjectView {
+    fun getEnemyFromJSON(data: Array<Double>) : ObjectView {
         val type = data[0].toInt()
 
         val posX = data[1].toFloat()
-        val posY = data[2].toFloat() + offset
+        val posY = data[2].toFloat()
 
         val id = data[3].toInt()
 
         return enemyViewFactory.getEnemyView(type, posX, posY)
     }
 
-    fun getBonusFromJSON(data: Array<Double>, offset: Float) : ObjectView {
+    fun getBonusFromJSON(data: Array<Double>) : ObjectView {
         val type = data[0].toInt()
 
         val posX = data[1].toFloat()
-        val posY = data[2].toFloat() + offset
+        val posY = data[2].toFloat()
 
         val id = data[3].toInt()
 
@@ -81,9 +79,9 @@ class JSONToObjectView(resources: Resources) {
         return bonusViewFactory.getBonusView(type, posX, posY, animationTime)
     }
 
-    fun getBulletFromJSON(data: Array<Double>, offset: Float) : ObjectView {
+    fun getBulletFromJSON(data: Array<Double>) : ObjectView {
         val posX = data[1].toFloat()
-        val posY = data[2].toFloat() + offset
+        val posY = data[2].toFloat()
 
         val id = data[3].toInt()
 

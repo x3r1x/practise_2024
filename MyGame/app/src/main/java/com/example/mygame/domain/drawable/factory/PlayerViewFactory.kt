@@ -23,14 +23,15 @@ class PlayerViewFactory(resources: Resources) {
     private val selectedBonusViewFactory = SelectedBonusViewFactory(resources)
 
     fun getPlayerView(
+        id: Int = -1,
         x: Float,
         y: Float,
         directionX: Int,
         directionY: Int,
-        isWithShield: Int,
-        isShot: Int,
-        isDead: Int,
-        id: Int,
+        isWinner: Int = 0,
+        isWithShield: Boolean = false,
+        isShot: Boolean = false,
+        isDead: Boolean = false,
         isWithJetpack: Boolean = false
     ): ObjectView {
         val bitmap = getBitmap(isDead, isShot, directionY)
@@ -40,20 +41,20 @@ class PlayerViewFactory(resources: Resources) {
         var selectedShield: SelectedBonusView? = null
         var selectedJetpack: SelectedBonusView? = null
 
-        if (isWithShield == TRUE) {
+        if (isWithShield) {
             selectedShield = selectedBonusViewFactory.getShieldView(x, y, directionX)
         }
         if (isWithJetpack) {
             selectedJetpack = selectedBonusViewFactory.getJetpackView(x, y, directionX)
         }
 
-        return PlayerView(x, y, bitmap, matrix, 0)
+        return PlayerView(x, y, bitmap, matrix, id, selectedShield, selectedJetpack)
     }
 
-    private fun getBitmap(isDead: Int, isShot: Int, directionY: Int): Bitmap {
-        return if (isDead == TRUE) {
+    private fun getBitmap(isDead: Boolean, isShot: Boolean, directionY: Int): Bitmap {
+        return if (isDead) {
             deadPlayerBitmap
-        } else if (isShot == TRUE) {
+        } else if (isShot) {
             shootPlayerBitmap
         } else if (directionY == DIRECTION_Y_UP) {
             jumpPlayerBitmap
@@ -79,10 +80,10 @@ class PlayerViewFactory(resources: Resources) {
         return matrix
     }
 
-    private fun getRect(x: Float, y: Float, isDead: Int, isShot: Int): RectF {
-        return if (isDead == TRUE) {
+    private fun getRect(x: Float, y: Float, isDead: Boolean, isShot: Boolean): RectF {
+        return if (isDead) {
             RectF(x - DEAD_WIDTH / 2, y - DEAD_HEIGHT / 2, x + DEAD_WIDTH / 2, y + DEAD_HEIGHT / 2)
-        } else if (isShot == TRUE) {
+        } else if (isShot) {
             RectF(
                 x - SHOOTING_WIDTH / 2,
                 y - SHOOTING_HEIGHT / 2,

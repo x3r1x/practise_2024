@@ -74,7 +74,7 @@ class PlatformViewFactory(resources: Resources) {
                 2 -> return breakingPlatformBitmaps[2]
                 3 -> return breakingPlatformBitmaps[3]
                 4 -> return breakingPlatformBitmaps[4]
-                else -> return breakingPlatformBitmaps[0] // TODO: костыль
+                else -> throw IllegalArgumentException("Invalid platform animation value: $animationTime")
             }
         }
     }

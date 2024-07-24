@@ -48,15 +48,14 @@ class DrawableManager(resources: Resources) {
 
     private fun playerToView(player: Player): ObjectView {
         return playerViewFactory.getPlayerView(
-            player.x,
-            player.y,
-            player.directionX.value,
-            player.directionY.value,
-            player.isWithShield.toInt(),
-            player.isShooting.toInt(),
-            player.isDead.toInt(),
-            0,
-            player.isWithJetpack
+            x = player.x,
+            y = player.y,
+            directionX = player.directionX.value,
+            directionY = player.directionY.value,
+            isWithShield = player.isWithShield,
+            isShot = player.isShooting,
+            isDead = player.isDead,
+            isWithJetpack = player.isWithJetpack
         )
     }
 
