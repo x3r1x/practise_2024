@@ -50,13 +50,13 @@ class MultiplayerGameFragment : Fragment() {
 
         gameViewModel.initialize(screenWidth, screenHeight, GameViewModel.Type.MULTIPLAYER)
 
-//        readyButton = view.findViewById(R.id.readyButton)
-//
-//        readyButton.setOnClickListener {
-//            readyButton.visibility = INVISIBLE
-//            gameView.visibility = VISIBLE
-//            gameViewModel.gameplay.sendReadyMessage()
-//        }
+        readyButton = view.findViewById(R.id.readyButton)
+
+        readyButton.setOnClickListener {
+            readyButton.visibility = INVISIBLE
+            gameView.visibility = VISIBLE
+            gameViewModel.gameplay.sendReadyMessage()
+        }
 
         return view
     }

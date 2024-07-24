@@ -52,7 +52,6 @@ class MultiplayerGameplay(
         client = object : WebSocketClient(serverUri) {
             override fun onOpen(handshakedata: ServerHandshake?) {
                 sendInitMessage()
-                sendReadyMessage()
                 Log.d("WebSocket", "Connection opened")
             }
 
