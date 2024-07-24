@@ -25,6 +25,10 @@ class PlayerCollisionVisitor(
     override fun visit(platform: Platform) {
         if (doesPlayerCollideWithSolid(platform) && !player.isDead) {
             if (platform is BreakingPlatform) {
+                if (!platform.isBreakRunning) {
+                    audioPlayer.playBreakingPlatformSound()
+                }
+
                 platform.runDestructionAnimation(screenHeight)
                 return
             } else if (platform is DisappearingPlatform) {
