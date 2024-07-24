@@ -77,12 +77,12 @@ class SingleplayerGameplay(
     }
 
     private fun updateGameState(elapsedTime: Float) {
-        updateGameObjects()
+        updateGameObjects(elapsedTime)
         checkCollisions()
         updatePositions(elapsedTime)
     }
 
-    private fun updateGameObjects() {
+    private fun updateGameObjects(elapsedTime: Float) {
         gameObjects.value = objectsManager.getObjects()
         _gameState.value = GameState(
             Type.GAME,
@@ -91,6 +91,8 @@ class SingleplayerGameplay(
         )
 
         val player = objectsManager.objectStorage.getPlayer()
+        player.bonuses.updateBonuses(elapsedTime, audioPlayer)
+        drawableManager.playerViewFactory.selectedBonusViewFactory.updateBonuses(elapsedTime)
 
         if (Physics().doWeNeedToMove(player, screen.maxPlayerHeight)) {
             val offsetY = Physics().moveOffset(player, screen.maxPlayerHeight)

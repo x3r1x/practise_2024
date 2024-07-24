@@ -6,66 +6,94 @@ import com.example.mygame.UI.GameSoundsPlayer
 import com.example.mygame.domain.GameConstants
 
 class PlayerSelectedBonuses(private val player: Player) {
-    var shieldPaint = Paint()
-    var jetpackPaint = Paint()
+    private val shieldPaint = Paint()
+    private val jetpackPaint = Paint()
+
+    private var timeWithShield = 0f
+    private var shieldPulseTime = 0f
+
+    private var timeWithJetpack = 0f
+    private var jetpackPulseTime = 0f
+    private var jetpackSound = 0
 
     fun selectShield(audioPlayer: GameSoundsPlayer) {
         player.isWithShield = true
         shieldPaint.alpha = GameConstants.SHIELD_DEFAULT_TRANSPARENCY
 
         audioPlayer.playShieldPickupSound()
-
-        val timer = object : CountDownTimer(GameConstants.SHIELD_DURATION, GameConstants.SHIELD_TIMER_TICK) {
-            override fun onTick(p0: Long) {
-                if (p0 <= GameConstants.WHEN_SHIELD_TO_PULSE) {
-                    shieldPaint.alpha =
-                        if (shieldPaint.alpha == GameConstants.SHIELD_PULSE_TRANSPARENCY) {
-                            GameConstants.SHIELD_DEFAULT_TRANSPARENCY
-                        } else {
-                            audioPlayer.playBonusEndingSoonSound()
-
-                            GameConstants.SHIELD_PULSE_TRANSPARENCY
-                        }
-                }
-            }
-
-            override fun onFinish() {
-                audioPlayer.playShieldDestroySound()
-
-                player.isWithShield = false
-                shieldPaint.alpha = 0
-            }
-        }
-        timer.start()
     }
 
     fun selectJetpack(audioPlayer: GameSoundsPlayer) {
         player.isWithJetpack = true
         jetpackPaint.alpha = GameConstants.JETPACK_DEFAULT_TRANSPARENCY
 
-        val jetpackSound = audioPlayer.playJetpackSound()
+        jetpackSound = audioPlayer.playJetpackSound()
+    }
 
-        val timer = object : CountDownTimer(GameConstants.JETPACK_DURATION, GameConstants.JETPACK_TIMER_TICK) {
-            override fun onTick(p0: Long) {
-                if (p0 <= GameConstants.WHEN_JETPACK_TO_PULSE) {
-                    jetpackPaint.alpha =
-                        if (jetpackPaint.alpha == GameConstants.JETPACK_PULSE_TRANSPARENCY) {
-                            GameConstants.JETPACK_DEFAULT_TRANSPARENCY
-                        } else {
-                            audioPlayer.playBonusEndingSoonSound()
+    fun updateBonuses(additionalTime: Float, audioPlayer: GameSoundsPlayer) {
+        if (player.isWithShield) {
+            updateShield(additionalTime, audioPlayer)
+        }
+        if (player.isWithJetpack) {
+            updateJetpack(additionalTime, audioPlayer)
+        }
+    }
 
-                            GameConstants.JETPACK_PULSE_TRANSPARENCY
-                        }
-                }
+    private fun updateJetpack(additionalTime: Float, audioPlayer: GameSoundsPlayer) {
+        timeWithJetpack += additionalTime
+
+        if (GameConstants.JETPACK_DURATION - timeWithJetpack <= 0f) {
+            player.isWithJetpack = false
+
+            audioPlayer.stopPlayingSound(jetpackSound)
+            audioPlayer.playJetpackDestroySound()
+
+            timeWithJetpack = 0f
+            jetpackPulseTime = 0f
+        } else if (GameConstants.JETPACK_DURATION - timeWithJetpack <= GameConstants.WHEN_JETPACK_TO_PULSE) {
+            if (jetpackPulseTime == 0f) {
+                audioPlayer.playBonusEndingSoonSound()
+                jetpackPaint.alpha = GameConstants.JETPACK_PULSE_TRANSPARENCY
+            }
+            if (jetpackPulseTime >= GameConstants.JETPACK_TIMER_TICK) {
+                jetpackPaint.alpha = GameConstants.JETPACK_DEFAULT_TRANSPARENCY
             }
 
-            override fun onFinish() {
-                audioPlayer.playJetpackDestroySound()
-                audioPlayer.stopPlayingSound(jetpackSound)
+            jetpackPulseTime += additionalTime
 
-                player.isWithJetpack = false
+            if (jetpackPulseTime >= GameConstants.JETPACK_TIMER_TICK * 2) {
+                jetpackPulseTime = 0f
             }
         }
-        timer.start()
+    }
+
+    private fun updateShield(additionalTime: Float, audioPlayer: GameSoundsPlayer) {
+        timeWithShield += additionalTime
+
+        println("#Debug: #Real: $timeWithShield")
+
+        if (GameConstants.SHIELD_DURATION - timeWithShield <= 0f) {
+            audioPlayer.playShieldDestroySound()
+
+            player.isWithShield = false
+            shieldPaint.alpha = 0
+
+            timeWithShield = 0f
+            shieldPulseTime = 0f
+        } else if (GameConstants.SHIELD_DURATION - timeWithShield <= GameConstants.WHEN_SHIELD_TO_PULSE) {
+            if (shieldPulseTime == 0f) {
+                audioPlayer.playBonusEndingSoonSound()
+                shieldPaint.alpha = GameConstants.SHIELD_PULSE_TRANSPARENCY
+            }
+            if (shieldPulseTime >= GameConstants.SHIELD_TIMER_TICK) {
+                shieldPaint.alpha = GameConstants.SHIELD_DEFAULT_TRANSPARENCY
+            }
+
+            shieldPulseTime += additionalTime
+
+            if (shieldPulseTime >= GameConstants.SHIELD_TIMER_TICK * 2) {
+                shieldPulseTime = 0f
+            }
+        }
     }
 }
