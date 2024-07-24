@@ -1,6 +1,7 @@
 package com.example.mygame.multiplayer
 
 import com.example.mygame.domain.Screen
+import com.example.mygame.domain.drawable.view.ObjectView
 
 class Camera(
     screen: Screen
@@ -8,9 +9,14 @@ class Camera(
     private val fixedY = screen.height / 3 * 2
     private val fixedX = screen.width / 2
 
-    private val bottom  = 60f
-
     private var offsetY = 0f
+    private var offsetX = 0f
+
+    fun updatePosition(elements: List<ObjectView>) {
+        elements.forEach {
+            it.y += offsetY
+        }
+    }
 
     fun getOffsetY() : Float {
         return offsetY + 75f
@@ -23,5 +29,4 @@ class Camera(
     fun countOffsetY(playerY: Float) {
         offsetY = fixedY - playerY
     }
-
 }

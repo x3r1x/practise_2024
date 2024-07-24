@@ -8,7 +8,6 @@ import android.graphics.RectF
 import com.example.mygame.R
 import com.example.mygame.domain.drawable.ObjectType.Companion.TRUE
 import com.example.mygame.domain.drawable.view.ObjectView
-import com.example.mygame.domain.drawable.view.PlayerView
 
 class PlayerViewFactory(resources: Resources) {
     private val idlePlayerBitmap =
@@ -30,6 +29,7 @@ class PlayerViewFactory(resources: Resources) {
         isWithShield: Int,
         isShot: Int,
         isDead: Int,
+        id: Int,
         isWithJetpack: Boolean = false
     ): ObjectView {
         val bitmap = getBitmap(isDead, isShot, directionY)
@@ -46,7 +46,7 @@ class PlayerViewFactory(resources: Resources) {
             selectedJetpack = selectedBonusViewFactory.getJetpackView(x, y, directionX)
         }
 
-        return PlayerView(x, y, bitmap, matrix, selectedShield, selectedJetpack)
+        return ObjectView(x, y, bitmap, matrix)
     }
 
     private fun getBitmap(isDead: Int, isShot: Int, directionY: Int): Bitmap {

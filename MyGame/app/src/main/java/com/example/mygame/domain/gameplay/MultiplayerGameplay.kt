@@ -6,10 +6,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.mygame.domain.Score
 import com.example.mygame.domain.Screen
+import com.example.mygame.domain.drawable.view.ObjectView
 import com.example.mygame.domain.logic.SensorHandler
 import com.example.mygame.multiplayer.Camera
 import com.example.mygame.multiplayer.FireMessage
-import com.example.mygame.multiplayer.IGameObjectJSON
 import com.example.mygame.multiplayer.InitMessage
 import com.example.mygame.multiplayer.JSONToKotlin
 import com.example.mygame.multiplayer.MoveMessage
@@ -43,10 +43,12 @@ class MultiplayerGameplay(
 
     override val score = Score()
 
-    private val objects = mutableListOf<IGameObjectJSON>()
+    //private val objects = mutableListOf<IGameObjectJSON>()
+    private val objectsViews = mutableListOf<ObjectView>()
 
     private val camera = Camera(screen)
-    private val parserJSONToKotlin = JSONToKotlin(gson, resources, score, objects, camera)
+    private val parserJSONToKotlin = JSONToKotlin(gson, resources, camera, objectsViews)
+
 
     private val _scoreObservable = MutableLiveData<Int>()
     override val scoreObservable: LiveData<Int> = _scoreObservable
@@ -136,15 +138,19 @@ class MultiplayerGameplay(
         uiScope.launch {
             while (!isNewData) {
 
-                val player = parserJSONToKotlin.playerJSON
+                //val player = parserJSONToKotlin.playerView
                 //val currentTime = System.currentTimeMillis()
                 //val elapsedTime = (currentTime - startTime) / 1000f
+
+                camera.updatePosition(objectsViews)
+                //println("${objectsViews[1].y}")
 
                 //camera.changePositionY(objects, player)
 
                 _gameState.postValue(GameState(
                     Type.GAME,
-                    parserJSONToKotlin.getObjectsViews(),
+                    //parserJSONToKotlin.getObjectsViews(),
+                    objectsViews,
                     emptyList()
                 ))
 

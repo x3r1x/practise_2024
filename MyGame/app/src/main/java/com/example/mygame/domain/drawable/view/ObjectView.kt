@@ -7,11 +7,12 @@ import android.graphics.Paint
 import com.example.mygame.UI.IDrawable
 
 open class ObjectView(
-    open val x: Float,
-    open val y: Float,
+    open var x: Float,
+    open var y: Float,
     open val bitmap: Bitmap,
     open val matrix: Matrix,
-    open val paint: Paint? = null
+    open val paint: Paint? = null,
+    open val id: Int = 0
 ) : IDrawable {
     override fun draw(canvas: Canvas) {
         canvas.drawBitmap(bitmap, matrix, paint)

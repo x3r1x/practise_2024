@@ -55,6 +55,7 @@ class DrawableManager(resources: Resources) {
             player.isWithShield.toInt(),
             player.isShooting.toInt(),
             player.isDead.toInt(),
+            0,
             player.isWithJetpack
         )
     }

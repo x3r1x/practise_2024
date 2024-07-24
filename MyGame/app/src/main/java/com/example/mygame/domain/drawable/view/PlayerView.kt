@@ -6,10 +6,11 @@ import android.graphics.Matrix
 import com.example.mygame.domain.drawable.factory.SelectedBonusView
 
 class PlayerView(
-    override val x: Float,
-    override val y: Float,
+    override var x: Float,
+    override var y: Float,
     override val bitmap: Bitmap,
     override val matrix: Matrix,
+    override val id: Int,
     val selectedShieldView: SelectedBonusView? = null,
     val selectedJetpackView: SelectedBonusView? = null
 ) : ObjectView(x, y, bitmap, matrix) {
