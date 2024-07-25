@@ -24,7 +24,7 @@ class Repository {
         .setStrictness(Strictness.LENIENT)
         .create()
     private val retrofit = Retrofit.Builder()
-        .baseUrl("http://10.250.104.162:8000/")
+        .baseUrl("http://10.10.29.46:8000/")
         .addConverterFactory(GsonConverterFactory.create(gson))
         .build()
 
