@@ -1,9 +1,7 @@
 package com.example.mygame.domain.generator
 
 import com.example.mygame.domain.GameConstants
-import com.example.mygame.domain.GameConstants.Companion.MAX_VERTICAL_BREAKING_PLATFORM_GAP
-import com.example.mygame.domain.GameConstants.Companion.MAX_VERTICAL_PLATFORM_GAP
-import com.example.mygame.domain.Platform
+import com.example.mygame.domain.platform.Platform
 import com.example.mygame.domain.Screen
 import com.example.mygame.domain.platform.factory.BreakingPlatformFactory
 import com.example.mygame.domain.platform.factory.DisappearingPlatformFactory
@@ -22,9 +20,9 @@ class PlatformGenerator(
     private val disappearingPlatformFactory = DisappearingPlatformFactory()
     private val movingPlatformOnYFactory = MovingPlatformOnYFactory()
 
-    private val platformGap: Float = 50f
+    private val platformGap: Float = 100f
 
-    private val newPackageHeight = 4500f
+    private val newPackageHeight = 6000f
 
     private val factories = listOf(
         staticPlatformFactory,
@@ -37,39 +35,85 @@ class PlatformGenerator(
     private val platform = Platform(0f, 0f)
 
     fun generateInitialPlatforms(): MutableList<Platform> {
-        var newY = screen.height
+        val platforms = mutableListOf<Platform>()
 
-        val platforms: MutableList<Platform> = mutableListOf()
+        var newY = screen.height - OTHER_PLATFORMS_OUT_OF_START
+
         while (newY >= -newPackageHeight) {
-            val x = Random.nextFloat() * (screen.width - Platform.WIDTH) + GameConstants.PLATFORM_SPAWN_ADDITIONAL_X
+            val x = Random.nextFloat() * (screen.width - platform.width) + GameConstants.PLATFORM_SPAWN_ADDITIONAL_X
             val newPlatform = staticPlatformFactory.generatePlatform(x, newY)
             platforms.add(newPlatform)
-            newY -= Platform.HEIGHT + platformGap
+            newY -= platform.height + platformGap
         }
 
         return platforms
     }
 
-    fun generatePlatform(from: Float, isNotBreaking: Boolean = false): Platform {
+    fun generateStaticPlatform(from: Float) : Platform {
+        val coordinates = getRandomCoordinates(from, GameConstants.MAX_VERTICAL_PLATFORM_GAP)
+
+        return staticPlatformFactory.generatePlatform(coordinates[0], coordinates[1])
+    }
+
+    fun generatePlatform(from: Float, currentScore: Int, isNotBreaking: Boolean = false): Platform {
         var factory = getRandomFactory()
         if (factory is BreakingPlatformFactory && isNotBreaking) {
             while (factory is BreakingPlatformFactory) {
                 factory = getRandomFactory()
             }
         }
-        var verticalPlatformGap = MAX_VERTICAL_PLATFORM_GAP
-        if (isNotBreaking) {
-            verticalPlatformGap = MAX_VERTICAL_BREAKING_PLATFORM_GAP
+
+        var verticalPlatformGap = GameConstants.MIN_VERTICAL_PLATFORM_GAP + currentScore / GameConstants.PLATFORM_GENERATION_RATIO
+
+        if (verticalPlatformGap > GameConstants.MAX_VERTICAL_PLATFORM_GAP) {
+            verticalPlatformGap = GameConstants.MAX_VERTICAL_PLATFORM_GAP
         }
 
-        val x = Random.nextFloat() * (screen.width - Platform.WIDTH) + GameConstants.PLATFORM_SPAWN_ADDITIONAL_X
-        val y = from - Random.nextFloat() * (verticalPlatformGap) - platformGap
+        println("#Debug: $verticalPlatformGap")
 
-        return factory.generatePlatform(x, y)
+        if (isNotBreaking) {
+            verticalPlatformGap = GameConstants.MAX_VERTICAL_BREAKING_PLATFORM_GAP
+        }
+
+        val coordinates = getRandomCoordinates(from, verticalPlatformGap)
+
+        return factory.generatePlatform(coordinates[0], coordinates[1])
+    }
+
+    fun generateStartPlatform() : MutableList<Platform> {
+        var initialPlatform = StaticPlatformFactory().generatePlatform(screen.left + platform.width / 2,
+            screen.bottom - platform.height / 2 - START_PLATFORMS_GAP_OF_SCREEN)
+
+        val platforms = mutableListOf<Platform>()
+
+        while (initialPlatform.right < screen.width) {
+            platforms.add(initialPlatform)
+
+            val previousRight = initialPlatform.right
+
+            initialPlatform = StaticPlatformFactory().generatePlatform(previousRight + START_PLATFORM_GAP + platform.width / 2,
+                screen.bottom - platform.height / 2 - START_PLATFORMS_GAP_OF_SCREEN)
+        }
+
+        platforms.add(initialPlatform)
+
+        return platforms
+    }
+
+    private fun getRandomCoordinates(from: Float, verticalGap: Float) : Array<Float> {
+        val x = Random.nextFloat() * (screen.width - platform.width) + GameConstants.PLATFORM_SPAWN_ADDITIONAL_X
+        val y = from - Random.nextFloat() * (verticalGap - platformGap) - platformGap
+        return arrayOf(x, y)
     }
 
     private fun getRandomFactory(): IPlatformFactory {
-        // TODO: Сделать шанс генерации на основе score
         return factories[Random.nextInt(factories.size)]
+    }
+
+    companion object {
+        private const val START_PLATFORMS_GAP_OF_SCREEN = 200f
+        private const val START_PLATFORM_GAP = 10f
+
+        private const val OTHER_PLATFORMS_OUT_OF_START = 600f
     }
 }

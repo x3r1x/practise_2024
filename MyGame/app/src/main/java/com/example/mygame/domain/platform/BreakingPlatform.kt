@@ -1,7 +1,7 @@
 package com.example.mygame.domain.platform
 
 import android.animation.ValueAnimator
-import com.example.mygame.domain.Platform
+import android.os.CountDownTimer
 
 class BreakingPlatform(
     createdX: Float,
@@ -9,7 +9,7 @@ class BreakingPlatform(
 ) : Platform(createdX, createdY) {
     var currentFrameIndex = 0
 
-    private var isBreakRunning = false
+    var isBreakRunning = false
 
     fun runDestructionAnimation(screenHeight: Float) {
         if (!isBreakRunning) {
@@ -22,19 +22,17 @@ class BreakingPlatform(
             }
 
             animator?.start()
-            runFallingAnimation(screenHeight)
+            runFallingAnimation()
         }
     }
 
-    private fun runFallingAnimation(screenHeight: Float) {
-        val startY = y
-
-        val animator = ValueAnimator.ofFloat(startY, screenHeight).apply {
-            duration = FALLING_DURATION
-            addUpdateListener { animation ->
-                val currentY = animation.animatedValue as Float
-                setPosition(x, currentY)
+    private fun runFallingAnimation() {
+        val animator = object : CountDownTimer(MAX_ANIMATION_LENGTH, ANIMATION_TICK) {
+            override fun onTick(p0: Long) {
+                setPosition(x, y + FALL_OFFSET)
             }
+
+            override fun onFinish() {}
         }
 
         animator.start()
@@ -42,7 +40,10 @@ class BreakingPlatform(
 
     companion object {
         private const val DESTRUCTION_DURATION : Long = 150
-        private const val FALLING_DURATION : Long = 2000
+
+        private const val FALL_OFFSET = 10f
+        private const val MAX_ANIMATION_LENGTH : Long = 2000
+        private const val ANIMATION_TICK : Long = 10
 
         private const val STATE_COUNT = 5
     }

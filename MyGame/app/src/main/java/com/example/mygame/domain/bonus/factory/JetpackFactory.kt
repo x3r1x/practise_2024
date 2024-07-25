@@ -1,6 +1,6 @@
 package com.example.mygame.domain.bonus.factory
 
-import com.example.mygame.domain.Platform
+import com.example.mygame.domain.platform.Platform
 import com.example.mygame.domain.bonus.IBonus
 import com.example.mygame.domain.bonus.Jetpack
 import com.example.mygame.domain.bonus.factory.IBonusFactory.Companion.COLLECTABLE_OFFSET

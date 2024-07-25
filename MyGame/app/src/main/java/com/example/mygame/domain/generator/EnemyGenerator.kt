@@ -3,7 +3,7 @@ package com.example.mygame.domain.generator
 import com.example.mygame.domain.Enemy
 import com.example.mygame.domain.GameConstants
 import com.example.mygame.domain.IGameObject
-import com.example.mygame.domain.Platform
+import com.example.mygame.domain.platform.Platform
 import com.example.mygame.domain.Screen
 import com.example.mygame.domain.enemy.Bully
 import com.example.mygame.domain.enemy.factory.BullyFactory
@@ -17,6 +17,21 @@ class EnemyGenerator(
     private val flyFactory = FlyFactory(screen)
     private val bullyFactory = BullyFactory()
     private val ninjaFactory = NinjaFactory(screen)
+
+    fun generateInitialEnemy(platform: Platform) : Enemy {
+        val random = Random.nextFloat()
+
+        when {
+            random < GameConstants.INITIAL_NINJA_SPAWN_CHANCE -> {
+                return ninjaFactory.generateEnemy(platform.x, platform.y - INITIAL_GAP_Y)
+            }
+            random < GameConstants.INITIAL_FLY_SPAWN_CHANCE -> {
+                return flyFactory.generateEnemy(platform.x, platform.y - INITIAL_GAP_Y)
+            }
+        }
+
+        return bullyFactory.generateEnemy(platform.x, platform.y - INITIAL_GAP_Y)
+    }
 
     fun generateEnemy(platform: Platform): IGameObject? {
         var enemy: Enemy? = null
@@ -51,6 +66,8 @@ class EnemyGenerator(
     }
 
     companion object {
+        private const val INITIAL_GAP_Y = 110f
+
         private const val GAP_X = 275f
     }
 }

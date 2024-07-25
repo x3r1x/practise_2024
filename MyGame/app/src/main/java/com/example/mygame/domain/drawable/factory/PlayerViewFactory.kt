@@ -10,6 +10,8 @@ import com.example.mygame.domain.drawable.view.ObjectView
 import com.example.mygame.domain.drawable.view.PlayerView
 
 class PlayerViewFactory(resources: Resources) {
+    val selectedBonusViewFactory = SelectedBonusViewFactory(resources)
+
     private val idlePlayerBitmap =
         BitmapFactory.decodeResource(resources, R.drawable.player, BITMAP_OPTIONS)
     private val jumpPlayerBitmap =
@@ -18,8 +20,6 @@ class PlayerViewFactory(resources: Resources) {
         BitmapFactory.decodeResource(resources, R.drawable.dead_doodler, BITMAP_OPTIONS)
     private val shootPlayerBitmap =
         BitmapFactory.decodeResource(resources, R.drawable.player_shooting, BITMAP_OPTIONS)
-
-    private val selectedBonusViewFactory = SelectedBonusViewFactory(resources)
 
     fun getPlayerView(
         id: Int = -1,

@@ -1,7 +1,7 @@
 package com.example.mygame.domain.bonus.factory
 
 import android.graphics.BitmapFactory
-import com.example.mygame.domain.Platform
+import com.example.mygame.domain.platform.Platform
 import com.example.mygame.domain.bonus.IBonus
 
 interface IBonusFactory {

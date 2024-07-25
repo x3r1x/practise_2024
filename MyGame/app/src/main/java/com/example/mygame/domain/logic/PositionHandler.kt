@@ -1,6 +1,7 @@
 package com.example.mygame.domain.logic
 
 import com.example.mygame.domain.IMoveable
+import com.example.mygame.domain.platform.BreakingPlatform
 import com.example.mygame.domain.player.Player
 
 class PositionHandler {

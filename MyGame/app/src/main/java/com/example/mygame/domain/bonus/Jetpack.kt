@@ -1,5 +1,6 @@
 package com.example.mygame.domain.bonus
 
+import com.example.mygame.UI.GameSoundsPlayer
 import com.example.mygame.domain.GameConstants
 import com.example.mygame.domain.IGameObject
 import com.example.mygame.domain.IMoveable
@@ -20,8 +21,8 @@ class Jetpack(
 
     override var isDisappeared = false
 
-    fun select(entity: Player) {
-        entity.bonuses.selectJetpack()
+    fun select(entity: Player, audioPlayer: GameSoundsPlayer) {
+        entity.bonuses.selectJetpack(audioPlayer)
         entity.directionY = Player.DirectionY.UP
         entity.speedY = GameConstants.PLAYER_SPEED_WITH_JETPACK
         isDisappeared = true

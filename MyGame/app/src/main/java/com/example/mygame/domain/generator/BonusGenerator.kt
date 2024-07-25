@@ -1,7 +1,7 @@
 package com.example.mygame.domain.generator
 
 import com.example.mygame.domain.GameConstants
-import com.example.mygame.domain.Platform
+import com.example.mygame.domain.platform.Platform
 import com.example.mygame.domain.bonus.IBonus
 import com.example.mygame.domain.bonus.factory.JetpackFactory
 import com.example.mygame.domain.bonus.factory.ShieldFactory
@@ -13,6 +13,21 @@ class BonusGenerator() {
     private val shieldFactory = ShieldFactory()
     private val springFactory = SpringFactory()
     private val jetpackFactory = JetpackFactory()
+
+    fun generateInitialBonus(platform: Platform) : IBonus {
+        val random = Random.nextFloat()
+
+        when {
+            random < GameConstants.INITIAL_JETPACK_SPAWN_CHANCE -> {
+                return jetpackFactory.generateBonus(platform)
+            }
+            random < GameConstants.INITIAL_SHIELD_SPAWN_CHANCE -> {
+                return shieldFactory.generateBonus(platform)
+            }
+        }
+
+        return springFactory.generateBonus(platform)
+    }
 
     fun generateBonus(platform: Platform): IBonus? {
         if (platform::class != StaticPlatform::class) {

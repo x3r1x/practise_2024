@@ -2,6 +2,7 @@ package com.example.mygame.domain.gameplay
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.mygame.UI.GameSoundsPlayer
 import com.example.mygame.domain.GameConstants
 import com.example.mygame.domain.IGameObject
 import com.example.mygame.domain.IMoveable
@@ -25,9 +26,12 @@ class SingleplayerGameplay(
     private val positionHandler: PositionHandler,
     private val collisionHandler: CollisionHandler,
     private val drawableManager: DrawableManager,
-    private val screen: Screen
+    private val screen: Screen,
+    private val audioPlayer: GameSoundsPlayer
 ) : IGameplay {
     private var isGameLoopRunning = false
+
+    private var shotCooldown = 0f
 
     private var deltaX = 0f
     override val score = Score()
@@ -75,12 +79,16 @@ class SingleplayerGameplay(
     }
 
     private fun updateGameState(elapsedTime: Float) {
-        updateGameObjects()
+        updateGameObjects(elapsedTime)
         checkCollisions()
         updatePositions(elapsedTime)
+
+        if (shotCooldown > 0f) {
+            shotCooldown -= elapsedTime
+        }
     }
 
-    private fun updateGameObjects() {
+    private fun updateGameObjects(elapsedTime: Float) {
         gameObjects.value = objectsManager.getObjects()
         _gameState.value = GameState(
             Type.GAME,
@@ -89,11 +97,14 @@ class SingleplayerGameplay(
         )
 
         val player = objectsManager.objectStorage.getPlayer()
+        player.bonuses.updateBonuses(elapsedTime, audioPlayer)
+        drawableManager.playerViewFactory.selectedBonusViewFactory.updateBonuses(elapsedTime)
 
         if (Physics().doWeNeedToMove(player, screen.maxPlayerHeight)) {
             val offsetY = Physics().moveOffset(player, screen.maxPlayerHeight)
 
             score.increase(offsetY)
+            objectsManager.levelGenerator.currentScore = score.getScore()
             positionHandler.screenScroll(gameObjects.value!!.filterIsInstance<IMoveable>(), 0f, offsetY)
             objectsManager.updateObjects(offsetY)
         }
@@ -103,7 +114,8 @@ class SingleplayerGameplay(
         collisionHandler.checkCollisions(
             objectsManager.objectStorage.getPlayer(),
             screen,
-            gameObjects.value!!
+            gameObjects.value!!,
+            audioPlayer
         )
     }
 
@@ -120,7 +132,12 @@ class SingleplayerGameplay(
     }
 
     override fun onShot(startX: Float) {
-        objectsManager.createBullet(startX)
+        if (shotCooldown <= 0f) {
+            audioPlayer.playShootSound()
+
+            objectsManager.createBullet(startX)
+            shotCooldown = GameConstants.SHOT_COOLDOWN
+        }
     }
 
     override fun onPause() {

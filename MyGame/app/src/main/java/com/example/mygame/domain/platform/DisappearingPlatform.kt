@@ -5,7 +5,6 @@ import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
 import android.graphics.Color
 import android.graphics.Paint
-import com.example.mygame.domain.Platform
 
 class DisappearingPlatform(
     createdX: Float,

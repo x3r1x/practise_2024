@@ -6,6 +6,8 @@ class GameConstants {
 
         const val SENSOR_MULTIPLIER = 180f
 
+        const val SHOT_COOLDOWN = 0.3f
+
         const val PLAYER_JUMP_SPEED = 1600f
         const val PLAYER_SPRING_JUMP_SPEED = 3700f
         const val PLAYER_SPEED_WITH_JETPACK = 1900f
@@ -19,6 +21,8 @@ class GameConstants {
         const val PLATFORM_ON_Y_SPEED = 200f
         const val PLATFORM_ON_Y_RANGE = 700f
 
+        const val STATIC_PLATFORM_COUNT_PER_LEVEL = 3
+
         const val SHIELD_DEFAULT_TRANSPARENCY = 128
         const val SHIELD_PULSE_TRANSPARENCY = 64
         const val JETPACK_DEFAULT_TRANSPARENCY = 255
@@ -26,14 +30,14 @@ class GameConstants {
         const val CURRENT_PLAYER_TRANSPARENCY = 255
         const val OTHER_PLAYER_TRANSPARENCY = 64
 
-        const val JETPACK_DURATION : Long = 6000 // > 3000
-        const val SHIELD_DURATION : Long = 10000 // > 4000
+        const val JETPACK_DURATION = 6f // >= 3f
+        const val SHIELD_DURATION = 10f // >= 4f
 
-        const val SHIELD_TIMER_TICK : Long = 500
-        const val JETPACK_TIMER_TICK: Long = 500
+        const val SHIELD_TIMER_TICK = 0.5f
+        const val JETPACK_TIMER_TICK = 0.5f
 
-        const val WHEN_SHIELD_TO_PULSE : Long = 3000
-        const val WHEN_JETPACK_TO_PULSE: Long = 2000
+        const val WHEN_SHIELD_TO_PULSE = 3f
+        const val WHEN_JETPACK_TO_PULSE = 2f
 
         const val BULLY_DEATH_OFFSET_X = 60f
         const val FLY_MOVE_SPEED = 520f
@@ -45,12 +49,23 @@ class GameConstants {
         const val NINJA_SPEED_CHANGE_CHANCE = 0.05f
 
         const val PLATFORM_SPAWN_ADDITIONAL_X = 100f
-        const val MAX_VERTICAL_PLATFORM_GAP = 400f
+        const val MAX_VERTICAL_PLATFORM_GAP = 300f
+        const val MIN_VERTICAL_PLATFORM_GAP = 200f
+        const val PLATFORM_GENERATION_RATIO = 150f
         const val MAX_VERTICAL_BREAKING_PLATFORM_GAP = 50f
 
-        const val JETPACK_SPAWN_CHANCE = 0.02f
-        const val SHIELD_SPAWN_CHANCE = 0.08f
-        const val SPRING_SPAWN_CHANCE = 0.25f
+        const val BONUSES_IN_INITIAL_PACK = 3
+        const val ENEMIES_IN_INITIAL_PACK = 2
+
+        const val INITIAL_JETPACK_SPAWN_CHANCE = 0.05f
+        const val INITIAL_SHIELD_SPAWN_CHANCE = 0.2f
+
+        const val INITIAL_NINJA_SPAWN_CHANCE = 0.05f
+        const val INITIAL_FLY_SPAWN_CHANCE = 0.4f
+
+        const val JETPACK_SPAWN_CHANCE = 0.01f
+        const val SHIELD_SPAWN_CHANCE = 0.05f
+        const val SPRING_SPAWN_CHANCE = 0.15f
         const val MIN_SPRING_SPAWN_X = 40
         const val MAX_SPRING_SPAWN_X = 135
 

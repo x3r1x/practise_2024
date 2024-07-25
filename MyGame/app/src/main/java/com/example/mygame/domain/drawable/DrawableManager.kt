@@ -4,7 +4,7 @@ import android.content.res.Resources
 import com.example.mygame.UI.IDrawable
 import com.example.mygame.domain.Enemy
 import com.example.mygame.domain.IGameObject
-import com.example.mygame.domain.Platform
+import com.example.mygame.domain.platform.Platform
 import com.example.mygame.domain.bonus.IBonus
 import com.example.mygame.domain.bonus.Jetpack
 import com.example.mygame.domain.bonus.Shield
@@ -27,7 +27,7 @@ import com.example.mygame.domain.platform.StaticPlatform
 import com.example.mygame.domain.player.Player
 
 class DrawableManager(resources: Resources) {
-    private val playerViewFactory = PlayerViewFactory(resources)
+    val playerViewFactory = PlayerViewFactory(resources)
     private val platformViewFactory = PlatformViewFactory(resources)
     private val enemyViewFactory = EnemyViewFactory(resources)
     private val bonusViewFactory = BonusViewFactory(resources)

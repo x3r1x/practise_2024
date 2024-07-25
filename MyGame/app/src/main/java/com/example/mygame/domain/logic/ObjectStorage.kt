@@ -2,7 +2,7 @@ package com.example.mygame.domain.logic
 
 import com.example.mygame.domain.Enemy
 import com.example.mygame.domain.IGameObject
-import com.example.mygame.domain.Platform
+import com.example.mygame.domain.platform.Platform
 import com.example.mygame.domain.Screen
 import com.example.mygame.domain.bonus.IBonus
 import com.example.mygame.domain.bullet.Bullet
@@ -21,7 +21,7 @@ class ObjectStorage(
     private var player = PlayerFactory().generatePlayer()
 
     init {
-        player.setPosition(screen.width / 2f, screen.height - 800)
+        player.setPosition(screen.width / 2f, screen.height - 300)
     }
 
     fun getPlayer() : Player {

@@ -17,18 +17,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageButton
-        android:id="@+id/settingButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/rounded_26dp"
-        android:contentDescription="@string/settings"
-        android:src="@drawable/settings"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/menuGroup"
         android:layout_width="wrap_content"
@@ -87,7 +75,7 @@
             app:layout_constraintTop_toBottomOf="@+id/singlePlayerButton" />
 
         <Button
-            android:id="@+id/aboutUsButton"
+            android:id="@+id/leaderboardButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
@@ -96,7 +84,7 @@
             android:background="@drawable/rounded_26dp"
             android:backgroundTint="@color/white"
             android:fontFamily="@font/magra"
-            android:text="@string/about_us"
+            android:text="@string/leaderboardText"
             android:textAllCaps="false"
             android:textSize="25sp"
             app:layout_constraintEnd_toEndOf="parent"

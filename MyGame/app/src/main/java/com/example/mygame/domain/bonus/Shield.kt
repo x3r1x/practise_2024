@@ -1,5 +1,6 @@
 package com.example.mygame.domain.bonus
 
+import com.example.mygame.UI.GameSoundsPlayer
 import com.example.mygame.domain.IGameObject
 import com.example.mygame.domain.IMoveable
 import com.example.mygame.domain.IVisitor
@@ -19,8 +20,8 @@ class Shield(
 
     override var isDisappeared = false
 
-    fun select(entity: Player) {
-        entity.bonuses.selectShield()
+    fun select(entity: Player, audioPlayer: GameSoundsPlayer) {
+        entity.bonuses.selectShield(audioPlayer)
         isDisappeared = true
     }
 

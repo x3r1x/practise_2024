@@ -2,7 +2,7 @@ package com.example.mygame.domain.visitor
 
 import com.example.mygame.domain.Enemy
 import com.example.mygame.domain.IVisitor
-import com.example.mygame.domain.Platform
+import com.example.mygame.domain.platform.Platform
 import com.example.mygame.domain.Screen
 import com.example.mygame.domain.bonus.Jetpack
 import com.example.mygame.domain.bonus.Shield

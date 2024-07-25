@@ -24,4 +24,9 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="leaderboard">Leaderboard</string>
+    <string name="gotcha">Gotcha!</string>
+    <string name="leaderboardText">Leaderboard</string>
+    <string name="save_your_result">Save Your Result!</string>
+    <string name="error_load_scoreboard">Sorry. Server is offline :(</string>
 </resources>
