@@ -39,7 +39,7 @@ class MultiplayerGameplay(
     private val gson = Gson()
 
     private val client: WebSocketClient
-    private val serverUri = URI("ws://10.250.104.162:8080")
+    private val serverUri = URI("ws://10.10.29.46:8080")
 
     private val _gameState = MutableLiveData<GameState>()
     override val gameState: LiveData<GameState> = _gameState
