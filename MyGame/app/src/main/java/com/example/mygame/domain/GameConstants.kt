@@ -23,6 +23,8 @@ class GameConstants {
         const val SHIELD_PULSE_TRANSPARENCY = 64
         const val JETPACK_DEFAULT_TRANSPARENCY = 255
         const val JETPACK_PULSE_TRANSPARENCY = 128
+        const val CURRENT_PLAYER_TRANSPARENCY = 255
+        const val OTHER_PLAYER_TRANSPARENCY = 64
 
         const val JETPACK_DURATION : Long = 6000 // > 3000
         const val SHIELD_DURATION : Long = 10000 // > 4000

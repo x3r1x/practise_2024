@@ -9,12 +9,11 @@ import com.example.mygame.domain.Score
 import com.example.mygame.domain.Screen
 import com.example.mygame.domain.drawable.view.ObjectView
 import com.example.mygame.domain.logic.SensorHandler
-import com.example.mygame.multiplayer.Offset
 import com.example.mygame.multiplayer.FireMessage
-import com.example.mygame.multiplayer.GameData
 import com.example.mygame.multiplayer.InitMessage
 import com.example.mygame.multiplayer.JSONToKotlin
 import com.example.mygame.multiplayer.MoveMessage
+import com.example.mygame.multiplayer.Offset
 import com.example.mygame.multiplayer.PlayerIdFromServer
 import com.example.mygame.multiplayer.ReadyMessage
 import com.google.gson.Gson
@@ -35,7 +34,7 @@ class MultiplayerGameplay(
     private val gson = Gson()
 
     private val client: WebSocketClient
-    private val serverUri = URI("ws://10.10.29.46:8080")
+    private val serverUri = URI("ws://10.250.104.162:8080")
 
     private val _gameState = MutableLiveData<GameState>()
     override val gameState: LiveData<GameState> = _gameState

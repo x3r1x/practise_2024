@@ -1,6 +1,7 @@
 package com.example.mygame.multiplayer
 
 import android.content.res.Resources
+import com.example.mygame.domain.GameConstants
 import com.example.mygame.domain.drawable.ObjectType
 import com.example.mygame.domain.drawable.view.ObjectView
 import com.example.mygame.domain.drawable.view.PlayerView
@@ -53,12 +54,16 @@ class JSONToKotlin(
                 ObjectType.PLAYER_TYPE -> {
                     val posX = it[1].toFloat()
                     val posY = it[2].toFloat()
+                    val alpha : Int
+
                     if (it[3].toInt() == id) {
                         offset.calcFrom(posX, posY)
-
+                        alpha = GameConstants.CURRENT_PLAYER_TRANSPARENCY
+                    } else {
+                        alpha = GameConstants.OTHER_PLAYER_TRANSPARENCY
                     }
 
-                    objectsViewFactory.getPlayerFromJSON(posX + offset.getX(), posY + offset.getY(), it)
+                    objectsViewFactory.getPlayerFromJSON(posX + offset.getX(), posY + offset.getY(), alpha, it)
                 }
 
                 ObjectType.FINISH_LINE_TYPE ->
