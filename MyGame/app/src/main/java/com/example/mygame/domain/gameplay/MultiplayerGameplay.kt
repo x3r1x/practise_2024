@@ -91,7 +91,7 @@ class MultiplayerGameplay(
                     continue
                 }
 
-                _gameState.value = GameState(Type.GAME, objectsViews, emptyList())
+                _gameState.postValue(GameState(Type.GAME, objectsViews, emptyList()))
 
                 startTime = systemTime
             }
