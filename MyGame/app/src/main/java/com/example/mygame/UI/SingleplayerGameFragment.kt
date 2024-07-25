@@ -13,6 +13,7 @@ import android.view.WindowMetrics
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.activity.addCallback
 import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
@@ -30,6 +31,8 @@ class SingleplayerGameFragment : Fragment() {
     private lateinit var scoreView: TextView
     private lateinit var gameView: GameView
 
+    private var isGamePaused = false
+
     private fun initViews(view: View) {
         pauseButton = view.findViewById(R.id.pauseButton)
         pauseGroup = view.findViewById(R.id.pauseGroup)
@@ -38,21 +41,38 @@ class SingleplayerGameFragment : Fragment() {
         scoreView = view.findViewById(R.id.scoreView)
     }
 
+    @SuppressLint("VisibleForTests")
     private fun pauseGame() {
-        gameViewModel.gameplay.stopGameLoop()
+        val callback = requireActivity().onBackPressedDispatcher.addCallback(this) {
+            resumeGame {
+                remove()
+            }
+        }
+
+        isGamePaused = true
 
         pauseGroup.visibility = VISIBLE
 
         val resumeButton = pauseGroup.findViewById<Button>(R.id.resumeButton)
         resumeButton.setOnClickListener {
-            pauseGroup.visibility = INVISIBLE
-            gameViewModel.gameplay.startGameLoop()
-
+            resumeGame {
+                callback.remove()
+            }
         }
 
         exitToMenuButton.setOnClickListener {
             Navigation.findNavController(pauseGroup).navigate(R.id.navigateFromSinglePlayerFragmentToStartFragment)
         }
+    }
+
+    private fun resumeGame(callback: (() -> Unit)? = null) {
+        pauseGroup.visibility = INVISIBLE
+
+        isGamePaused = false
+
+        gameViewModel.gameplay.startGameLoop()
+        onResume()
+        callback?.invoke()
     }
 
     @RequiresApi(Build.VERSION_CODES.R)
@@ -72,7 +92,7 @@ class SingleplayerGameFragment : Fragment() {
     ): View {
         val (screenWidth, screenHeight) = getScreenSize()
 
-        val view = inflater.inflate(R.layout.fragment_game, container, false)
+        val view = inflater.inflate(R.layout.fragment_singleplayer_game, container, false)
         initViews(view)
 
         gameViewModel.initialize(screenWidth, screenHeight, GameViewModel.Type.SINGLEPLAYER)
@@ -81,7 +101,7 @@ class SingleplayerGameFragment : Fragment() {
         }
 
         pauseButton.setOnClickListener {
-            pauseGame()
+            onPause()
         }
 
         gameView.setOnTouchListener { _, event ->
@@ -108,6 +128,12 @@ class SingleplayerGameFragment : Fragment() {
         }
 
         gameViewModel.gameplay.startGameLoop()
+
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
+            if (!isGamePaused) {
+                onPause()
+            }
+        }
     }
 
     override fun onResume() {
