@@ -11,9 +11,11 @@ import com.example.mygame.domain.drawable.view.ObjectView
 import com.example.mygame.domain.logic.SensorHandler
 import com.example.mygame.multiplayer.Offset
 import com.example.mygame.multiplayer.FireMessage
+import com.example.mygame.multiplayer.GameData
 import com.example.mygame.multiplayer.InitMessage
 import com.example.mygame.multiplayer.JSONToKotlin
 import com.example.mygame.multiplayer.MoveMessage
+import com.example.mygame.multiplayer.PlayerIdFromServer
 import com.example.mygame.multiplayer.ReadyMessage
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
@@ -58,6 +60,14 @@ class MultiplayerGameplay(
             override fun onMessage(message: String?) {
                 message?.let {
                     try {
+                        if (parserJSONToKotlin.id == null) {
+                            val initId = gson.fromJson(message, PlayerIdFromServer::class.java)
+                            if (initId.id != 0) {
+                                parserJSONToKotlin.id = initId.id
+                                return
+                            }
+                        }
+
                         handleServerData(message)
                     } catch (e: JsonSyntaxException) {
                         Log.e("WebSocket", "Failed to parse server message", e)

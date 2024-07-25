@@ -12,6 +12,8 @@ class JSONToKotlin(
     private val offset: Offset,
     private val objectsViews: MutableList<ObjectView>
 ) {
+    var id: Int? = null
+
     private val objectsViewFactory = JSONToObjectView(resources)
 
     fun setGameState(jsonString: String) {
@@ -51,7 +53,10 @@ class JSONToKotlin(
                 ObjectType.PLAYER_TYPE -> {
                     val posX = it[1].toFloat()
                     val posY = it[2].toFloat()
-                    offset.calcFrom(posX, posY)
+                    if (it[3].toInt() == id) {
+                        offset.calcFrom(posX, posY)
+
+                    }
 
                     objectsViewFactory.getPlayerFromJSON(posX + offset.getX(), posY + offset.getY(), it)
                 }

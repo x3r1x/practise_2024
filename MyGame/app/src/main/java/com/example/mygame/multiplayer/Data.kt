@@ -96,3 +96,7 @@ data class GameData(
     @SerializedName("obj") val objects: Array<Array<Double>>,
     @SerializedName("s") val state: String
 )
+
+data class PlayerIdFromServer(
+    @SerializedName("id") val id: Int
+)
