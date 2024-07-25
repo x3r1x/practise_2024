@@ -4,9 +4,10 @@ import androidx.lifecycle.LiveData
 import com.example.mygame.UI.IDrawable
 import com.example.mygame.domain.Score
 
-enum class Type {
-    LOBBY,
-    GAME
+enum class Type(var value: String) {
+    LOBBY("l"),
+    GAME("r"),
+    END("e")
 }
 
 data class GameState(
@@ -19,6 +20,9 @@ interface IGameplay {
     val gameState: LiveData<GameState>
     val score: Score
     val scoreObservable: LiveData<Int>
+
+    var id: Int
+    var winnerId: Int
 
     fun onViewCreated() {}
 

@@ -5,6 +5,7 @@ import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
@@ -12,10 +13,14 @@ import android.view.WindowMetrics
 import android.widget.Button
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation
 import com.example.mygame.R
+import com.example.mygame.domain.gameplay.MultiplayerGameplay
+import com.example.mygame.domain.gameplay.Type
 import com.example.mygame.presentation.GameViewModel
 
 class MultiplayerGameFragment : Fragment() {
@@ -49,15 +54,51 @@ class MultiplayerGameFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_multiplayer_game, container, false)
         initViews(view)
 
+        val helloGroup = view.findViewById<ConstraintLayout>(R.id.helloGroup)
+        val helloTextView = view.findViewById<TextView>(R.id.helloTextView)
+
+        val resultGroup = view.findViewById<ConstraintLayout>(R.id.resultGroup)
+        val resultTextView = resultGroup.findViewById<TextView>(R.id.winnerText)
+        val goToMenuButton = resultGroup.findViewById<Button>(R.id.returnToMenuButton)
+
+        val waitingGroup = view.findViewById<ConstraintLayout>(R.id.waitingGroup)
+        val waitingReturnButton = view.findViewById<Button>(R.id.waitReturnButton)
+
         gameViewModel.initialize(screenWidth, screenHeight, GameViewModel.Type.MULTIPLAYER, requireContext(), lifecycleScope)
 
-        readyButton = view.findViewById(R.id.readyButton)
+        gameViewModel.gameplay.gameState.observe(viewLifecycleOwner) {
+            if (gameViewModel.gameplay.id == 0) {
+                waitingGroup.visibility = VISIBLE
+                waitingReturnButton.setOnClickListener {
+                    Navigation.findNavController(view).navigate(R.id.action_multiplayerGameFragment_to_startFragment)
+                }
+            } else if (gameViewModel.gameplay.gameState.value!!.type == Type.LOBBY) {
+                waitingGroup.visibility = GONE
+                helloTextView.text = "Hello, Player ${gameViewModel.gameplay.id}!"
+                helloGroup.visibility = VISIBLE
+            } else if (gameViewModel.gameplay.gameState.value!!.type == Type.GAME) {
+                helloGroup.visibility = GONE
+                gameView.visibility = VISIBLE
+            } else if (gameViewModel.gameplay.gameState.value!!.type == Type.END) {
+                val id = gameViewModel.gameplay.id
+                val winnerId = gameViewModel.gameplay.winnerId
+                gameView.alpha = 0.2f
 
-        readyButton.setOnClickListener {
-            readyButton.visibility = INVISIBLE
-            gameView.visibility = VISIBLE
-            //gameViewModel.gameplay.sendReadyMessage()
+                if (id == winnerId) {
+                    resultTextView.text = "You won!"
+                } else {
+                    resultTextView.text = "You lose! Player ${winnerId} won!"
+                }
+
+                resultGroup.visibility = VISIBLE
+
+                goToMenuButton.setOnClickListener {
+                    Navigation.findNavController(view).navigate(R.id.action_multiplayerGameFragment_to_startFragment)
+                }
+            }
         }
+
+
 
         return view
     }

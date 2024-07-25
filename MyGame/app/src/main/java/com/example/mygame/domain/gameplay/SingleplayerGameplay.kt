@@ -38,6 +38,9 @@ class SingleplayerGameplay(
 
     private val uiScope = CoroutineScope(Dispatchers.Main)
 
+    override var id = 0
+    override var winnerId = 0
+
     private val _gameState = MutableLiveData<GameState>()
     override val gameState: LiveData<GameState> = _gameState
     private val gameObjects = MutableLiveData<List<IGameObject>>()

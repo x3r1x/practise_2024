@@ -3,8 +3,10 @@ package com.example.mygame.multiplayer
 import android.content.res.Resources
 import com.example.mygame.domain.GameConstants
 import com.example.mygame.domain.drawable.ObjectType
+import com.example.mygame.domain.drawable.ObjectType.Companion.TRUE
 import com.example.mygame.domain.drawable.view.ObjectView
 import com.example.mygame.domain.drawable.view.PlayerView
+import com.example.mygame.domain.gameplay.Type
 import com.google.gson.Gson
 
 class JSONToKotlin(
@@ -15,10 +17,15 @@ class JSONToKotlin(
 ) {
     var id: Int? = null
 
+    var winnerId = 0
+
+    var type = Type.LOBBY
+
     private val objectsViewFactory = JSONToObjectView(resources)
 
     fun setGameState(jsonString: String) {
         val newObjectsViews = mapObjectsViewsFromJSON(jsonString)
+
         val isFirstLoad = objectsViews.isEmpty()
 
         if (isFirstLoad) {
@@ -52,6 +59,7 @@ class JSONToKotlin(
 
     private fun mapObjectsViewsFromJSON(jsonString: String): List<ObjectView> {
         val gameData = gson.fromJson(jsonString, GameData::class.java)
+        updateGameType(gameData.state)
 
         return gameData.objects.mapNotNull {
             when (it[0].toInt()) {
@@ -67,6 +75,10 @@ class JSONToKotlin(
                         alpha = GameConstants.OTHER_PLAYER_TRANSPARENCY
                     }
 
+                    if (it[6].toInt() == TRUE) {
+                        winnerId = it[3].toInt()
+                    }
+
                     objectsViewFactory.getPlayerFromJSON(posX + offset.getX(), posY + offset.getY(), alpha, it)
                 }
 
@@ -79,6 +91,16 @@ class JSONToKotlin(
                 ObjectType.SPRING_TYPE -> objectsViewFactory.getBonusFromJSON(it)
 
                 else -> null
+            }
+        }
+    }
+
+    private fun updateGameType(type: String) {
+        if (type != this.type.value) {
+            when (type) {
+                Type.GAME.value -> this.type = Type.GAME
+                Type.LOBBY.value -> this.type = Type.LOBBY
+                Type.END.value -> this.type = Type.END
             }
         }
     }
