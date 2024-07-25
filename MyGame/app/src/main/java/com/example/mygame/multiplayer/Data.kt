@@ -42,3 +42,7 @@ data class GameData(
 data class PlayerIdFromServer(
     @SerializedName("id") val id: Int
 )
+
+data class GameIsAlreadyRunning(
+    @SerializedName("e") val e: Int
+)

@@ -11,6 +11,7 @@ import com.example.mygame.domain.drawable.view.BonusView
 import com.example.mygame.domain.drawable.view.ObjectView
 import com.example.mygame.domain.logic.SensorHandler
 import com.example.mygame.multiplayer.FireMessage
+import com.example.mygame.multiplayer.GameIsAlreadyRunning
 import com.example.mygame.multiplayer.InitMessage
 import com.example.mygame.multiplayer.JSONToKotlin
 import com.example.mygame.multiplayer.MoveMessage
@@ -31,6 +32,9 @@ class MultiplayerGameplay(
     private val screen: Screen,
     private val scope: CoroutineScope
 ) : IGameplay, SensorHandler.SensorCallback {
+
+    override var id = 0
+    override var winnerId = 0
 
     private val gson = Gson()
 
@@ -63,7 +67,8 @@ class MultiplayerGameplay(
                         if (parserJSONToKotlin.id == null) {
                             val initId = gson.fromJson(message, PlayerIdFromServer::class.java)
                             if (initId.id != 0) {
-                                parserJSONToKotlin.id = initId.id
+                                id = initId.id
+                                parserJSONToKotlin.id = id
                                 return
                             }
                         }
@@ -101,9 +106,7 @@ class MultiplayerGameplay(
                     continue
                 }
 
-                _gameState.postValue(GameState(Type.GAME, objectsViews, emptyList()))
-
-
+                _gameState.postValue(GameState(parserJSONToKotlin.type, objectsViews, emptyList()))
 
                 startTime = systemTime
             }
@@ -140,6 +143,7 @@ class MultiplayerGameplay(
 
     private fun handleServerData(message: String) {
         parserJSONToKotlin.setGameState(message)
+        winnerId = parserJSONToKotlin.winnerId
     }
 
     override fun onShot(startX: Float) {

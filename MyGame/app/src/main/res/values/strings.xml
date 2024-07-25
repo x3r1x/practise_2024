@@ -26,6 +26,7 @@
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="leaderboard">Leaderboard</string>
     <string name="gotcha">Gotcha!</string>
+    <string name="gotomenu">Exit the menu!</string>
     <string name="leaderboardText">Leaderboard</string>
     <string name="save_your_result">Save Your Result!</string>
     <string name="error_load_scoreboard">Sorry. Server is offline :(</string>
