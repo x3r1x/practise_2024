@@ -1,8 +1,6 @@
 package com.example.mygame.UI
 
 import android.annotation.SuppressLint
-import android.media.AudioAttributes
-import android.media.SoundPool
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,10 +13,8 @@ import android.view.WindowMetrics
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
-import androidx.activity.addCallback
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
-import androidx.compose.material3.MediumTopAppBar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -43,8 +39,6 @@ class SingleplayerGameFragment : Fragment() {
     private lateinit var exitToMenuButton: Button
     private lateinit var scoreView: TextView
     private lateinit var gameView: GameView
-
-    private var isGamePaused = false
 
     private fun initMusics() {
         gameMusic = ExoPlayer.Builder(requireContext()).build()
@@ -71,16 +65,10 @@ class SingleplayerGameFragment : Fragment() {
         scoreView = view.findViewById(R.id.scoreView)
     }
 
-    @SuppressLint("VisibleForTests")
     private fun pauseGame() {
-        val callback = requireActivity().onBackPressedDispatcher.addCallback(this) {
-            resumeGame {
-                remove()
-            }
-        }
         isPaused = true
 
-        isGamePaused = true
+        gameViewModel.gameplay.stopGameLoop()
 
         pauseGroup.visibility = VISIBLE
 
@@ -89,10 +77,23 @@ class SingleplayerGameFragment : Fragment() {
 
         val resumeButton = pauseGroup.findViewById<Button>(R.id.resumeButton)
         resumeButton.setOnClickListener {
-            resumeGame {
-                callback.remove()
-            }
+            resumeGame()
         }
+
+        exitToMenuButton.setOnClickListener {
+            Navigation.findNavController(pauseGroup).navigate(R.id.navigateFromSinglePlayerFragmentToStartFragment)
+        }
+    }
+
+    private fun resumeGame() {
+        isPaused = false
+
+        pauseMusic.pause()
+        gameMusic.play()
+
+        pauseGroup.visibility = INVISIBLE
+        gameViewModel.gameplay.startGameLoop()
+    }
 
     private fun addOnBackPressed() {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
@@ -104,21 +105,6 @@ class SingleplayerGameFragment : Fragment() {
                 }
             }
         })
-    }
-
-    private fun resumeGame(callback: (() -> Unit)? = null) {
-        pauseGroup.visibility = INVISIBLE
-
-        isGamePaused = false
-
-        isPaused = false
-
-        pauseMusic.pause()
-        gameMusic.play()
-
-        gameViewModel.gameplay.startGameLoop()
-        onResume()
-        callback?.invoke()
     }
 
     @RequiresApi(Build.VERSION_CODES.R)
@@ -151,7 +137,7 @@ class SingleplayerGameFragment : Fragment() {
         }
 
         pauseButton.setOnClickListener {
-            onPause()
+            pauseGame()
         }
 
         gameView.setOnTouchListener { _, event ->
@@ -179,12 +165,6 @@ class SingleplayerGameFragment : Fragment() {
         }
 
         gameViewModel.gameplay.startGameLoop()
-
-        requireActivity().onBackPressedDispatcher.addCallback(this) {
-            if (!isGamePaused) {
-                onPause()
-            }
-        }
     }
 
     override fun onResume() {

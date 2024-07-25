@@ -1,6 +1,5 @@
 package com.example.mygame.multiplayer
 
-import androidx.compose.ui.text.style.ResolvedTextDirection
 import com.example.mygame.domain.leaderboard.Leaderboard
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -8,14 +7,12 @@ import com.google.gson.Strictness
 import com.google.gson.annotations.SerializedName
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
-import retrofit2.http.Field
 import retrofit2.http.GET
 import retrofit2.http.POST
 import kotlin.coroutines.resume
@@ -27,7 +24,7 @@ class Repository {
         .setStrictness(Strictness.LENIENT)
         .create()
     private val retrofit = Retrofit.Builder()
-        .baseUrl("http://10.10.29.46:8000/")
+        .baseUrl("http://10.250.104.162:8000/")
         .addConverterFactory(GsonConverterFactory.create(gson))
         .build()
 

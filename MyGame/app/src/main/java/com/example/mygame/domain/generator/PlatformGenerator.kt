@@ -40,10 +40,10 @@ class PlatformGenerator(
         var newY = screen.height - OTHER_PLATFORMS_OUT_OF_START
 
         while (newY >= -newPackageHeight) {
-            val x = Random.nextFloat() * (screen.width - platform.width) + GameConstants.PLATFORM_SPAWN_ADDITIONAL_X
+            val x = Random.nextFloat() * (screen.width - Platform.WIDTH) + GameConstants.PLATFORM_SPAWN_ADDITIONAL_X
             val newPlatform = staticPlatformFactory.generatePlatform(x, newY)
             platforms.add(newPlatform)
-            newY -= platform.height + platformGap
+            newY -= Platform.HEIGHT + platformGap
         }
 
         return platforms
@@ -81,8 +81,8 @@ class PlatformGenerator(
     }
 
     fun generateStartPlatform() : MutableList<Platform> {
-        var initialPlatform = StaticPlatformFactory().generatePlatform(screen.left + platform.width / 2,
-            screen.bottom - platform.height / 2 - START_PLATFORMS_GAP_OF_SCREEN)
+        var initialPlatform = StaticPlatformFactory().generatePlatform(screen.left + Platform.WIDTH / 2,
+            screen.bottom - Platform.HEIGHT / 2 - START_PLATFORMS_GAP_OF_SCREEN)
 
         val platforms = mutableListOf<Platform>()
 
@@ -91,8 +91,8 @@ class PlatformGenerator(
 
             val previousRight = initialPlatform.right
 
-            initialPlatform = StaticPlatformFactory().generatePlatform(previousRight + START_PLATFORM_GAP + platform.width / 2,
-                screen.bottom - platform.height / 2 - START_PLATFORMS_GAP_OF_SCREEN)
+            initialPlatform = StaticPlatformFactory().generatePlatform(previousRight + START_PLATFORM_GAP + Platform.WIDTH / 2,
+                screen.bottom - Platform.HEIGHT / 2 - START_PLATFORMS_GAP_OF_SCREEN)
         }
 
         platforms.add(initialPlatform)
@@ -101,7 +101,7 @@ class PlatformGenerator(
     }
 
     private fun getRandomCoordinates(from: Float, verticalGap: Float) : Array<Float> {
-        val x = Random.nextFloat() * (screen.width - platform.width) + GameConstants.PLATFORM_SPAWN_ADDITIONAL_X
+        val x = Random.nextFloat() * (screen.width - Platform.WIDTH) + GameConstants.PLATFORM_SPAWN_ADDITIONAL_X
         val y = from - Random.nextFloat() * (verticalGap - platformGap) - platformGap
         return arrayOf(x, y)
     }

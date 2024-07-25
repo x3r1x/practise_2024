@@ -4,7 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Matrix
 import android.graphics.Paint
-import com.example.mygame.domain.Platform
+import com.example.mygame.domain.platform.Platform
 
 class PlatformView(
     x: Float,
