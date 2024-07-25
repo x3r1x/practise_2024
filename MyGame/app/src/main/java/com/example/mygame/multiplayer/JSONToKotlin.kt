@@ -35,12 +35,16 @@ class JSONToKotlin(
             } else {
                 objectsViews[existingObjectIndex] = newObject
             }
+            objectsViews.removeAll { existingObject ->
+                existingObject is PlayerView && newObjectsViews.none { it.id == existingObject.id }
+            }
         }
 
         objectsViews.forEach {
             if (it is PlayerView) {
                 return@forEach
             }
+
             it.x = it.initialX + offset.getX()
             it.y = it.initialY + offset.getY()
         }
@@ -72,8 +76,7 @@ class JSONToKotlin(
                 in ObjectType.MULTIPLAYER_PLATFORMS ->
                     objectsViewFactory.getPlatformFromJSON(it)
 
-                in ObjectType.MULTIPLAYER_BONUSES ->
-                    objectsViewFactory.getBonusFromJSON(it)
+                ObjectType.SPRING_TYPE -> objectsViewFactory.getBonusFromJSON(it)
 
                 else -> null
             }

@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.mygame.domain.GameConstants
 import com.example.mygame.domain.Score
 import com.example.mygame.domain.Screen
+import com.example.mygame.domain.drawable.view.BonusView
 import com.example.mygame.domain.drawable.view.ObjectView
 import com.example.mygame.domain.logic.SensorHandler
 import com.example.mygame.multiplayer.FireMessage
@@ -91,6 +92,7 @@ class MultiplayerGameplay(
 
         scope.launch {
             while (true) {
+
                 val systemTime = System.currentTimeMillis()
                 elapsedTime = (systemTime - startTime) / 1000f
 
@@ -100,6 +102,8 @@ class MultiplayerGameplay(
                 }
 
                 _gameState.postValue(GameState(Type.GAME, objectsViews, emptyList()))
+
+
 
                 startTime = systemTime
             }

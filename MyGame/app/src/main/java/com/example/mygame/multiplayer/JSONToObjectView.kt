@@ -17,6 +17,7 @@ class JSONToObjectView(resources: Resources) {
     private val enemyViewFactory = EnemyViewFactory(resources)
     private val bonusViewFactory = BonusViewFactory(resources)
     private val bulletViewFactory = BulletViewFactory(resources)
+    var count = 0
 
     fun getPlayerFromJSON(x: Float, y: Float, alpha: Int, data: Array<Double>) : ObjectView {
         val id = data[3].toInt()

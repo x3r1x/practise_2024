@@ -52,8 +52,8 @@ class Spring(
     }
 
     companion object {
-        private const val WIDTH = 78f
-        private const val HEIGHT = 53f
+        const val WIDTH = 78f
+        const val HEIGHT = 53f
 
         private const val ANIMATION_HEIGHT_VALUE = 5f
 

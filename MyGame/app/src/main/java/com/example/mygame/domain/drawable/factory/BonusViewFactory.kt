@@ -3,10 +3,9 @@ package com.example.mygame.domain.drawable.factory
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.Matrix
-import android.graphics.RectF
 import com.example.mygame.R
 import com.example.mygame.domain.drawable.ObjectType
+import com.example.mygame.domain.drawable.view.BonusView
 import com.example.mygame.domain.drawable.view.ObjectView
 
 class BonusViewFactory(resources: Resources) {
@@ -21,17 +20,15 @@ class BonusViewFactory(resources: Resources) {
     private val jetpackBitmap =
         BitmapFactory.decodeResource(resources, R.drawable.jetpack, BITMAP_OPTIONS)
 
-    fun  getBonusView(
+    fun getBonusView(
         type: Int,
         x: Float,
         y: Float,
         animationTime: Int
     ): ObjectView {
         val bitmap = getBitmap(type, animationTime)
-        val rect = getRect(x, y, bitmap)
-        val matrix = getMatrix(rect)
 
-        return ObjectView(x, y, bitmap, matrix)
+        return BonusView(x, y, bitmap)
     }
 
     private fun getBitmap(type: Int, animationTime: Int): Bitmap {
@@ -46,22 +43,6 @@ class BonusViewFactory(resources: Resources) {
                 else -> throw IllegalArgumentException("Invalid spring animation value: $animationTime")
             }
         }
-    }
-
-    private fun getMatrix(destRect: RectF): Matrix {
-        val matrix = Matrix()
-        matrix.postTranslate(destRect.left, destRect.top)
-
-        return matrix
-    }
-
-    private fun getRect(x: Float, y: Float, bitmap: Bitmap): RectF {
-        return RectF(
-            x - bitmap.width / 2,
-            y - bitmap.height / 2,
-            x + bitmap.width / 2,
-            y + bitmap.height / 2
-        )
     }
 
     companion object {
