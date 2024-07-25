@@ -9,7 +9,7 @@ class FinishView(x: Float, y: Float, paint: Paint) : ObjectView(x, y, paint = pa
         paint?.let {
             canvas.drawRect(0f, y, 3000f, y + 20f, it)
             paint.textSize = 108f
-            canvas.drawText("Финиш", 24f, y - 20f, paint)
+            canvas.drawText("Finish", 24f, y - 20f, paint)
         }
     }
 
