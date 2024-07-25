@@ -2,7 +2,6 @@
 
 namespace App\Model\Bonus;
 
-class Shield
+interface IBonus
 {
-    
 }

@@ -9,7 +9,7 @@ class GameConstants
     public const SENSOR_MULTIPLIER = 180.0;
 
     public const PLAYER_JUMP_SPEED = 1600.0;
-    public const PLAYER_SPRING_JUMP_SPEED = 3700.0;
+    public const PLAYER_SPRING_JUMP_SPEED = 2200.0;
     public const PLAYER_SPEED_WITH_JETPACK = 1900.0;
     public const PLAYER_DISTANCE_TO_TURN = 1.5;
 
@@ -29,10 +29,12 @@ class GameConstants
     public const NINJA_MAX_CONVERGENCE = 600.0;
 
     public const PLATFORM_SPAWN_ADDITIONAL_X = 100.0;
+    public const MAX_VERTICAL_PLATFORM_GAP = 400.0;
+    public const MAX_VERTICAL_BREAKING_PLATFORM_GAP = 50.0;
 
     public const JETPACK_SPAWN_CHANCE = 0.02;
     public const SHIELD_SPAWN_CHANCE = 0.08;
-    public const SPRING_SPAWN_CHANCE = 0.25;
+    public const SPRING_SPAWN_CHANCE = 0.5;
     public const MIN_SPRING_SPAWN_X = 40;
     public const MAX_SPRING_SPAWN_X = 135;
 

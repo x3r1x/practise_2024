@@ -28,25 +28,32 @@ class RunServerCommand extends Command
 
         $gameServer = new GameServer();
 
-        $interval = 1 / 60;
+        $interval = 1 / 70;
         $timer = new Timer($interval);
 
         $url = "10.250.104.162:8080";
         $webSocket = new SocketServer($url, [], $loop);
         $webServer = new IoServer(new HttpServer(new WsServer($gameServer)), $webSocket, $loop);
 
-        $gameServer->testScene();
-
         $loop->addPeriodicTimer($interval, function () use ($gameServer, $timer) {
-            if ($timer->checkAndUpdate()) {
-                $deltaTime = microtime(true) - $gameServer->lastUpdateTime;
-                $gameServer->updateGameState($deltaTime);
-                $gameServer->lastUpdateTime = microtime(true);
-            }
-        });
+            if ($gameServer->isRunning) {
+                $timer->start();
 
-        $loop->addPeriodicTimer(1.0, function () use ($gameServer) {
-            $gameServer->sendData();
+                if ($gameServer->lastUpdateTime === null) {
+                    $gameServer->lastUpdateTime = microtime(true);
+                    return;
+                }
+
+                if ($timer->checkAndUpdate()) {
+                    $currentTime = microtime(true);
+                    $deltaTime = $currentTime - $gameServer->lastUpdateTime;
+                    $gameServer->updateGameState($deltaTime);
+                    $gameServer->lastUpdateTime = $currentTime;
+                }
+            } else {
+                $timer->stop();
+                $gameServer->lastUpdateTime = null;
+            }
         });
 
         $output->writeln("WebSocket server started: $url");

@@ -10,6 +10,7 @@ use App\Model\Platform;
 use App\Model\Bonus\Shield;
 use App\Model\Bonus\Spring;
 use App\Collision\IVisitor;
+use App\Model\EndZone;
 use App\Model\Platform\MovingPlatformOnX;
 
 class ScreenCollisionVisitor implements IVisitor
@@ -30,10 +31,6 @@ class ScreenCollisionVisitor implements IVisitor
 
     public function visitPlatform(Platform $platform): void
     {
-        if ($platform instanceof MovingPlatformOnX && $this->isCollidePlatformWithBoundsOfScreen($platform)) {
-            $platform->changeDirectionX($this->screen);
-        }
-
         if ($this->isOutPlatformBelowBottomOfScreen($platform)) {
             $platform->setIsDisappeared(true);
         }
@@ -43,19 +40,7 @@ class ScreenCollisionVisitor implements IVisitor
     {
     }
 
-    public function visitShield(Shield $shield): void
-    {
-    }
-
-    public function visitEnemy(Enemy $enemy): void
-    {
-    }
-
-    public function visitBullet(Bullet $bullet): void
-    {
-        if ($this->screen->top > $bullet->getBottom()) {
-            $bullet->setIsDisappeared(true);
-        }
+    public function visitEndZone(EndZone $endZone): void {
     }
 
     private function isCollidePlayerWithScreen(Player $player): bool

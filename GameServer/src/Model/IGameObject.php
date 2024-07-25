@@ -4,7 +4,11 @@ namespace App\Model;
 
 use App\Collision\IVisitor;
 
-interface IGameObject {
+interface IGameObject
+{
+    public function getX(): float;
+    public function getY(): float;
+
     public function getIsDisappeared(): bool;
     public function setIsDisappeared(bool $value): void;
 

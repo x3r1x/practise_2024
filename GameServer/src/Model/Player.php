@@ -8,27 +8,26 @@ use App\Constants\JsonConstants;
 
 class Player implements IGameObject, IMoveable
 {
-    const SHOOTING_WIDTH = 105.0;
-    const SHOOTING_HEIGHT = 200.0;
-    const RADIUS = 75.0;
-    const DEAD_WIDTH = 120.0;
-    const DEAD_HEIGHT = 190.0;
+    public const SHOOTING_WIDTH = 105.0;
+    public const SHOOTING_HEIGHT = 200.0;
+    public const RADIUS = 75.0;
 
-    const DIRECTION_Y_UP = -1;
-    const DIRECTION_Y_DOWN = 1;
+    public const DIRECTION_Y_UP = -1;
+    public const DIRECTION_Y_DOWN = 1;
 
-    const DIRECTION_X_LEFT = -1;
-    const DIRECTION_X_RIGHT = 1;
+    public const DIRECTION_X_LEFT = -1;
+    public const DIRECTION_X_RIGHT = 1;
+
+    private const FEET_HEIGHT_RATIO = 0.2;
 
     public $directionX = self::DIRECTION_X_RIGHT;
     public $directionY = self::DIRECTION_Y_DOWN;
     public $speedY = 0.0;
     public $speedX = 0.0;
-    public $isDead = false;
 
-    public $isWithJetpack = false;
-    public $isWithShield = false;
-    private $isShooting = false;
+    public $isReady = false;
+
+    public $isWinner = false;
 
     private $x = 0.0;
     private $y = 0.0;
@@ -40,6 +39,11 @@ class Player implements IGameObject, IMoveable
     ) {
     }
 
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
     public function jump(float $jumpSpeed = GameConstants::PLAYER_JUMP_SPEED): void
     {
         $this->directionY = self::DIRECTION_Y_UP;
@@ -48,25 +52,13 @@ class Player implements IGameObject, IMoveable
 
     public function movingThroughScreen(Screen $screen): void
     {
-        if ($this->x < 0.0) {
-            $this->x = $screen->right - self::RADIUS;
-        }
-
-        if ($this->x > $screen->right) {
+        if ($this->getLeft() < 0.0) {
             $this->x = 0.0 + self::RADIUS;
         }
-    }
 
-    public function isShooting(): bool
-    {
-        return $this->isShooting;
-    }
-
-    public function shoot(): void
-    {
-        $this->isShooting = true;
-
-        $this->isShooting = false;
+        if ($this->getRight() > $screen->right) {
+            $this->x = $screen->right - self::RADIUS;
+        }
     }
 
     public function updatePositionX(float $deltaX, float $elapsedTime): void
@@ -115,6 +107,11 @@ class Player implements IGameObject, IMoveable
         return $this->y - self::RADIUS;
     }
 
+    public function getFeetTop(): float
+    {
+        return $this->getBottom() - (self::RADIUS * 2) * self::FEET_HEIGHT_RATIO;
+    }
+
     public function getBottom(): float
     {
         return $this->y + self::RADIUS;
@@ -142,12 +139,13 @@ class Player implements IGameObject, IMoveable
 
         $this->y += $this->speedY * $this->directionY * $elapsedTime;
 
-        if (!$this->isWithJetpack) {
-            $this->speedY += $elapsedTime * GameConstants::GRAVITY * $this->directionY;
+        $this->speedY += $elapsedTime * GameConstants::GRAVITY * $this->directionY;
 
-            if ($this->y >= $previousY && $this->directionY == self::DIRECTION_Y_UP) {
-                $this->directionY = self::DIRECTION_Y_DOWN;
-            }
+        //echo "Speed: ({$this->speedY})\n";
+        // echo "Elapsed time: {$elapsedTime}\n";
+
+        if ($this->y >= $previousY && $this->directionY == self::DIRECTION_Y_UP) {
+            $this->directionY = self::DIRECTION_Y_DOWN;
         }
     }
 
@@ -157,14 +155,10 @@ class Player implements IGameObject, IMoveable
             JsonConstants::PLAYER_TYPE,
             round($this->x, 2),
             round($this->y, 2),
-            round($this->speedX, 2),
-            round($this->speedY, 2),
             $this->id,
             $this->directionX,
             $this->directionY,
-            (int) $this->isWithShield,
-            (int) $this->isShooting,
-            (int) $this->isDead,
+            (int) $this->isWinner,
         ];
     }
 }

@@ -13,8 +13,12 @@ class Platform implements IGameObject, IMoveable
     protected $x;
     protected $y;
 
-    public function __construct(float $createdX, float $createdY)
+    protected $id;
+
+    public function __construct(int $id, float $createdX, float $createdY)
     {
+        $this->id = $id;
+
         $this->x = $createdX;
         $this->y = $createdY;
     }
@@ -62,6 +66,16 @@ class Platform implements IGameObject, IMoveable
     public function getY(): float
     {
         return $this->y;
+    }
+
+    public function getWidth()
+    {
+        return $this->width;
+    }
+
+    public function getHeight()
+    {
+        return $this->height;
     }
 
     public function setPosition(float $startX, float $startY): void
