@@ -1,5 +1,6 @@
 package com.example.mygame.multiplayer
 
+import androidx.compose.ui.text.style.ResolvedTextDirection
 import com.example.mygame.domain.leaderboard.Leaderboard
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -14,6 +15,7 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
+import retrofit2.http.Field
 import retrofit2.http.GET
 import retrofit2.http.POST
 import kotlin.coroutines.resume
@@ -57,15 +59,15 @@ class Repository {
             suspendCoroutine { continuation ->
                 val json = LeaderJson(name, score)
 
-                api.sendScore(json).enqueue(object : Callback<EmptyClass> {
+                api.sendScore(json).enqueue(object : Callback<Void> {
                     override fun onResponse(
-                        call: Call<EmptyClass>,
-                        response: Response<EmptyClass>
+                        call: Call<Void>,
+                        response: Response<Void>
                     ) {
-                        continuation.resume(true)
+                        continuation.resume(response.isSuccessful)
                     }
 
-                    override fun onFailure(call: Call<EmptyClass>, t: Throwable) {
+                    override fun onFailure(call: Call<Void>, t: Throwable) {
                         continuation.resume(false)
                     }
                 })
@@ -77,7 +79,7 @@ data class LeaderboardJson(
     @SerializedName("leaders")
     val leaders: List<LeaderJson>
 ) {
-    fun asModel() = Leaderboard(
+        fun asModel() = Leaderboard(
         leaders = leaders.map {
             Leaderboard.Leader(it.name, it.score)
         }
@@ -92,11 +94,9 @@ data class LeaderJson(
     val score: Int
 )
 
-class EmptyClass
-
 interface Api {
     @GET("score/show")
     fun getScoreboard(): Call<LeaderboardJson>
     @POST("score/save")
-    fun sendScore(@Body json: LeaderJson): Call<EmptyClass>
+    fun sendScore(@Body json: LeaderJson): Call<Void>
 }

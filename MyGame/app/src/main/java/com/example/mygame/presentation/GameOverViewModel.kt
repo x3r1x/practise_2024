@@ -14,6 +14,7 @@ class GameOverViewModel : ViewModel() {
     fun onViewCreated(user: String, score: Int) {
         viewModelScope.launch {
             state.value = gateway.sendResult(user, score)
+            println(state.value)
         }
     }
 }

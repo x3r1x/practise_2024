@@ -33,6 +33,8 @@ class GameOverFragment : Fragment() {
     private val binding by viewBindings(FragmentGameOverBinding::bind)
 
     private lateinit var audioPlayer: ExoPlayer
+    private lateinit var successSound: ExoPlayer
+    private lateinit var declineSound: ExoPlayer
 
     private fun playSound() {
         audioPlayer = ExoPlayer.Builder(requireContext()).build()
@@ -42,6 +44,20 @@ class GameOverFragment : Fragment() {
 
         audioPlayer.prepare()
         audioPlayer.play()
+    }
+
+    private fun initSounds() {
+        successSound = ExoPlayer.Builder(requireContext()).build()
+        declineSound = ExoPlayer.Builder(requireContext()).build()
+
+        successSound.setMediaItem(MediaItem.fromUri(SUCCESS_URI))
+        declineSound.setMediaItem(MediaItem.fromUri(DECLINE_URI))
+
+        successSound.volume = VOLUME
+        declineSound.volume = VOLUME
+
+        successSound.prepare()
+        declineSound.prepare()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,6 +76,7 @@ class GameOverFragment : Fragment() {
         val saveButton = view.findViewById<Button>(R.id.saveResultButton)
 
         playSound()
+        initSounds()
 
         view.findViewById<Button>(R.id.playAgainButton).setOnClickListener {
             audioPlayer.release()
@@ -78,6 +95,8 @@ class GameOverFragment : Fragment() {
 
         view.findViewById<Button>(R.id.goToMenuButton).setOnClickListener {
             audioPlayer.release()
+            declineSound.release()
+            successSound.release()
             Navigation.findNavController(view).navigate(R.id.navigateFromGameOverFragmentToMenuFragment)
         }
 
@@ -85,10 +104,6 @@ class GameOverFragment : Fragment() {
 
         return view
     }
-
-//    private fun render(state: GameOverViewModel.State) {
-//
-//    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -108,13 +123,16 @@ class GameOverFragment : Fragment() {
         }
     }
 
-    private fun render(decline: Boolean) {
-        if (decline) {
-            Toast.makeText(requireContext(), "Sorry, an error occurred :(", Toast.LENGTH_SHORT).show()
-            binding.dataEnteringGroup.isVisible = true
-        } else {
+    private fun render(success: Boolean) {
+        if (success) {
             binding.dataEnteringGroup.isVisible = false
             Toast.makeText(requireContext(), "Success!", Toast.LENGTH_SHORT).show()
+            successSound.play()
+        } else {
+            Toast.makeText(requireContext(), "Sorry, an error occurred :(", Toast.LENGTH_SHORT).show()
+            binding.dataEnteringGroup.isVisible = true
+            declineSound.play()
+            declineSound.seekTo(0)
         }
     }
 
@@ -135,6 +153,9 @@ class GameOverFragment : Fragment() {
         private val COLOR_GREEN = Color.rgb(8, 174, 35)
 
         private val MUSIC_URI = "android.resource://com.example.mygame/" + R.raw.game_over_sound
+        private val SUCCESS_URI = "android.resource://com.example.mygame/" + R.raw.success_sound
+        private val DECLINE_URI = "android.resource://com.example.mygame/" + R.raw.decline_sound
+
         private const val VOLUME = 1f
     }
 }
